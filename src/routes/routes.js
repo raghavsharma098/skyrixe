@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Root from "../component/Root";
 import Main from "../component/Landing/Main";
 import Profile from "../component/Profile/profile";
@@ -9,7 +9,7 @@ import Checkout2 from "../component/CheckOut/Checkout2";
 import PaymentSuccess from "../component/Payment/PaymentSuccess";
 import StaticContent from "../component/StaticContent/StaticContent";
 import SearchProducts from "../component/Product/SearchProducts";
-import PrivateRoute from "./PrivateRoutes";
+
 
 let basename = "/";
 

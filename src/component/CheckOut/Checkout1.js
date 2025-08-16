@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
-  createOrder,
   deleteCartProduct,
   editCart,
   orderSummary,
-  placeOrder,
 } from "../../reduxToolkit/Slices/Cart/bookingApis";
 import { Modal } from "react-bootstrap";
 import { Tooltip } from "react-tooltip";
@@ -107,47 +105,39 @@ const Checkout1 = () => {
     customization,
     editModal,
     deleteModal,
-    ballonColor,
     custom_name,
     additional_Phone,
     customer_req,
     phone_valid,
     addressList,
     addressListModal,
-    decorationArea,
     decorArea,
-    decorationLocation,
     aboutArr,
-    aboutX,
     occasionArr,
-    occasion,
-    borderColor,
     mentionAge,
     ageBalloonColor,
-    addressModal,
-    editMode,
   } = iState;
-  const { getOrderSummaryDetail, loader } = useSelector(
+  const { getOrderSummaryDetail } = useSelector(
     (state) => state.orderSummary
   );
-  const { getProductDetails, getSlotList } = useSelector(
+  const { getSlotList } = useSelector(
     (state) => state.productList
   );
   const state = location?.state;
   const userDetail = JSON.parse(window.localStorage.getItem("LennyUserDetail"));
 
-  const onSelect = (selectedList, selectedItem) => {
+  const onSelect = (selectedList) => {
     setSelectedValue(selectedList);
 
     // Add any other logic needed when an item is selected
   };
 
-  const onRemove = (selectedList, removedItem) => {
+  const onRemove = (selectedList) => {
     setSelectedValue(selectedList);
     // Add any other logic needed when an item is removed
   };
 
-  const [orderDetails, setOrderDetails] = useState({
+  const [orderDetails] = useState({
     amount: null, // Amount in INR
     currency: "INR",
     orderId: null,
@@ -160,7 +150,7 @@ const Checkout1 = () => {
   });
 
   const handleInputChange = (e) => {
-    const { name, value, checked } = e.target;
+    const { name, value } = e.target;
     if (name == "additional_Phone") {
       let modifiedValue = value >= 0 ? value : additional_Phone + "";
       updateState({ ...iState, additional_Phone: modifiedValue, errors: "" });
@@ -175,7 +165,6 @@ const Checkout1 = () => {
     }
   };
 
-  const handleCheckOut = () => {};
 
   const handleDateTimeSlot = () => {
     const data = {

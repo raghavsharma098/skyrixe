@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Carousel } from "bootstrap";
-import {
-  birthdayDecoList,
-  categoryList,
-  dealBannerList,
-} from "../../reduxToolkit/Slices/ProductList/listApis";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
-import ReactImageZoom from "react-image-zoom";
 
 const CustomPrevArrow = ({ onClick }) => (
   <div className="custom-arrow prev" onClick={onClick}>
@@ -35,12 +28,9 @@ const Main = () => {
     getCategoryList,
     getDealBannerList,
     getTopBannerList,
-    loader,
   } = useSelector((state) => state.productList);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const selectCity = window.localStorage.getItem("LennyCity");
-  // const userDetail = JSON.parse(window.localStorage.getItem("LennyUserDetail"));
 
   const handleCategory = (item, subCat) => {
     navigate("/products", { state: { item, subCat, selectCity } });
@@ -98,10 +88,10 @@ const Main = () => {
             {getTopBannerList?.data?.length > 0
               ? getTopBannerList?.data?.map((item, i) => {
                   return (
-                    <div className={`carousel-item ${i == 0 ? "active" : ""}`}>
+                    <div className={`carousel-item ${i === 0 ? "active" : ""}`}>
                       <div>
                         <div className="HeroRight">
-                          <img src={item?.bannerImage} />
+                          <img src={item?.bannerImage} alt="banner"/>
                         </div>
                       </div>
                     </div>
@@ -117,8 +107,8 @@ const Main = () => {
                       type="button"
                       data-bs-target="#carouselExampleIndicators"
                       data-bs-slide-to={i}
-                      className={`${i == 0 ? "active" : ""}`}
-                      aria-current={`${i == 0 ? "true" : "false"}`}
+                      className={`${i === 0 ? "active" : ""}`}
+                      aria-current={`${i === 0 ? "true" : "false"}`}
                       aria-label={`Slide ${i + 1}`}
                     />
                   );
