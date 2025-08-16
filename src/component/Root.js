@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+
 import Header from "./Header/Header";
 import { Outlet } from "react-router-dom";
 import Footer from "./Footer/Footer";
-import ReactWhatsapp from 'react-whatsapp';
 
 const Root = () => {
 

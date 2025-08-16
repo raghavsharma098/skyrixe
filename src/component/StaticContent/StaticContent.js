@@ -6,28 +6,31 @@ import { staticDataList } from "../../reduxToolkit/Slices/StaticData/staticGetAp
 const StaticContent = () => {
   const pathname = getPathName();
   const dispatch = useDispatch();
-  const { getStaticList, loader } = useSelector((state) => state.staticList);
+  const { getStaticList } = useSelector((state) => state.staticList);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    const data = {
-      endUrl:
-        pathname == "about-us"
-          ? "aboutusget"
-          : pathname == "terms-conditions"
-          ? "termget"
-          : pathname == "privacy-policy"
-          ? "privacyget"
-          : pathname == "contact-us"
-          ? "contactdata"
-          : pathname == "return-policy"
-          ? "returnpolicyget"
-          : pathname == "faq"
-          ? "faqget"
-          : "",
-    };
-    dispatch(staticDataList(data));
-  }, [pathname]);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  const data = {
+    endUrl:
+      pathname === "about-us"
+        ? "aboutusget"
+        : pathname === "terms-conditions"
+        ? "termget"
+        : pathname === "privacy-policy"
+        ? "privacyget"
+        : pathname === "contact-us"
+        ? "contactdata"
+        : pathname === "return-policy"
+        ? "returnpolicyget"
+        : pathname === "faq"
+        ? "faqget"
+        : "",
+  };
+
+  dispatch(staticDataList(data));
+}, [pathname, dispatch]);
+
 
   console.log({ getStaticList });
   return (
@@ -35,17 +38,17 @@ const StaticContent = () => {
       <div id="Main">
         <div className="PolicyBanner">
           <h3>
-            {pathname == "about-us"
+            {pathname === "about-us"
               ? "About Us"
-              : pathname == "terms-conditions"
+              : pathname === "terms-conditions"
               ? "Terms and Conditions"
-              : pathname == "privacy-policy"
+              : pathname === "privacy-policy"
               ? "Privacy Policy"
-              : pathname == "contact-us"
+              : pathname === "contact-us"
               ? "Contact Us"
-              : pathname == "return-policy"
+              : pathname === "return-policy"
               ? "Return Policy"
-              : pathname == "faq"
+              : pathname === "faq"
               ? "Frequently Asked Questions"
               : ""}
           </h3>

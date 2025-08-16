@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Modal, Nav, Tab, TabContainer } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +7,6 @@ import { onImageHandler } from "../../Utils/uploadFile";
 import {
   addressDelete,
   addressListing,
-  personalInfoEditApi,
   personalInfoUpdateSlice,
 } from "../../reduxToolkit/Slices/Auth/auth";
 import { toast } from "react-toastify";
@@ -51,7 +50,6 @@ const Profile = () => {
   );
   const {
     profileEditModal,
-    addressModal,
     name,
     gender,
     dob,
@@ -62,7 +60,6 @@ const Profile = () => {
     errors,
     additional_phone,
     phone_valid,
-    editMode,
     addressDetail,
     deleteModal,
     logType,

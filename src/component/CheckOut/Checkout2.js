@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 const Checkout2 = () => {
@@ -22,7 +21,7 @@ const Checkout2 = () => {
                     <span className="checkmark" />
                   </label>
                   <figure>
-                    <img src="assets/images/paypal.png" />
+                    <img src="assets/images/paypal.png" alt="PayPal logo" />
                   </figure>
                   <figcaption>
                     <h5>PayPal</h5>
@@ -35,10 +34,10 @@ const Checkout2 = () => {
                     <span className="checkmark" />
                   </label>
                   <figure>
-                    <img src="assets/images/stripe.png" />
+                    <img src="assets/images/stripe.png" alt="Stripe logo" />
                   </figure>
                   <figcaption>
-                    <h5>PayPal</h5>
+                    <h5>Stripe</h5>
                     <p>yelenastacia99@gmail.com</p>
                   </figcaption>
                 </aside>
@@ -48,63 +47,14 @@ const Checkout2 = () => {
                     <span className="checkmark" />
                   </label>
                   <figure>
-                    <img src="assets/images/payoneer.png" />
+                    <img src="assets/images/payoneer.png" alt="Payoneer logo" />
                   </figure>
                   <figcaption>
-                    <h5>PayPal</h5>
+                    <h5>Payoneer</h5>
                     <p>yelenastacia99@gmail.com</p>
                   </figcaption>
                 </aside>
               </div>
-              {/* <div className="AddCardArea">
-                <h3>Add Debit Card</h3>
-                <div className="CommonForm">
-                  <form>
-                    <div className="row">
-                      <div className="col-lg-6">
-                        <div className="form-group">
-                          <h6>Holder Name</h6>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter your name"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-lg-6">
-                        <div className="form-group">
-                          <h6>Card Number</h6>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="0000-0000-0000-0000"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-lg-6">
-                        <div className="form-group">
-                          <h6>Expiry Date</h6>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter expiry date"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-lg-6">
-                        <div className="form-group">
-                          <h6>CVV</h6>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter your Cvv"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div> */}
             </div>
             <div className="col-lg-4 col-md-5">
               <div className="ProductSummary">
@@ -157,21 +107,36 @@ const Checkout2 = () => {
                 </Link>
               </div>
               <div className="CommonGreyBox">
-              <ul>
+                <ul>
                   <li>
-                    <img src={require("../../assets/images/method-1.png")} />
+                    <img
+                      src={require("../../assets/images/method-1.png")}
+                      alt="Payment method 1"
+                    />
                   </li>
                   <li>
-                    <img src={require("../../assets/images/method-2.png")} />
+                    <img
+                      src={require("../../assets/images/method-2.png")}
+                      alt="Payment method 2"
+                    />
                   </li>
                   <li>
-                    <img src={require("../../assets/images/method-3.png")} />
+                    <img
+                      src={require("../../assets/images/method-3.png")}
+                      alt="Payment method 3"
+                    />
                   </li>
                   <li>
-                    <img src={require("../../assets/images/method-4.png")} />
+                    <img
+                      src={require("../../assets/images/method-4.png")}
+                      alt="Payment method 4"
+                    />
                   </li>
                   <li>
-                    <img src={require("../../assets/images/method-5.png")} />
+                    <img
+                      src={require("../../assets/images/method-5.png")}
+                      alt="Payment method 5"
+                    />
                   </li>
                 </ul>
                 <h3>Guaranteed Safe Checkout</h3>
