@@ -5,20 +5,10 @@ import "slick-carousel/slick/slick-theme.css";
 import { useSelector } from "react-redux";
 import { Carousel } from "bootstrap";
 import { Tooltip } from "react-tooltip";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "react-tooltip/dist/react-tooltip.css";
-
-const CustomPrevArrow = ({ onClick }) => (
-  <div className="custom-arrow prev" onClick={onClick}>
-    <i class="fa-solid fa-angle-left"></i>
-  </div>
-);
-
-const CustomNextArrow = ({ onClick }) => (
-  <div className="custom-arrow next" onClick={onClick}>
-    <i class="fa-solid fa-angle-right"></i>
-  </div>
-);
-
 const Main = () => {
   const {
     getBirthdayList,
@@ -29,8 +19,15 @@ const Main = () => {
     getDealBannerList,
     getTopBannerList,
   } = useSelector((state) => state.productList);
+
   const navigate = useNavigate();
   const selectCity = window.localStorage.getItem("LennyCity");
+
+  const banners = Array.isArray(getTopBannerList?.data)
+    ? getTopBannerList.data.filter((b) => b?.bannerImage)
+    : [];
+  const hasBanners = banners.length > 0;
+  const showControls = banners.length > 1;
 
   const handleCategory = (item, subCat) => {
     navigate("/products", { state: { item, subCat, selectCity } });
@@ -42,78 +39,100 @@ const Main = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const settings = {
-    infinite: true,
-    loop: false,
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 1,
-    rewind: true,
-    autoplay: true,
-    prevArrow: <CustomPrevArrow />,
-    nextArrow: <CustomNextArrow />,
-  };
-
-  const settings1 = {
-    infinite: false,
-    loop: false,
-    dots: false,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: false,
-    arrows: false,
-  };
-
   useEffect(() => {
-    const myCarousel = document.querySelector("#carouselExampleIndicators");
-    if (myCarousel) {
-      new Carousel(myCarousel, {
-        interval: 5000,
-        pause: false,
-        ride: "carousel", // Ensure autoplay starts
-      });
-    }
+    const el = document.querySelector("#carouselExampleIndicators");
+    if (!el) return;
+
+    const instance = Carousel.getOrCreateInstance(el, {
+      interval: 5000,
+      pause: false,
+      ride: "carousel",
+      touch: true,
+      wrap: true,
+      keyboard: true,
+    });
+
+    return () => {
+      try {
+        instance.dispose();
+      } catch {}
+    };
   }, []);
 
   console.log({ getBirthdayList });
-
   console.log({ getDealBannerList });
-
   return (
     <>
-      <div className="Hero-Section">
-        <div id="carouselExampleIndicators" className="carousel slide">
+      <div className="hero-section">
+        <div
+          id="carouselExampleIndicators"
+          className="carousel slide" 
+          data-bs-ride="carousel"
+          data-bs-interval="5000"
+          data-bs-wrap="true"
+          data-bs-touch="true"
+          data-bs-pause="false"
+        >
+          {/* Indicators */}
+          {hasBanners && banners.length > 1 && (
+            <div className="carousel-indicators">
+              {banners.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  data-bs-target="#carouselExampleIndicators"
+                  data-bs-slide-to={i}
+                  className={i === 0 ? "active" : ""}
+                  aria-current={i === 0 ? "true" : undefined}
+                  aria-label={`Slide ${i + 1}`}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Slides */}
           <div className="carousel-inner">
-            {getTopBannerList?.data?.length > 0
-              ? getTopBannerList?.data?.map((item, i) => {
-                  return (
-                    <div className={`carousel-item ${i === 0 ? "active" : ""}`}>
-                      <div>
-                        <div className="HeroRight">
-                          <img src={item?.bannerImage} alt="banner"/>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })
-              : ""}
-          </div>
-          <div className="carousel-indicators">
-            {getTopBannerList?.data?.length > 0
-              ? getTopBannerList?.data?.map((item, i) => {
-                  return (
-                    <button
-                      type="button"
-                      data-bs-target="#carouselExampleIndicators"
-                      data-bs-slide-to={i}
-                      className={`${i === 0 ? "active" : ""}`}
-                      aria-current={`${i === 0 ? "true" : "false"}`}
-                      aria-label={`Slide ${i + 1}`}
+            {hasBanners &&
+              banners.map((item, i) => (
+                <div
+                  key={i}
+                  className={`carousel-item ${i === 0 ? "active" : ""}`}
+                >
+                  <div className="image-wrapper">
+                    <img
+                      src={item.bannerImage}
+                      className="d-block w-100 hero-image"
+                      alt={item?.alt || `Banner ${i + 1}`}
+                      loading={i === 0 ? "eager" : "lazy"}
                     />
-                  );
-                })
-              : ""}
+
+                    {/* Gradient overlay */}
+                    <div className="gradient-overlay" />
+
+                    {/* Optional pattern overlay (toggle with CSS class 'show' if needed) */}
+                    <div className="pattern-overlay" />
+
+                    {/* Captions (optional) */}
+                    {(item?.title || item?.subtitle) && (
+                      <div className="carousel-caption d-none d-md-block">
+                        <h3>
+                          {item?.title || "Make your pre-wedding celebration dreamy"}
+                        </h3>
+                        <p>
+                          {item?.subtitle ||
+                            "Decorations for Roka, Engagement, Mehendi, Haldi, Sangeet"}
+                        </p>
+
+                        {item?.ctaLabel && item?.ctaHref && (
+                          <a className="btn btn-accent" href={item.ctaHref}>
+                            {item.ctaLabel}
+                          </a>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
       </div>
@@ -124,49 +143,8 @@ const Main = () => {
             <div className="section-title">
               <h2>Features Category</h2>
             </div>
-            {/* <Slider {...settings}>
-              {getCategoryList?.data?.length > 0
-                ? getCategoryList?.data?.map((item, i) => {
-                    return (
-                      <div className="item" key={i}>
-                        <div className="FeatureBoxMain">
-                          <div className="FeatureBox">
-                            <aside
-                              style={{ cursor: "pointer" }}
-                              onClick={() => handleCategory(item)}
-                              className={
-                                i == 0
-                                  ? "Blue"
-                                  : i == 1
-                                  ? "Green"
-                                  : i % 2 == 0
-                                  ? "Orange"
-                                  : i % 3 == 0
-                                  ? "Cyan"
-                                  : i % 4 == 0
-                                  ? "Yellow"
-                                  : i % 5 == 0
-                                  ? "DarkGreen"
-                                  : "Pink"
-                              }
-                            >
-                              <figure>
-                                <img src={item?.categoryImage} />
-                              </figure>
-                            </aside>
-                            <h4
-                              data-tooltip-id="my-tooltip"
-                              data-tooltip-content={item?.categoryName}
-                            >
-                              {item?.categoryName}
-                            </h4>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })
-                : ""}
-            </Slider> */}
+
+            {/* Grid fallback instead of Slider */}
             <div className="row">
               {getCategoryList?.data?.length > 0
                 ? getCategoryList?.data?.map((item, i) => {
@@ -178,23 +156,23 @@ const Main = () => {
                               style={{ cursor: "pointer" }}
                               onClick={() => handleCategory(item)}
                               className={
-                                i == 0
+                                i === 0
                                   ? "Blue"
-                                  : i == 1
+                                  : i === 1
                                   ? "Green"
-                                  : i % 2 == 0
+                                  : i % 2 === 0
                                   ? "Orange"
-                                  : i % 3 == 0
+                                  : i % 3 === 0
                                   ? "Cyan"
-                                  : i % 4 == 0
+                                  : i % 4 === 0
                                   ? "Yellow"
-                                  : i % 5 == 0
+                                  : i % 5 === 0
                                   ? "DarkGreen"
                                   : "Pink"
                               }
                             >
                               <figure>
-                                <img src={item?.categoryImage} />
+                                <img src={item?.categoryImage} alt={item?.categoryName || "Category"} />
                               </figure>
                             </aside>
                             <h4
