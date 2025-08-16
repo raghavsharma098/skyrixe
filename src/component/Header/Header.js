@@ -881,8 +881,8 @@ const Header = () => {
                   ) : (
                     ""
                   )}
+                  {/*help */}
                   <h3>
-                    you
                   </h3>
                   <Link
                     to="/upcoming-bookings"
