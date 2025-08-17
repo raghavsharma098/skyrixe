@@ -98,33 +98,80 @@ const Main = () => {
             <img src="https://cheetah.cherishx.com/website_layout/ganpati_menu_icon_desk.jpg?format=avif" alt="" />
             <p> Ganpati <br /> Decoration</p>
           </div>
-          <div className="card1">
-            <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_03_20241018_123157.jpg?format=avif" alt="" />
-            <p> Birthday <br /> Decoration</p>
+          <div
+            className="card1"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleCategory({ categoryName: "KIDS BIRTHDAY" })}
+          >
+            <img
+              src="https://cheetah.cherishx.com/website_layout/1755324921__original_layout_55.jpg?format=avif"
+              alt="Kids Birthday"
+            />
+            <p>
+              Kids birthday <br /> Decors
+            </p>
           </div>
           <div className="card1">
             <img src="https://cheetah.cherishx.com/website_layout/1737544205__original_layout_55.jpg?format=avif" alt="" />
             <p> Same day <br /> Decoration</p>
           </div>
-          <div className="card1">
-            <img src="https://cheetah.cherishx.com/website_layout/1755324921__original_layout_55.jpg?format=avif  " alt="" />
-            <p> Kids birthday <br /> Decors</p>
+          <div
+            className="card1"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}
+          >
+            <img
+              src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_03_20241018_123157.jpg?format=avif"
+              alt="Birthday Decoration"
+            />
+            <p>
+              Birthday <br /> Decoration
+            </p>
           </div>
           <div className="card1">
             <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_03_20240930_132612.jpg?format=avif" alt="" />
             <p> Personalised <br /> Gifts</p>
           </div>
-          <div className="card1">
-            <img src="https://cheetah.cherishx.com/website_layout/1755170285__original_layout_55.jpg?format=avif" alt="" />
-            <p> Candlelight  <br />Dinner </p>
+          <div
+            className="card1"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleCategory({ categoryName: "ANNIVERSARY" })}
+          >
+            <img
+              src="https://cheetah.cherishx.com/website_layout/1755170285__original_layout_55.jpg?format=avif"
+              alt="Candlelight Dinner"
+            />
+            <p>
+              Candlelight <br /> Dinner
+            </p>
           </div>
-          <div className="card1">
-            <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_01_20241018_123157.jpg?format=avif" alt="" />
-            <p> Baby <br /> Shower</p>
+
+          <div
+            className="card1"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleCategory({ categoryName: "BABY SHOWER" })}
+          >
+            <img
+              src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_01_20241018_123157.jpg?format=avif"
+              alt="Baby Shower"
+            />
+            <p>
+              Baby <br /> Shower
+            </p>
           </div>
-          <div className="card1">
-            <img src="https://cheetah.cherishx.com/website_layout/1754457866__original_layout_55.jpg?format=avif" alt="" />
-            <p> Baby <br /> Welcome</p>
+
+          <div
+            className="card1"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleCategory({ categoryName: "BABY SHOWER" })}
+          >
+            <img
+              src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_01_20241018_123157.jpg?format=avif"
+              alt="Baby Shower"
+            />
+            <p>
+              Baby <br /> Welcome
+            </p>
           </div>
           <div className="card1">
             <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_02_20241018_123157.jpg?format=avif" alt="" />
