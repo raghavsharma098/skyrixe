@@ -2872,7 +2872,9 @@ footer .FooterBottom p {
 .carousel-indicators {
   margin-bottom: -50px !important;
 }
-
+.product-gallery-wrapper {
+  position: relative; /* make it the positioning context */
+}
 .SlickSliderArrow .slick-arrow {
   display: none !important;
 }
