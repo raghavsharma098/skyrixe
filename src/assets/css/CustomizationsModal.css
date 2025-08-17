@@ -1,0 +1,280 @@
+.CustomizationsModal .modal-content {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  max-width: 90vw;
+}
+
+.CustomizationsModal .ModalArea {
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.CustomizationsModal .ModalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.CustomizationsModal .ModalHeader h3 {
+  margin: 0;
+  color: #333;
+  font-weight: 500;
+  font-size: 20px;
+  flex: 1;
+  text-align: center;
+}
+
+.CustomizationsModal .BackBtn {
+  background: none;
+  border: none;
+  color: #e91e63;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+  font-weight: 500;
+}
+
+.CustomizationsModal .BackBtn:hover {
+  text-decoration: underline;
+}
+
+.CustomizationsModal .CloseModal {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.CustomizationsModal .CategoryHeader {
+  margin-bottom: 8px;
+}
+
+.CustomizationsModal .CategoryHeader h4 {
+  margin: 0;
+  color: #333;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.CustomizationsModal .RecommendedSection {
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.CustomizationsModal .RecommendedBadge {
+  background: #7b1fa2;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.CustomizationsModal .CustomizationsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.CustomizationsModal .OthersGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.CustomizationsModal .CustomizationCard {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.2s;
+  position: relative;
+  text-align: center;
+}
+
+.CustomizationsModal .CustomizationCard:hover {
+  border-color: #1a73e8;
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.15);
+}
+
+.CustomizationsModal .CardImage {
+  width: 100%;
+  height: 120px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.CustomizationsModal .CardImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.CustomizationsModal .CardContent {
+  margin-bottom: 16px;
+}
+
+.CustomizationsModal .CardTitle {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+.CustomizationsModal .CardDescription {
+  margin: 0 0 8px 0;
+  color: #666;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.CustomizationsModal .CardPrice {
+  color: #333;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.CustomizationsModal .CardActions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.CustomizationsModal .ToggleSwitch {
+  position: relative;
+}
+
+.CustomizationsModal .ToggleSwitch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.CustomizationsModal .ToggleLabel {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  background-color: #ccc;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.CustomizationsModal .ToggleSlider {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  transition: all 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.CustomizationsModal .ToggleSwitch input:checked + .ToggleLabel {
+  background-color: #4caf50;
+}
+
+.CustomizationsModal .ToggleSwitch input:checked + .ToggleLabel .ToggleSlider {
+  transform: translateX(20px);
+}
+
+.CustomizationsModal .ModalFooter {
+  border-top: 1px solid #e0e0e0;
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.CustomizationsModal .TotalSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.CustomizationsModal .TotalLabel {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.CustomizationsModal .TotalAmount {
+  color: #333;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.CustomizationsModal .ActionButtons {
+  display: flex;
+  gap: 16px;
+}
+
+.CustomizationsModal .BookNowBtn {
+  background: #7b1fa2;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+}
+
+.CustomizationsModal .BookNowBtn:hover {
+  background: #6a1b9a;
+  transform: translateY(-1px);
+}
+
+.CustomizationsModal .BookNowBtn i {
+  font-size: 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .CustomizationsModal .ModalArea {
+    padding: 20px;
+    margin: 16px;
+  }
+  
+  .CustomizationsModal .CustomizationsGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .CustomizationsModal .OthersGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .CustomizationsModal .ModalFooter {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+}
