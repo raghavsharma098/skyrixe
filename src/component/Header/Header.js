@@ -122,35 +122,39 @@ const Header = () => {
 
 
 
-  useEffect(() => {
-    if (getCityList && citySearch === "") {
-      const firstCity = getCityList?.data?.at(0);
-      if (firstCity) {
-        updateState(prevState => ({
-          ...prevState,
-          selectCity: firstCity.cityName,
-        }));
-        window.localStorage?.setItem("LennyCity", firstCity.cityName);
-        window.localStorage?.setItem(
-          "LennyPincode",
-          JSON.stringify(firstCity.pincode)
-        );
-      }
-    }
-  }, [getCityList, citySearch]);
+  // useEffect(() => {
+  //   if (getCityList && citySearch === "") {
+  //     const firstCity = getCityList?.data?.at(0);
+  //     if (firstCity) {
+  //       updateState(prevState => ({
+  //         ...prevState,
+  //         selectCity: firstCity.cityName,
+  //       }));
+  //       window.localStorage?.setItem("LennyCity", firstCity.cityName);
+  //       window.localStorage?.setItem(
+  //         "LennyPincode",
+  //         JSON.stringify(firstCity.pincode)
+  //       );
+  //     }
+  //   }
+  // }, [getCityList, citySearch]);
 
-  useEffect(() => {
-    const savedCity = localStorage.getItem("selectedCity");
-    if (savedCity) {
-      selectCity(savedCity);
-    } else {
-      const timer = setTimeout(() => {
-        setShowCitySelector(true); // show popup after 4 sec
-      }, 4000);
+ useEffect(() => {
+  const savedCity = localStorage.getItem("selectedCity");
 
-      return () => clearTimeout(timer); // cleanup
-    }
-  }, []);
+  if (savedCity) {
+    // if city already saved, just use it
+    selectCity(savedCity);
+  } else {
+    // show popup only once after 4 sec
+    const timer = setTimeout(() => {
+      setShowCitySelector(true);
+    }, 4000);
+
+    return () => clearTimeout(timer); // cleanup timer on unmount
+  }
+}, []);
+
 
 
   useEffect(() => {
@@ -860,7 +864,7 @@ const Header = () => {
         />
       )}
       <SignUp iState={iState} updateState={updateState} />
-      {/* <NavigationDropdown/> */}
+      <NavigationDropdown/>
     </>
     
   );
