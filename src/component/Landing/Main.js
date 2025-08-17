@@ -93,81 +93,81 @@ const Main = () => {
   return (
     <>
       <div className="Hero-Section">
-         <div className="cards">
-             <div className="card1">
-              <img src="https://cheetah.cherishx.com/website_layout/ganpati_menu_icon_desk.jpg?format=avif" alt="" />
-              <p> Ganpati <br /> Decoration</p>
-             </div>
-             <div className="card1">
-              <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_03_20241018_123157.jpg?format=avif" alt="" />
-              <p> Birthday <br /> Decoration</p>
-             </div>
-             <div className="card1">
-              <img src="https://cheetah.cherishx.com/website_layout/1737544205__original_layout_55.jpg?format=avif" alt="" />
-              <p> Same day <br /> Decoration</p>
-             </div>
-             <div className="card1">
-              <img src="https://cheetah.cherishx.com/website_layout/1755324921__original_layout_55.jpg?format=avif  " alt="" />
-              <p> Kids birthday <br /> Decors</p>
-             </div>
-             <div className="card1">
-              <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_03_20240930_132612.jpg?format=avif" alt="" />
-              <p> Personalised <br /> Gifts</p>
-             </div>
-             <div className="card1">
-              <img src="https://cheetah.cherishx.com/website_layout/1755170285__original_layout_55.jpg?format=avif" alt="" />
-              <p> Candlelight  <br />Dinner </p>
-             </div>
-             <div className="card1">
-              <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_01_20241018_123157.jpg?format=avif" alt="" />
-              <p> Baby <br /> Shower</p>
-             </div>
-             <div className="card1">
-              <img src="https://cheetah.cherishx.com/website_layout/1754457866__original_layout_55.jpg?format=avif" alt="" />
-              <p> Baby <br /> Welcome</p>
-             </div>
-             <div className="card1">
-              <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_02_20241018_123157.jpg?format=avif" alt="" />
-              <p> Festive <br /> Celebrations</p>
-             </div>
-             <div className="card1">
-              <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_08_20240930_132612.jpg?format=avif" alt="" />
-              <p> Games & <br /> Activities</p>
-             </div>
-            
-             
-           
-         </div>
+        <div className="cards">
+          <div className="card1">
+            <img src="https://cheetah.cherishx.com/website_layout/ganpati_menu_icon_desk.jpg?format=avif" alt="" />
+            <p> Ganpati <br /> Decoration</p>
+          </div>
+          <div className="card1">
+            <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_03_20241018_123157.jpg?format=avif" alt="" />
+            <p> Birthday <br /> Decoration</p>
+          </div>
+          <div className="card1">
+            <img src="https://cheetah.cherishx.com/website_layout/1737544205__original_layout_55.jpg?format=avif" alt="" />
+            <p> Same day <br /> Decoration</p>
+          </div>
+          <div className="card1">
+            <img src="https://cheetah.cherishx.com/website_layout/1755324921__original_layout_55.jpg?format=avif  " alt="" />
+            <p> Kids birthday <br /> Decors</p>
+          </div>
+          <div className="card1">
+            <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_03_20240930_132612.jpg?format=avif" alt="" />
+            <p> Personalised <br /> Gifts</p>
+          </div>
+          <div className="card1">
+            <img src="https://cheetah.cherishx.com/website_layout/1755170285__original_layout_55.jpg?format=avif" alt="" />
+            <p> Candlelight  <br />Dinner </p>
+          </div>
+          <div className="card1">
+            <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_01_20241018_123157.jpg?format=avif" alt="" />
+            <p> Baby <br /> Shower</p>
+          </div>
+          <div className="card1">
+            <img src="https://cheetah.cherishx.com/website_layout/1754457866__original_layout_55.jpg?format=avif" alt="" />
+            <p> Baby <br /> Welcome</p>
+          </div>
+          <div className="card1">
+            <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_02_20241018_123157.jpg?format=avif" alt="" />
+            <p> Festive <br /> Celebrations</p>
+          </div>
+          <div className="card1">
+            <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_08_20240930_132612.jpg?format=avif" alt="" />
+            <p> Games & <br /> Activities</p>
+          </div>
+
+
+
+        </div>
         <div id="carouselExampleIndicators" className="carousel slide">
           <div className="carousel-inner">
             {getTopBannerList?.data?.length > 0
               ? getTopBannerList?.data?.map((item, i) => {
-                  return (
-                    <div className={`carousel-item ${i == 0 ? "active" : ""}`}>
-                      <div>
-                        <div className="HeroRight">
-                          <img src={item?.bannerImage} />
-                        </div>
+                return (
+                  <div className={`carousel-item ${i == 0 ? "active" : ""}`}>
+                    <div>
+                      <div className="HeroRight">
+                        <img src={item?.bannerImage} />
                       </div>
                     </div>
-                  );
-                })
+                  </div>
+                );
+              })
               : ""}
           </div>
           <div className="carousel-indicators">
             {getTopBannerList?.data?.length > 0
               ? getTopBannerList?.data?.map((item, i) => {
-                  return (
-                    <button
-                      type="button"
-                      data-bs-target="#carouselExampleIndicators"
-                      data-bs-slide-to={i}
-                      className={`${i == 0 ? "active" : ""}`}
-                      aria-current={`${i == 0 ? "true" : "false"}`}
-                      aria-label={`Slide ${i + 1}`}
-                    />
-                  );
-                })
+                return (
+                  <button
+                    type="button"
+                    data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide-to={i}
+                    className={`${i == 0 ? "active" : ""}`}
+                    aria-current={`${i == 0 ? "true" : "false"}`}
+                    aria-label={`Slide ${i + 1}`}
+                  />
+                );
+              })
               : ""}
           </div>
         </div>
@@ -225,44 +225,44 @@ const Main = () => {
             <div className="row">
               {getCategoryList?.data?.length > 0
                 ? getCategoryList?.data?.map((item, i) => {
-                    return (
-                      <div className="col-lg-3 col-md-4 col-sm-6 col-6 top" key={i}>
-                        <div className="FeatureBoxMain">
-                          <div className="FeatureBox">
-                            <aside
-                              style={{ cursor: "pointer" }}
-                              onClick={() => handleCategory(item)}
-                              className={
-                                i == 0
-                                  ? "Blue"
-                                  : i == 1
+                  return (
+                    <div className="col-lg-3 col-md-4 col-sm-6 col-6 top" key={i}>
+                      <div className="FeatureBoxMain">
+                        <div className="FeatureBox">
+                          <aside
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleCategory(item)}
+                            className={
+                              i == 0
+                                ? "Blue"
+                                : i == 1
                                   ? "Green"
                                   : i % 2 == 0
-                                  ? "Orange"
-                                  : i % 3 == 0
-                                  ? "Cyan"
-                                  : i % 4 == 0
-                                  ? "Yellow"
-                                  : i % 5 == 0
-                                  ? "DarkGreen"
-                                  : "Pink"
-                              }
-                            >
-                              <figure>
-                                <img src={item?.categoryImage} />
-                              </figure>
-                            </aside>
-                            <h4
-                              data-tooltip-id="my-tooltip"
-                              data-tooltip-content={item?.categoryName}
-                            >
-                              {item?.categoryName}
-                            </h4>
-                          </div>
+                                    ? "Orange"
+                                    : i % 3 == 0
+                                      ? "Cyan"
+                                      : i % 4 == 0
+                                        ? "Yellow"
+                                        : i % 5 == 0
+                                          ? "DarkGreen"
+                                          : "Pink"
+                            }
+                          >
+                            <figure>
+                              <img src={item?.categoryImage} />
+                            </figure>
+                          </aside>
+                          <h4
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-content={item?.categoryName}
+                          >
+                            {item?.categoryName}
+                          </h4>
                         </div>
                       </div>
-                    );
-                  })
+                    </div>
+                  );
+                })
                 : ""}
             </div>
           </div>
@@ -271,19 +271,19 @@ const Main = () => {
           {/* <Slider {...settings1}> */}
           {getDealBannerList?.data?.length > 0
             ? getDealBannerList?.data?.map((item, i) => {
-                if (item?.dealbannerTitle == "Birthday Decoration") {
-                  return (
-                    <img
-                      key={i}
-                      src={item?.dealbannerImage}
-                      onClick={() =>
-                        handleCategory({ categoryName: "BIRTHDAY" })
-                      }
-                      style={{ cursor: "pointer" }}
-                    />
-                  );
-                }
-              })
+              if (item?.dealbannerTitle == "Birthday Decoration") {
+                return (
+                  <img
+                    key={i}
+                    src={item?.dealbannerImage}
+                    onClick={() =>
+                      handleCategory({ categoryName: "BIRTHDAY" })
+                    }
+                    style={{ cursor: "pointer" }}
+                  />
+                );
+              }
+            })
             : ""}
           {/* </Slider> */}
         </div>
@@ -310,9 +310,9 @@ const Main = () => {
                           />
                         </figure>
                         <h6>{item?.productDetails?.productname}</h6>
-                          <div class="loc">
-                            <h1> At your location</h1>
-                          </div>
+                        <div class="loc">
+                          <h1> At your location</h1>
+                        </div>
                         <div className="Info">
                           <button
                             className="Buttons"
@@ -340,22 +340,22 @@ const Main = () => {
                                         item?.priceDetails?.discountedPrice
                                       )) /
                                       Number(item?.priceDetails?.price)) *
-                                      100
+                                    100
                                   )}
                                   % off
                                 </span>
                               ) : (
                                 ""
                               )}
-                             
+
                             </div>
                             <p>
                               4.8 <i class="fa-solid fa-star"></i> |{" "}
                               {i % 2 == 0 && i !== 0
                                 ? `${i % 2}` + 5 + i - 1
                                 : i == 0
-                                ? `14${i % 2}`
-                                : `${i % 2}` + 2 + i - 1}
+                                  ? `14${i % 2}`
+                                  : `${i % 2}` + 2 + i - 1}
                             </p>
                           </div>
                         </div>
@@ -386,19 +386,19 @@ const Main = () => {
           {/* <Slider {...settings1}> */}
           {getDealBannerList?.data?.length > 0
             ? getDealBannerList?.data?.map((item, i) => {
-                if (item?.dealbannerTitle == "Anniversary Decoration") {
-                  return (
-                    <img
-                      key={i}
-                      src={item?.dealbannerImage}
-                      onClick={() =>
-                        handleCategory({ categoryName: "ANNIVERSARY" })
-                      }
-                      style={{ cursor: "pointer" }}
-                    />
-                  );
-                }
-              })
+              if (item?.dealbannerTitle == "Anniversary Decoration") {
+                return (
+                  <img
+                    key={i}
+                    src={item?.dealbannerImage}
+                    onClick={() =>
+                      handleCategory({ categoryName: "ANNIVERSARY" })
+                    }
+                    style={{ cursor: "pointer" }}
+                  />
+                );
+              }
+            })
             : ""}
           {/* </Slider> */}
         </div>
@@ -426,8 +426,8 @@ const Main = () => {
                         </figure>
                         <h6>{item?.productDetails?.productname}</h6>
                         <div class="loc">
-                            <h1> At your location</h1>
-                          </div>
+                          <h1> At your location</h1>
+                        </div>
                         <div className="Info">
                           <button
                             className="Buttons"
@@ -455,7 +455,7 @@ const Main = () => {
                                         item?.priceDetails?.discountedPrice
                                       )) /
                                       Number(item?.priceDetails?.price)) *
-                                      100
+                                    100
                                   )}
                                   % off
                                 </span>
@@ -468,8 +468,8 @@ const Main = () => {
                               {i % 2 == 0 && i !== 0
                                 ? `${i % 2}` + 5 + i - 1
                                 : i == 0
-                                ? `14${i % 2}`
-                                : `${i % 2}` + 2 + i - 1}
+                                  ? `14${i % 2}`
+                                  : `${i % 2}` + 2 + i - 1}
                             </p>
                           </div>
                         </div>
@@ -501,18 +501,18 @@ const Main = () => {
           {/* <Slider {...settings1}> */}
           {getDealBannerList?.data?.length > 0
             ? getDealBannerList?.data?.map((item, i) => {
-                if (item?.dealbannerTitle == "Kids Party") {
-                  return (
-                    <img
-                      key={i}
-                      src={item?.dealbannerImage}
-                      onClick={() =>
-                        handleCategory({ categoryName: "KID'S PARTY" })
-                      }
-                    />
-                  );
-                }
-              })
+              if (item?.dealbannerTitle == "Kids Party") {
+                return (
+                  <img
+                    key={i}
+                    src={item?.dealbannerImage}
+                    onClick={() =>
+                      handleCategory({ categoryName: "KID'S PARTY" })
+                    }
+                  />
+                );
+              }
+            })
             : ""}
           {/* </Slider> */}
         </div>
@@ -532,7 +532,7 @@ const Main = () => {
                   return (
                     <div className="col-lg-3 col-md-4 col-sm-6 col-6" key={i}>
                       <div className="PrivateDiningBox flexDirection">
-                        
+
                         <figure>
                           <img
                             src={item?.productimages?.at(0)}
@@ -542,8 +542,8 @@ const Main = () => {
 
                         <h6>{item?.productDetails?.productname}</h6>
                         <div class="loc">
-                            <h1> At your location</h1>
-                          </div>
+                          <h1> At your location</h1>
+                        </div>
                         <div className="Info">
                           <button
                             className="Buttons"
@@ -571,7 +571,7 @@ const Main = () => {
                                         item?.priceDetails?.discountedPrice
                                       )) /
                                       Number(item?.priceDetails?.price)) *
-                                      100
+                                    100
                                   )}
                                   % off
                                 </span>
@@ -584,8 +584,8 @@ const Main = () => {
                               {i % 2 == 0 && i !== 0
                                 ? `${i % 2}` + 5 + i - 1
                                 : i == 0
-                                ? `14${i % 2}`
-                                : `${i % 2}` + 2 + i - 1}
+                                  ? `14${i % 2}`
+                                  : `${i % 2}` + 2 + i - 1}
                             </p>
                           </div>
                         </div>
@@ -617,18 +617,18 @@ const Main = () => {
           {/* <Slider {...settings1}> */}
           {getDealBannerList?.data?.length > 0
             ? getDealBannerList?.data?.map((item, i) => {
-                if (item?.dealbannerTitle == "Baby Shower") {
-                  return (
-                    <img
-                      key={i}
-                      src={item?.dealbannerImage}
-                      onClick={() =>
-                        handleCategory({ categoryName: "BABY SHOWER" })
-                      }
-                    />
-                  );
-                }
-              })
+              if (item?.dealbannerTitle == "Baby Shower") {
+                return (
+                  <img
+                    key={i}
+                    src={item?.dealbannerImage}
+                    onClick={() =>
+                      handleCategory({ categoryName: "BABY SHOWER" })
+                    }
+                  />
+                );
+              }
+            })
             : ""}
           {/* </Slider> */}
         </div>
@@ -656,8 +656,8 @@ const Main = () => {
                         </figure>
                         <h6>{item?.productDetails?.productname}</h6>
                         <div class="loc">
-                            <h1> At your location</h1>
-                          </div>
+                          <h1> At your location</h1>
+                        </div>
                         <div className="Info">
                           <button
                             className="Buttons"
@@ -685,7 +685,7 @@ const Main = () => {
                                         item?.priceDetails?.discountedPrice
                                       )) /
                                       Number(item?.priceDetails?.price)) *
-                                      100
+                                    100
                                   )}
                                   % off
                                 </span>
@@ -698,8 +698,8 @@ const Main = () => {
                               {i % 2 == 0 && i !== 0
                                 ? `${i % 2}` + 5 + i - 1
                                 : i == 0
-                                ? `14${i % 2}`
-                                : `${i % 2}` + 2 + i - 1}
+                                  ? `14${i % 2}`
+                                  : `${i % 2}` + 2 + i - 1}
                             </p>
                           </div>
                         </div>
@@ -734,483 +734,483 @@ const Main = () => {
             src={require("../../assets/images/stats 2.png")}
           />
         </article>
-        
 
-      <div class="reviews">
-        <h1 > Recent Customer Review </h1>
-        <div class="inro">
 
-       <div class="testimonials ">
-        <div class="data">
-<div className="img">
+        <div class="reviews">
+          <h1 > Recent Customer Review </h1>
+          <div class="inro">
 
-       <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
-</div>
-      <h2> Ankita </h2>
-      <h3> Verified Purchase </h3>
-    
-      <p>very nice product</p>
-       
+            <div class="testimonials ">
+              <div class="data">
+                <div className="img">
 
-    
-      <div class="reviwedproduct">
-        <div class="image">
-    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
-        </div>
-        <div className="view">
-          Safari birthday package 
-        </div>
-        
+                  <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
+                </div>
+                <h2> Rahul </h2>
+                <h3> Verified Purchase </h3>
 
-      </div>
-        </div>
+                <p>very nice product</p>
 
-        
 
-      </div>
-       <div class="testimonials ">
-        <div className="data">
-          <div className="img">
-       <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
 
+                <div class="reviwedproduct">
+                  <div class="image">
+                    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
+                  </div>
+                  <div className="view">
+                    Safari birthday package
+                  </div>
+
+
+                </div>
+              </div>
+
+
+
+            </div>
+            <div class="testimonials ">
+              <div className="data">
+                <div className="img">
+                  <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
+
+                </div>
+                <h2> Kunal </h2>
+                <h3> Verified Purchase </h3>
+                <p>very nice product</p>
+                <div class="reviwedproduct">
+                  <div class="image">
+                    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
+                  </div>
+                  <div className="view">
+                    Safari birthday package
+                  </div>
+
+
+                </div>
+
+              </div>
+
+
+
+            </div>
+            <div class="testimonials ">
+              <div className="data">
+                <div className="img">
+                  <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
+
+                </div>
+                <h2> Manya </h2>
+                <h3> Verified Purchase </h3>
+                <p>very nice product</p>
+                <div class="reviwedproduct">
+                  <div class="image">
+                    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
+                  </div>
+                  <div className="view">
+                    Safari birthday package
+                  </div>
+
+
+                </div>
+
+              </div>
+
+
+
+            </div>
+            <div class="testimonials ">
+              <div className="data">
+                <div className="img">
+                  <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
+
+                </div>
+                <h2> Shubham </h2>
+                <h3> Verified Purchase </h3>
+                <p>very nice product</p>
+                <div class="reviwedproduct">
+                  <div class="image">
+                    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
+                  </div>
+                  <div className="view">
+                    Safari birthday package
+                  </div>
+
+
+                </div>
+
+              </div>
+
+
+
+            </div>
+            <div class="testimonials ">
+              <div className="data">
+                <div className="img">
+                  <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
+
+                </div>
+                <h2> Raghav </h2>
+                <h3> Verified Purchase </h3>
+                <p>very nice product</p>
+                <div class="reviwedproduct">
+                  <div class="image">
+                    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
+                  </div>
+                  <div className="view">
+                    Safari birthday package
+                  </div>
+
+
+                </div>
+
+              </div>
+
+
+
+            </div>
+            <div class="testimonials ">
+              <div className="data">
+                <div className="img">
+                  <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
+
+                </div>
+                <h2> Tushar </h2>
+                <h3> Verified Purchase </h3>
+                <p>very nice product</p>
+                <div class="reviwedproduct">
+                  <div class="image">
+                    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
+                  </div>
+                  <div className="view">
+                    Safari birthday package
+                  </div>
+
+
+                </div>
+
+              </div>
+
+
+
+            </div>
+            <div class="testimonials ">
+              <div className="data">
+                <div className="img">
+                  <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
+
+                </div>
+                <h2> Siddharth </h2>
+                <h3> Verified Purchase </h3>
+                <p>very nice product</p>
+                <div class="reviwedproduct">
+                  <div class="image">
+                    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
+                  </div>
+                  <div className="view">
+                    Safari birthday package
+                  </div>
+
+
+                </div>
+
+              </div>
+
+
+
+            </div>
+            <div class="testimonials ">
+              <div className="data">
+                <div className="img">
+                  <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
+
+                </div>
+                <h2> Sumit </h2>
+                <h3> Verified Purchase </h3>
+                <p>very nice product</p>
+                <div class="reviwedproduct">
+                  <div class="image">
+                    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
+                  </div>
+                  <div className="view">
+                    Safari birthday package
+                  </div>
+
+
+                </div>
+
+              </div>
+
+
+
+            </div>
+            <div class="testimonials ">
+              <div className="data">
+                <div className="img">
+                  <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
+
+                </div>
+                <h2> Sanchit </h2>
+                <h3> Verified Purchase </h3>
+                <p>very nice product</p>
+                <div class="reviwedproduct">
+                  <div class="image">
+                    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
+                  </div>
+                  <div className="view">
+                    Safari birthday package
+                  </div>
+
+
+                </div>
+
+              </div>
+
+
+
+            </div>
+            <div class="testimonials ">
+              <div className="data">
+                <div className="img">
+                  <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
+
+                </div>
+                <h2> Tushika </h2>
+                <h3> Verified Purchase </h3>
+                <p>very nice product</p>
+                <div class="reviwedproduct">
+                  <div class="image">
+                    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
+                  </div>
+                  <div className="view">
+                    Safari birthday package
+                  </div>
+
+
+                </div>
+
+              </div>
+
+
+
+            </div>
+            <div class="testimonials ">
+              <div className="data">
+                <div className="img">
+                  <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
+
+                </div>
+                <h2> Yashika </h2>
+                <h3> Verified Purchase </h3>
+                <p>very nice product</p>
+                <div class="reviwedproduct">
+                  <div class="image">
+                    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
+                  </div>
+                  <div className="view">
+                    Safari birthday package
+                  </div>
+
+
+                </div>
+
+              </div>
+
+
+
+            </div>
+            <div class="testimonials ">
+              <div className="data">
+                <div className="img">
+                  <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
+
+                </div>
+                <h2> Neha </h2>
+                <h3> Verified Purchase </h3>
+                <p>very nice product</p>
+                <div class="reviwedproduct">
+                  <div class="image">
+                    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
+                  </div>
+                  <div className="view">
+                    Safari birthday package
+                  </div>
+
+
+                </div>
+
+              </div>
+
+
+
+            </div>
+            <div class="testimonials ">
+              <div className="data">
+                <div className="img">
+                  <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
+
+                </div>
+                <h2> Vansh </h2>
+                <h3> Verified Purchase </h3>
+                <p>very nice product</p>
+                <div class="reviwedproduct">
+                  <div class="image">
+                    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
+                  </div>
+                  <div className="view">
+                    Safari birthday package
+                  </div>
+
+
+                </div>
+
+
+
+              </div>
+
+
+
+            </div>
+            <div class="testimonials ">
+              <div className="data">
+                <div className="img">
+                  <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
+
+                </div>
+                <h2> Alok </h2>
+                <h3> Verified Purchase </h3>
+                <p>very nice product</p>
+                <div class="reviwedproduct">
+                  <div class="image">
+                    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
+                  </div>
+                  <div className="view">
+                    Safari birthday package
+                  </div>
+
+
+                </div>
+
+              </div>
+
+
+
+            </div>
+            <div class="testimonials ">
+              <div className="data">
+                <div className="img">
+                  <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
+
+                </div>
+                <h2> Prashant </h2>
+                <h3> Verified Purchase </h3>
+                <p>very nice product</p>
+                <div class="reviwedproduct">
+                  <div class="image">
+                    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
+                  </div>
+                  <div className="view">
+                    Safari birthday package
+                  </div>
+
+
+                </div>
+
+              </div>
+
+
+
+            </div>
+            <div class="testimonials ">
+              <div className="data">
+                <div className="img">
+                  <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
+
+                </div>
+                <h2> Ankita </h2>
+                <h3> Verified Purchase </h3>
+                <p>very nice product</p>
+                <div class="reviwedproduct">
+                  <div class="image">
+                    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
+                  </div>
+                  <div className="view">
+                    Safari birthday package
+                  </div>
+
+
+                </div>
+
+              </div>
+
+
+
+            </div>
+            <div class="testimonials ">
+              <div className="data">
+                <div className="img">
+                  <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
+
+                </div>
+                <h2> Ankita </h2>
+                <h3> Verified Purchase </h3>
+                <p>very nice product</p>
+                <div class="reviwedproduct">
+                  <div class="image">
+                    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
+                  </div>
+                  <div className="view">
+                    Safari birthday package
+                  </div>
+
+
+                </div>
+
+              </div>
+
+
+
+            </div>
           </div>
-      <h2> Ankita </h2>
-      <h3> Verified Purchase </h3>
-      <p>very nice product</p>
-      <div class="reviwedproduct">
-        <div class="image">
-    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
-        </div>
-        <div className="view">
-          Safari birthday package 
-        </div>
-        
-
-      </div>
-
         </div>
 
-        
-
-      </div>
-       <div class="testimonials ">
-        <div className="data">
-          <div className="img">
-       <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
-
-          </div>
-      <h2> Ankita </h2>
-      <h3> Verified Purchase </h3>
-      <p>very nice product</p>
-      <div class="reviwedproduct">
-        <div class="image">
-    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
+        <div className="text">
+          <h1>
+            <strong> Skyrixe – Celebrate Life’s Special Moments with us
+              Us&nbsp;&nbsp;&nbsp;</strong>
+          </h1>
+          <p>
+            <span>Each celebratory occasion needs a unique touch of excellence.
+              Skyrixe&nbsp; devotes itself to providing memorable experiences for every
+              moment. Do you&nbsp; remember the last time you got services tailored for
+              you? Neither can we, and that’s exactly why we go above and beyond
+              every single time, making sure that every service we offer is truly
+              remarkable. With our setup services, every special moment can come to life.
+              We provide romantic dinners and simple birthday decorations.</span>
+          </p>
+          <p class='second'>
+            <span>In our ten years of operation, we have held many events across India. We
+              have served thousands of customers as they created special memories. Our
+              dedicated team creates impressive event experiences for our customers. We
+              enhance celebrations with balloon decorations and themed party decor. We
+              cater to both small home events and large banquet functions.</span>
+          </p>
+          <h2>
+            <strong>Our Services – Fully Customizable For Your Every Event</strong>
+          </h2>
+          <p>
+            <span>Every event requires a personalized touch to be unique. Skyrixe provides
+              decoration solutions for basic birthday arrangements, anniversary
+              decorations, and complete surprise party preparations. Our deep experience
+              with multiple event decoration services enhances your special moments on all
+              occasions.</span>
+          </p>
+          <button class="show"> Show more</button>
         </div>
-        <div className="view">
-          Safari birthday package 
-        </div>
-        
-
-      </div>
-
-        </div>
-
-        
-
-      </div>
-       <div class="testimonials ">
-        <div className="data">
-          <div className="img">
-       <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
-
-          </div>
-      <h2> Ankita </h2>
-      <h3> Verified Purchase </h3>
-      <p>very nice product</p>
-      <div class="reviwedproduct">
-        <div class="image">
-    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
-        </div>
-        <div className="view">
-          Safari birthday package 
-        </div>
-        
-
-      </div>
-
-        </div>
-
-        
-
-      </div>
-       <div class="testimonials ">
-        <div className="data">
-          <div className="img">
-       <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
-
-          </div>
-      <h2> Ankita </h2>
-      <h3> Verified Purchase </h3>
-      <p>very nice product</p>
-      <div class="reviwedproduct">
-        <div class="image">
-    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
-        </div>
-        <div className="view">
-          Safari birthday package 
-        </div>
-        
-
-      </div>
-
-        </div>
-
-        
-
-      </div>
-      <div class="testimonials ">
-        <div className="data">
-        <div className="img">
-       <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
-
-        </div>
-      <h2> Ankita </h2>
-      <h3> Verified Purchase </h3>
-      <p>very nice product</p>
-      <div class="reviwedproduct">
-        <div class="image">
-    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
-        </div>
-        <div className="view">
-          Safari birthday package 
-        </div>
-        
-
-      </div>
-
-        </div>
-
-        
-
-      </div>
-     <div class="testimonials ">
-        <div className="data">
-          <div className="img">
-       <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
-
-          </div>
-      <h2> Ankita </h2>
-      <h3> Verified Purchase </h3>
-      <p>very nice product</p>
-      <div class="reviwedproduct">
-        <div class="image">
-    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
-        </div>
-        <div className="view">
-          Safari birthday package 
-        </div>
-        
-
-      </div>
-
-        </div>
-
-        
-
-      </div>
-     <div class="testimonials ">
-        <div className="data">
-          <div className="img">
-       <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
-
-          </div>
-      <h2> Ankita </h2>
-      <h3> Verified Purchase </h3>
-      <p>very nice product</p>
-      <div class="reviwedproduct">
-        <div class="image">
-    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
-        </div>
-        <div className="view">
-          Safari birthday package 
-        </div>
-        
-
-      </div>
-
-        </div>
-
-        
-
-      </div>
-     <div class="testimonials ">
-        <div className="data">
-          <div className="img">
-       <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
-
-          </div>
-      <h2> Ankita </h2>
-      <h3> Verified Purchase </h3>
-      <p>very nice product</p>
-      <div class="reviwedproduct">
-        <div class="image">
-    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
-        </div>
-        <div className="view">
-          Safari birthday package 
-        </div>
-        
-
-      </div>
-
-        </div>
-
-        
-
-      </div>
-     <div class="testimonials ">
-        <div className="data">
-          <div className="img">
-       <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
-
-          </div>
-      <h2> Ankita </h2>
-      <h3> Verified Purchase </h3>
-      <p>very nice product</p>
-      <div class="reviwedproduct">
-        <div class="image">
-    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
-        </div>
-        <div className="view">
-          Safari birthday package 
-        </div>
-        
-
-      </div>
-
-        </div>
-
-        
-
-      </div>
-     <div class="testimonials ">
-        <div className="data">
-          <div className="img">
-       <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
-
-          </div>
-      <h2> Ankita </h2>
-      <h3> Verified Purchase </h3>
-      <p>very nice product</p>
-      <div class="reviwedproduct">
-        <div class="image">
-    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
-        </div>
-        <div className="view">
-          Safari birthday package 
-        </div>
-        
-
-      </div>
-
-        </div>
-
-        
-
-      </div>
-     <div class="testimonials ">
-        <div className="data">
-          <div className="img">
-       <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
-
-          </div>
-      <h2> Ankita </h2>
-      <h3> Verified Purchase </h3>
-      <p>very nice product</p>
-      <div class="reviwedproduct">
-        <div class="image">
-    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
-        </div>
-        <div className="view">
-          Safari birthday package 
-        </div>
-        
-
-      </div>
-
-        </div>
-
-        
-
-      </div>
-     <div class="testimonials ">
-        <div className="data">
-          <div className="img">
-       <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
-
-          </div>
-      <h2> Ankita </h2>
-      <h3> Verified Purchase </h3>
-      <p>very nice product</p>
-      <div class="reviwedproduct">
-        <div class="image">
-    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
-        </div>
-        <div className="view">
-          Safari birthday package 
-        </div>
-        
-
-      </div>
-
-
-
-        </div>
-
-        
-
-      </div>
-     <div class="testimonials ">
-        <div className="data">
-          <div className="img">
-       <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
-
-          </div>
-      <h2> Ankita </h2>
-      <h3> Verified Purchase </h3>
-      <p>very nice product</p>
-      <div class="reviwedproduct">
-        <div class="image">
-    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
-        </div>
-        <div className="view">
-          Safari birthday package 
-        </div>
-        
-
-      </div>
-
-        </div>
-
-        
-
-      </div>
-     <div class="testimonials ">
-        <div className="data">
-          <div className="img">
-       <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
-
-          </div>
-      <h2> Ankita </h2>
-      <h3> Verified Purchase </h3>
-      <p>very nice product</p>
-      <div class="reviwedproduct">
-        <div class="image">
-    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
-        </div>
-        <div className="view">
-          Safari birthday package 
-        </div>
-        
-
-      </div>
-
-        </div>
-
-        
-
-      </div>
-     <div class="testimonials ">
-        <div className="data">
-          <div className="img">
-       <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
-
-          </div>
-      <h2> Ankita </h2>
-      <h3> Verified Purchase </h3>
-      <p>very nice product</p>
-      <div class="reviwedproduct">
-        <div class="image">
-    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
-        </div>
-        <div className="view">
-          Safari birthday package 
-        </div>
-        
-
-      </div>
-
-        </div>
-
-        
-
-      </div>
-     <div class="testimonials ">
-        <div className="data">
-          <div className="img">
-       <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="" />
-
-          </div>
-      <h2> Ankita </h2>
-      <h3> Verified Purchase </h3>
-      <p>very nice product</p>
-      <div class="reviwedproduct">
-        <div class="image">
-    <img src="https://cheetah.cherishx.com/uploads/66a130a2fd89260dbe1e8e754e1f8a20_original.jpg" alt="" />
-        </div>
-        <div className="view">
-          Safari birthday package 
-        </div>
-        
-
-      </div>
-
-        </div>
-
-        
-
-      </div>
-        </div>
-      </div>
-
-      <div className="text">
-        <h1>
-          <strong> Skyrixe – Celebrate Life’s Special Moments with us
-        Us&nbsp;&nbsp;&nbsp;</strong>
-        </h1>
-        <p>
-  <span>Each celebratory occasion needs a unique touch of excellence.
-    Skyrixe&nbsp; devotes itself to providing memorable experiences for every
-    moment. Do you&nbsp; remember the last time you got services tailored for
-    you? Neither can we, and that’s exactly why we go above and beyond
-    every single time, making sure that every service we offer is truly
-    remarkable. With our setup services, every special moment can come to life.
-    We provide romantic dinners and simple birthday decorations.</span>
-</p>
-<p class='second'>
-  <span>In our ten years of operation, we have held many events across India. We
-    have served thousands of customers as they created special memories. Our
-    dedicated team creates impressive event experiences for our customers. We
-    enhance celebrations with balloon decorations and themed party decor. We
-    cater to both small home events and large banquet functions.</span>
-</p>
-<h2>
-    <strong>Our Services – Fully Customizable For Your Every Event</strong>
-</h2>
-<p>
-  <span>Every event requires a personalized touch to be unique. Skyrixe provides
-    decoration solutions for basic birthday arrangements, anniversary
-    decorations, and complete surprise party preparations. Our deep experience
-    with multiple event decoration services enhances your special moments on all
-    occasions.</span>
-</p>
-<button class="show"> Show more</button>
-      </div>
         <div className="BirthdayDecorationArea client">
-         
+
           <img src={require("../../assets/images/Our Clients.png")} />
 
-        
+
         </div>
       </div>
       <Tooltip id="my-tooltip" place="bottom" />

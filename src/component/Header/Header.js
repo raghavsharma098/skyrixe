@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import SignUp from "../Modals/SignUp";
 import { useDispatch, useSelector } from "react-redux";
-import { MdAddShoppingCart } from "react-icons/md";
-import { MapPin } from "lucide-react";
+
 import CitySelector from "../Modals/CityPopup";
 import {
   anniversaryDecoList,
@@ -721,15 +720,6 @@ const Header = () => {
                   ) : (
                     ""
                   )}
-                  <Link
-                    to="/upcoming-bookings"
-                    className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 outline-none focus:outline-none focus:ring-0"
-                  >
-                    <MdAddShoppingCart
-                      className="w-6 h-6 hover:text-blue-600"
-                      style={{ fontSize: '28px', color: '#1f2937' }}
-                    />
-                  </Link>
 
                   <ul className="Icons">
                     <li>
