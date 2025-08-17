@@ -3128,7 +3128,6 @@ header nav {
   border-radius: 6px;
   border: 1px solid #ddd;
 }
-/* .subcategory:hover .Sub_Categories_dropdown{display: block;} */
 
 .Categories_hover .CategoriesMenu:hover .Categories_dropdown {
   display: block;
@@ -3145,6 +3144,12 @@ header nav {
   position: relative;
   cursor: pointer;
 }
+.Icons.Avater {
+  margin: 0 15px; /* 15px gap on left and right */
+  display: flex;
+  align-items: center; /* optional: align content vertically */
+}
+
 .Categories .CategoriesMenu p:after {
   position: absolute;
   transition: 0.3s allease-in-out;
