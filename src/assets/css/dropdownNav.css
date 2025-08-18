@@ -2,7 +2,7 @@
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   position: relative;
-  z-index: 1000;
+  z-index: 900;
 }
 
 .dropdown-nav-container {

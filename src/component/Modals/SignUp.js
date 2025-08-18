@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Modal } from "react-bootstrap";
 import { useCookies } from "react-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { loginApiSlice } from "../../reduxToolkit/Slices/Auth/auth";
@@ -7,6 +6,7 @@ import OtpVerification from "./OtpVerification";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { signUpState } from "../../reduxToolkit/Slices/ProductList/listApis";
+import "../../assets/css/signup.css";
 
 const SignUp = ({ iState, updateState }) => {
   const { signUpModal } = iState;
@@ -16,8 +16,8 @@ const SignUp = ({ iState, updateState }) => {
   const [cookies, setCookie] = useCookies(["LennyPhone_number", "LennyCheck"]);
 
   const signState = {
-    phone: cookies?.LennyPhone_number ? cookies?.LennyPhone_number : "",
-    check: cookies?.LennyCheck,
+    phone: cookies?.LennyPhone_number?.toString() || "",
+    check: cookies?.LennyCheck || false,
     phone_valid: true,
     disable: false,
     otpModal: false,
@@ -27,7 +27,7 @@ const SignUp = ({ iState, updateState }) => {
   };
 
   const [states, updateSignState] = useState(signState);
-  const { phone, check, phone_valid, disable, errors } = states;
+  const { phone, check, phone_valid, disable, errors, otpModal } = states;
 
   const handleClose = () => {
     updateState({ ...iState, signUpModal: false });
@@ -38,81 +38,58 @@ const SignUp = ({ iState, updateState }) => {
 
   const handleInputChange = (e) => {
     const { name, value, checked } = e.target;
-
-    if (name == "phone") {
-      let modifiedValue = value >= 0 ? value : phone + "";
-      updateSignState({ ...states, phone: modifiedValue, errors: "" });
+    if (name === "phone") {
+      const digitsOnly = value.replace(/\D/g, "");
+      updateSignState({ ...states, phone: digitsOnly, errors: {} });
     } else {
-      if (checked) {
-        updateSignState({ ...states, [name]: true });
-        // setCookie('LennyCheck', true, { path: '/landing' }, { expires: new Date('9999-12-31') })
-      } else {
-        updateSignState({ ...states, [name]: false });
-        // setCookie('LennyCheck', false, { path: '/landing' }, { expires: new Date('9999-12-31') })
-      }
+      updateSignState({ ...states, [name]: checked });
     }
   };
 
   const handleValidation = () => {
-    let error = {};
-    let formIsValid = true;
-    if (!phone) {
-      error.phoneError = "*Phone Number is required";
-      formIsValid = false;
-    }
-    if (phone && !phone?.toString()?.trim()) {
-      error.phoneError = "*Phone Number is required";
-      formIsValid = false;
+    const error = {};
+    let valid = true;
+    const trimmedPhone = String(phone).trim();
+
+    if (!trimmedPhone || trimmedPhone.length !== 10) {
+      error.phoneError = "*Phone Number must be 10 digits";
+      valid = false;
     }
 
-    if (phone && phone?.toString()?.trim()?.length != 10) {
-      error.phoneError = "*Phone Number must be 10 digits";
-      formIsValid = false;
-    }
     updateSignState({ ...states, errors: error });
-    return formIsValid;
+    return valid;
   };
 
   const handleSignIn = () => {
-    let formIsValid = handleValidation();
-    if (formIsValid) {
-      dispatch(loginApiSlice({ phone }))
-        .then((res) => {
-          console.log({ res });
-          if (res?.payload?.status == 200) {
-            updateSignState({
-              ...states,
-              otp: res?.payload?.data?.otp,
-              otpModal: true,
-              init: 59,
-            });
-            window.localStorage.setItem("LoginTimer", false);
-            updateState({ ...iState, signUpModal: false });
-            toast.success(`${res?.payload?.data?.message}`);
-          }
-        })
-        .catch((err) => {
-          console.log({ err });
-        });
-    }
+    if (!handleValidation()) return;
+
+    dispatch(loginApiSlice({ phone }))
+      .then((res) => {
+        if (res?.payload?.status === 200) {
+          updateSignState({
+            ...states,
+            otp: res.payload.data.otp,
+            otpModal: true,
+            init: 59,
+          });
+          toast.success(`${res?.payload?.data?.message}`);
+          updateState({ ...iState, signUpModal: false }); // close signup modal
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
-  useEffect(() => {
-    let newState = { ...states };
-    if (phone?.length >= 10) {
-      newState = { ...newState, phone_valid: false };
-    }
-    updateSignState(newState);
-  }, [phone]);
-
   const handleKeyDown = (e) => {
-    const { name } = e.target;
-    if (e.key == "Backspace" && name == "phone") {
+    if (e.key === "Backspace" && e.target.name === "phone") {
       updateSignState({ ...states, phone_valid: true });
     }
   };
 
-  console.log({ phone });
+  useEffect(() => {
+    if (phone?.length >= 10) {
+      updateSignState((prev) => ({ ...prev, phone_valid: false }));
+    }
+  }, [phone]);
 
   useEffect(() => {
     if (getSignUpState) {
@@ -122,74 +99,80 @@ const SignUp = ({ iState, updateState }) => {
 
   return (
     <>
-      <Modal className="ModalBox" show={signUpModal} onHide={handleClose}>
-        <a onClick={handleClose} className="CloseModal">
-          ×
-        </a>
-        <div className="ModalArea">
-          <h3>Sign In/Sign Up</h3>
-          <div className="FormArea">
-            <form>
-              <div className="form-group">
-                <h6>Phone Number</h6>
-                <input
-                  type="tel"
-                  className="form-control"
-                  placeholder="Enter your Number"
-                  name="phone"
-                  value={phone}
-                  onChange={phone_valid ? handleInputChange : null}
-                  onKeyDown={handleKeyDown}
-                  pattern="[0-9]*" // Ensures numeric input
-                  inputMode="numeric"
-                />
-                <span className="error">{errors?.phoneError}</span>
-              </div>
-              <div className="form-group">
-                <label className="CheckBox">
-                  {" "}
-                  Remember Me
-                  <input
-                    type="checkbox"
-                    name="check"
-                    checked={check}
-                    onChange={handleInputChange}
-                  />
-                  <span className="checkmark" />
-                </label>
-              </div>
-              <p>
-                By creating your account you agree to our{" "}
-                <span
-                  onClick={() => {
-                    navigate("/terms-conditions");
-                    updateState({ ...iState, signUpModal: false });
-                  }}
-                  className="termHover"
-                >
-                  Terms &amp; conditions
-                </span>
-              </p>
-            </form>
-            <button
-              className="Button"
-              disabled={disable}
-              onClick={handleSignIn}
-              type="submit"
-            >
-              Sign In
+      {signUpModal && (
+        <div className="signup-overlay top-aligned">
+          <div className="signup-modal">
+            <button onClick={handleClose} className="signup-close-btn">
+              <svg className="signup-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
+
+            <div className="logo-img">
+              <img src={require("../../assets/images/Header_Logo.png")} />
+            </div>
+
+            <h2 className="signup-title">Mobile Login</h2>
+
+            <input
+              type="text"
+              name="phone"
+              placeholder="Enter 10 digit Mobile Number Eg: 8010679679"
+              className="signup-input"
+              value={phone}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+              maxLength="10"
+              pattern="[0-9]*"
+              inputMode="numeric"
+            />
+            <span className="signup-error">{errors?.phoneError}</span>
+
+            <button
+              onClick={handleSignIn}
+              className="signup-primary-btn"
+              disabled={disable}
+            >
+              LOG IN VIA OTP
+            </button>
+
+            <div className="signup-divider">
+              <div className="signup-line" />
+              <span className="signup-or">or</span>
+              <div className="signup-line" />
+            </div>
+
+            <div className="signup-social">
+              <button className="signup-btn signup-fb">
+                <i className="fa-brands fa-facebook mr-2"></i> Facebook Login
+              </button>
+              <button className="signup-btn signup-google">
+                <i className="fa-brands fa-google mr-2"></i> Google Login
+              </button>
+              <button className="signup-btn signup-email">
+                <i className="fa-solid fa-envelope mr-2"></i>Email Login
+              </button>
+            </div>
+
+            <p className="signup-terms">
+              By Logging in you are agreeing to our{" "}
+              <a href="#" className="signup-link">Terms and Conditions</a> and{" "}
+              <a href="#" className="signup-link">Privacy Policy</a>.
+            </p>
           </div>
         </div>
-      </Modal>
-      <OtpVerification
-        states={states}
-        updateSignState={updateSignState}
-        editModal={iState}
-        editUpdate={updateState}
-        cookies={cookies}
-        setCookie={setCookie}
-      />
+      )}
+
+      {otpModal && (
+        <OtpVerification
+          states={states}
+          updateSignState={updateSignState}
+          editModal={iState}
+          editUpdate={updateState}
+          cookies={cookies}
+          setCookie={setCookie}
+        />
+      )}
     </>
   );
 };
