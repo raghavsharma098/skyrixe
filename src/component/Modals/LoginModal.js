@@ -15,7 +15,7 @@ import {
   handleFacebookLogin,
   handleSocialLoginSuccess,
   handleSocialLoginError
-} from "../../Utils/SocialAuthUtil";
+} from "../../Utils/SocialAuthUtil.js";
 
 const LoginModal = ({
   show,
