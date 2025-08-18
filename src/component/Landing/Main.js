@@ -535,7 +535,7 @@ const Main = () => {
           <a
             style={{
               "text-decoration": "underline",
-              color: "#2BA501 ",
+              color: "#FFFF00",
               fontSize: "17px",
             }}
             onClick={() => handleCategory({ categoryName: "ANNIVERSARY" })}

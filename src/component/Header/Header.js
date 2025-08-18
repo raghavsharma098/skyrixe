@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import SignUp from "../Modals/SignUp";
 import { useDispatch, useSelector } from "react-redux";
-import { MdAddShoppingCart } from "react-icons/md";
-import { MapPin } from "lucide-react";
 import CitySelector from "../Modals/CityPopup";
 import {
   anniversaryDecoList,
@@ -22,6 +20,7 @@ import {
 } from "../../reduxToolkit/Slices/Cart/bookingApis";
 import { toast } from "react-toastify";
 import NavigationDropdown from "../Modals/DropdownNav";
+import HelpCenter from "./HelpCenter";
 const initialState = {
   signUpModal: false,
   selectCity: "",
@@ -119,8 +118,6 @@ const Header = () => {
     dispatch(dealBannerList());
     dispatch(topBannerList());
   }, [dispatch]);
-
-
 
   // useEffect(() => {
   //   if (getCityList && citySearch === "") {
@@ -653,6 +650,11 @@ const Header = () => {
                   </div>
                 </li>
               </ul>
+              {/* Help Center */}
+              <div className="help">
+                <HelpCenter />
+              </div>
+              {/* City selection */}
               <form class="headerTwoBtn your-class">
                 <div className="d-flex align-items-center">
                   <div className="citySelectorBtn">
@@ -736,16 +738,6 @@ const Header = () => {
                   ) : (
                     ""
                   )}
-                  <Link
-                    to="/upcoming-bookings"
-                    className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 outline-none focus:outline-none focus:ring-0"
-                  >
-                    <MdAddShoppingCart
-                      className="w-6 h-6 hover:text-blue-600"
-                      style={{ fontSize: '28px', color: '#1f2937' }}
-                    />
-                  </Link>
-
                   <ul className="Icons">
                     <li>
                       {userDetail ? (
