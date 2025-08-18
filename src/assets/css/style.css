@@ -555,7 +555,7 @@ header .HeaderArea .HeaderRight .Login {
 }
 
 .BirthdayDecorationArea {
-  background-color: #fff;
+  background-color: #ffffff;
   padding: 20px 0;
 }
 /* .BirthDecImage {width: 100%; height: 100%; background-repeat: no-repeat; background-size: 100% 100%; background-image: url('../images/bg-1.png'); background-position: center;}
@@ -576,10 +576,10 @@ header .HeaderArea .HeaderRight .Login {
 }
 
 .PrivateDiningBox {
-  background-color: #f6f6f6;
-  border-radius: 10px;
-  padding: 10px;
-  /* box-shadow: 2px 4px 15px 0px #0000001A; */
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 2px;
+  box-shadow: 0 4px 4px #c2bebe; 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -589,11 +589,13 @@ header .HeaderArea .HeaderRight .Login {
 .PrivateDiningBox:hover {transform: scale(1.07);}
 .PrivateDiningBox img {
   width: 100%;
+  
   margin: 0 0 15px 0;
   cursor: pointer;
-  height: 100%;
-  border-radius: 5%;
+  /* height: 100%; */
+  border-radius: 0%;
   /* object-fit: cover; */
+  height: 22vw;
 }
 
 .PrivateDiningBox .star{
@@ -646,7 +648,7 @@ header .HeaderArea .HeaderRight .Login {
     2% 35%,
     39% 35%
   );
-  background-color: #2ba501;
+  background-color: #ebf30c;
   display: inline-block;
   width: 18px;
   height: 18px;
@@ -4005,6 +4007,7 @@ background-color: rgba(29, 158, 52, 0.1);
 .birthday-item {
   min-width: 280px;
   flex-shrink: 0;
+  background-color: #ffffff;
 }
 
 /* Anniversary Scroll Container */
