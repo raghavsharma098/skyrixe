@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "/Users/ritesh/Downloads/skyrixe/Skyrixe/src/assets/css/style.css";
+import "../../assets/css/style.css";
 
 const HelpCenter = () => {
   const [showHelpModal, setShowHelpModal] = useState(false);
