@@ -138,15 +138,18 @@
 
 .signup-fb {
   background-color: #2c83f6;
+  border: none;
 }
 
 .signup-google {
   background-color: #ea4335;
+  border: none;
 }
 
 .signup-email {
   background-color: #0d9488;
   grid-column: span 2;
+  border: none;
 }
 
 .signup-terms {
