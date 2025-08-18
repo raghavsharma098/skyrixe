@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import SignUp from "../Modals/SignUp";
 import { useDispatch, useSelector } from "react-redux";
 import CitySelector from "../Modals/CityPopup";
+import { MdAddShoppingCart } from "react-icons/md";
 import {
   anniversaryDecoList,
   birthdayDecoList,
@@ -136,36 +137,36 @@ const Header = () => {
   //   }
   // }, [getCityList, citySearch]);
 
- useEffect(() => {
-  const savedCity =
-    localStorage.getItem("selectedCity") ||
-    localStorage.getItem("LennyCity");
+  useEffect(() => {
+    const savedCity =
+      localStorage.getItem("selectedCity") ||
+      localStorage.getItem("LennyCity");
 
-  if (savedCity) {
-    // If city already saved, update state
-    updateState((prevState) => ({
-      ...prevState,
-      selectCity: savedCity,
-    }));
-  } else if (getCityList?.data?.length > 0) {
-    // If no city saved, set first city from city list
-    const firstCity = getCityList.data[0];
-    updateState((prevState) => ({
-      ...prevState,
-      selectCity: firstCity.cityName,
-    }));
-    localStorage.setItem("LennyCity", firstCity.cityName);
-    localStorage.setItem("selectedCity", firstCity.cityName);
-    localStorage.setItem("LennyPincode", JSON.stringify(firstCity.pincode));
-  } else {
-    // Show popup only once after 1 sec
-    const timer = setTimeout(() => {
-      setShowCitySelector(true);
-    }, 1000);
+    if (savedCity) {
+      // If city already saved, update state
+      updateState((prevState) => ({
+        ...prevState,
+        selectCity: savedCity,
+      }));
+    } else if (getCityList?.data?.length > 0) {
+      // If no city saved, set first city from city list
+      const firstCity = getCityList.data[0];
+      updateState((prevState) => ({
+        ...prevState,
+        selectCity: firstCity.cityName,
+      }));
+      localStorage.setItem("LennyCity", firstCity.cityName);
+      localStorage.setItem("selectedCity", firstCity.cityName);
+      localStorage.setItem("LennyPincode", JSON.stringify(firstCity.pincode));
+    } else {
+      // Show popup only once after 1 sec
+      const timer = setTimeout(() => {
+        setShowCitySelector(true);
+      }, 1000);
 
-    return () => clearTimeout(timer); // cleanup timer on unmount
-  }
-}, [getCityList]);
+      return () => clearTimeout(timer); // cleanup timer on unmount
+    }
+  }, [getCityList]);
 
 
 
@@ -736,8 +737,17 @@ const Header = () => {
                       </div>
                     </div>
                   ) : (
-                    ""
+                    <Link
+                      to="/upcoming-bookings"
+                      className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 outline-none focus:outline-none focus:ring-0"
+                    >
+                      <MdAddShoppingCart
+                        className="w-6 h-6 hover:text-blue-600"
+                        style={{ fontSize: '28px', color: '#1f2937' }}
+                      />
+                    </Link>
                   )}
+
                   <ul className="Icons">
                     <li>
                       {userDetail ? (
@@ -871,9 +881,9 @@ const Header = () => {
         />
       )}
       <SignUp iState={iState} updateState={updateState} />
-      <NavigationDropdown/>
+      <NavigationDropdown />
     </>
-    
+
   );
 };
 
