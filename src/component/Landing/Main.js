@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { useDispatch, useSelector } from "react-redux";
 import { Carousel } from "bootstrap";
-import { CiStar } from "react-icons/ci";
 import {
   birthdayDecoList,
   categoryList,
@@ -40,6 +39,108 @@ const Main = () => {
   } = useSelector((state) => state.productList);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const scrollContainerRef = useRef(null);
+
+  const handleScrollLeft = () => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const scrollAmount = container.offsetWidth * 0.8;
+      container.scrollBy({
+        left: -scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleScrollRight = () => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const scrollAmount = container.offsetWidth * 0.8;
+      container.scrollBy({
+        left: scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      setScrollPosition(scrollContainerRef.current.scrollLeft);
+    }
+  };
+
+  const anniversaryScrollRef = useRef(null);
+  const kidsScrollRef = useRef(null);
+  const babyShowerScrollRef = useRef(null);
+
+  const handleAnniversaryScrollLeft = () => {
+    if (anniversaryScrollRef.current) {
+      const container = anniversaryScrollRef.current;
+      const scrollAmount = container.offsetWidth * 0.8;
+      container.scrollBy({
+        left: -scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleAnniversaryScrollRight = () => {
+    if (anniversaryScrollRef.current) {
+      const container = anniversaryScrollRef.current;
+      const scrollAmount = container.offsetWidth * 0.8;
+      container.scrollBy({
+        left: scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleKidsScrollLeft = () => {
+    if (kidsScrollRef.current) {
+      const container = kidsScrollRef.current;
+      const scrollAmount = container.offsetWidth * 0.8;
+      container.scrollBy({
+        left: -scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleKidsScrollRight = () => {
+    if (kidsScrollRef.current) {
+      const container = kidsScrollRef.current;
+      const scrollAmount = container.offsetWidth * 0.8;
+      container.scrollBy({
+        left: scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleBabyShowerScrollLeft = () => {
+    if (babyShowerScrollRef.current) {
+      const container = babyShowerScrollRef.current;
+      const scrollAmount = container.offsetWidth * 0.8;
+      container.scrollBy({
+        left: -scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleBabyShowerScrollRight = () => {
+    if (babyShowerScrollRef.current) {
+      const container = babyShowerScrollRef.current;
+      const scrollAmount = container.offsetWidth * 0.8;
+      container.scrollBy({
+        left: scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   const selectCity = window.localStorage.getItem("LennyCity");
   // const userDetail = JSON.parse(window.localStorage.getItem("LennyUserDetail"));
 
@@ -345,30 +446,69 @@ const Main = () => {
                 Decorations!
               </p>
             </div>
-            <div className="row gy-sm-5 gy-2">
-              {getBirthdayList?.data?.length > 0 ? (
-                getBirthdayList?.data?.map((item, i) => {
-                  return (
-                    <div className="col-lg-3 col-md-4 col-sm-6 col-6" key={i}>
-                      <div className="PrivateDiningBox flexDirection">
-                        <figure>
-                          <img
-                            src={item?.productimages?.at(0)}
-                            onClick={() => handleProduct(item)}
-                          />
-                        </figure>
-                        <h6>{item?.productDetails?.productname}</h6>
 
-                        <div class="rightcard">
-                          <div class="loc">
+            <div className="scroll-container-wrapper">
+              {/* Left Arrow */}
+              <div
+                className="custom-arrow prev birthday-scroll-arrow"
+                onClick={handleScrollLeft}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 1)';
+                  e.target.style.transform = 'translateY(-50%) scale(1.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+                  e.target.style.transform = 'translateY(-50%) scale(1)';
+                }}
+              >
+                <i className="fa-solid fa-angle-left"></i>
+              </div>
+
+              {/* Right Arrow */}
+              <div
+                className="custom-arrow next birthday-scroll-arrow"
+                onClick={handleScrollRight}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 1)';
+                  e.target.style.transform = 'translateY(-50%) scale(1.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+                  e.target.style.transform = 'translateY(-50%) scale(1)';
+                }}
+              >
+                <i className="fa-solid fa-angle-right"></i>
+              </div>
+
+              {/* Scrollable Content */}
+              <div
+                ref={scrollContainerRef}
+                onScroll={handleScroll}
+                className="birthday-scroll-container"
+              >
+                {getBirthdayList?.data?.length > 0 ? (
+                  getBirthdayList?.data?.map((item, i) => {
+                    return (
+                      <div key={i} className="birthday-item">
+                        <div className="PrivateDiningBox flexDirection">
+                          <figure>
+                            <img
+                              src={item?.productimages?.at(0)}
+                              onClick={() => handleProduct(item)}
+                              style={{ cursor: 'pointer' }}
+                            />
+                          </figure>
+                          <h6>{item?.productDetails?.productname}</h6>
+                          <div className="loc">
                             <h1> At your location</h1>
-                            <div className="star">
-                              <CiStar />
-
-
-                            </div>
                           </div>
                           <div className="Info">
+                            <button
+                              className="Buttons"
+                              onClick={() => handleProduct(item)}
+                            >
+                              Book
+                            </button>
                             <div className="text-right">
                               <div className="priceArea">
                                 {item?.priceDetails?.discountedPrice ? (
@@ -398,7 +538,7 @@ const Main = () => {
                                 )}
                               </div>
                               <p>
-                                4.8 <i class="fa-solid fa-star"></i> |{" "}
+                                4.8 <i className="fa-solid fa-star"></i> |{" "}
                                 {i % 2 == 0 && i !== 0
                                   ? `${i % 2}` + 5 + i - 1
                                   : i == 0
@@ -406,35 +546,19 @@ const Main = () => {
                                     : `${i % 2}` + 2 + i - 1}
                               </p>
                             </div>
-
-
                           </div>
-                        </div>
-
-
-                        <div className="endbuttons">
-                          <button
-                            className="Buttons"
-                            onClick={() => handleProduct(item)}
-                          >
-                            Book Now
-                          </button>
-                          <div className="sv">
-
-                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="wishlist-icon" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"></path></svg>
-                          </div>
-
                         </div>
                       </div>
-                    </div>
-                  );
-                })
-              ) : (
-                <p>No item Available</p>
-              )}
+                    );
+                  })
+                ) : (
+                  <p>No item Available</p>
+                )}
+              </div>
             </div>
           </div>
         </div>
+
         <div className="viewAll">
           <a
             style={{
@@ -478,83 +602,122 @@ const Main = () => {
                 Decorations!
               </p>
             </div>
-            <div className="row gy-sm-5 gy-2">
-              {getAnniversaryList?.data?.length > 0 ? (
-                getAnniversaryList?.data?.map((item, i) => {
-                  return (
-                    <div className="col-lg-3 col-md-4 col-sm-6 col-6" key={i}>
-                      <div className="PrivateDiningBox flexDirection">
-                        <figure>
-                          <img
-                            src={item?.productimages?.at(0)}
-                            onClick={() => handleProduct(item)}
-                          />
-                        </figure>
-                        <h6>{item?.productDetails?.productname}</h6>
-                        <div class="loc">
-                          <h1> At your location</h1>
-                        </div>
-                        <div className="Info">
-                          <button
-                            className="Buttons"
-                            onClick={() => handleProduct(item)}
-                          >
-                            Book
-                          </button>
-                          <div className="text-right">
-                            <div className="priceArea">
-                              {item?.priceDetails?.discountedPrice ? (
-                                <h5>
-                                  ₹{item?.priceDetails?.discountedPrice}
-                                  <p className="actualPrice">
-                                    ₹{item?.priceDetails?.price}
-                                  </p>
-                                </h5>
-                              ) : (
-                                <h5>₹{item?.priceDetails?.price}</h5>
-                              )}
-                              {item?.priceDetails?.discountedPrice ? (
-                                <span>
-                                  {Math.round(
-                                    ((Number(item?.priceDetails?.price) -
-                                      Number(
-                                        item?.priceDetails?.discountedPrice
-                                      )) /
-                                      Number(item?.priceDetails?.price)) *
-                                    100
-                                  )}
-                                  % off
-                                </span>
-                              ) : (
-                                ""
-                              )}
+
+            <div className="scroll-container-wrapper">
+              {/* Left Arrow */}
+              <div
+                className="custom-arrow prev anniversary-scroll-arrow"
+                onClick={handleAnniversaryScrollLeft}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 1)';
+                  e.target.style.transform = 'translateY(-50%) scale(1.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+                  e.target.style.transform = 'translateY(-50%) scale(1)';
+                }}
+              >
+                <i className="fa-solid fa-angle-left"></i>
+              </div>
+
+              {/* Right Arrow */}
+              <div
+                className="custom-arrow next anniversary-scroll-arrow"
+                onClick={handleAnniversaryScrollRight}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 1)';
+                  e.target.style.transform = 'translateY(-50%) scale(1.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+                  e.target.style.transform = 'translateY(-50%) scale(1)';
+                }}
+              >
+                <i className="fa-solid fa-angle-right"></i>
+              </div>
+
+              {/* Scrollable Content */}
+              <div
+                ref={anniversaryScrollRef}
+                className="anniversary-scroll-container"
+              >
+                {getAnniversaryList?.data?.length > 0 ? (
+                  getAnniversaryList?.data?.map((item, i) => {
+                    return (
+                      <div key={i} className="anniversary-item">
+                        <div className="PrivateDiningBox flexDirection">
+                          <figure>
+                            <img
+                              src={item?.productimages?.at(0)}
+                              onClick={() => handleProduct(item)}
+                              style={{ cursor: 'pointer' }}
+                            />
+                          </figure>
+                          <h6>{item?.productDetails?.productname}</h6>
+                          <div className="loc">
+                            <h1> At your location</h1>
+                          </div>
+                          <div className="Info">
+                            <button
+                              className="Buttons"
+                              onClick={() => handleProduct(item)}
+                            >
+                              Book
+                            </button>
+                            <div className="text-right">
+                              <div className="priceArea">
+                                {item?.priceDetails?.discountedPrice ? (
+                                  <h5>
+                                    ₹{item?.priceDetails?.discountedPrice}
+                                    <p className="actualPrice">
+                                      ₹{item?.priceDetails?.price}
+                                    </p>
+                                  </h5>
+                                ) : (
+                                  <h5>₹{item?.priceDetails?.price}</h5>
+                                )}
+                                {item?.priceDetails?.discountedPrice ? (
+                                  <span>
+                                    {Math.round(
+                                      ((Number(item?.priceDetails?.price) -
+                                        Number(
+                                          item?.priceDetails?.discountedPrice
+                                        )) /
+                                        Number(item?.priceDetails?.price)) *
+                                      100
+                                    )}
+                                    % off
+                                  </span>
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                              <p>
+                                4.8 <i className="fa-solid fa-star"></i> |{" "}
+                                {i % 2 == 0 && i !== 0
+                                  ? `${i % 2}` + 5 + i - 1
+                                  : i == 0
+                                    ? `14${i % 2}`
+                                    : `${i % 2}` + 2 + i - 1}
+                              </p>
                             </div>
-                            <p>
-                              4.8 <i class="fa-solid fa-star"></i> |{" "}
-                              {i % 2 == 0 && i !== 0
-                                ? `${i % 2}` + 5 + i - 1
-                                : i == 0
-                                  ? `14${i % 2}`
-                                  : `${i % 2}` + 2 + i - 1}
-                            </p>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })
-              ) : (
-                <p>No item Available</p>
-              )}
+                    );
+                  })
+                ) : (
+                  <p>No item Available</p>
+                )}
+              </div>
             </div>
           </div>
         </div>
-
         <div className="viewAll">
           <a
             style={{
               "text-decoration": "underline",
-              color: "#FFFF00",
+              color: "#2BA501 ",
               fontSize: "17px",
             }}
             onClick={() => handleCategory({ categoryName: "ANNIVERSARY" })}
@@ -588,84 +751,121 @@ const Main = () => {
             <div className="section-title">
               <h2>Kid's Party</h2>
               <p>
-                Turn Your Kid’s Party into a Whimsical Wonderland of Fun &
+                Turn Your Kid's Party into a Whimsical Wonderland of Fun &
                 Magic!
               </p>
             </div>
-            <div className="row gy-5">
-              {getKidsList?.data?.length > 0 ? (
-                getKidsList?.data?.map((item, i) => {
-                  return (
-                    <div className="col-lg-3 col-md-4 col-sm-6 col-6" key={i}>
-                      <div className="PrivateDiningBox flexDirection">
 
-                        <figure>
-                          <img
-                            src={item?.productimages?.at(0)}
-                            onClick={() => handleProduct(item)}
-                          />
-                        </figure>
+            <div className="scroll-container-wrapper">
+              {/* Left Arrow */}
+              <div
+                className="custom-arrow prev kids-scroll-arrow"
+                onClick={handleKidsScrollLeft}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 1)';
+                  e.target.style.transform = 'translateY(-50%) scale(1.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+                  e.target.style.transform = 'translateY(-50%) scale(1)';
+                }}
+              >
+                <i className="fa-solid fa-angle-left"></i>
+              </div>
 
-                        <h6>{item?.productDetails?.productname}</h6>
-                        <div class="loc">
-                          <h1> At your location</h1>
-                        </div>
-                        <div className="Info">
-                          <button
-                            className="Buttons"
-                            onClick={() => handleProduct(item)}
-                          >
-                            Book
-                          </button>
-                          <div className="text-right">
-                            <div className="priceArea">
-                              {item?.priceDetails?.discountedPrice ? (
-                                <h5>
-                                  ₹{item?.priceDetails?.discountedPrice}
-                                  <p className="actualPrice">
-                                    ₹{item?.priceDetails?.price}
-                                  </p>
-                                </h5>
-                              ) : (
-                                <h5>₹{item?.priceDetails?.price}</h5>
-                              )}
-                              {item?.priceDetails?.discountedPrice ? (
-                                <span>
-                                  {Math.round(
-                                    ((Number(item?.priceDetails?.price) -
-                                      Number(
-                                        item?.priceDetails?.discountedPrice
-                                      )) /
-                                      Number(item?.priceDetails?.price)) *
-                                    100
-                                  )}
-                                  % off
-                                </span>
-                              ) : (
-                                ""
-                              )}
+              {/* Right Arrow */}
+              <div
+                className="custom-arrow next kids-scroll-arrow"
+                onClick={handleKidsScrollRight}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 1)';
+                  e.target.style.transform = 'translateY(-50%) scale(1.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+                  e.target.style.transform = 'translateY(-50%) scale(1)';
+                }}
+              >
+                <i className="fa-solid fa-angle-right"></i>
+              </div>
+
+              {/* Scrollable Content */}
+              <div
+                ref={kidsScrollRef}
+                className="kids-scroll-container"
+              >
+                {getKidsList?.data?.length > 0 ? (
+                  getKidsList?.data?.map((item, i) => {
+                    return (
+                      <div key={i} className="kids-item">
+                        <div className="PrivateDiningBox flexDirection">
+                          <figure>
+                            <img
+                              src={item?.productimages?.at(0)}
+                              onClick={() => handleProduct(item)}
+                              style={{ cursor: 'pointer' }}
+                            />
+                          </figure>
+                          <h6>{item?.productDetails?.productname}</h6>
+                          <div className="loc">
+                            <h1> At your location</h1>
+                          </div>
+                          <div className="Info">
+                            <button
+                              className="Buttons"
+                              onClick={() => handleProduct(item)}
+                            >
+                              Book
+                            </button>
+                            <div className="text-right">
+                              <div className="priceArea">
+                                {item?.priceDetails?.discountedPrice ? (
+                                  <h5>
+                                    ₹{item?.priceDetails?.discountedPrice}
+                                    <p className="actualPrice">
+                                      ₹{item?.priceDetails?.price}
+                                    </p>
+                                  </h5>
+                                ) : (
+                                  <h5>₹{item?.priceDetails?.price}</h5>
+                                )}
+                                {item?.priceDetails?.discountedPrice ? (
+                                  <span>
+                                    {Math.round(
+                                      ((Number(item?.priceDetails?.price) -
+                                        Number(
+                                          item?.priceDetails?.discountedPrice
+                                        )) /
+                                        Number(item?.priceDetails?.price)) *
+                                      100
+                                    )}
+                                    % off
+                                  </span>
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                              <p>
+                                4.8 <i className="fa-solid fa-star"></i> |{" "}
+                                {i % 2 == 0 && i !== 0
+                                  ? `${i % 2}` + 5 + i - 1
+                                  : i == 0
+                                    ? `14${i % 2}`
+                                    : `${i % 2}` + 2 + i - 1}
+                              </p>
                             </div>
-                            <p>
-                              4.8 <i class="fa-solid fa-star"></i> |{" "}
-                              {i % 2 == 0 && i !== 0
-                                ? `${i % 2}` + 5 + i - 1
-                                : i == 0
-                                  ? `14${i % 2}`
-                                  : `${i % 2}` + 2 + i - 1}
-                            </p>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })
-              ) : (
-                <p>No item Available</p>
-              )}
+                    );
+                  })
+                ) : (
+                  <p>No item Available</p>
+                )}
+              </div>
             </div>
           </div>
         </div>
-
         <div className="viewAll">
           <a
             style={{
@@ -708,74 +908,114 @@ const Main = () => {
                 Decor!
               </p>
             </div>
-            <div className="row gy-5">
-              {getWeddingDecoList?.data?.length > 0 ? (
-                getWeddingDecoList?.data?.map((item, i) => {
-                  return (
-                    <div className="col-lg-3 col-md-4 col-sm-6 col-6" key={i}>
-                      <div className="PrivateDiningBox flexDirection">
-                        <figure>
-                          <img
-                            src={item?.productimages?.at(0)}
-                            onClick={() => handleProduct(item)}
-                          />
-                        </figure>
-                        <h6>{item?.productDetails?.productname}</h6>
-                        <div class="loc">
-                          <h1> At your location</h1>
-                        </div>
-                        <div className="Info">
-                          <button
-                            className="Buttons"
-                            onClick={() => handleProduct(item)}
-                          >
-                            Book
-                          </button>
-                          <div className="text-right">
-                            <div className="priceArea">
-                              {item?.priceDetails?.discountedPrice ? (
-                                <h5>
-                                  ₹{item?.priceDetails?.discountedPrice}
-                                  <p className="actualPrice">
-                                    ₹{item?.priceDetails?.price}
-                                  </p>
-                                </h5>
-                              ) : (
-                                <h5>₹{item?.priceDetails?.price}</h5>
-                              )}
-                              {item?.priceDetails?.discountedPrice ? (
-                                <span>
-                                  {Math.round(
-                                    ((Number(item?.priceDetails?.price) -
-                                      Number(
-                                        item?.priceDetails?.discountedPrice
-                                      )) /
-                                      Number(item?.priceDetails?.price)) *
-                                    100
-                                  )}
-                                  % off
-                                </span>
-                              ) : (
-                                ""
-                              )}
+
+            <div className="scroll-container-wrapper">
+              {/* Left Arrow */}
+              <div
+                className="custom-arrow prev baby-shower-scroll-arrow"
+                onClick={handleBabyShowerScrollLeft}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 1)';
+                  e.target.style.transform = 'translateY(-50%) scale(1.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+                  e.target.style.transform = 'translateY(-50%) scale(1)';
+                }}
+              >
+                <i className="fa-solid fa-angle-left"></i>
+              </div>
+
+              {/* Right Arrow */}
+              <div
+                className="custom-arrow next baby-shower-scroll-arrow"
+                onClick={handleBabyShowerScrollRight}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 1)';
+                  e.target.style.transform = 'translateY(-50%) scale(1.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+                  e.target.style.transform = 'translateY(-50%) scale(1)';
+                }}
+              >
+                <i className="fa-solid fa-angle-right"></i>
+              </div>
+
+              {/* Scrollable Content */}
+              <div
+                ref={babyShowerScrollRef}
+                className="baby-shower-scroll-container"
+              >
+                {getWeddingDecoList?.data?.length > 0 ? (
+                  getWeddingDecoList?.data?.map((item, i) => {
+                    return (
+                      <div key={i} className="baby-shower-item">
+                        <div className="PrivateDiningBox flexDirection">
+                          <figure>
+                            <img
+                              src={item?.productimages?.at(0)}
+                              onClick={() => handleProduct(item)}
+                              style={{ cursor: 'pointer' }}
+                            />
+                          </figure>
+                          <h6>{item?.productDetails?.productname}</h6>
+                          <div className="loc">
+                            <h1> At your location</h1>
+                          </div>
+                          <div className="Info">
+                            <button
+                              className="Buttons"
+                              onClick={() => handleProduct(item)}
+                            >
+                              Book
+                            </button>
+                            <div className="text-right">
+                              <div className="priceArea">
+                                {item?.priceDetails?.discountedPrice ? (
+                                  <h5>
+                                    ₹{item?.priceDetails?.discountedPrice}
+                                    <p className="actualPrice">
+                                      ₹{item?.priceDetails?.price}
+                                    </p>
+                                  </h5>
+                                ) : (
+                                  <h5>₹{item?.priceDetails?.price}</h5>
+                                )}
+                                {item?.priceDetails?.discountedPrice ? (
+                                  <span>
+                                    {Math.round(
+                                      ((Number(item?.priceDetails?.price) -
+                                        Number(
+                                          item?.priceDetails?.discountedPrice
+                                        )) /
+                                        Number(item?.priceDetails?.price)) *
+                                      100
+                                    )}
+                                    % off
+                                  </span>
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                              <p>
+                                4.8 <i className="fa-solid fa-star"></i> |{" "}
+                                {i % 2 == 0 && i !== 0
+                                  ? `${i % 2}` + 5 + i - 1
+                                  : i == 0
+                                    ? `14${i % 2}`
+                                    : `${i % 2}` + 2 + i - 1}
+                              </p>
                             </div>
-                            <p>
-                              4.8 <i class="fa-solid fa-star"></i> |{" "}
-                              {i % 2 == 0 && i !== 0
-                                ? `${i % 2}` + 5 + i - 1
-                                : i == 0
-                                  ? `14${i % 2}`
-                                  : `${i % 2}` + 2 + i - 1}
-                            </p>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })
-              ) : (
-                <p>No item Available</p>
-              )}
+                    );
+                  })
+                ) : (
+                  <p>No item Available</p>
+                )}
+              </div>
             </div>
           </div>
         </div>
