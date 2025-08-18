@@ -186,7 +186,9 @@ const OtpVerification = ({
           ×
         </a>
         <div className="ModalArea">
-          <h3>Sign In/Sign Up</h3>
+           <div className="logo-img">
+              <img src={require("../../assets/images/Header_Logo.png")} />
+            </div>
           <div className="FormArea">
             <form>
               <h5>OTP Verification</h5>
@@ -225,7 +227,7 @@ const OtpVerification = ({
               </div>
             </form>
             <button
-              className="Button"
+              className="signup-primary-btn"
               type="submit"
               onClick={handleSubmit}
               // data-bs-target="#CreateAccountModal"

@@ -46,7 +46,7 @@ input, textarea, select, button {
   appearance: none;
 }
 input:focus, textarea:focus, select:focus {
-  font-size: 16px !important;
+  font-size: inherit !important;
 }
 
 .clearfix {
@@ -321,6 +321,10 @@ header .HeaderArea .HeaderSearch .Select:before {
 header .HeaderArea .HeaderSearch .Select[aria-expanded="true"]:before {
   transform: rotate(180deg);
 }
+input {
+  box-sizing: border-box;
+}
+
 /* header .HeaderArea .HeaderSearch .Select:hover .AllCategoryDrop {} */
 header .HeaderArea .HeaderSearch .form-control:focus {
   box-shadow: none;
@@ -978,6 +982,7 @@ i.fa-star {
   font-weight: 600;
   color: #000;
   line-height: 30px;
+  border: 2px solid black;
 }
 .FormArea form p {
   color: #818b9c;
