@@ -2355,15 +2355,16 @@ i.fa-star {
   font-weight: 700;
   font-size: 18px;
   display: -webkit-box;
-  -webkit-line-clamp: 1; /* Limit text to 2 lines */
+  display: box; /* Old syntax fallback */
+  -webkit-line-clamp: 1;
+  line-clamp: 1; /* Standard property */
   -webkit-box-orient: vertical;
+  box-orient: vertical; /* Old syntax fallback */
   overflow: hidden;
   text-align: center;
   margin: 10px 0 0 0;
 }
-
 /* custom */
-
 .FeatureArea .FeatureBox1 {
   height: 100%;
 }
@@ -2686,9 +2687,6 @@ footer .FooterBottom p {
 
 /* .slick-slider .slick-prev{ left: -40px; }
 .slick-slider .slick-next{ right: -40px; } */
-.slick-next:before {
-}
-
 .error {
   color: red;
   font-size: 12px;
@@ -3241,9 +3239,6 @@ header nav {
 .CategoriesMenu .Categories_dropdown article aside ul li a:hover {
   color: #000;
   font-weight: 600;
-}
-
-.MengaMenu {
 }
 
 header nav .CatMenu > ul {
@@ -3809,10 +3804,6 @@ ul.Icons li a img{
 .LeftCommonBox .CheckBox {color: #818B9C; font-weight: 400;font-size: 15px;}
 .LeftCommonBox .CheckBox .checkmark {border: 1px solid  #C4C8CC;}
 .LeftCommonBox .ShowAll {color: #1D9E34; font-weight: 500; font-weight: 500;} */
-
-.bookButton{
-
-}
 .bookButton .Button{
   width: 20%;
 }
@@ -3989,4 +3980,60 @@ background-color: rgba(29, 158, 52, 0.1);
 }
 .termHover:hover{
   color:#e5097f ;
+}
+.help {
+  margin-right: 20px;
+}
+/* Logo */
+.help-modal .help-logo {
+  height: 50px;
+  width: auto;
+}
+
+/* Heading */
+.contact-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #222;
+}
+
+/* Underline Inputs */
+.underline-input {
+  border: none !important;
+  border-bottom: 2px solid #ddd !important;
+  border-radius: 0;
+  padding: 10px 5px;
+  font-size: 1rem;
+  background: transparent;
+  transition: border-color 0.3s;
+}
+
+.underline-input:focus {
+  border-bottom: 2px solid #ff4d6d !important;
+  box-shadow: none;
+  outline: none;
+}
+
+/* Gradient Button */
+.gradient-btn {
+  background: linear-gradient(90deg, #ff4d6d, #ff6a3d);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gradient-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+}
+
+/* Modal body */
+.help-modal .modal-body {
+  padding: 30px;
+  background: #fff;
+  border-radius: 12px;
 }
