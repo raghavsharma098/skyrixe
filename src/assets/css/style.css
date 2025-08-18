@@ -3989,21 +3989,16 @@ background-color: rgba(29, 158, 52, 0.1);
 .help {
   margin-right: 20px;
 }
-/* Logo */
 .help-modal .help-logo {
   height: 50px;
   width: auto;
 }
-
-/* Heading */
 .contact-title {
   font-size: 1.6rem;
   font-weight: 700;
   margin-bottom: 25px;
   color: #222;
 }
-
-/* Underline Inputs */
 .underline-input {
   border: none !important;
   border-bottom: 2px solid #ddd !important;
@@ -4013,14 +4008,11 @@ background-color: rgba(29, 158, 52, 0.1);
   background: transparent;
   transition: border-color 0.3s;
 }
-
 .underline-input:focus {
   border-bottom: 2px solid #ff4d6d !important;
   box-shadow: none;
   outline: none;
 }
-
-/* Gradient Button */
 .gradient-btn {
   background: linear-gradient(90deg, #ff4d6d, #ff6a3d);
   color: #fff;
@@ -4030,13 +4022,10 @@ background-color: rgba(29, 158, 52, 0.1);
   border-radius: 6px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
 .gradient-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
 }
-
-/* Modal body */
 .help-modal .modal-body {
   padding: 30px;
   background: #fff;
