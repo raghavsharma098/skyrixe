@@ -14,6 +14,7 @@ import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import ReactImageZoom from "react-image-zoom";
 import { CiStar } from "react-icons/ci";
+import ServiceCarousel from "../Modals/ServiceCrousel";
 
 const CustomPrevArrow = ({ onClick }) => (
   <div className="custom-arrow prev" onClick={onClick}>
@@ -437,6 +438,8 @@ const Main = () => {
             : ""}
           {/* </Slider> */}
         </div>
+
+        <ServiceCarousel/>
 
         <div className="BirthdayDecorationArea BirthDecImage">
           <div className="container-fluid">

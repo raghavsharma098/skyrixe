@@ -156,8 +156,8 @@ const SignUp = ({ iState, updateState }) => {
 
             <p className="signup-terms">
               By Logging in you are agreeing to our{" "}
-              <a href="#" className="signup-link">Terms and Conditions</a> and{" "}
-              <a href="#" className="signup-link">Privacy Policy</a>.
+              <a href="/terms-conditions" className="signup-link">Terms and Conditions</a> and{" "}
+              <a href="privacy-policy" className="signup-link">Privacy Policy</a>.
             </p>
           </div>
         </div>
