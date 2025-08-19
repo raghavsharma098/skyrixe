@@ -46,7 +46,8 @@ const initialState = {
   reviewData: {
     rating: 0,
     reviewText: '',
-    title: ''
+    title: '',
+    photos: []
   },
   hoveredRating: 0,
   isSubmittingReview: false
@@ -613,6 +614,61 @@ const ProductDetails = () => {
 
     return !hasReviewed;
   };
+
+  const handlePhotoUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const maxFiles = 3;
+    const maxSize = 5 * 1024 * 1024; // 5MB per file
+
+    if (reviewData.photos.length + files.length > maxFiles) {
+      toast.error(`You can upload maximum ${maxFiles} photos`);
+      return;
+    }
+
+    const validFiles = files.filter(file => {
+      if (file.size > maxSize) {
+        toast.error(`File ${file.name} is too large. Maximum size is 5MB`);
+        return false;
+      }
+      if (!file.type.startsWith('image/')) {
+        toast.error(`File ${file.name} is not a valid image`);
+        return false;
+      }
+      return true;
+    });
+
+    validFiles.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const newPhoto = {
+          id: Date.now() + Math.random(),
+          file: file,
+          preview: e.target.result,
+          name: file.name
+        };
+
+        updateState({
+          ...iState,
+          reviewData: {
+            ...iState.reviewData,
+            photos: [...iState.reviewData.photos, newPhoto]
+          }
+        });
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handlePhotoRemove = (photoId) => {
+    updateState({
+      ...iState,
+      reviewData: {
+        ...iState.reviewData,
+        photos: reviewData.photos.filter(photo => photo.id !== photoId)
+      }
+    });
+  };
+
 
   useEffect(() => {
     if (customization?.length > 0) {
@@ -1987,8 +2043,8 @@ const ProductDetails = () => {
                   <i
                     key={star}
                     className={`fa-star ${star <= (hoveredRating || reviewData.rating)
-                        ? 'fa-solid rating-star-filled'
-                        : 'fa-regular rating-star-empty'
+                      ? 'fa-solid rating-star-filled'
+                      : 'fa-regular rating-star-empty'
                       }`}
                     onClick={() => handleReviewRatingClick(star)}
                     onMouseEnter={() => updateState({ ...iState, hoveredRating: star })}
@@ -2039,16 +2095,72 @@ const ProductDetails = () => {
               </div>
             </div>
 
+            {/* Photo Upload Section */}
+            <div className="review-form-group">
+              <label className="review-form-label">
+                Add Photos
+                <span className="optional-text">(Optional)</span>
+              </label>
+
+              <div className="photo-upload-container">
+                <div className="photo-upload-area">
+                  <input
+                    type="file"
+                    id="photo-upload"
+                    className="photo-upload-input"
+                    multiple
+                    accept="image/*"
+                    onChange={handlePhotoUpload}
+                    style={{ display: 'none' }}
+                  />
+                  <label htmlFor="photo-upload" className="photo-upload-label">
+                    <div className="photo-upload-content">
+                      <i className="fa-solid fa-camera photo-upload-icon"></i>
+                      <span className="photo-upload-text">Upload Photos</span>
+                      <span className="photo-upload-subtext">
+                        Add up to 3 photos (Max 5MB each)
+                      </span>
+                    </div>
+                  </label>
+                </div>
+
+                {/* Photo Preview Grid */}
+                {reviewData.photos.length > 0 && (
+                  <div className="photo-preview-grid">
+                    {reviewData.photos.map((photo) => (
+                      <div key={photo.id} className="photo-preview-item">
+                        <img
+                          src={photo.preview}
+                          alt={photo.name}
+                          className="photo-preview-image"
+                        />
+                        <button
+                          type="button"
+                          className="photo-remove-btn"
+                          onClick={() => handlePhotoRemove(photo.id)}
+                          aria-label="Remove photo"
+                        >
+                          <i className="fa-solid fa-times"></i>
+                        </button>
+                        <div className="photo-preview-name">{photo.name}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
             {/* Guidelines */}
-            <div className="review-guidelines">
+            {/* <div className="review-guidelines">
               <h6>Review Guidelines:</h6>
               <ul>
                 <li>Be honest and helpful to other customers</li>
                 <li>Focus on the product quality and service</li>
                 <li>Avoid inappropriate language</li>
                 <li>Include specific details about your experience</li>
+                <li>Upload clear photos that show the actual product/service</li>
               </ul>
-            </div>
+            </div> */}
 
             {/* Submit Buttons */}
             <div className="review-form-actions">
@@ -2058,7 +2170,7 @@ const ProductDetails = () => {
                 onClick={() => updateState({
                   ...iState,
                   showAddReviewModal: false,
-                  reviewData: { rating: 0, reviewText: '', title: '' },
+                  reviewData: { rating: 0, reviewText: '', title: '', photos: [] },
                   hoveredRating: 0
                 })}
                 disabled={isSubmittingReview}
