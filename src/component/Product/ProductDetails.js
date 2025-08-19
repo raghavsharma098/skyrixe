@@ -15,7 +15,7 @@ import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.min.css";
 import Lightbox from "react-image-lightbox";
 import "react-image-lightbox/style.css";
-import { ratingReviewList } from "../../reduxToolkit/Slices/ReviewAndRating/reviewRatingApis";
+import { ratingReviewList, addReview } from "../../reduxToolkit/Slices/ReviewAndRating/reviewRatingApis";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { BeatLoader } from "react-spinners";
@@ -41,7 +41,15 @@ const initialState = {
   activeRecommendedTab: "recommended",
   activeFilterTag: "Entry Gate Arch",
   recommendedScrollPosition: 0,
-  maxScrollPosition: 0
+  maxScrollPosition: 0,
+  showAddReviewModal: false,
+  reviewData: {
+    rating: 0,
+    reviewText: '',
+    title: ''
+  },
+  hoveredRating: 0,
+  isSubmittingReview: false
 };
 
 const ProductDetails = () => {
@@ -90,7 +98,11 @@ const ProductDetails = () => {
     activeRecommendedTab,
     activeFilterTag,
     recommendedScrollPosition,
-    maxScrollPosition
+    maxScrollPosition,
+    showAddReviewModal,
+    reviewData,
+    hoveredRating,
+    isSubmittingReview
   } = iState;
   const { getProductDetails, getSlotList, getStaticSlotList, loader } =
     useSelector((state) => state.productList);
@@ -528,6 +540,78 @@ const ProductDetails = () => {
       })
       .catch((err) => {
       });
+  };
+
+
+  const handleReviewRatingClick = (rating) => {
+    updateState({
+      ...iState,
+      reviewData: { ...iState.reviewData, rating }
+    });
+  };
+
+  const handleReviewInputChange = (e) => {
+    const { name, value } = e.target;
+    updateState({
+      ...iState,
+      reviewData: { ...iState.reviewData, [name]: value }
+    });
+  };
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!userDetail) {
+      toast.error('Please login to submit a review');
+      return;
+    }
+
+    if (iState.reviewData.rating === 0) {
+      toast.error('Please select a rating');
+      return;
+    }
+
+    updateState({ ...iState, isSubmittingReview: true });
+
+    try {
+      const response = await dispatch(addReview({
+        customerId: userDetail._id,
+        productId: item._id,
+        rating: iState.reviewData.rating,
+        review: iState.reviewData.reviewText,
+        title: iState.reviewData.title
+      }));
+
+      if (response.payload.success) {
+        toast.success('Review submitted successfully!');
+        updateState({
+          ...iState,
+          showAddReviewModal: false,
+          reviewData: { rating: 0, reviewText: '', title: '' },
+          hoveredRating: 0,
+          isSubmittingReview: false
+        });
+
+        // Refresh reviews
+        dispatch(ratingReviewList({
+          customerId: userDetail?._id,
+          productId: item?._id
+        }));
+      }
+    } catch (error) {
+      toast.error('Failed to submit review. Please try again.');
+      updateState({ ...iState, isSubmittingReview: false });
+    }
+  };
+
+  const canUserReview = () => {
+    if (!userDetail) return false;
+
+    const hasReviewed = getRatingReviewList?.data?.review?.some(review =>
+      review?.customerId === userDetail._id
+    );
+
+    return !hasReviewed;
   };
 
   useEffect(() => {
@@ -1221,13 +1305,27 @@ const ProductDetails = () => {
 
                   {/* REVIEWS SECTION */}
                   <div className="reviews-section-card">
-                    <div className="section-title">
-                      <i className="fa-solid fa-star reviews-section-icon" />
-                      Reviews
+                    <div className="reviews-section-header">
+                      <div className="section-title">
+                        <i className="fa-solid fa-star reviews-section-icon" />
+                        Reviews & Ratings
+                      </div>
+
+                      {/* Add Review Button */}
+                      {canUserReview() && (
+                        <button
+                          className="add-review-btn"
+                          onClick={() => updateState({ ...iState, showAddReviewModal: true })}
+                        >
+                          <i className="fa-solid fa-plus"></i>
+                          Write a Review
+                        </button>
+                      )}
                     </div>
+
                     <div className="reviews-header">
                       <h3 className="reviews-title">
-                        {getRatingReviewList?.data?.overallRating?.toFixed(2)}
+                        {getRatingReviewList?.data?.overallRating?.toFixed(1) || '0.0'}
                       </h3>
                       <div className="reviews-summary">
                         <span className="reviews-stars">
@@ -1235,9 +1333,32 @@ const ProductDetails = () => {
                             <i key={i} className={`fa-star ${i < Math.round(getRatingReviewList?.data?.overallRating || 0) ? 'fa-solid reviews-star-filled' : 'fa-regular reviews-star-empty'}`}></i>
                           ))}
                         </span>
-                        <span className="reviews-count">{getRatingReviewList?.data?.totalReviews} Reviews</span>
+                        <span className="reviews-count">{getRatingReviewList?.data?.totalReviews || 0} Reviews</span>
                       </div>
                     </div>
+
+                    {/* Rating Breakdown */}
+                    <div className="rating-breakdown">
+                      {[5, 4, 3, 2, 1].map((star) => {
+                        const count = getRatingReviewList?.data?.review?.filter(review => review.rating === star)?.length || 0;
+                        const totalReviews = getRatingReviewList?.data?.totalReviews || 0;
+                        const percentage = totalReviews > 0 ? (count / totalReviews) * 100 : 0;
+
+                        return (
+                          <div key={star} className="rating-breakdown-row">
+                            <span className="rating-breakdown-star">{star} ★</span>
+                            <div className="rating-breakdown-bar">
+                              <div
+                                className="rating-breakdown-fill"
+                                style={{ width: `${percentage}%` }}
+                              />
+                            </div>
+                            <span className="rating-breakdown-count">({count})</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+
                     <div className="reviews-list">
                       {getRatingReviewList?.data?.review?.length > 0 ? (
                         getRatingReviewList?.data?.review?.slice(0, 3).map((item, i) => (
@@ -1246,9 +1367,21 @@ const ProductDetails = () => {
                               <i className="fa-solid fa-user"></i>
                             </div>
                             <div className="review-content">
-                              <div className="review-author">{item?.data?.personalInfo?.name || 'Anonymous'}</div>
-                              <div className="review-date">Reviewed in August</div>
-                              <div className="review-verified">Verified Purchase</div>
+                              <div className="review-header">
+                                <div className="review-author">
+                                  {item?.data?.personalInfo?.name || 'Anonymous'}
+                                </div>
+                                <div className="review-date">
+                                  {new Date(item?.createdAt || new Date()).toLocaleDateString('en-US', {
+                                    month: 'long',
+                                    year: 'numeric'
+                                  })}
+                                </div>
+                              </div>
+                              <div className="review-verified">✓ Verified Purchase</div>
+                              {item?.title && (
+                                <div className="review-title">{item.title}</div>
+                              )}
                               <div className="review-stars">
                                 {Array.from({ length: item?.rating }).map((_, idx) => (
                                   <i key={idx} className="fa-solid fa-star reviews-star-filled"></i>
@@ -1258,15 +1391,39 @@ const ProductDetails = () => {
                                 ))}
                               </div>
                               <div className="review-text">{item?.review}</div>
+
+                              <div className="review-actions">
+                                <button className="review-helpful-btn">
+                                  <i className="fa-regular fa-thumbs-up"></i>
+                                  Helpful (0)
+                                </button>
+                                <button className="review-report-btn">
+                                  <i className="fa-regular fa-flag"></i>
+                                  Report
+                                </button>
+                              </div>
                             </div>
                           </div>
                         ))
                       ) : (
-                        <div className="no-reviews">No reviews yet.</div>
+                        <div className="no-reviews">
+                          <i className="fa-solid fa-star-half-stroke"></i>
+                          <h4>No reviews yet</h4>
+                          <p>Be the first to review this product!</p>
+                          {userDetail && (
+                            <button
+                              className="first-review-btn"
+                              onClick={() => updateState({ ...iState, showAddReviewModal: true })}
+                            >
+                              Write the First Review
+                            </button>
+                          )}
+                        </div>
                       )}
                     </div>
+
                     <div className="reviews-readmore">
-                      <span className="reviews-readmore-link">+ Read More Reviews</span>
+                      <span className="reviews-readmore-link">+ Read All {getRatingReviewList?.data?.totalReviews || 0} Reviews</span>
                     </div>
                   </div>
 
@@ -1401,7 +1558,7 @@ const ProductDetails = () => {
                       >
                         <i className={isFavourite ? "fa-solid fa-heart" : "fa-regular fa-heart"} style={{ color: isFavourite ? "#e5097f" : "#b1b1b1", fontSize: "1.5rem" }}></i>
                       </button>
-                     
+
                       {item?.priceDetails?.discountedPrice && (
                         <div className="discount-badge">
                           {Math.round(
@@ -1805,7 +1962,120 @@ const ProductDetails = () => {
         onBookNowClick={() => setShowBookingFlow(true)}
         activeTab="Overview"
       />
+      <Modal
+        className="ModalBox ReviewModal"
+        show={showAddReviewModal}
+        onHide={() => updateState({
+          ...iState,
+          showAddReviewModal: false,
+          reviewData: { rating: 0, reviewText: '', title: '' },
+          hoveredRating: 0
+        })}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Write a Review</Modal.Title>
+        </Modal.Header>
 
+        <Modal.Body>
+          <form onSubmit={handleReviewSubmit}>
+            {/* Rating Section */}
+            <div className="review-form-group">
+              <label className="review-form-label">Overall Rating</label>
+              <div className="rating-input">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <i
+                    key={star}
+                    className={`fa-star ${star <= (hoveredRating || reviewData.rating)
+                        ? 'fa-solid rating-star-filled'
+                        : 'fa-regular rating-star-empty'
+                      }`}
+                    onClick={() => handleReviewRatingClick(star)}
+                    onMouseEnter={() => updateState({ ...iState, hoveredRating: star })}
+                    onMouseLeave={() => updateState({ ...iState, hoveredRating: 0 })}
+                    style={{ cursor: 'pointer', fontSize: '1.5rem', marginRight: '5px' }}
+                  />
+                ))}
+                <span className="rating-text">
+                  {reviewData.rating > 0 && (
+                    <span>
+                      {reviewData.rating} out of 5 stars
+                    </span>
+                  )}
+                </span>
+              </div>
+            </div>
+
+            {/* Review Title */}
+            <div className="review-form-group">
+              <label className="review-form-label">Review Title</label>
+              <input
+                type="text"
+                className="review-form-input"
+                name="title"
+                value={reviewData.title}
+                onChange={handleReviewInputChange}
+                placeholder="Summarize your experience"
+                maxLength="100"
+                required
+              />
+            </div>
+
+            {/* Review Text */}
+            <div className="review-form-group">
+              <label className="review-form-label">Your Review</label>
+              <textarea
+                className="review-form-textarea"
+                name="reviewText"
+                value={reviewData.reviewText}
+                onChange={handleReviewInputChange}
+                placeholder="Share your thoughts about this product..."
+                rows="4"
+                maxLength="500"
+                required
+              />
+              <div className="character-count">
+                {reviewData.reviewText.length}/500 characters
+              </div>
+            </div>
+
+            {/* Guidelines */}
+            <div className="review-guidelines">
+              <h6>Review Guidelines:</h6>
+              <ul>
+                <li>Be honest and helpful to other customers</li>
+                <li>Focus on the product quality and service</li>
+                <li>Avoid inappropriate language</li>
+                <li>Include specific details about your experience</li>
+              </ul>
+            </div>
+
+            {/* Submit Buttons */}
+            <div className="review-form-actions">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => updateState({
+                  ...iState,
+                  showAddReviewModal: false,
+                  reviewData: { rating: 0, reviewText: '', title: '' },
+                  hoveredRating: 0
+                })}
+                disabled={isSubmittingReview}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={isSubmittingReview || reviewData.rating === 0}
+              >
+                {isSubmittingReview ? 'Submitting...' : 'Submit Review'}
+              </button>
+            </div>
+          </form>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };
