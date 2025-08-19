@@ -648,7 +648,7 @@ const Checkout1 = () => {
                   <h3>Product Summary</h3>
                   <button
                     className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600"
-                    onClick={() => handleEditProduct("summary")}
+                    // onClick={() => handleEditProduct("summary")}
                   >
                     Edit
                   </button>
@@ -667,7 +667,7 @@ const Checkout1 = () => {
                   <h3>Customizations Product</h3>
                   <button
                     className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600"
-                    onClick={() => handleEditProduct("custom")}
+                    // onClick={() => handleEditProduct("custom")}
                   >
                     Edit
                   </button>
