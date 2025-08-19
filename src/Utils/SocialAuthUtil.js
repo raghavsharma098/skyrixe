@@ -1,26 +1,25 @@
+// Fixed SocialAuthUtil.js
 import { userDetailState } from "../reduxToolkit/Slices/ProductList/listApis";
 import { toast } from "react-toastify";
 
-// Google OAuth Integration
+const GOOGLE_CLIENT_ID = "100748839589-chdc48opcq06i8kkijr3a9lbrfbq8vkd.apps.googleusercontent.com";
+
 export const initializeGoogleAuth = () => {
   return new Promise((resolve, reject) => {
-    // Check if Google script is already loaded
     if (window.google?.accounts?.id) {
       resolve();
       return;
     }
 
-    // Load Google OAuth script
     const script = document.createElement('script');
     script.src = 'https://accounts.google.com/gsi/client';
     script.async = true;
     script.defer = true;
     
     script.onload = () => {
-      // Initialize Google OAuth
       try {
         window.google.accounts.id.initialize({
-          client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID || "your-google-client-id", 
+          client_id: GOOGLE_CLIENT_ID,
           callback: resolve,
           auto_select: false,
           cancel_on_tap_outside: false,
@@ -46,25 +45,14 @@ export const handleGoogleLogin = () => {
     try {
       initializeGoogleAuth()
         .then(() => {
-          // Create a temporary div for the Google sign-in button
-          const tempDiv = document.createElement('div');
-          tempDiv.id = 'temp-google-signin';
-          tempDiv.style.position = 'absolute';
-          tempDiv.style.left = '-9999px';
-          tempDiv.style.visibility = 'hidden';
-          document.body.appendChild(tempDiv);
-
           window.google.accounts.id.initialize({
-            client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID || "your-google-client-id",
+            client_id: GOOGLE_CLIENT_ID,
             callback: (credentialResponse) => {
               try {
-                // Clean up temporary div
-                if (document.getElementById('temp-google-signin')) {
-                  document.body.removeChild(tempDiv);
-                }
+                // console.log('Google credential response:', credentialResponse);
 
-                // Decode JWT token to get user info
                 const payload = JSON.parse(atob(credentialResponse.credential.split('.')[1]));
+                // console.log('Decoded payload:', payload);
                 
                 const userData = {
                   _id: `google_${payload.sub}`,
@@ -100,10 +88,25 @@ export const handleGoogleLogin = () => {
             auto_select: false,
           });
 
-          // Trigger Google One Tap or render button
+          // Use Google One Tap prompt
           window.google.accounts.id.prompt((notification) => {
+            // console.log('Google prompt notification:', notification);
+            
             if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-              // Fallback: render button and simulate click
+              // console.log('One Tap not displayed, falling back to popup');
+              
+              // Fallback: Use popup instead of hidden button click
+              window.google.accounts.id.disableAutoSelect();
+              
+              // Create a temporary div for the Google sign-in button
+              const tempDiv = document.createElement('div');
+              tempDiv.id = 'temp-google-signin';
+              tempDiv.style.position = 'absolute';
+              tempDiv.style.left = '-9999px';
+              tempDiv.style.visibility = 'hidden';
+              document.body.appendChild(tempDiv);
+
+              // Render button
               window.google.accounts.id.renderButton(tempDiv, {
                 theme: 'outline',
                 size: 'large',
@@ -114,17 +117,29 @@ export const handleGoogleLogin = () => {
                 width: 250,
               });
 
-              // Auto-click the button
+              // Auto-click the button after a short delay
               setTimeout(() => {
                 const button = tempDiv.querySelector('[role="button"]');
                 if (button) {
                   button.click();
                 } else {
+                  console.error('Google sign-in button not found');
+                  // Clean up
+                  if (document.getElementById('temp-google-signin')) {
+                    document.body.removeChild(tempDiv);
+                  }
                   reject({
                     success: false,
                     error: 'Google sign-in button not rendered properly'
                   });
                 }
+
+                // Clean up the temporary div after a delay
+                setTimeout(() => {
+                  if (document.getElementById('temp-google-signin')) {
+                    document.body.removeChild(tempDiv);
+                  }
+                }, 1000);
               }, 100);
             }
           });
@@ -146,7 +161,130 @@ export const handleGoogleLogin = () => {
   });
 };
 
-// Facebook OAuth Integration
+// Alternative Google Login using popup (more reliable)
+export const handleGoogleLoginPopup = () => {
+  return new Promise((resolve, reject) => {
+    try {
+      initializeGoogleAuth()
+        .then(() => {
+          // Create and show a visible button for user to click
+          const loginDiv = document.createElement('div');
+          loginDiv.id = 'google-signin-button';
+          loginDiv.style.position = 'fixed';
+          loginDiv.style.top = '50%';
+          loginDiv.style.left = '50%';
+          loginDiv.style.transform = 'translate(-50%, -50%)';
+          loginDiv.style.zIndex = '9999';
+          loginDiv.style.background = 'white';
+          loginDiv.style.padding = '20px';
+          loginDiv.style.border = '2px solid #ccc';
+          loginDiv.style.borderRadius = '8px';
+          loginDiv.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+          
+          // Add close button
+          const closeBtn = document.createElement('button');
+          closeBtn.innerHTML = '×';
+          closeBtn.style.position = 'absolute';
+          closeBtn.style.top = '5px';
+          closeBtn.style.right = '10px';
+          closeBtn.style.border = 'none';
+          closeBtn.style.background = 'none';
+          closeBtn.style.fontSize = '20px';
+          closeBtn.style.cursor = 'pointer';
+          closeBtn.onclick = () => {
+            document.body.removeChild(loginDiv);
+            reject({
+              success: false,
+              error: 'Google login cancelled by user'
+            });
+          };
+          
+          loginDiv.appendChild(closeBtn);
+          
+          // Add title
+          const title = document.createElement('div');
+          title.innerHTML = 'Click to sign in with Google';
+          title.style.marginBottom = '15px';
+          title.style.textAlign = 'center';
+          title.style.fontWeight = 'bold';
+          loginDiv.appendChild(title);
+          
+          document.body.appendChild(loginDiv);
+
+          window.google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: (credentialResponse) => {
+              try {
+                if (document.getElementById('google-signin-button')) {
+                  document.body.removeChild(loginDiv);
+                }
+                
+                // console.log('Google credential response:', credentialResponse);
+              
+                const payload = JSON.parse(atob(credentialResponse.credential.split('.')[1]));
+                // console.log('Decoded payload:', payload);
+                
+                const userData = {
+                  _id: `google_${payload.sub}`,
+                  userId: `google_${payload.sub}`,
+                  data: {
+                    personalInfo: {
+                      name: payload.name,
+                      email: payload.email,
+                      photo: payload.picture || "",
+                      phone: "",
+                      gender: "",
+                      dob: "",
+                    },
+                    addresses: [],
+                    authMethod: 'google',
+                    googleId: payload.sub,
+                  }
+                };
+
+                resolve({
+                  success: true,
+                  userData,
+                  message: "Google login successful"
+                });
+              } catch (error) {
+                console.error('Error processing Google credential:', error);
+                reject({
+                  success: false,
+                  error: 'Failed to process Google authentication'
+                });
+              }
+            },
+            auto_select: false,
+          });
+          window.google.accounts.id.renderButton(loginDiv, {
+            theme: 'outline',
+            size: 'large',
+            type: 'standard',
+            text: 'signin_with',
+            shape: 'rectangular',
+            logo_alignment: 'left',
+            width: 300,
+          });
+          
+        })
+        .catch(error => {
+          console.error('Google OAuth initialization failed:', error);
+          reject({
+            success: false,
+            error: 'Failed to initialize Google authentication'
+          });
+        });
+    } catch (error) {
+      console.error('Google login error:', error);
+      reject({
+        success: false,
+        error: 'Google authentication failed'
+      });
+    }
+  });
+};
+
 export const initializeFacebookSDK = () => {
   return new Promise((resolve) => {
     if (window.FB) {
@@ -163,8 +301,6 @@ export const initializeFacebookSDK = () => {
       });
       resolve();
     };
-
-    // Load Facebook SDK
     const script = document.createElement('script');
     script.async = true;
     script.defer = true;
@@ -224,16 +360,10 @@ export const handleFacebookLogin = () => {
   });
 };
 
-// Email/Password Login API call
 export const handleEmailPasswordLogin = async (email, password) => {
   try {
-    // TODO: Replace with your actual email login API endpoint
-    // For now, returning a mock response structure that matches your auth pattern
-    
-    // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    // Mock validation
     if (!email || !password) {
       return {
         success: false,
@@ -248,13 +378,12 @@ export const handleEmailPasswordLogin = async (email, password) => {
       };
     }
 
-    // Mock successful login response (replace with actual API call)
     const userData = {
       _id: `email_${Date.now()}`,
       userId: `email_${Date.now()}`,
       data: {
         personalInfo: {
-          name: "Email User", // You'd get this from your API
+          name: "Email User",
           email: email,
           photo: "",
           phone: "",
@@ -271,32 +400,6 @@ export const handleEmailPasswordLogin = async (email, password) => {
       userData,
       message: 'Email login successful'
     };
-
-    /* 
-    // Uncomment and modify this when you have an actual API endpoint
-    const response = await fetch('/api/auth/email-login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      return {
-        success: true,
-        userData: data.user,
-        message: data.message || 'Login successful'
-      };
-    } else {
-      return {
-        success: false,
-        error: data.message || 'Login failed'
-      };
-    }
-    */
   } catch (error) {
     console.error('Email login error:', error);
     return {
@@ -306,23 +409,18 @@ export const handleEmailPasswordLogin = async (email, password) => {
   }
 };
 
-// Store user session data (compatible with your existing system)
 export const storeUserSession = (userData, loginMethod, setCookie, dispatch) => {
   try {
-    // Store in localStorage using your existing key names
     window.localStorage.setItem("LennyUserDetail", JSON.stringify(userData));
     window.localStorage.setItem("LoginTimer", "false");
     
-    // Set cookies for remember me functionality
     setCookie("LennyCheck", true, { path: "/" }, { expires: new Date("9999-12-31") });
     
     if (loginMethod === 'mobile' && userData.data?.personalInfo?.phone) {
       setCookie("LennyPhone_number", userData.data.personalInfo.phone, { path: "/" }, { expires: new Date("9999-12-31") });
     }
 
-    // Update Redux state
     dispatch(userDetailState(true));
-
     return true;
   } catch (error) {
     console.error('Error storing user session:', error);
@@ -330,20 +428,15 @@ export const storeUserSession = (userData, loginMethod, setCookie, dispatch) => 
   }
 };
 
-// Clear user session (compatible with your existing system)
 export const clearUserSession = (setCookie, dispatch) => {
   try {
-    // Clear localStorage
     window.localStorage.removeItem("LennyUserDetail");
     window.localStorage.setItem("LoginTimer", "true");
     
-    // Clear cookies
     setCookie("LennyCheck", false, { path: "/" });
     setCookie("LennyPhone_number", "", { path: "/" });
 
-    // Update Redux state
     dispatch(userDetailState(false));
-
     return true;
   } catch (error) {
     console.error('Error clearing user session:', error);
@@ -351,9 +444,8 @@ export const clearUserSession = (setCookie, dispatch) => {
   }
 };
 
-// Validation utilities
 export const validateMobileNumber = (mobile) => {
-  const mobileRegex = /^[6-9]\d{9}$/; // Indian mobile number format
+  const mobileRegex = /^[6-9]\d{9}$/;
   return mobileRegex.test(mobile);
 };
 
@@ -363,19 +455,16 @@ export const validateEmail = (email) => {
 };
 
 export const validatePassword = (password) => {
-  // Minimum 8 characters, at least one letter and one number
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/;
   return passwordRegex.test(password);
 };
 
-// Format OTP timer
 export const formatOtpTimer = (seconds) => {
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;
   return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 };
 
-// Helper function to create user data structure that matches your existing pattern
 export const createUserDataStructure = (authData, method) => {
   const baseId = `${method}_${Date.now()}`;
   
@@ -399,16 +488,13 @@ export const createUserDataStructure = (authData, method) => {
   };
 };
 
-// Helper to handle social login success and integrate with your booking flow
 export const handleSocialLoginSuccess = (authResult, setCookie, dispatch, onLoginSuccess) => {
   if (authResult.success) {
-    // Store session
     const sessionStored = storeUserSession(authResult.userData, authResult.userData.data.authMethod, setCookie, dispatch);
     
     if (sessionStored) {
       toast.success(authResult.message);
       
-      // Call the onLoginSuccess callback with the expected format
       onLoginSuccess({
         method: authResult.userData.data.authMethod,
         userData: authResult.userData,
@@ -423,7 +509,6 @@ export const handleSocialLoginSuccess = (authResult, setCookie, dispatch, onLogi
   }
 };
 
-// Enhanced error handling for social logins
 export const handleSocialLoginError = (error, method) => {
   console.error(`${method} login error:`, error);
   
@@ -442,12 +527,11 @@ export const handleSocialLoginError = (error, method) => {
   toast.error(userFriendlyMessage);
 };
 
-// Environment validation helper
 export const validateSocialAuthEnvironment = () => {
   const warnings = [];
   
-  if (!process.env.REACT_APP_GOOGLE_CLIENT_ID) {
-    warnings.push('Google Client ID not found in environment variables');
+  if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID.includes('your-google')) {
+    warnings.push('Google Client ID not properly configured');
   }
   
   if (!process.env.REACT_APP_FACEBOOK_APP_ID) {

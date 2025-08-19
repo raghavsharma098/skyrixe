@@ -12,9 +12,11 @@ import CreateAccount from "./CreateAccount";
 import "../../assets/css/LoginModal.css";
 import {
   handleGoogleLogin,
+  handleGoogleLoginPopup,
   handleFacebookLogin,
   handleSocialLoginSuccess,
-  handleSocialLoginError
+  handleSocialLoginError,
+  validateSocialAuthEnvironment
 } from "../../Utils/SocialAuthUtil.js";
 
 const LoginModal = ({
@@ -40,6 +42,7 @@ const LoginModal = ({
   const [otpTimer, setOtpTimer] = useState(0);
   const [createAccountModal, setCreateAccountModal] = useState(false);
   const [userDetail, setUserDetail] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Redux
   const dispatch = useDispatch();
@@ -47,6 +50,16 @@ const LoginModal = ({
 
   // Cookies
   const [cookies, setCookie] = useCookies(["LennyPhone_number", "LennyCheck"]);
+
+  // Initialize and check auth environment on mount
+  useEffect(() => {
+    validateSocialAuthEnvironment();
+    
+    // Pre-fill mobile number from cookies if available
+    if (cookies.LennyPhone_number) {
+      setMobileNumber(cookies.LennyPhone_number);
+    }
+  }, [cookies.LennyPhone_number]);
 
   // OTP Timer Effect
   useEffect(() => {
@@ -59,36 +72,61 @@ const LoginModal = ({
     return () => clearInterval(interval);
   }, [otpTimer]);
 
+  // Reset login state when modal closes
+  useEffect(() => {
+    if (!show) {
+      resetLoginState();
+    }
+  }, [show]);
+
   // Handle Mobile Login
-  const handleMobileSubmit = (e) => {
+  const handleMobileSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validation
     if (!mobileNumber || mobileNumber.length !== 10) {
       setErrors({ mobile: "Please enter a valid 10-digit mobile number" });
       return;
     }
 
-    setErrors({});
+    // Check for valid Indian mobile number pattern
+    const mobilePattern = /^[6-9]\d{9}$/;
+    if (!mobilePattern.test(mobileNumber)) {
+      setErrors({ mobile: "Please enter a valid Indian mobile number" });
+      return;
+    }
 
-    dispatch(loginApiSlice({ phone: mobileNumber }))
-      .then((res) => {
-        console.log('Login API response:', res);
-        if (res?.payload?.status === 200) {
-          setShowOtp(true);
-          setOtpTimer(60); // Start 60 second timer
-          toast.success(`OTP sent to +91 ${mobileNumber}`);
-        } else {
-          toast.error("Failed to send OTP. Please try again.");
-        }
-      })
-      .catch((err) => {
-        console.error('Login API error:', err);
-        toast.error("Something went wrong. Please try again.");
-      });
+    setErrors({});
+    setIsLoading(true);
+
+    try {
+      const response = await dispatch(loginApiSlice({ phone: mobileNumber }));
+      console.log('Login API response:', response);
+      
+      if (response?.payload?.status === 200) {
+        setShowOtp(true);
+        setOtpTimer(60); // Start 60 second timer
+        toast.success(`OTP sent to +91 ${mobileNumber}`);
+      } else {
+        const errorMessage = response?.payload?.message || "Failed to send OTP. Please try again.";
+        toast.error(errorMessage);
+        setErrors({ mobile: errorMessage });
+      }
+    } catch (err) {
+      console.error('Login API error:', err);
+      const errorMessage = err?.response?.data?.message || "Something went wrong. Please try again.";
+      toast.error(errorMessage);
+      setErrors({ mobile: errorMessage });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Handle OTP input change
   const handleOtpInputChange = (e, index) => {
     const value = e.target.value;
+    
+    // Only allow digits
     if (value.length <= 1 && /^\d*$/.test(value)) {
       const newOtpValues = [...otpValues];
       newOtpValues[index] = value;
@@ -103,7 +141,7 @@ const LoginModal = ({
       // Auto-submit when all 4 digits are filled
       if (newOtpValues.every(val => val.length === 1)) {
         const fullOtp = newOtpValues.join("");
-        handleOtpVerification(fullOtp);
+        setTimeout(() => handleOtpVerification(fullOtp), 100); // Small delay for better UX
       }
     }
   };
@@ -122,7 +160,7 @@ const LoginModal = ({
   };
 
   // Handle OTP Verification
-  const handleOtpVerification = (otpToVerify = null) => {
+  const handleOtpVerification = async (otpToVerify = null) => {
     const otpString = otpToVerify || otpValues.join("");
 
     if (!otpString || otpString.length !== 4) {
@@ -131,52 +169,72 @@ const LoginModal = ({
     }
 
     setErrors({});
+    setIsLoading(true);
 
-    dispatch(otpVerificationApiSlice({
-      phone: mobileNumber,
-      otp: Number(otpString)
-    }))
-      .then((res) => {
-        console.log('OTP verification response:', res);
+    try {
+      const response = await dispatch(otpVerificationApiSlice({
+        phone: mobileNumber,
+        otp: Number(otpString)
+      }));
+      
+      console.log('OTP verification response:', response);
 
-        if (res?.payload?.response?.data?.status === 400) {
-          toast.error(res?.payload?.response?.data?.message);
-          setErrors({ otp: "Invalid OTP. Please try again." });
-        } else if (res?.payload?.data?.status === 200) {
+      if (response?.payload?.response?.data?.status === 400) {
+        const errorMessage = response?.payload?.response?.data?.message || "Invalid OTP. Please try again.";
+        toast.error(errorMessage);
+        setErrors({ otp: errorMessage });
+        
+        // Reset OTP inputs on error
+        setOtpValues(Array(4).fill(""));
+        const firstInput = document.querySelector(`input[name="otp-0"]`);
+        if (firstInput) firstInput.focus();
+        
+      } else if (response?.payload?.data?.status === 200) {
+        // Check if user needs to create account
+        if (!response?.payload?.data?.message?.endsWith("Login successful.")) {
+          // New user - show create account modal
+          setUserDetail(response?.payload?.data);
+          setCreateAccountModal(true);
+          resetLoginState();
+        } else {
+          // Existing user - complete login
+          const userData = response?.payload?.data?.data;
+          
+          // Store user data
+          window.localStorage.setItem("LennyUserDetail", JSON.stringify(userData));
+          window.localStorage.setItem("LoginTimer", "false");
 
-          // Check if user needs to create account
-          if (!res?.payload?.data?.message?.endsWith("Login successful.")) {
-            // New user - show create account modal
-            setUserDetail(res?.payload?.data);
-            setCreateAccountModal(true);
-            resetLoginState();
-          } else {
-            // Existing user - complete login
-            const userData = res?.payload?.data?.data;
-            window.localStorage.setItem("LennyUserDetail", JSON.stringify(userData));
-            window.localStorage.setItem("LoginTimer", "false");
+          // Set cookies
+          setCookie("LennyCheck", true, { path: "/" }, { expires: new Date("9999-12-31") });
+          setCookie("LennyPhone_number", mobileNumber, { path: "/" }, { expires: new Date("9999-12-31") });
 
-            // Set cookies
-            setCookie("LennyCheck", true, { path: "/" }, { expires: new Date("9999-12-31") });
-            setCookie("LennyPhone_number", mobileNumber, { path: "/" }, { expires: new Date("9999-12-31") });
+          // Update Redux state
+          dispatch(userDetailState(true));
 
-            dispatch(userDetailState(true));
-
-            toast.success("Login successful!");
-            onLoginSuccess({
-              mobileNumber,
-              method: "mobile",
-              userData: userData
-            });
-            resetLoginState();
-          }
+          toast.success("Login successful!");
+          
+          // Call success callback
+          onLoginSuccess({
+            mobileNumber,
+            method: "mobile",
+            userData: userData
+          });
+          
+          resetLoginState();
+          onHide(); // Close modal
         }
-      })
-      .catch((err) => {
-        console.error('OTP verification error:', err);
+      } else {
         toast.error("Verification failed. Please try again.");
         setErrors({ otp: "Verification failed. Please try again." });
-      });
+      }
+    } catch (err) {
+      console.error('OTP verification error:', err);
+      const errorMessage = err?.response?.data?.message || "Verification failed. Please try again.";
+      toast.error(errorMessage);
+      setErrors({ otp: errorMessage });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Handle OTP Manual Submit
@@ -186,26 +244,38 @@ const LoginModal = ({
   };
 
   // Handle Resend OTP
-  const handleResendOtp = () => {
+  const handleResendOtp = async () => {
     if (otpTimer > 0) return;
 
-    dispatch(loginApiSlice({ phone: mobileNumber }))
-      .then((res) => {
-        if (res?.payload?.status === 200) {
-          setOtpTimer(60);
-          setOtpValues(Array(4).fill(""));
-          toast.success("OTP resent successfully!");
-        }
-      })
-      .catch((err) => {
-        console.error('Resend OTP error:', err);
+    setIsLoading(true);
+    
+    try {
+      const response = await dispatch(loginApiSlice({ phone: mobileNumber }));
+      
+      if (response?.payload?.status === 200) {
+        setOtpTimer(60);
+        setOtpValues(Array(4).fill(""));
+        setErrors({});
+        toast.success("OTP resent successfully!");
+        
+        // Focus first input
+        const firstInput = document.querySelector(`input[name="otp-0"]`);
+        if (firstInput) firstInput.focus();
+      } else {
         toast.error("Failed to resend OTP. Please try again.");
-      });
+      }
+    } catch (err) {
+      console.error('Resend OTP error:', err);
+      toast.error("Failed to resend OTP. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Handle Email Login
-  const handleEmailSubmit = (e) => {
+  const handleEmailSubmit = async (e) => {
     e.preventDefault();
+    
     if (!email || !password) {
       setErrors({ email: "Please enter both email and password" });
       return;
@@ -218,43 +288,111 @@ const LoginModal = ({
       return;
     }
 
-    setErrors({});
+    // Password validation
+    if (password.length < 6) {
+      setErrors({ email: "Password must be at least 6 characters long" });
+      return;
+    }
 
-    // Simulate email login - you'll need to implement the actual API call
-    toast.success("Email login functionality to be implemented");
-    onLoginSuccess({ email, method: "email" });
-    resetLoginState();
+    setErrors({});
+    setIsLoading(true);
+
+    try {
+      // Simulate email login - replace with actual API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Mock successful login
+      const userData = {
+        _id: `email_${Date.now()}`,
+        userId: `email_${Date.now()}`,
+        data: {
+          personalInfo: {
+            name: "Email User", // You'd get this from your API
+            email: email,
+            photo: "",
+            phone: "",
+            gender: "",
+            dob: "",
+          },
+          addresses: [],
+          authMethod: 'email',
+        }
+      };
+
+      // Store user data
+      window.localStorage.setItem("LennyUserDetail", JSON.stringify(userData));
+      window.localStorage.setItem("LoginTimer", "false");
+      setCookie("LennyCheck", true, { path: "/" }, { expires: new Date("9999-12-31") });
+      dispatch(userDetailState(true));
+
+      toast.success("Email login successful!");
+      onLoginSuccess({ email, method: "email", userData });
+      resetLoginState();
+      onHide();
+      
+    } catch (error) {
+      console.error('Email login error:', error);
+      toast.error("Login failed. Please check your credentials.");
+      setErrors({ email: "Invalid email or password" });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Handle Social Login
-const handleSocialLogin = (method) => {
-  console.log('Social login:', method);
+  const handleSocialLogin = async (method) => {
+    console.log('Social login:', method);
+    setIsLoading(true);
 
-  if (method === "google") {
-    handleGoogleLogin()
-      .then((result) => {
-        handleSocialLoginSuccess(result, setCookie, dispatch, onLoginSuccess);
-      })
-      .catch((error) => {
-        handleSocialLoginError(error, 'Google');
-      });
-  } else if (method === "facebook") {
-    handleFacebookLogin()
-      .then((result) => {
-        handleSocialLoginSuccess(result, setCookie, dispatch, onLoginSuccess);
-      })
-      .catch((error) => {
-        handleSocialLoginError(error, 'Facebook');
-      });
-  } else if (method === "email") {
-    setLoginMethod("email");
-    setShowEmailForm(true);
-  }
-};
+    try {
+      if (method === "google") {
+        // Try the popup version first, fallback to original if needed
+        try {
+          const result = await handleGoogleLoginPopup();
+          console.log('Google login result:', result);
+          handleSocialLoginSuccess(result, setCookie, dispatch, onLoginSuccess);
+          onHide(); // Close the modal on successful login
+        } catch (error) {
+          console.error('Google popup login failed, trying original method:', error);
+          
+          // Fallback to original method
+          try {
+            const result = await handleGoogleLogin();
+            console.log('Google login fallback result:', result);
+            handleSocialLoginSuccess(result, setCookie, dispatch, onLoginSuccess);
+            onHide(); // Close the modal on successful login
+          } catch (fallbackError) {
+            console.error('Both Google login methods failed:', fallbackError);
+            handleSocialLoginError(fallbackError, 'Google');
+          }
+        }
+      } else if (method === "facebook") {
+        try {
+          const result = await handleFacebookLogin();
+          console.log('Facebook login result:', result);
+          handleSocialLoginSuccess(result, setCookie, dispatch, onLoginSuccess);
+          onHide(); // Close the modal on successful login
+        } catch (error) {
+          console.error('Facebook login failed:', error);
+          handleSocialLoginError(error, 'Facebook');
+        }
+      } else if (method === "email") {
+        setLoginMethod("email");
+        setShowEmailForm(true);
+        setIsLoading(false);
+        return; // Don't set loading to false at the end
+      }
+    } catch (error) {
+      console.error(`${method} login error:`, error);
+      toast.error(`${method} login failed. Please try again.`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Reset login state
   const resetLoginState = () => {
-    setMobileNumber("");
+    setMobileNumber(cookies.LennyPhone_number || ""); // Keep saved mobile number
     setEmail("");
     setPassword("");
     setOtp("");
@@ -264,6 +402,7 @@ const handleSocialLogin = (method) => {
     setErrors({});
     setOtpTimer(0);
     setLoginMethod("mobile");
+    setIsLoading(false);
   };
 
   // Handle create account completion
@@ -275,6 +414,14 @@ const handleSocialLogin = (method) => {
       isNewUser: true
     });
     resetLoginState();
+    onHide();
+  };
+
+  // Go back to mobile login
+  const goBackToMobile = () => {
+    setLoginMethod("mobile");
+    setShowEmailForm(false);
+    setErrors({});
   };
 
   // Utility functions
@@ -331,11 +478,12 @@ const handleSocialLogin = (method) => {
                             value={mobileNumber}
                             onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, ''))}
                             maxLength={10}
+                            disabled={isLoading}
                           />
                           {errors.mobile && <span className="ErrorText">{errors.mobile}</span>}
                         </div>
-                        <button type="submit" className="LoginBtn">
-                          LOG IN VIA OTP
+                        <button type="submit" className="LoginBtn" disabled={isLoading}>
+                          {isLoading ? "SENDING OTP..." : "LOG IN VIA OTP"}
                         </button>
                       </form>
                     ) : (
@@ -350,7 +498,9 @@ const handleSocialLogin = (method) => {
                                 setShowOtp(false);
                                 setOtpValues(Array(4).fill(""));
                                 setOtpTimer(0);
+                                setErrors({});
                               }}
+                              disabled={isLoading}
                             >
                               Edit
                             </button>
@@ -369,6 +519,7 @@ const handleSocialLogin = (method) => {
                                 onKeyDown={(e) => handleOtpKeyDown(e, index)}
                                 pattern="[0-9]*"
                                 inputMode="numeric"
+                                disabled={isLoading}
                               />
                             ))}
                           </div>
@@ -385,15 +536,16 @@ const handleSocialLogin = (method) => {
                                 type="button"
                                 className="ResendBtn"
                                 onClick={handleResendOtp}
+                                disabled={isLoading}
                               >
-                                Resend OTP
+                                {isLoading ? "Sending..." : "Resend OTP"}
                               </button>
                             )}
                           </div>
                         </div>
 
-                        <button type="submit" className="LoginBtn">
-                          VERIFY OTP & CONTINUE
+                        <button type="submit" className="LoginBtn" disabled={isLoading}>
+                          {isLoading ? "VERIFYING..." : "VERIFY OTP & CONTINUE"}
                         </button>
                       </form>
                     )}
@@ -403,7 +555,24 @@ const handleSocialLogin = (method) => {
                 {/* Email Login */}
                 {loginMethod === "email" && (
                   <div className="EmailLogin">
-                    <h4>Email Login</h4>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                      <button
+                        type="button"
+                        className="BackBtn"
+                        onClick={goBackToMobile}
+                        style={{ 
+                          background: 'none', 
+                          border: 'none', 
+                          fontSize: '20px',
+                          cursor: 'pointer',
+                          marginRight: '10px'
+                        }}
+                      >
+                        ←
+                      </button>
+                      <h4>Email Login</h4>
+                    </div>
+                    
                     <form onSubmit={handleEmailSubmit}>
                       <div className="FormGroup">
                         <input
@@ -412,6 +581,7 @@ const handleSocialLogin = (method) => {
                           placeholder="Enter your email address"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
+                          disabled={isLoading}
                         />
                       </div>
                       <div className="FormGroup">
@@ -421,11 +591,12 @@ const handleSocialLogin = (method) => {
                           placeholder="Enter your password"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
+                          disabled={isLoading}
                         />
                         {errors.email && <span className="ErrorText">{errors.email}</span>}
                       </div>
-                      <button type="submit" className="LoginBtn">
-                        LOGIN WITH EMAIL
+                      <button type="submit" className="LoginBtn" disabled={isLoading}>
+                        {isLoading ? "LOGGING IN..." : "LOGIN WITH EMAIL"}
                       </button>
                     </form>
 
@@ -437,37 +608,44 @@ const handleSocialLogin = (method) => {
                   </div>
                 )}
 
-                <div className="Divider">
-                  <span>or continue with</span>
-                </div>
+                {/* Show social login options only for mobile login method */}
+                {loginMethod === "mobile" && (
+                  <>
+                    <div className="Divider">
+                      <span>or continue with</span>
+                    </div>
 
-                {/* Social Login */}
-                <div className="SocialLogin">
-                  <button
-                    className="SocialBtn GoogleBtn"
-                    onClick={() => handleSocialLogin("google")}
-                  >
-                    <i className="fab fa-google"></i>
-                    Google
-                  </button>
+                    {/* Social Login */}
+                    <div className="SocialLogin">
+                      <button
+                        className="SocialBtn GoogleBtn"
+                        onClick={() => handleSocialLogin("google")}
+                        disabled={isLoading}
+                      >
+                        <i className="fab fa-google"></i>
+                        {isLoading ? "Loading..." : "Google"}
+                      </button>
 
-                  <button
-                    className="SocialBtn FacebookBtn"
-                    onClick={() => handleSocialLogin("facebook")}
-                  >
-                    <i className="fab fa-facebook-f"></i>
-                    Facebook
-                  </button>
+                      <button
+                        className="SocialBtn FacebookBtn"
+                        onClick={() => handleSocialLogin("facebook")}
+                        disabled={isLoading}
+                      >
+                        <i className="fab fa-facebook-f"></i>
+                        {isLoading ? "Loading..." : "Facebook"}
+                      </button>
 
-
-                  <button
-                    className="SocialBtn EmailBtn"
-                    onClick={() => handleSocialLogin("email")}
-                  >
-                    <i className="fab fa-envelope"></i>
-                    Email
-                  </button>
-                </div>
+                      <button
+                        className="SocialBtn EmailBtn"
+                        onClick={() => handleSocialLogin("email")}
+                        disabled={isLoading}
+                      >
+                        <i className="fas fa-envelope"></i>
+                        {isLoading ? "Loading..." : "Email"}
+                      </button>
+                    </div>
+                  </>
+                )}
 
                 <div className="TermsText">
                   By logging in you are agreeing to our{" "}
@@ -512,6 +690,9 @@ const handleSocialLogin = (method) => {
                     <img
                       src={selectedProduct?.productimages?.[0] || require("../../assets/images/custom-1.png")}
                       alt="Product"
+                      onError={(e) => {
+                        e.target.src = "https://via.placeholder.com/80x80?text=Product";
+                      }}
                     />
                   </div>
                   <div className="ProductDetails">
