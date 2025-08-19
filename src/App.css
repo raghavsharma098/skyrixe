@@ -7,18 +7,21 @@
   margin-left: 0px;
   flex-wrap: wrap;
   justify-content: space-around;
-
   margin: 3px 25px;
   width: 95vw;
+  justify-content: space-between;
 }
 
 .card1 p {
   text-align: center;
   padding: 0px;
   margin: 0px 8px;
-  font-weight: 700;
-  font-size: 19px;
+  font-weight: 800;
+  font-size: 14px;
 
+}
+.card1 img{
+  width: 85px;
 }
 
 .card1 {
@@ -30,13 +33,10 @@
   height: 2px;
   width: 98.5vw;
   background-color: rgb(145, 143, 143);
-
 }
 
 .occ {
   text-align: center;
-
-
 }
 
 .dropdown-menu li a:hover {
@@ -92,7 +92,7 @@
   /*  flex: 0 0 25%;*/
   max-width: 25%;
   background-color: #fff;
-  height: 30vw;
+  height: 27vw;
   /* height: auto; */
   border-radius: 16px;
   box-shadow: 0 4px 4px #c2bebe;
@@ -242,7 +242,7 @@
   font-weight: var(--font-weight-black);
   font-size: clamp(2rem, 4vw, 3rem);
   margin: 0 0 var(--spacing-md);
-  line-height: 1.2;
+  margin-right: 120px;
 }
 
 .text h2 {
@@ -293,9 +293,9 @@
 }
 
 .top {
-  margin-top: 80px;
+  margin-top: 5px;
   ;
-  margin-bottom: 80px;
+  margin-bottom: 5px;
 
 }
 
