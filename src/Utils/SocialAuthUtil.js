@@ -2,21 +2,26 @@
 import { userDetailState } from "../reduxToolkit/Slices/ProductList/listApis";
 import { toast } from "react-toastify";
 
+// Your actual Google Client ID
 const GOOGLE_CLIENT_ID = "100748839589-chdc48opcq06i8kkijr3a9lbrfbq8vkd.apps.googleusercontent.com";
 
+// Google OAuth Integration
 export const initializeGoogleAuth = () => {
   return new Promise((resolve, reject) => {
+    // Check if Google script is already loaded
     if (window.google?.accounts?.id) {
       resolve();
       return;
     }
 
+    // Load Google OAuth script
     const script = document.createElement('script');
     script.src = 'https://accounts.google.com/gsi/client';
     script.async = true;
     script.defer = true;
     
     script.onload = () => {
+      // Initialize Google OAuth with the correct client ID
       try {
         window.google.accounts.id.initialize({
           client_id: GOOGLE_CLIENT_ID,
@@ -46,13 +51,14 @@ export const handleGoogleLogin = () => {
       initializeGoogleAuth()
         .then(() => {
           window.google.accounts.id.initialize({
-            client_id: GOOGLE_CLIENT_ID,
+            client_id: GOOGLE_CLIENT_ID, // Use the actual client ID here
             callback: (credentialResponse) => {
               try {
-                // console.log('Google credential response:', credentialResponse);
-
+                console.log('Google credential response:', credentialResponse);
+                
+                // Decode JWT token to get user info
                 const payload = JSON.parse(atob(credentialResponse.credential.split('.')[1]));
-                // console.log('Decoded payload:', payload);
+                console.log('Decoded payload:', payload);
                 
                 const userData = {
                   _id: `google_${payload.sub}`,
@@ -90,10 +96,10 @@ export const handleGoogleLogin = () => {
 
           // Use Google One Tap prompt
           window.google.accounts.id.prompt((notification) => {
-            // console.log('Google prompt notification:', notification);
+            console.log('Google prompt notification:', notification);
             
             if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-              // console.log('One Tap not displayed, falling back to popup');
+              console.log('One Tap not displayed, falling back to popup');
               
               // Fallback: Use popup instead of hidden button click
               window.google.accounts.id.disableAutoSelect();
@@ -215,14 +221,16 @@ export const handleGoogleLoginPopup = () => {
             client_id: GOOGLE_CLIENT_ID,
             callback: (credentialResponse) => {
               try {
+                // Clean up the popup
                 if (document.getElementById('google-signin-button')) {
                   document.body.removeChild(loginDiv);
                 }
                 
-                // console.log('Google credential response:', credentialResponse);
-              
+                console.log('Google credential response:', credentialResponse);
+                
+                // Decode JWT token to get user info
                 const payload = JSON.parse(atob(credentialResponse.credential.split('.')[1]));
-                // console.log('Decoded payload:', payload);
+                console.log('Decoded payload:', payload);
                 
                 const userData = {
                   _id: `google_${payload.sub}`,
@@ -257,6 +265,8 @@ export const handleGoogleLoginPopup = () => {
             },
             auto_select: false,
           });
+
+          // Render the actual Google button in the popup
           window.google.accounts.id.renderButton(loginDiv, {
             theme: 'outline',
             size: 'large',
@@ -285,6 +295,7 @@ export const handleGoogleLoginPopup = () => {
   });
 };
 
+// Facebook OAuth Integration (unchanged)
 export const initializeFacebookSDK = () => {
   return new Promise((resolve) => {
     if (window.FB) {
@@ -301,6 +312,8 @@ export const initializeFacebookSDK = () => {
       });
       resolve();
     };
+
+    // Load Facebook SDK
     const script = document.createElement('script');
     script.async = true;
     script.defer = true;
@@ -360,6 +373,7 @@ export const handleFacebookLogin = () => {
   });
 };
 
+// Rest of your utility functions remain the same...
 export const handleEmailPasswordLogin = async (email, password) => {
   try {
     await new Promise(resolve => setTimeout(resolve, 1000));
