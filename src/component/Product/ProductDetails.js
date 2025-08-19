@@ -1795,6 +1795,7 @@ const ProductDetails = () => {
         onHide={() => setShowBookingFlow(false)}
         onComplete={handleBookingFlowComplete}
         selectedProduct={getProductDetails?.data?.product}
+        user={userDetail}
       />
 
       {/* Fixed Bottom Booking Bar */}

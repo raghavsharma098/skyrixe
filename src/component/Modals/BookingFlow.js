@@ -1,18 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DateSelectionModal from "./DateSelectionModal";
 import TimeSlotModal from "./TimeSlotModal";
 import CustomizationsModal from "./CustomizationsModal";
 import LoginModal from "./LoginModal";
 
-const BookingFlow = ({ show, onHide, onComplete, selectedProduct }) => {
+const BookingFlow = ({ show, onHide, onComplete, selectedProduct, user }) => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [loginHandled, setLoginHandled] = useState(false);
+
   const [bookingDetails, setBookingDetails] = useState({
     selectedDate: null,
     selectedTimeSlot: null,
     selectedCustomizations: [],
   });
 
-  // Handlers for each step
+  const isLoggedIn = !!user;
+
+
+  useEffect(() => {
+    if (currentStep === 4 && isLoggedIn && !loginHandled) {
+      handleLoginSuccess({ user }); // pass user as loginData
+      setLoginHandled(true); // prevent double-calls
+    }
+  }, [currentStep, isLoggedIn, loginHandled]);
+
   const handleDateSelect = (date) => {
     const formattedDate = date.toLocaleDateString("en-US", {
       weekday: "long",
@@ -38,11 +49,12 @@ const BookingFlow = ({ show, onHide, onComplete, selectedProduct }) => {
   };
 
   const handleLoginSuccess = (loginData) => {
-    onComplete({ ...bookingDetails, loginData });
+    onComplete({ ...bookingDetails, loginData }); // 👈 Pass everything back to parent
     resetFlow();
   };
 
   const resetFlow = () => {
+    setLoginHandled(false); // ✅ Reset this flag
     setCurrentStep(1);
     setBookingDetails({
       selectedDate: null,
@@ -55,7 +67,6 @@ const BookingFlow = ({ show, onHide, onComplete, selectedProduct }) => {
   const goToNextStep = () => setCurrentStep((prev) => prev + 1);
   const goToPreviousStep = () => setCurrentStep((prev) => prev - 1);
 
-  // Edit handlers for order summary
   const handleEditDate = () => setCurrentStep(1);
   const handleEditTime = () => setCurrentStep(2);
   const handleEditCustomizations = () => setCurrentStep(3);
@@ -75,7 +86,7 @@ const BookingFlow = ({ show, onHide, onComplete, selectedProduct }) => {
         show={show && currentStep === 2}
         onHide={resetFlow}
         selectedDate={bookingDetails.selectedDate}
-       selectedProduct={selectedProduct} // Pass selectedProduct here too
+        selectedProduct={selectedProduct}
         onTimeSelect={handleTimeSelect}
         onBack={goToPreviousStep}
       />
@@ -91,17 +102,19 @@ const BookingFlow = ({ show, onHide, onComplete, selectedProduct }) => {
       />
 
       {/* Step 4: Login */}
-      <LoginModal
-        show={show && currentStep === 4}
-        onHide={resetFlow}
-        bookingDetails={bookingDetails}
-        selectedProduct={selectedProduct} // Pass the selectedProduct propy
-        onLoginSuccess={handleLoginSuccess}
-        onBack={goToPreviousStep}
-        onEditDate={handleEditDate}
-        onEditTime={handleEditTime}
-        onEditCustomizations={handleEditCustomizations}
-      />
+      {!isLoggedIn && (
+        <LoginModal
+          show={show && currentStep === 4}
+          onHide={resetFlow}
+          bookingDetails={bookingDetails}
+          selectedProduct={selectedProduct}
+          onLoginSuccess={handleLoginSuccess}
+          onBack={goToPreviousStep}
+          onEditDate={handleEditDate}
+          onEditTime={handleEditTime}
+          onEditCustomizations={handleEditCustomizations}
+        />
+      )}
     </>
   );
 };
