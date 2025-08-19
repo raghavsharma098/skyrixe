@@ -11,7 +11,7 @@ import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import { toast } from "react-toastify";
 import { addressListing } from "../../reduxToolkit/Slices/Auth/auth";
-import { slotListApi } from "../../reduxToolkit/Slices/ProductList/listApis";
+import { slotListApi, productDetails } from "../../reduxToolkit/Slices/ProductList/listApis";
 import { convertTimeFormat } from "../../Utils/commonFunctions";
 import Multiselect from "multiselect-react-dropdown";
 import RazorpayPayment from "./RazorpayPayment";
@@ -39,6 +39,12 @@ const initialState = {
   decorationLocation: "",
   aboutX: "",
   occasion: "",
+  // New states for edit functionality
+  productEditModal: false,
+  customEditModal: false,
+  availableCustomizations: [],
+  selectedCustomizations: [],
+  totalCustomPrice: 0,
   decorArea: [
     "Party Lawn",
     "Banquet",
@@ -78,13 +84,14 @@ const initialState = {
   addressModal: false,
   editMode: false,
 };
+
 const Checkout1 = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { getAddressList } = useSelector((state) => state.auth);
+  const { getProductDetails } = useSelector((state) => state.productList);
   const [iState, updateState] = useState(initialState);
-  // const [displayRazorpay, setDisplayRazorpay] = useState(false);
 
   const [options, setOptions] = useState([
     { name: "Same as product", id: 1 },
@@ -116,7 +123,14 @@ const Checkout1 = () => {
     occasionArr,
     mentionAge,
     ageBalloonColor,
+    // New states
+    productEditModal,
+    customEditModal,
+    availableCustomizations,
+    selectedCustomizations,
+    totalCustomPrice,
   } = iState;
+
   const { getOrderSummaryDetail } = useSelector(
     (state) => state.orderSummary
   );
@@ -126,19 +140,132 @@ const Checkout1 = () => {
   const state = location?.state;
   const userDetail = JSON.parse(window.localStorage.getItem("LennyUserDetail"));
 
+  // Handle product edit - redirect to product page
+  const handleEditProduct = (type) => {
+    if (type === "summary") {
+      // Navigate back to product details page for main product edit
+      const productData = {
+        _id: getOrderSummaryDetail?.data?.productId,
+        productDetails: {
+          productname: getOrderSummaryDetail?.data?.productName,
+        },
+      };
+      navigate("/products/product-details", { 
+        state: productData,
+        replace: false 
+      });
+    } else if (type === "custom") {
+      // Open customization edit modal
+      updateState({ ...iState, customEditModal: true });
+      // Fetch available customizations for this product
+      dispatch(productDetails({ id: getOrderSummaryDetail?.data?.productId }));
+    }
+  };
+
+  // Handle customization selection
+  const handleCustomizationToggle = (customItem) => {
+    const isSelected = selectedCustomizations.find(item => item._id === customItem._id);
+    let newSelectedCustomizations;
+    let newTotalPrice = totalCustomPrice;
+
+    if (isSelected) {
+      // Remove customization
+      newSelectedCustomizations = selectedCustomizations.filter(item => item._id !== customItem._id);
+      newTotalPrice -= (customItem.price * isSelected.quantity);
+    } else {
+      // Add customization
+      const newCustom = {
+        ...customItem,
+        quantity: 1,
+        _id: customItem._id,
+        name: customItem.name,
+        price: customItem.price,
+        customimages: customItem.customimages
+      };
+      newSelectedCustomizations = [...selectedCustomizations, newCustom];
+      newTotalPrice += customItem.price;
+    }
+
+    updateState({
+      ...iState,
+      selectedCustomizations: newSelectedCustomizations,
+      totalCustomPrice: newTotalPrice
+    });
+  };
+
+  // Handle quantity change for customizations
+  const handleQuantityChange = (customItem, action) => {
+    const updatedCustomizations = selectedCustomizations.map(item => {
+      if (item._id === customItem._id) {
+        const currentQty = item.quantity || 1;
+        let newQty = currentQty;
+        
+        if (action === 'increment') {
+          newQty = currentQty + 1;
+        } else if (action === 'decrement' && currentQty > 1) {
+          newQty = currentQty - 1;
+        }
+        
+        // Update total price
+        const priceDifference = (newQty - currentQty) * item.price;
+        updateState(prev => ({
+          ...prev,
+          totalCustomPrice: prev.totalCustomPrice + priceDifference
+        }));
+        
+        return { ...item, quantity: newQty };
+      }
+      return item;
+    });
+
+    updateState({
+      ...iState,
+      selectedCustomizations: updatedCustomizations
+    });
+  };
+
+  // Save customization changes
+  const handleSaveCustomizations = () => {
+    const customizationData = selectedCustomizations.map(item => ({
+      _id: item._id,
+      name: item.name,
+      price: item.price,
+      customimages: item.customimages,
+      quantity: item.quantity || 1
+    }));
+
+    const newTotalAmount = Number(getOrderSummaryDetail?.data?.price) + totalCustomPrice;
+
+    const data = {
+      detail: {
+        customization: customizationData,
+        totalAmount: newTotalAmount,
+        userId: getOrderSummaryDetail?.data?.userId,
+        productId: getOrderSummaryDetail?.data?.productId,
+      },
+      id: getOrderSummaryDetail?.data?._id,
+    };
+
+    dispatch(editCart(data)).then((res) => {
+      if (res?.payload?.status === 200) {
+        toast.success("Customizations updated successfully");
+        updateState({ ...iState, customEditModal: false });
+        dispatch(orderSummary({ userId: state?.userId }));
+      }
+    });
+  };
+
+  // Existing functions remain the same...
   const onSelect = (selectedList) => {
     setSelectedValue(selectedList);
-
-    // Add any other logic needed when an item is selected
   };
 
   const onRemove = (selectedList) => {
     setSelectedValue(selectedList);
-    // Add any other logic needed when an item is removed
   };
 
   const [orderDetails] = useState({
-    amount: null, // Amount in INR
+    amount: null,
     currency: "INR",
     orderId: null,
     name: null,
@@ -165,7 +292,6 @@ const Checkout1 = () => {
     }
   };
 
-
   const handleDateTimeSlot = () => {
     const data = {
       detail: {
@@ -178,16 +304,13 @@ const Checkout1 = () => {
     };
 
     dispatch(editCart(data)).then((res) => {
-      console.log({ res });
       if (res?.payload?.status == 200) {
         updateState({ ...iState, editModal: false });
-        toast?.success("Edit Successfully Successfully");
+        toast?.success("Date and time updated successfully");
         dispatch(orderSummary({ userId: state?.userId }));
       }
     });
   };
-
-  console.log({ decorArea });
 
   const handleCustomTrash = (item) => {
     const data = {
@@ -205,7 +328,6 @@ const Checkout1 = () => {
     };
 
     dispatch(editCart(data)).then((res) => {
-      console.log({ res });
       if (res?.payload?.status == 200) {
         toast?.success("Customization Deleted Successfully");
         dispatch(orderSummary({ userId: state?.userId }));
@@ -217,9 +339,7 @@ const Checkout1 = () => {
     const data = {
       id: getOrderSummaryDetail?.data?._id,
     };
-    console.log({ data });
     dispatch(deleteCartProduct(data)).then((res) => {
-      console.log({ res });
       if (res?.payload?.status == 200) {
         toast?.success(res?.payload?.message);
         dispatch(orderSummary({ userId: userDetail?._id }));
@@ -229,12 +349,36 @@ const Checkout1 = () => {
     });
   };
 
+  // Initialize customizations when modal opens
+  useEffect(() => {
+    if (customEditModal && getProductDetails?.data?.product?.productcustomizeDetails) {
+      const availableCustoms = getProductDetails.data.product.productcustomizeDetails;
+      const currentCustoms = getOrderSummaryDetail?.data?.productcustomizeDetails || [];
+      
+      // Map current customizations to selected state
+      const selectedCustoms = currentCustoms.map(current => ({
+        ...current,
+        quantity: current.quantity || 1
+      }));
+      
+      const totalPrice = selectedCustoms.reduce((sum, item) => 
+        sum + (item.price * (item.quantity || 1)), 0);
+
+      updateState({
+        ...iState,
+        availableCustomizations: availableCustoms,
+        selectedCustomizations: selectedCustoms,
+        totalCustomPrice: totalPrice
+      });
+    }
+  }, [customEditModal, getProductDetails, getOrderSummaryDetail]);
+
+  // Existing useEffect hooks remain the same...
   useEffect(() => {
     dispatch(orderSummary({ userId: state?.userId }));
   }, [state]);
 
   useEffect(() => {
-    console.log("yess");
     if (getOrderSummaryDetail) {
       updateState({
         ...iState,
@@ -275,21 +419,12 @@ const Checkout1 = () => {
     if (getSlotList) {
       updateState({
         ...iState,
-        // dateAdded: getSlotList?.date,
         minDate: minDate ? minDate : getSlotList?.date,
         slotList: getSlotList?.availableSlots,
       });
     }
   }, [getSlotList]);
-  console.log({
-    customization,
-    getOrderSummaryDetail,
-    state,
-    addressList,
-    ageBalloonColor,
-  });
 
-  // console.log(displayRazorpay,"displayRazorpay")
   return (
     <>
       <section className="CheckOutArea">
@@ -302,18 +437,17 @@ const Checkout1 = () => {
         <div className="container-fluid">
           <div className="row">
             <div className="col-lg-8 col-md-7">
+              {/* Existing sections remain the same until Product Summary */}
               <div className="BookingBox">
                 <h4>Booking Date and Time</h4>
                 <aside>
                   <div>
                     <h5>
-                      {" "}
                       <img src={require("../../assets/images/date.png")} />
                       {getOrderSummaryDetail?.data?.dateAdded}
                     </h5>
                     <p>
-                      {" "}
-                      <img src={require("../../assets/images/time.png")} />{" "}
+                      <img src={require("../../assets/images/time.png")} />
                       {getOrderSummaryDetail?.data?.slot}
                     </p>
                   </div>
@@ -325,6 +459,8 @@ const Checkout1 = () => {
                   </a>
                 </aside>
               </div>
+
+              {/* Existing venue address and other sections... */}
               <div className="VenueAddress">
                 <h4>Venue Address </h4>
                 {getAddressList?.data?.Addresses?.length > 0 ? (
@@ -374,9 +510,9 @@ const Checkout1 = () => {
                     </a>
                   </div>
                 )}
-
-                {/* <p>No Address found please add an Address</p> */}
               </div>
+
+              {/* Rest of the existing form sections remain the same... */}
               <div className="VenueAddress customChange">
                 <div className="row">
                   <div className="col-12 pl-0">
@@ -469,13 +605,6 @@ const Checkout1 = () => {
                       >
                         <div className="form-group">
                           <h6>Select Ballons color(Max 3)</h6>
-                          {/* <input
-                            type="text"
-                            className="form-control"
-                            name="ballonColor"
-                            value={ballonColor}
-                            onChange={handleInputChange}
-                          /> */}
                           <Multiselect
                             options={options}
                             selectedValues={selectedValue}
@@ -575,6 +704,7 @@ const Checkout1 = () => {
                 </div>
               </div>
 
+              {/* Product Box with Edit functionality */}
               <div className="ProductBox">
                 <aside>
                   <h4>Product</h4>
@@ -594,10 +724,6 @@ const Checkout1 = () => {
                   <figcaption>
                     <h5>{getOrderSummaryDetail?.data?.productName}</h5>
                     <p
-                      // data-tooltip-id="my-tooltip1"
-                      // data-tooltip-content={
-                      //   getOrderSummaryDetail?.data?.productDescription
-                      // }
                       dangerouslySetInnerHTML={{
                         __html:
                           getOrderSummaryDetail?.data?.productDescription
@@ -613,6 +739,8 @@ const Checkout1 = () => {
                   </figcaption>
                 </article>
               </div>
+
+              {/* Customization Products section */}
               <div className="CustomProduct">
                 <h4>Customizations Product</h4>
                 {customization?.length > 0
@@ -642,13 +770,16 @@ const Checkout1 = () => {
                   : "No Customization Added"}
               </div>
             </div>
+
+            {/* Right sidebar with Product Summary */}
             <div className="col-lg-4 col-md-5">
               <div className="ProductSummary">
+                {/* Product Summary section with functional Edit button */}
                 <div className="flex justify-between items-center">
                   <h3>Product Summary</h3>
                   <button
-                    className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600"
-                    // onClick={() => handleEditProduct("summary")}
+                    className="bg-blue-500 text-black px-3 py-1 rounded text-sm hover:bg-blue-600"
+                    onClick={() => handleEditProduct("summary")}
                   >
                     Edit
                   </button>
@@ -663,11 +794,12 @@ const Checkout1 = () => {
                   </tbody>
                 </table>
 
+                {/* Customizations section with functional Edit button */}
                 <div className="flex justify-between items-center mt-4">
                   <h3>Customizations Product</h3>
                   <button
-                    className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600"
-                    // onClick={() => handleEditProduct("custom")}
+                    className="bg-blue-500 text-black px-3 py-1 rounded text-sm hover:bg-blue-600"
+                    onClick={() => handleEditProduct("custom")}
                   >
                     Edit
                   </button>
@@ -731,24 +863,18 @@ const Checkout1 = () => {
                 <h3>Guaranteed Safe Checkout</h3>
               </div>
             </div>
-
           </div>
         </div>
       </section>
 
-      {/* edit Date and Slots */}
+      {/* Existing modals remain the same... */}
+      {/* Edit Date and Slots Modal */}
       <Modal
         centered
         className="ModalBox"
         show={editModal}
         onHide={() => updateState({ ...iState, editModal: false })}
       >
-        {/* <a
-          onClick={() =>updateState({...iState,editModal:false})}
-          className="CloseModal"
-        >
-          ×
-        </a> */}
         <div className="ModalArea">
           <h3>Edit Date and Slot</h3>
           <div className="FormArea">
@@ -776,7 +902,7 @@ const Checkout1 = () => {
                 <select
                   className="form-control"
                   name="slot"
-                  onClick={(e) =>
+                  onChange={(e) =>
                     updateState({ ...iState, slot: e.target.value })
                   }
                 >
@@ -816,19 +942,13 @@ const Checkout1 = () => {
         </div>
       </Modal>
 
-      {/* delete product */}
+      {/* Delete product modal */}
       <Modal
         centered
         className="ModalBox"
         show={deleteModal}
         onHide={() => updateState({ ...iState, deleteModal: false })}
       >
-        {/* <a
-          onClick={() =>updateState({...iState,deleteModal:false})}
-          className="CloseModal"
-        >
-          ×
-        </a> */}
         <div className="ModalArea">
           <h3>Are you sure you want to delete this Product?</h3>
           <div className="FormArea" style={{ display: "flex" }}>
@@ -845,7 +965,7 @@ const Checkout1 = () => {
         </div>
       </Modal>
 
-      {/* address list */}
+      {/* Address list modal */}
       <Modal
         centered
         className="ModalBox"
@@ -892,6 +1012,188 @@ const Checkout1 = () => {
           ) : (
             <p style={{ textAlign: "center" }}>No Address Found.</p>
           )}
+        </div>
+      </Modal>
+
+      {/* NEW: Customization Edit Modal */}
+      <Modal
+        className="ModalBox LargeModal"
+        show={customEditModal}
+        onHide={() => updateState({ 
+          ...iState, 
+          customEditModal: false,
+          selectedCustomizations: [],
+          totalCustomPrice: 0
+        })}
+        size="xl"
+      >
+        <div className="ModalArea">
+          <div className="modal-header d-flex justify-content-between align-items-center mb-4">
+            <h3>Edit Customizations</h3>
+            <button
+              type="button"
+              className="btn-close"
+              onClick={() => updateState({ 
+                ...iState, 
+                customEditModal: false,
+                selectedCustomizations: [],
+                totalCustomPrice: 0
+              })}
+            >
+              ×
+            </button>
+          </div>
+
+          <div className="FormArea">
+            <div className="CustomizationsArea Modal">
+              <div className="scrollDiv" style={{ maxHeight: '500px', overflowY: 'auto' }}>
+                <div className="row gy-4">
+                  {availableCustomizations?.length > 0 ? (
+                    availableCustomizations.map((item, i) => {
+                      const isSelected = selectedCustomizations.find(custom => custom._id === item._id);
+                      const selectedQuantity = isSelected ? isSelected.quantity : 0;
+                      
+                      return (
+                        <div className="col-lg-3 col-md-4 col-sm-6 col-6" key={i}>
+                          <div className="PrivateDiningBox customeDiningBox">
+                            <figure>
+                              <img src={item?.customimages} alt={item?.name} />
+                            </figure>
+                            <h6 style={{ marginLeft: "2px" }}>{item?.name}</h6>
+
+                            <div className="Info">
+                              <h5 style={{ marginLeft: "2px" }}>₹{item?.price}</h5>
+
+                              {/* Quantity controls - show only if selected */}
+                              {isSelected && (
+                                <div className="quantityBtn" style={{ marginBottom: "3px" }}>
+                                  <span
+                                    className="Btn"
+                                    onClick={() => handleQuantityChange(item, 'decrement')}
+                                    style={{ 
+                                      cursor: selectedQuantity <= 1 ? 'not-allowed' : 'pointer',
+                                      opacity: selectedQuantity <= 1 ? 0.5 : 1
+                                    }}
+                                  >
+                                    -
+                                  </span>
+                                  <span style={{ margin: '0 2px', fontWeight: 'bold' }}>
+                                    {selectedQuantity}
+                                  </span>
+                                  <span
+                                    className="Btn"
+                                    onClick={() => handleQuantityChange(item, 'increment')}
+                                    style={{ cursor: 'pointer' }}
+                                  >
+                                    +
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+
+                            <div className="Info">
+                              {/* Toggle button for add/remove */}
+                              <button
+                                className={`AddToCartBtn ${isSelected ? 'selected' : ''}`}
+                                onClick={() => handleCustomizationToggle(item)}
+                                style={{
+                                  backgroundColor: isSelected ? "#e93030" : "#6C2EB6",
+                                  color: "white",
+                                  border: "none",
+                                  padding: "8px 16px",
+                                  borderRadius: "4px",
+                                  cursor: "pointer",
+                                  width: "100%",
+                                  marginTop: "1px",
+                                  marginLeft: "2px",
+                                  marginRight: "2px"
+                                }}
+                              >
+                                {isSelected ? (
+                                  <>
+                                    Remove <i className="fa-solid fa-xmark" style={{ marginLeft: "5px" }}></i>
+                                  </>
+                                ) : (
+                                  <>
+                                    Add to Cart <i className="fa-solid fa-plus" style={{ marginLeft: "5px" }}></i>
+                                  </>
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div className="col-12">
+                      <p style={{ textAlign: "center", padding: "20px" }}>
+                        No customizations available for this product
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Summary section */}
+            <div className="customization-summary mt-4 p-3" style={{ 
+              backgroundColor: "#f8f9fa", 
+              borderRadius: "8px",
+              border: "1px solid #dee2e6",
+            }}>
+              <div className="d-flex justify-content-between align-items-center mb-3 ">
+                <h5 className="mb-0">Selected Customizations</h5>
+                <h4 className="mb-0 text-primary">Total: ₹{totalCustomPrice}</h4>
+              </div>
+              
+              {selectedCustomizations.length > 0 ? (
+                <div className="selected-items">
+                  {selectedCustomizations.map((item, i) => (
+                    <div key={i} className="d-flex justify-content-between align-items-center py-2" 
+                         style={{ borderBottom: i < selectedCustomizations.length - 1 ? "1px solid #dee2e6" : "none" }}>
+                      <div>
+                        <span className="fw-bold">{item.name}</span>
+                        <small className="text-muted d-block">₹{item.price} x {item.quantity}</small>
+                      </div>
+                      <div className="text-end">
+                        <span className="fw-bold">₹{item.price * item.quantity}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-muted mb-0">No customizations selected</p>
+              )}
+            </div>
+
+            {/* Action buttons */}
+            <div className="d-flex justify-content-end gap-3 mt-4">
+              <button
+                className="btn btn-secondary px-4"
+                onClick={() => updateState({ 
+                  ...iState, 
+                  customEditModal: false,
+                  selectedCustomizations: [],
+                  totalCustomPrice: 0
+                })}
+              >
+                Cancel
+              </button>
+              
+              <button
+                className="btn btn-primary px-4"
+                onClick={handleSaveCustomizations}
+                disabled={!selectedCustomizations.length}
+                style={{
+                  backgroundColor: "green",
+                  opacity: !selectedCustomizations.length ? 0.6 : 1,
+                  cursor: !selectedCustomizations.length ? 'not-allowed' : 'pointer'
+                }}
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
         </div>
       </Modal>
 
