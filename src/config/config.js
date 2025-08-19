@@ -6,3 +6,5 @@ export const credAndUrl = {
     ACCESS_KEY_ID: process.env.REACT_APP_BUCKET_ACCESSKEYID,
     SECRET_ACCESS_KEY: process.env.REACT_APP_BUCKET_SECRETACCESSKEY,
 }
+
+//https://backend.thebrandcabin.com/api/v1/',

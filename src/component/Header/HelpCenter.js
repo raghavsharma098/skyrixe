@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../../assets/css/style.css";
+import "../../assets/css/style.css" ;
 
 const HelpCenter = () => {
   const [showHelpModal, setShowHelpModal] = useState(false);
@@ -20,7 +20,7 @@ const HelpCenter = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    toast.success("✅ Your enquiry has been submitted successfully!", {
+    toast.success("Your enquiry has been submitted successfully!", {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: false,

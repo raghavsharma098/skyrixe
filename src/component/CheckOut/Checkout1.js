@@ -388,23 +388,23 @@ const Checkout1 = () => {
                   </div>
                   {decorArea?.length > 0
                     ? decorArea?.map((item, i) => {
-                        return (
-                          <div className="col-sm-6 col-12" key={i}>
-                            <div className="form-group">
-                              <label className="Radio">
-                                <p>{item}</p>
-                                <input
-                                  name="decorationLocation"
-                                  value={item}
-                                  type="radio"
-                                  onChange={handleInputChange}
-                                />
-                                <span className="checkmark" />
-                              </label>
-                            </div>
+                      return (
+                        <div className="col-sm-6 col-12" key={i}>
+                          <div className="form-group">
+                            <label className="Radio">
+                              <p>{item}</p>
+                              <input
+                                name="decorationLocation"
+                                value={item}
+                                type="radio"
+                                onChange={handleInputChange}
+                              />
+                              <span className="checkmark" />
+                            </label>
                           </div>
-                        );
-                      })
+                        </div>
+                      );
+                    })
                     : ""}
                 </div>
                 <div className="row">
@@ -415,23 +415,23 @@ const Checkout1 = () => {
                   </div>
                   {aboutArr?.length > 0
                     ? aboutArr?.map((item, i) => {
-                        return (
-                          <div className="col-sm-6 col-12" key={i}>
-                            <div className="form-group">
-                              <label className="Radio">
-                                <p>{item}</p>
-                                <input
-                                  name="aboutX"
-                                  type="radio"
-                                  value={item}
-                                  onChange={handleInputChange}
-                                />
-                                <span className="checkmark" />
-                              </label>
-                            </div>
+                      return (
+                        <div className="col-sm-6 col-12" key={i}>
+                          <div className="form-group">
+                            <label className="Radio">
+                              <p>{item}</p>
+                              <input
+                                name="aboutX"
+                                type="radio"
+                                value={item}
+                                onChange={handleInputChange}
+                              />
+                              <span className="checkmark" />
+                            </label>
                           </div>
-                        );
-                      })
+                        </div>
+                      );
+                    })
                     : ""}
                 </div>
                 <div className="row">
@@ -442,23 +442,23 @@ const Checkout1 = () => {
                   </div>
                   {occasionArr?.length > 0
                     ? occasionArr?.map((item, i) => {
-                        return (
-                          <div className="col-sm-6 col-12" key={i}>
-                            <div className="form-group">
-                              <label className="Radio">
-                                <p>{item}</p>
-                                <input
-                                  name="occasion"
-                                  value={item}
-                                  type="radio"
-                                  onChange={handleInputChange}
-                                />
-                                <span className="checkmark" />
-                              </label>
-                            </div>
+                      return (
+                        <div className="col-sm-6 col-12" key={i}>
+                          <div className="form-group">
+                            <label className="Radio">
+                              <p>{item}</p>
+                              <input
+                                name="occasion"
+                                value={item}
+                                type="radio"
+                                onChange={handleInputChange}
+                              />
+                              <span className="checkmark" />
+                            </label>
                           </div>
-                        );
-                      })
+                        </div>
+                      );
+                    })
                     : ""}
 
                   <form style={{ marginTop: "5px" }}>
@@ -603,9 +603,9 @@ const Checkout1 = () => {
                           getOrderSummaryDetail?.data?.productDescription
                             ?.length > 100
                             ? getOrderSummaryDetail?.data?.productDescription?.slice(
-                                0,
-                                100
-                              ) + "..."
+                              0,
+                              100
+                            ) + "..."
                             : getOrderSummaryDetail?.data?.productDescription,
                       }}
                     ></p>
@@ -617,34 +617,43 @@ const Checkout1 = () => {
                 <h4>Customizations Product</h4>
                 {customization?.length > 0
                   ? customization?.map((item, i) => {
-                      return (
-                        <article key={i}>
-                          <figure>
-                            <img src={item?.customimages} />
-                          </figure>
-                          <figcaption>
-                            <h2>{item?.name}</h2>
-                            <h3>
-                              ₹{item?.price} x {item?.quantity}
-                            </h3>
-                          </figcaption>
-                          <a
-                            className="TrashIcon"
-                            onClick={() => handleCustomTrash(item)}
-                          >
-                            <img
-                              src={require("../../assets/images/trash.png")}
-                            />
-                          </a>
-                        </article>
-                      );
-                    })
+                    return (
+                      <article key={i}>
+                        <figure>
+                          <img src={item?.customimages} />
+                        </figure>
+                        <figcaption>
+                          <h2>{item?.name}</h2>
+                          <h3>
+                            ₹{item?.price} x {item?.quantity}
+                          </h3>
+                        </figcaption>
+                        <a
+                          className="TrashIcon"
+                          onClick={() => handleCustomTrash(item)}
+                        >
+                          <img
+                            src={require("../../assets/images/trash.png")}
+                          />
+                        </a>
+                      </article>
+                    );
+                  })
                   : "No Customization Added"}
               </div>
             </div>
             <div className="col-lg-4 col-md-5">
               <div className="ProductSummary">
-                <h3>Product Summary</h3>
+                <div className="flex justify-between items-center">
+                  <h3>Product Summary</h3>
+                  <button
+                    className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600"
+                    onClick={() => handleEditProduct("summary")}
+                  >
+                    Edit
+                  </button>
+                </div>
+
                 <table>
                   <tbody>
                     <tr>
@@ -653,41 +662,45 @@ const Checkout1 = () => {
                     </tr>
                   </tbody>
                 </table>
-                <h3>Customizations Product</h3>
+
+                <div className="flex justify-between items-center mt-4">
+                  <h3>Customizations Product</h3>
+                  <button
+                    className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600"
+                    onClick={() => handleEditProduct("custom")}
+                  >
+                    Edit
+                  </button>
+                </div>
+
                 <table>
                   <tbody>
-                    {getOrderSummaryDetail?.data?.productcustomizeDetails
-                      ?.length > 0
-                      ? getOrderSummaryDetail?.data?.productcustomizeDetails?.map(
-                          (item, i) => {
-                            return (
-                              <tr
-                                key={i}
-                                className={
-                                  i ==
-                                  getOrderSummaryDetail?.data
-                                    ?.productcustomizeDetails?.length -
-                                    1
-                                    ? "CustomBottom"
-                                    : ""
-                                }
-                              >
-                                <td>{item?.name}</td>
-                                <td>
-                                  ₹{item?.price} x {item?.quantity}
-                                </td>
-                              </tr>
-                            );
-                          }
-                        )
+                    {getOrderSummaryDetail?.data?.productcustomizeDetails?.length > 0
+                      ? getOrderSummaryDetail?.data?.productcustomizeDetails?.map((item, i) => {
+                        return (
+                          <tr
+                            key={i}
+                            className={
+                              i ==
+                                getOrderSummaryDetail?.data?.productcustomizeDetails?.length - 1
+                                ? "CustomBottom"
+                                : ""
+                            }
+                          >
+                            <td>{item?.name}</td>
+                            <td>
+                              ₹{item?.price} x {item?.quantity}
+                            </td>
+                          </tr>
+                        );
+                      })
                       : ""}
-
                     <tr className="CustomTr">
                       <td>Total Price</td>
                       <td>₹{getOrderSummaryDetail?.data?.totalAmount}</td>
                     </tr>
                     <tr className="CustomTr">
-                      <td>Tax &amp; Fee</td>
+                      <td>Tax & Fee</td>
                       <td>₹0</td>
                     </tr>
                   </tbody>
@@ -698,6 +711,7 @@ const Checkout1 = () => {
                     </tr>
                   </tfoot>
                 </table>
+
                 <RazorpayPayment
                   orderDetails={orderDetails}
                   getOrderSummaryDetail={getOrderSummaryDetail}
@@ -705,27 +719,19 @@ const Checkout1 = () => {
                   selectedValue={selectedValue}
                 />
               </div>
+
               <div className="CommonGreyBox">
                 <ul>
-                  <li>
-                    <img src={require("../../assets/images/method-1.png")} />
-                  </li>
-                  <li>
-                    <img src={require("../../assets/images/method-2.png")} />
-                  </li>
-                  <li>
-                    <img src={require("../../assets/images/method-3.png")} />
-                  </li>
-                  <li>
-                    <img src={require("../../assets/images/method-4.png")} />
-                  </li>
-                  <li>
-                    <img src={require("../../assets/images/method-5.png")} />
-                  </li>
+                  <li><img src={require("../../assets/images/method-1.png")} /></li>
+                  <li><img src={require("../../assets/images/method-2.png")} /></li>
+                  <li><img src={require("../../assets/images/method-3.png")} /></li>
+                  <li><img src={require("../../assets/images/method-4.png")} /></li>
+                  <li><img src={require("../../assets/images/method-5.png")} /></li>
                 </ul>
                 <h3>Guaranteed Safe Checkout</h3>
               </div>
             </div>
+
           </div>
         </div>
       </section>
@@ -779,26 +785,26 @@ const Checkout1 = () => {
                   </option>
                   {slotList?.length > 0
                     ? slotList?.map((item, i) => {
-                        return (
-                          <option
-                            selected={
-                              slot ==
-                              `${convertTimeFormat(
-                                item?.startTime,
-                                item?.endTime
-                              )}`
-                            }
-                            key={i}
-                            value={`${convertTimeFormat(
+                      return (
+                        <option
+                          selected={
+                            slot ==
+                            `${convertTimeFormat(
                               item?.startTime,
                               item?.endTime
-                            )}`}
-                          >{`${convertTimeFormat(
+                            )}`
+                          }
+                          key={i}
+                          value={`${convertTimeFormat(
                             item?.startTime,
                             item?.endTime
-                          )}`}</option>
-                        );
-                      })
+                          )}`}
+                        >{`${convertTimeFormat(
+                          item?.startTime,
+                          item?.endTime
+                        )}`}</option>
+                      );
+                    })
                     : ""}
                 </select>
               </div>
