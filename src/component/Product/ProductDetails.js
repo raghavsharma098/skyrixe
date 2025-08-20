@@ -10,7 +10,7 @@ import {
 import { toast, useToast } from "react-toastify";
 import { Modal } from "react-bootstrap";
 import { addtoCart } from "../../reduxToolkit/Slices/Cart/bookingApis";
-import { convertTimeFormat, formatDate } from "../../Utils/commonFunctions";
+import { convertTimeFormat, formatDate, addToRecentlyViewed, getRecentlyViewed, clearRecentlyViewed } from "../../Utils/commonFunctions.js";
 import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.min.css";
 import Lightbox from "react-image-lightbox";
@@ -50,7 +50,8 @@ const initialState = {
     photos: []
   },
   hoveredRating: 0,
-  isSubmittingReview: false
+  isSubmittingReview: false,
+  recentlyViewedProducts: []
 };
 
 const ProductDetails = () => {
@@ -103,7 +104,8 @@ const ProductDetails = () => {
     showAddReviewModal,
     reviewData,
     hoveredRating,
-    isSubmittingReview
+    isSubmittingReview,
+    recentlyViewedProducts
   } = iState;
   const { getProductDetails, getSlotList, getStaticSlotList, loader } =
     useSelector((state) => state.productList);
@@ -790,6 +792,31 @@ const ProductDetails = () => {
       };
     }
   }, [getProductDetails?.data?.similarProducts]);
+
+  useEffect(() => {
+    const recentlyViewed = getRecentlyViewed();
+    updateState({
+      ...iState,
+      recentlyViewedProducts: recentlyViewed
+    });
+  }, []);
+
+  useEffect(() => {
+    if (getProductDetails?.data?.product) {
+      // Add current product to recently viewed
+      const updatedRecentlyViewed = addToRecentlyViewed(getProductDetails.data.product);
+
+      // Update state with new recently viewed list (excluding current product)
+      const filteredRecentlyViewed = updatedRecentlyViewed.filter(
+        product => product._id !== getProductDetails.data.product._id
+      );
+
+      updateState({
+        ...iState,
+        recentlyViewedProducts: filteredRecentlyViewed
+      });
+    }
+  }, [getProductDetails]);
 
   const FixedBottomBookingBar = ({
     productPrice,
@@ -1680,6 +1707,7 @@ const ProductDetails = () => {
       </div>
 
       {/* Recently Viewed Section */}
+      {/* Recently Viewed Section */}
       <div className="recently-viewed-section">
         <div className="container-fluid">
           <div className="section-header">
@@ -1689,9 +1717,9 @@ const ProductDetails = () => {
           </div>
 
           <div className="recently-viewed-grid">
-            {getProductDetails?.data?.recentlyViewed?.length > 0 ? (
-              getProductDetails?.data?.recentlyViewed?.map((item, i) => (
-                <div className="recently-viewed-card" key={i}>
+            {recentlyViewedProducts?.length > 0 ? (
+              recentlyViewedProducts?.slice(0, 8)?.map((item, i) => (
+                <div className="recently-viewed-card" key={item._id || i}>
                   <div className="recently-viewed-image-wrapper">
                     <img
                       onClick={() => handleProduct(item)}
@@ -1701,14 +1729,25 @@ const ProductDetails = () => {
                     />
 
                     {/* Favorite Button */}
-                    <button className="recently-viewed-favorite">
-                      <i className="fa-regular fa-heart"></i>
+                    <button
+                      className="recently-viewed-favorite"
+                      onClick={() => handleFavouriteToggle(item._id)}
+                    >
+                      <i className={favouriteProducts.includes(item._id) ? "fa-solid fa-heart" : "fa-regular fa-heart"}></i>
                     </button>
 
-                    {/* Location Badge */}
-                    <div className="location-badge">
-                      At Your Location
-                    </div>
+
+                    {/* Discount Badge */}
+                    {item?.priceDetails?.discountedPrice && (
+                      <div className="discount-badge">
+                        {Math.round(
+                          ((Number(item?.priceDetails?.price) -
+                            Number(item?.priceDetails?.discountedPrice)) /
+                            Number(item?.priceDetails?.price)) *
+                          100
+                        )}% OFF
+                      </div>
+                    )}
 
                     {/* Hover Overlay */}
                     <div className="recently-viewed-overlay">
@@ -1728,9 +1767,20 @@ const ProductDetails = () => {
                     </h3>
 
                     <div className="recently-viewed-pricing">
-                      <span className="recently-viewed-price">
-                        ₹{item?.priceDetails?.discountedPrice || item?.priceDetails?.price}
-                      </span>
+                      {item?.priceDetails?.discountedPrice ? (
+                        <div className="price-container">
+                          <span className="recently-viewed-price">
+                            ₹{item?.priceDetails?.discountedPrice}
+                          </span>
+                          <span className="recently-viewed-original-price">
+                            ₹{item?.priceDetails?.price}
+                          </span>
+                        </div>
+                      ) : (
+                        <span className="recently-viewed-price">
+                          ₹{item?.priceDetails?.price}
+                        </span>
+                      )}
                     </div>
 
                     <div className="recently-viewed-rating">
@@ -1743,16 +1793,45 @@ const ProductDetails = () => {
                         {(4.0 + (i * 0.2)).toFixed(1)}
                       </span>
                     </div>
+
+                    {/* Add "Viewed on" timestamp */}
+                    <div className="recently-viewed-timestamp">
+                      <i className="fa-solid fa-clock"></i>
+                      <span>Recently viewed</span>
+                    </div>
                   </div>
                 </div>
               ))
             ) : (
               <div className="no-recently-viewed">
                 <i className="fa-solid fa-clock-rotate-left"></i>
-                <p>No recently viewed items</p>
+                <div className="no-recently-viewed-content">
+                  <h4>No recently viewed items</h4>
+                  <p>Products you view will appear here</p>
+                  
+                </div>
               </div>
             )}
           </div>
+
+          {/* Clear Recently Viewed Button */}
+          {recentlyViewedProducts?.length > 0 && (
+            <div className="recently-viewed-actions">
+              <button
+                className="clear-recently-viewed-btn"
+                onClick={() => {
+                  clearRecentlyViewed();
+                  updateState({
+                    ...iState,
+                    recentlyViewedProducts: []
+                  });
+                }}
+              >
+                <i className="fa-solid fa-trash"></i>
+                Clear Recently Viewed
+              </button>
+            </div>
+          )}
         </div>
       </div>
 

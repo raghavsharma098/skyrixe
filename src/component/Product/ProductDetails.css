@@ -2287,6 +2287,45 @@
   padding: 0;
 }
 
+.recently-viewed-timestamp {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 5px;
+}
+
+.no-recently-viewed-content {
+  text-align: center;
+  padding: 20px;
+}
+
+.recently-viewed-actions {
+  text-align: center;
+  margin-top: 20px;
+}
+.clear-recently-viewed-btn {
+  background: black;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.clear-recently-viewed-btn:hover {
+  background: var(--border-gray);
+}
+
+.recently-viewed-original-price {
+  text-decoration: line-through;
+  color: #999;
+  margin-left: 5px;
+  font-size: 0.9em;
+}
+
 .recently-viewed-card {
   background: white;
   border-radius: 12px;
@@ -2356,7 +2395,7 @@
 }
 
 .recently-viewed-favorite i {
-  color: #ccc;
+  color: #FF1493;
   font-size: 1rem;
   transition: color 0.3s ease;
 }

@@ -29,3 +29,50 @@ export function formatDate(inputDate) {
   const [year, month, day] = inputDate.split("-");
   return `${parseInt(day)} ${months[parseInt(month) - 1]} ${year}`;
 }
+
+// Utility function to add a product to the recently viewed list
+
+export const addToRecentlyViewed = (product) => {
+  try {
+    // Get existing recently viewed products from localStorage
+    const existingRecentlyViewed = JSON.parse(
+      localStorage.getItem('LennyRecentlyViewed') || '[]'
+    );
+
+    // Remove the product if it already exists (to avoid duplicates)
+    const filteredProducts = existingRecentlyViewed.filter(
+      item => item._id !== product._id
+    );
+
+    // Add the new product to the beginning of the array
+    const updatedRecentlyViewed = [product, ...filteredProducts];
+
+    // Keep only the last 10 products
+    const limitedRecentlyViewed = updatedRecentlyViewed.slice(0, 10);
+
+    // Save back to localStorage
+    localStorage.setItem('LennyRecentlyViewed', JSON.stringify(limitedRecentlyViewed));
+
+    return limitedRecentlyViewed;
+  } catch (error) {
+    console.error('Error adding to recently viewed:', error);
+    return [];
+  }
+};
+
+export const getRecentlyViewed = () => {
+  try {
+    return JSON.parse(localStorage.getItem('LennyRecentlyViewed') || '[]');
+  } catch (error) {
+    console.error('Error getting recently viewed:', error);
+    return [];
+  }
+};
+
+export const clearRecentlyViewed = () => {
+  try {
+    localStorage.removeItem('LennyRecentlyViewed');
+  } catch (error) {
+    console.error('Error clearing recently viewed:', error);
+  }
+};
