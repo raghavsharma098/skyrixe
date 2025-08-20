@@ -39,6 +39,9 @@ const initialState = {
   productId: "",
   review: "",
   review_image: "",
+  cancelModal: false,
+  orderToCancel: null,
+  cancellingOrders: [], // Track orders being cancelled
 };
 
 const Profile = () => {
@@ -67,6 +70,9 @@ const Profile = () => {
     productId,
     review,
     review_image,
+    cancelModal,
+    orderToCancel,
+    cancellingOrders,
   } = iState;
   const { type } = useParams();
   const navigate = useNavigate();
@@ -202,14 +208,119 @@ const Profile = () => {
         console.log({ res });
         if (res?.payload?.status == 200) {
           toast.success("Review Submit Successfully!!");
-          updateState({ ...iState, reviewModal: false, productId: "" });
+          updateState({ 
+            ...iState, 
+            reviewModal: false, 
+            productId: "",
+            review: "",
+            review_image: "",
+          });
+          setStarsLength(5);
         } else {
           toast.error("Error");
         }
       })
       .catch((err) => {
         console.log({ err });
+        toast.error("Error submitting review");
       });
+  };
+
+  const handleCancelOrder = (order) => {
+    updateState({
+      ...iState,
+      cancelModal: true,
+      orderToCancel: order,
+    });
+  };
+
+  const confirmCancelOrder = () => {
+    if (orderToCancel) {
+      // Ensure cancellingOrders is an array before spreading
+      const currentCancellingOrders = Array.isArray(cancellingOrders) ? cancellingOrders : [];
+      
+      // Add order to cancelling list to show loading state
+      const updatedState = {
+        ...iState,
+        cancelModal: false,
+        orderToCancel: null,
+        cancellingOrders: [...currentCancellingOrders, orderToCancel._id],
+      };
+      
+      updateState(updatedState);
+
+      const cancelData = {
+        orderId: orderToCancel._id,
+        userId: userDetail?._id,
+      };
+
+      // Mock API call - Replace this with your actual API implementation
+      const mockCancelOrder = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          // Simulate successful cancellation
+          resolve({
+            payload: {
+              status: 200,
+              data: {
+                message: "Order cancelled successfully"
+              }
+            }
+          });
+        }, 2000); // Increased to 2 seconds to better show the loading state
+      });
+
+      mockCancelOrder
+        .then((res) => {
+          if (res?.payload?.status === 200) {
+            toast.success("Order cancelled successfully!");
+            // Refresh the orders
+            dispatch(upcomingBooking({ userId: userDetail?._id }));
+            dispatch(pastBooking({ userId: userDetail?._id }));
+          } else {
+            toast.error("Failed to cancel order");
+          }
+        })
+        .catch((err) => {
+          console.log({ err });
+          toast.error("Error cancelling order");
+        })
+        .finally(() => {
+          // Remove order from cancelling list using the updated state
+          const finalCancellingOrders = Array.isArray(updatedState.cancellingOrders) 
+            ? updatedState.cancellingOrders.filter(id => id !== orderToCancel._id)
+            : [];
+            
+          updateState(prevState => ({
+            ...prevState,
+            cancellingOrders: finalCancellingOrders,
+          }));
+        });
+
+      // TODO: Replace the above mock implementation with:
+      // dispatch(cancelOrder(cancelData))
+      //   .then((res) => {
+      //     if (res?.payload?.status === 200) {
+      //       toast.success("Order cancelled successfully!");
+      //       dispatch(upcomingBooking({ userId: userDetail?._id }));
+      //       dispatch(pastBooking({ userId: userDetail?._id }));
+      //     } else {
+      //       toast.error("Failed to cancel order");
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log({ err });
+      //     toast.error("Error cancelling order");
+      //   })
+      //   .finally(() => {
+      //     const finalCancellingOrders = Array.isArray(updatedState.cancellingOrders) 
+      //       ? updatedState.cancellingOrders.filter(id => id !== orderToCancel._id)
+      //       : [];
+      //     updateState(prevState => ({
+      //       ...prevState,
+      //       cancellingOrders: finalCancellingOrders,
+      //     }));
+      //   });
+    }
   };
 
   const handleLogout = () => {
@@ -239,6 +350,14 @@ const Profile = () => {
     });
   };
 
+  const openReviewModal = (productId) => {
+    updateState({
+      ...iState,
+      reviewModal: true,
+      productId: productId,
+    });
+  };
+
   useEffect(() => {
     let newState = { ...iState };
     if (additional_phone?.length >= 10) {
@@ -251,6 +370,7 @@ const Profile = () => {
   }, [additional_phone]);
 
   console.log({ starLength, review_image, addressListing });
+  
   return (
     <>
       <section className="CheckOutArea">
@@ -361,8 +481,11 @@ const Profile = () => {
                       </article>
                     </div>
                   </Tab.Pane>
+                  
+                  {/* My Orders Tab - Current/Upcoming Orders */}
                   <Tab.Pane className="tab-pane" eventKey="upcoming-bookings">
                     <div className="PastBookingArea">
+                      <h4 style={{ marginBottom: "20px" }}>My Current Orders</h4>
                       {getUpcomingBooking?.data?.length > 0 ? (
                         getUpcomingBooking?.data?.map((item, i) => {
                           return (
@@ -411,22 +534,23 @@ const Profile = () => {
                                   )}
                                 </figcaption>
                               </article>
+                              
                               {item?.productcustomizeDetails?.length > 0 ? (
                                 <div className="PastCutomBookingBox" key={i}>
                                   <h6>Product Customizations</h6>
                                   {item?.productcustomizeDetails?.length > 0
                                     ? item?.productcustomizeDetails?.map(
-                                        (item, i) => {
+                                        (customItem, customIndex) => {
                                           return (
-                                            <article key={i}>
+                                            <article key={customIndex}>
                                               <figure>
-                                                <img src={item?.customimages} />
+                                                <img src={customItem?.customimages} />
                                               </figure>
                                               <figcaption>
-                                                <p>{item?.name}</p>
+                                                <p>{customItem?.name}</p>
                                                 <h3>
-                                                  ₹{item?.price}X
-                                                  {item?.quantity}
+                                                  ₹{customItem?.price}X
+                                                  {customItem?.quantity}
                                                 </h3>
                                               </figcaption>
                                             </article>
@@ -440,22 +564,74 @@ const Profile = () => {
                               )}
 
                               <div className="timeSlot">
-                                <h5>
-                                  {" "}
-                                  <img
-                                    src={require("../../assets/images/date.png")}
-                                  />
-                                  {formatDate(
-                                    item?.placedon?.split("T")?.at(0)
+                                <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+                                  <h5>
+                                    <img
+                                      src={require("../../assets/images/date.png")}
+                                    />
+                                    {formatDate(
+                                      item?.placedon?.split("T")?.at(0)
+                                    )}
+                                  </h5>
+                                  <p>
+                                    <img
+                                      src={require("../../assets/images/time.png")}
+                                    />
+                                    {item?.slot}
+                                  </p>
+                                </div>
+                                
+                                {/* Cancel Order Button with Loading State */}
+                                <div style={{ marginTop: "10px" }}>
+                                  {Array.isArray(cancellingOrders) && cancellingOrders.includes(item._id) ? (
+                                    <button
+                                      className="btn btn-secondary"
+                                      style={{
+                                        backgroundColor: "#6c757d",
+                                        border: "none",
+                                        padding: "8px 16px",
+                                        borderRadius: "4px",
+                                        color: "white",
+                                        fontSize: "14px",
+                                        cursor: "not-allowed",
+                                      }}
+                                      disabled
+                                    >
+                                      Cancelled
+                                    </button>
+                                  ) : item.status === "cancelled" ? (
+                                    <button
+                                      className="btn btn-secondary"
+                                      style={{
+                                        backgroundColor: "#6c757d",
+                                        border: "none",
+                                        padding: "8px 16px",
+                                        borderRadius: "4px",
+                                        color: "white",
+                                        fontSize: "14px",
+                                        cursor: "not-allowed",
+                                      }}
+                                      disabled
+                                    >
+                                      Cancelled
+                                    </button>
+                                  ) : (
+                                    <button
+                                      className="btn btn-danger"
+                                      style={{
+                                        backgroundColor: "#dc3545",
+                                        border: "none",
+                                        padding: "8px 16px",
+                                        borderRadius: "4px",
+                                        color: "white",
+                                        fontSize: "14px",
+                                      }}
+                                      onClick={() => handleCancelOrder(item)}
+                                    >
+                                      Cancel Order
+                                    </button>
                                   )}
-                                </h5>
-                                <p>
-                                  {" "}
-                                  <img
-                                    src={require("../../assets/images/time.png")}
-                                  />
-                                  {item?.slot}
-                                </p>
+                                </div>
                               </div>
                             </div>
                           );
@@ -468,7 +644,7 @@ const Profile = () => {
                             />
                           </span>
                           <h3>Empty Order List</h3>
-                          <p>You don't have any products in your order list.</p>
+                          <p>You don't have any current orders.</p>
                           <button
                             className="ContinueBtn"
                             onClick={() => navigate("/")}
@@ -479,170 +655,144 @@ const Profile = () => {
                       )}
                     </div>
                   </Tab.Pane>
+                  
+                  {/* Past Bookings Tab - Order History */}
                   <Tab.Pane className="tab-pane" eventKey="past-bookings">
-                    {/* <div className="EmptyOrderArea">
-                      <span>
-                        <img
-                          src={require("../../assets/images/empty-img.png")}
-                        />
-                      </span>
-                      <h3>Empty Order List</h3>
-                      <p>You don't have any products in your order list.</p>
-                      <button
-                        className="ContinueBtn"
-                        onClick={() => navigate("/")}
-                      >
-                        Continue Shopping
-                      </button>
-                    </div> */}
-                    {/* <div className="PastBookingArea">
-                      <div className="PastBookingBox">
-                        <article>
-                          <figure>
-                            <img src="assets/images/product-1.png" />
-                          </figure>
-                          <figcaption>
-                            <h5>Glitzy Silver and Black Birthday Decor</h5>
-                            <p>
-                              It is a long established fact that a reader will
-                              be distracted by the readable .....
-                            </p>
-                            <h3>₹49</h3>
-                          </figcaption>
-                        </article>
-                        <div>
-                          <h5>
-                            {" "}
-                            <img src="assets/images/date.png" /> 28 September
-                            2024
-                          </h5>
-                          <button
-                            onClick={() =>
-                              updateState({ ...iState, reviewModal: true })
-                            }
-                          >
-                            Add Review
-                          </button>
-                          <p>
-                            {" "}
-                            <img src="assets/images/time.png" /> 08 PM to 11 PM
-                          </p>
-                        </div>
-                      </div>
-                    </div> */}
+                    <div className="PastBookingArea">
+                      <h4 style={{ marginBottom: "20px" }}>Order History</h4>
+                      {getPastBooking?.data?.length > 0 ? (
+                        getPastBooking?.data?.map((item, i) => {
+                          return (
+                            <div className="PastBookingBox" key={i}>
+                              <article>
+                                <figure>
+                                  <img src={item?.prodimages} />
+                                </figure>
+                                <figcaption>
+                                  <h5>
+                                    {item?.productName}
+                                    <span>
+                                      {item?.remainingAmount !== undefined
+                                        ? item?.remainingAmount == 0
+                                          ? "Full Payment"
+                                          : "Partial Payment"
+                                        : "COD"}
+                                    </span>
+                                  </h5>
 
-                    {getPastBooking?.data?.length > 0 ? (
-                      getPastBooking?.data?.map((item, i) => {
-                        return (
-                          <div className="PastBookingBox" key={i}>
-                            <article>
-                              <figure>
-                                <img src={item?.prodimages} />
-                              </figure>
-                              <figcaption>
-                                <h5>
-                                  {item?.productName}
-                                  <span>
-                                    {item?.remainingAmount !== undefined
-                                      ? item?.remainingAmount == 0
-                                        ? "Full Payment"
-                                        : "Partial Payment"
-                                      : "COD"}
-                                  </span>
-                                </h5>
+                                  <p
+                                    dangerouslySetInnerHTML={{
+                                      __html:
+                                        item?.productDescription?.length > 100
+                                          ? item?.productDescription?.slice(
+                                              0,
+                                              100
+                                            ) + "..."
+                                          : item?.productDescription,
+                                    }}
+                                  ></p>
+                                  <h3>₹{item?.totalAmount}</h3>
 
-                                <p
-                                  dangerouslySetInnerHTML={{
-                                    __html:
-                                      item?.productDescription?.length > 100
-                                        ? item?.productDescription?.slice(
-                                            0,
-                                            100
-                                          ) + "..."
-                                        : item?.productDescription,
-                                  }}
-                                ></p>
-                                <h3>₹{item?.totalAmount}</h3>
+                                  {item?.remainingAmount ? (
+                                    <>
+                                      <p>
+                                        Partial Payment:{`₹${item?.paidAmount}`}
+                                      </p>
+                                      <p>
+                                        Remaining Amount:
+                                        {`₹${item?.remainingAmount}`}
+                                      </p>
+                                    </>
+                                  ) : (
+                                    ""
+                                  )}
+                                </figcaption>
+                              </article>
+                              
+                              {item?.productcustomizeDetails?.length > 0 ? (
+                                <div className="PastCutomBookingBox">
+                                  <h6>Product Customizations</h6>
+                                  {item?.productcustomizeDetails?.map(
+                                    (customItem, customIndex) => {
+                                      return (
+                                        <article key={customIndex}>
+                                          <figure>
+                                            <img src={customItem?.customimages} />
+                                          </figure>
+                                          <figcaption>
+                                            <p>{customItem?.name}</p>
+                                            <h3>
+                                              ₹{customItem?.price}X{customItem?.quantity}
+                                            </h3>
+                                          </figcaption>
+                                        </article>
+                                      );
+                                    }
+                                  )}
+                                </div>
+                              ) : (
+                                ""
+                              )}
 
-                                {item?.remainingAmount ? (
-                                  <>
+                              <div className="timeSlot">
+                                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                  <div>
+                                    <h5>
+                                      <img
+                                        src={require("../../assets/images/date.png")}
+                                      />
+                                      {formatDate(item?.placedon?.split("T")?.at(0))}
+                                    </h5>
                                     <p>
-                                      Partial Payment:{`₹${item?.paidAmount}`}
+                                      <img
+                                        src={require("../../assets/images/time.png")}
+                                      />
+                                      {item?.slot}
                                     </p>
-                                    <p>
-                                      Remaining Amount:
-                                      {`₹${item?.remainingAmount}`}
-                                    </p>
-                                  </>
-                                ) : (
-                                  ""
-                                )}
-                              </figcaption>
-                            </article>
-                            {item?.productcustomizeDetails?.length > 0 ? (
-                              <div className="PastCutomBookingBox" key={i}>
-                                <h6>Product Customizations</h6>
-                                {item?.productcustomizeDetails?.length > 0
-                                  ? item?.productcustomizeDetails?.map(
-                                      (item, i) => {
-                                        return (
-                                          <article key={i}>
-                                            <figure>
-                                              <img src={item?.customimages} />
-                                            </figure>
-                                            <figcaption>
-                                              <p>{item?.name}</p>
-                                              <h3>
-                                                ₹{item?.price}X{item?.quantity}
-                                              </h3>
-                                            </figcaption>
-                                          </article>
-                                        );
-                                      }
-                                    )
-                                  : ""}
+                                  </div>
+                                  
+                                  {/* Add Review Button */}
+                                  <div>
+                                    <button
+                                      className="btn btn-primary"
+                                      style={{
+                                        backgroundColor: "#007bff",
+                                        border: "none",
+                                        padding: "8px 16px",
+                                        borderRadius: "4px",
+                                        color: "white",
+                                        fontSize: "14px",
+                                      }}
+                                      onClick={() => openReviewModal(item?.productId || item?._id)}
+                                    >
+                                      Add Review
+                                    </button>
+                                  </div>
+                                </div>
                               </div>
-                            ) : (
-                              ""
-                            )}
-
-                            <div className="timeSlot">
-                              <h5>
-                                {" "}
-                                <img
-                                  src={require("../../assets/images/date.png")}
-                                />
-                                {formatDate(item?.placedon?.split("T")?.at(0))}
-                              </h5>
-                              <p>
-                                {" "}
-                                <img
-                                  src={require("../../assets/images/time.png")}
-                                />
-                                {item?.slot}
-                              </p>
                             </div>
-                          </div>
-                        );
-                      })
-                    ) : (
-                      <div className="EmptyOrderArea">
-                        <span>
-                          <img
-                            src={require("../../assets/images/empty-img.png")}
-                          />
-                        </span>
-                        <h3>Empty Order List</h3>
-                        <p>You don't have any products in your order list.</p>
-                        <button
-                          className="ContinueBtn"
-                          onClick={() => navigate("/")}
-                        >
-                          Continue Shopping
-                        </button>
-                      </div>
-                    )}
+                          );
+                        })
+                      ) : (
+                        <div className="EmptyOrderArea">
+                          <span>
+                            <img
+                              src={require("../../assets/images/empty-img.png")}
+                            />
+                          </span>
+                          <h3>No Order History</h3>
+                          <p>You don't have any past orders.</p>
+                          <button
+                            className="ContinueBtn"
+                            onClick={() => navigate("/")}
+                          >
+                            Continue Shopping
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </Tab.Pane>
+                  
                   <Tab.Pane className="tab-pane" eventKey="address">
                     <div className="AddressArea">
                       <h4>Address Details</h4>
@@ -661,7 +811,7 @@ const Profile = () => {
                       {getAddressList?.data?.Addresses?.length > 0 ? (
                         getAddressList?.data?.Addresses?.map((item, i) => {
                           return (
-                            <div className="AddressBox">
+                            <div className="AddressBox" key={i}>
                               <p>
                                 {item?.addresstype == "home"
                                   ? "Home"
@@ -715,6 +865,7 @@ const Profile = () => {
         </div>
       </section>
 
+      {/* Profile Edit Modal */}
       <Modal
         className="ModalBox"
         show={profileEditModal}
@@ -769,15 +920,16 @@ const Profile = () => {
                 <select
                   className="form-control"
                   name="gender"
-                  onClick={handleInputChange}
+                  onChange={handleInputChange}
+                  value={gender}
                 >
-                  <option selected="" value="">
+                  <option value="">
                     --select--
                   </option>
-                  <option value="Male" selected={gender == "Male"}>
+                  <option value="Male">
                     Male
                   </option>
-                  <option value="Female" selected={gender == "Female"}>
+                  <option value="Female">
                     Female
                   </option>
                 </select>
@@ -843,6 +995,7 @@ const Profile = () => {
         </div>
       </Modal>
 
+      {/* Delete/Logout Confirmation Modal */}
       <Modal
         centered
         className="ModalBox"
@@ -883,17 +1036,56 @@ const Profile = () => {
         </div>
       </Modal>
 
+      {/* Cancel Order Confirmation Modal */}
+      <Modal
+        centered
+        className="ModalBox"
+        show={cancelModal}
+        onHide={() =>
+          updateState({ ...iState, cancelModal: false, orderToCancel: null })
+        }
+      >
+        <a
+          onClick={() =>
+            updateState({ ...iState, cancelModal: false, orderToCancel: null })
+          }
+          className="CloseModal"
+        >
+          ×
+        </a>
+        <div className="ModalArea">
+          <h5 style={{ marginBottom: "70px" }}>
+            Are you sure you want to cancel this order?
+          </h5>
+          <div className="FormArea" style={{ display: "flex" }}>
+            <button
+              className="Button me-5"
+              onClick={() => updateState({ ...iState, cancelModal: false, orderToCancel: null })}
+            >
+              No
+            </button>
+            <button
+              className="Button ms-5"
+              onClick={confirmCancelOrder}
+            >
+              Yes, Cancel Order
+            </button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Review Modal */}
       <Modal
         centered
         className="ModalBox"
         show={reviewModal}
         onHide={() =>
-          updateState({ ...iState, reviewModal: false, productId: "" })
+          updateState({ ...iState, reviewModal: false, productId: "", review: "", review_image: "" })
         }
       >
         <a
           onClick={() =>
-            updateState({ ...iState, reviewModal: false, productId: "" })
+            updateState({ ...iState, reviewModal: false, productId: "", review: "", review_image: "" })
           }
           className="CloseModal"
         >
@@ -906,7 +1098,7 @@ const Profile = () => {
             <div className="stars" style={{ fontSize: "18px" }}>
               {Array.from({ length: starLength }).map((_, index) => (
                 <a key={index} onClick={() => setStarsLength(index + 1)}>
-                  <i class="fa-solid fa-star"></i>
+                  <i className="fa-solid fa-star"></i>
                 </a>
               ))}
 
@@ -915,7 +1107,7 @@ const Profile = () => {
                   key={index}
                   onClick={() => setStarsLength(starLength + index + 1)}
                 >
-                  <i class="fa-regular fa-star"></i>
+                  <i className="fa-regular fa-star"></i>
                 </a>
               ))}
             </div>
@@ -927,6 +1119,7 @@ const Profile = () => {
                 name="review"
                 value={review}
                 onChange={handleInputChange}
+                placeholder="Share your experience with this product..."
               ></textarea>
             </div>
 
@@ -938,8 +1131,9 @@ const Profile = () => {
                     type="file"
                     style={{ cursor: "pointer" }}
                     onChange={(e) => handleImage(e, "review")}
+                    accept="image/*"
                   />
-                  <i class="fa-solid fa-camera"></i>
+                  <i className="fa-solid fa-camera"></i>
                 </div>
                 <div
                   className="uploadPreviewImg1"
@@ -947,7 +1141,7 @@ const Profile = () => {
                 >
                   {review_image ? (
                     <div style={{ position: "relative" }}>
-                      <img src={review_image} />
+                      <img src={review_image} alt="Review" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                       <span className="cross-btn" onClick={handleImageClose}>
                         ×
                       </span>
@@ -958,7 +1152,7 @@ const Profile = () => {
                 </div>
               </div>
               <small style={{ color: "#26303b" }}>
-                Maximum size:5 MB ,jpeg,jpg or png
+                Maximum size:5 MB, jpeg, jpg or png
               </small>
             </div>
 
