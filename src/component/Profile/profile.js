@@ -41,7 +41,6 @@ const initialState = {
   review_image: "",
   cancelModal: false,
   orderToCancel: null,
-  cancellingOrders: [], // Track orders being cancelled
 };
 
 const Profile = () => {
@@ -72,7 +71,6 @@ const Profile = () => {
     review_image,
     cancelModal,
     orderToCancel,
-    cancellingOrders,
   } = iState;
   const { type } = useParams();
   const navigate = useNavigate();
@@ -236,19 +234,9 @@ const Profile = () => {
 
   const confirmCancelOrder = () => {
     if (orderToCancel) {
-      // Ensure cancellingOrders is an array before spreading
-      const currentCancellingOrders = Array.isArray(cancellingOrders) ? cancellingOrders : [];
+      // Since cancelOrder is not available, we'll create a mock implementation
+      // You'll need to implement the actual cancelOrder API call in your bookingApis file
       
-      // Add order to cancelling list to show loading state
-      const updatedState = {
-        ...iState,
-        cancelModal: false,
-        orderToCancel: null,
-        cancellingOrders: [...currentCancellingOrders, orderToCancel._id],
-      };
-      
-      updateState(updatedState);
-
       const cancelData = {
         orderId: orderToCancel._id,
         userId: userDetail?._id,
@@ -266,7 +254,7 @@ const Profile = () => {
               }
             }
           });
-        }, 2000); // Increased to 2 seconds to better show the loading state
+        }, 1000);
       });
 
       mockCancelOrder
@@ -285,15 +273,11 @@ const Profile = () => {
           toast.error("Error cancelling order");
         })
         .finally(() => {
-          // Remove order from cancelling list using the updated state
-          const finalCancellingOrders = Array.isArray(updatedState.cancellingOrders) 
-            ? updatedState.cancellingOrders.filter(id => id !== orderToCancel._id)
-            : [];
-            
-          updateState(prevState => ({
-            ...prevState,
-            cancellingOrders: finalCancellingOrders,
-          }));
+          updateState({
+            ...iState,
+            cancelModal: false,
+            orderToCancel: null,
+          });
         });
 
       // TODO: Replace the above mock implementation with:
@@ -312,13 +296,11 @@ const Profile = () => {
       //     toast.error("Error cancelling order");
       //   })
       //   .finally(() => {
-      //     const finalCancellingOrders = Array.isArray(updatedState.cancellingOrders) 
-      //       ? updatedState.cancellingOrders.filter(id => id !== orderToCancel._id)
-      //       : [];
-      //     updateState(prevState => ({
-      //       ...prevState,
-      //       cancellingOrders: finalCancellingOrders,
-      //     }));
+      //     updateState({
+      //       ...iState,
+      //       cancelModal: false,
+      //       orderToCancel: null,
+      //     });
       //   });
     }
   };
@@ -581,56 +563,22 @@ const Profile = () => {
                                   </p>
                                 </div>
                                 
-                                {/* Cancel Order Button with Loading State */}
+                                {/* Cancel Order Button */}
                                 <div style={{ marginTop: "10px" }}>
-                                  {Array.isArray(cancellingOrders) && cancellingOrders.includes(item._id) ? (
-                                    <button
-                                      className="btn btn-secondary"
-                                      style={{
-                                        backgroundColor: "#6c757d",
-                                        border: "none",
-                                        padding: "8px 16px",
-                                        borderRadius: "4px",
-                                        color: "white",
-                                        fontSize: "14px",
-                                        cursor: "not-allowed",
-                                      }}
-                                      disabled
-                                    >
-                                      Cancelled
-                                    </button>
-                                  ) : item.status === "cancelled" ? (
-                                    <button
-                                      className="btn btn-secondary"
-                                      style={{
-                                        backgroundColor: "#6c757d",
-                                        border: "none",
-                                        padding: "8px 16px",
-                                        borderRadius: "4px",
-                                        color: "white",
-                                        fontSize: "14px",
-                                        cursor: "not-allowed",
-                                      }}
-                                      disabled
-                                    >
-                                      Cancelled
-                                    </button>
-                                  ) : (
-                                    <button
-                                      className="btn btn-danger"
-                                      style={{
-                                        backgroundColor: "#dc3545",
-                                        border: "none",
-                                        padding: "8px 16px",
-                                        borderRadius: "4px",
-                                        color: "white",
-                                        fontSize: "14px",
-                                      }}
-                                      onClick={() => handleCancelOrder(item)}
-                                    >
-                                      Cancel Order
-                                    </button>
-                                  )}
+                                  <button
+                                    className="btn btn-danger"
+                                    style={{
+                                      backgroundColor: "#dc3545",
+                                      border: "none",
+                                      padding: "8px 16px",
+                                      borderRadius: "4px",
+                                      color: "white",
+                                      fontSize: "14px",
+                                    }}
+                                    onClick={() => handleCancelOrder(item)}
+                                  >
+                                    Cancel Order
+                                  </button>
                                 </div>
                               </div>
                             </div>
