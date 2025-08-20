@@ -24,7 +24,7 @@
 
 .ProductDetailsArea.enhanced {
   padding: 2rem 0;
- 
+
 }
 
 .BreadCumbs.enhanced {
@@ -1089,7 +1089,7 @@
 .reviews-section-header {
   display: flex;
   justify-content: space-between;
-  align-items: center ;
+  align-items: center;
   margin-bottom: 1.5rem;
 }
 
@@ -1248,20 +1248,20 @@
     gap: 1rem;
     align-items: flex-start;
   }
-  
+
   .add-review-btn {
     align-self: stretch;
     justify-content: center;
   }
-  
+
   .rating-breakdown {
     padding: 0.75rem;
   }
-  
+
   .review-form-actions {
     flex-direction: column;
   }
-  
+
   .review-form-actions .btn {
     width: 100%;
   }
@@ -1272,7 +1272,7 @@
 .ReviewModal .modal-content {
   border-radius: 12px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  
+
 }
 
 .ReviewModal .modal-header {
@@ -1513,19 +1513,19 @@
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     gap: 10px;
   }
-  
+
   .photo-upload-label {
     padding: 15px;
   }
-  
+
   .photo-upload-icon {
     font-size: 1.5rem;
   }
-  
+
   .photo-upload-text {
     font-size: 14px;
   }
-  
+
   .photo-upload-subtext {
     font-size: 12px;
   }
@@ -2244,6 +2244,7 @@
     font-size: 1.1rem;
   }
 }
+
 /* Recently Viewed Section */
 .recently-viewed-section .section-header::after {
   content: '';
@@ -2305,6 +2306,7 @@
   text-align: center;
   margin-top: 20px;
 }
+
 .clear-recently-viewed-btn {
   background: black;
   color: white;
@@ -2540,15 +2542,15 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
   }
-  
+
   .recently-viewed-card {
     height: 340px;
   }
-  
+
   .recently-viewed-image-wrapper {
     height: 220px !important;
   }
-  
+
   .recently-viewed-info {
     height: 120px;
   }
@@ -2560,7 +2562,7 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 1.2rem;
   }
-  
+
   .recently-viewed-card {
     height: 320px;
   }
@@ -2572,11 +2574,11 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 1.2rem;
   }
-  
+
   .recently-viewed-card {
     height: 320px;
   }
-  
+
   .recently-viewed-image-wrapper {
     height: 200px !important;
   }
@@ -2592,15 +2594,15 @@
   .recently-viewed-title {
     font-size: 1.5rem;
   }
-  
+
   .recently-viewed-card {
     height: 300px;
   }
-  
+
   .recently-viewed-image-wrapper {
     height: 180px !important;
   }
-  
+
   .recently-viewed-info {
     padding: 0.7rem;
     height: 120px;
@@ -2621,17 +2623,17 @@
   .recently-viewed-image-wrapper {
     height: 160px !important;
   }
-  
+
   .recently-viewed-info {
     padding: 0.6rem;
     height: 120px;
   }
-  
+
   .recently-viewed-name {
     font-size: 0.9rem;
     height: 2.4rem;
   }
-  
+
   .recently-viewed-price {
     font-size: 1rem;
   }
@@ -2653,16 +2655,16 @@
   .recently-viewed-image-wrapper {
     height: 180px !important;
   }
-  
+
   .recently-viewed-info {
     padding: 0.8rem;
     height: 120px;
   }
-  
+
   .recently-viewed-name {
     font-size: 0.95rem;
   }
-  
+
   .recently-viewed-price {
     font-size: 1.1rem;
   }
@@ -2880,6 +2882,18 @@
   position: sticky;
   top: 32px;
   z-index: 2;
+}
+
+@media (max-width: 680px) {
+  .why-skyrixe-box {
+    max-width: 80vw;
+    min-width: 200px;
+    display: flex;
+    ;
+    flex-direction: column;
+
+  }
+
 }
 
 .why-skyrixe-title {
