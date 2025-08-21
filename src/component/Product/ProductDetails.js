@@ -1228,7 +1228,7 @@ const ProductDetails = () => {
                           placeholder="Enter Pincode"
                           name="pincode"
                           value={pincode}
-                          onChange={pincode_valid ? handleInputChange : null}
+                          onChange={handleNext ? handleInputChange : null}
                           onKeyDown={handleKeyDown}
                           maxLength="6"
                         />
@@ -1239,6 +1239,7 @@ const ProductDetails = () => {
                         <button
                           className="booking-summary-date-btn"
                           onClick={() => setShowBookingFlow(true)}
+                          disabled={(pincode && pincode != LennyPincode?.find((item) => item == pincode))}
                         >
                           Select Date & Time
                         </button>
@@ -1251,6 +1252,7 @@ const ProductDetails = () => {
                       <button
                         className="booking-summary-book-btn"
                         onClick={() => setShowBookingFlow(true)}
+                        disabled={(pincode && pincode != LennyPincode?.find((item) => item == pincode))}
                       >
                         BOOK NOW <span className="booking-summary-arrow"><i className="fa-solid fa-arrow-right"></i></span>
                       </button>
