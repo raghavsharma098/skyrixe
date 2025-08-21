@@ -22,11 +22,14 @@ import kid1 from "../../assets/images/TopSellers/kd1.jpg";
 import kid2 from "../../assets/images/TopSellers/kd2.jpg";
 import kid3 from "../../assets/images/TopSellers/kd3.jpg";
 import kid4 from "../../assets/images/TopSellers/kd4.jpg";
+import { useNavigate } from "react-router-dom";
+
 
 const NavigationDropdown = () => {
     const [activeMenu, setActiveMenu] = useState(null);
+    const navigate = useNavigate();
     const menuData = {
-        Birthdays: {
+        Birthday: {
             "CANDLELIGHT DINNERS": [
                 "Private Couple Experiences",
                 "Rooftop Dinners",
@@ -208,6 +211,14 @@ const NavigationDropdown = () => {
         return items.filter(item => typeof item === 'object').length;
     };
 
+    const selectCity = window.localStorage.getItem("LennyCity");
+    // const userDetail = JSON.parse(window.localStorage.getItem("LennyUserDetail"));
+
+    const handleCategory = (item) => {
+        navigate("/products", { state: { item, selectCity } });
+        window.scrollTo({ top: 150, behavior: "smooth" });
+    };
+
     return (
         <nav className="dropdown-navbar">
             <div className="dropdown-nav-container">
@@ -229,7 +240,7 @@ const NavigationDropdown = () => {
                                 {Object.entries(menuData[menu]).map(([category, items], idx) => {
                                     const imageCount = getImageCount(items);
                                     const hasImages = imageCount > 0;
-                                    
+
                                     return (
                                         <div key={idx} className="dropdown-nav-dropdown-section">
                                             {category && <h4 className="dropdown-nav-section-title">{category}</h4>}
@@ -238,32 +249,36 @@ const NavigationDropdown = () => {
                                                     typeof item === "string" ? (
                                                         // case: string
                                                         <li key={i}>
-                                                            <a href="#" className="dropdown-nav-item-link">
+                                                            <div className="dropdown-nav-item-link"
+                                                                style={{ cursor: "pointer" }}
+                                                                onClick={() => handleCategory({ categoryName: menu.toUpperCase() })}
+                                                                // onClick={()=> console.log()}
+                                                            >
                                                                 {item}
-                                                            </a>
+                                                            </div>
                                                         </li>
-                                                    ) : (
-                                                        // case: object with image & title
-                                                        <li key={i} className="dropdown-nav-item-with-image">
-                                                            <img
-                                                                src={item.image}
-                                                                alt={item.title}
-                                                                className="dropdown-nav-item-image"
-                                                            />
-                                                            <span>{item.title}</span>
-                                                        </li>
-                                                    )
+                                            ) : (
+                                            // case: object with image & title
+                                            <li key={i} className="dropdown-nav-item-with-image">
+                                                <img
+                                                    src={item.image}
+                                                    alt={item.title}
+                                                    className="dropdown-nav-item-image"
+                                                />
+                                                <span>{item.title}</span>
+                                            </li>
+                                            )
                                                 )}
-                                            </ul>
+                                        </ul>
                                         </div>
-                                    );
+                            );
                                 })}
-                            </div>
                         </div>
                     </div>
+                    </div>
                 ))}
-            </div>
-        </nav>
+        </div>
+        </nav >
     );
 };
 
