@@ -348,6 +348,7 @@ export const clearCart = createAsyncThunk(
     }
 );
 
+
 // UPDATED INITIAL STATE WITH CART FUNCTIONALITY
 const initialState = {
     // Existing states

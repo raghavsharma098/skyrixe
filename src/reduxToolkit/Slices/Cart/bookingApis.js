@@ -202,7 +202,7 @@ export const cancelOrder = createAsyncThunk(
         status: "cancelled", 
       };
 
-      const response = await axios.patch(
+      const response = await axios.put(
         `${credAndUrl?.BASE_URL}customer/cancelOrder`,
         payload,
         {

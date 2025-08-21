@@ -8,3 +8,5 @@ export const credAndUrl = {
 }
 
 //https://backend.thebrandcabin.com/api/v1/',
+//'https://skyrixe.com/api/v1/',
+//http://localhost:4008/api/v1/

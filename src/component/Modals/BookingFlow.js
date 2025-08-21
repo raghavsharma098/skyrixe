@@ -4,7 +4,7 @@ import TimeSlotModal from "./TimeSlotModal";
 import CustomizationsModal from "./CustomizationsModal";
 import LoginModal from "./LoginModal";
 
-const BookingFlow = ({ show, onHide, onComplete, selectedProduct, user }) => {
+const BookingFlow = ({ show, onHide, onComplete, selectedProduct, user}) => {
   const [currentStep, setCurrentStep] = useState(1);
 
   const [bookingDetails, setBookingDetails] = useState({
