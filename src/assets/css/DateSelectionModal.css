@@ -187,7 +187,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .DateSelectionModal .ModalArea {
-    padding: 20px;
+    padding: 5px;
     margin: 16px;
   }
   

@@ -33,17 +33,17 @@
 @media (max-width: 600px) {
   .cards {
     grid-template-columns: repeat(4, 1fr);
-    /* Show 4 cards in each row, 2 rows for 8 cards */
     gap: 1px;
+    justify-content: left;
   }
 
   .card1 {
-    max-width: 82px;
+    max-width: 78px;
     padding: 6px 0;
   }
 
   .card1 img {
-    width: 48px;
+    width: 72px;
   }
 
   .card1 p {
@@ -297,13 +297,12 @@
 
 @media (max-width: 600px) {
   .text h1 {
-    width: 92vw;
-    margin-right: 12px;
+    width: 95vw;
     text-align: center;
   }
 
   .text {
-    margin-left: 15px;
+    margin-left: 5px;
   }
 
   .text p {
@@ -347,22 +346,23 @@
 
 }
 
-/* @media (max-width: 600px) {
-  .PrivateDiningBox {
-    height: 35vw; 
+@media (max-width: 600px) {
+  .PrivateDiningBox figure {
+    height: 31vw;
   }
 }
-.birthday-scroll-container{
+
+.birthday-scroll-container {
   height: 40vw;
 }
+
 @media (max-width: 600px) {
   .birthday-scroll-container {
-    height: 85vw; 
+    height: 85vw;
   }
-} */
+}
 
-
-.DarkGreen img {
+*/ .DarkGreen img {
   width: 15vw;
 }
 
