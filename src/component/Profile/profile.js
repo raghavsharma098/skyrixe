@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Modal, Nav, Tab, TabContainer } from "react-bootstrap";
+import { Modal, Nav, Tab, TabContainer, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { userDetailState } from "../../reduxToolkit/Slices/ProductList/listApis";
 import { onImageHandler } from "../../Utils/uploadFile";
@@ -12,11 +12,13 @@ import {
 import { toast } from "react-toastify";
 import AddAddress from "../Modals/AddAddress";
 import {
+  cancelOrder,
   pastBooking,
   upcomingBooking,
 } from "../../reduxToolkit/Slices/Cart/bookingApis";
 import { formatDate } from "../../Utils/commonFunctions";
 import { addReview } from "../../reduxToolkit/Slices/ReviewAndRating/reviewRatingApis";
+import OrderProductDetails from "../Product/product-order";
 
 const initialState = {
   profileEditModal: false,
@@ -41,7 +43,7 @@ const initialState = {
   review_image: "",
   cancelModal: false,
   orderToCancel: null,
-  cancellingOrders: [], // Track orders being cancelled
+  cancellingOrders: [],
 };
 
 const Profile = () => {
@@ -80,6 +82,10 @@ const Profile = () => {
   const userDetail = JSON?.parse(
     window?.localStorage?.getItem("LennyUserDetail")
   );
+  const [showDetails, setShowDetails] = useState(false);
+  const [order, setorder] = useState({});
+
+  // console.log(upcomingBooking)
 
   const handleProfileModalHideShow = (type) => {
     if (type == "show") {
@@ -111,8 +117,6 @@ const Profile = () => {
 
   const handleImage = async (e, type) => {
     let data = await onImageHandler(e);
-    console.log(data, "here data");
-    console.log(data[0], "here data1");
     if (type == "profile") {
       updateState({
         ...iState,
@@ -135,22 +139,18 @@ const Profile = () => {
   const handleValidation = () => {
     let error = {};
     let formIsValid = true;
-
     if (!name) {
       error.nameError = "*Name is required";
       formIsValid = false;
     }
-
     if (!gender) {
       error.genderError = "*Gender is required";
       formIsValid = false;
     }
-
     if (!dob) {
       error.dobError = "*Date of birth is required";
       formIsValid = false;
     }
-
     if (email) {
       if (
         !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
@@ -161,7 +161,6 @@ const Profile = () => {
         formIsValid = false;
       }
     }
-
     updateState({ ...iState, errors: error });
     return formIsValid;
   };
@@ -183,7 +182,6 @@ const Profile = () => {
         userId: userDetail?._id,
       };
       dispatch(personalInfoUpdateSlice(payload)).then((res) => {
-        console.log({ res }, "profile");
         toast?.success(res?.payload?.data?.message);
         window.localStorage?.setItem(
           "LennyUserDetail",
@@ -202,15 +200,13 @@ const Profile = () => {
       image: review_image,
       review,
     };
-
     dispatch(addReview(data))
       .then((res) => {
-        console.log({ res });
         if (res?.payload?.status == 200) {
           toast.success("Review Submit Successfully!!");
-          updateState({ 
-            ...iState, 
-            reviewModal: false, 
+          updateState({
+            ...iState,
+            reviewModal: false,
             productId: "",
             review: "",
             review_image: "",
@@ -248,59 +244,32 @@ const Profile = () => {
       };
       
       updateState(updatedState);
-
+      
       const cancelData = {
-        orderId: orderToCancel._id,
+        id: orderToCancel._id,
         userId: userDetail?._id,
       };
+      
+      // // Mock API call - Replace this with your actual API implementation
+      // const mockCancelOrder = new Promise((resolve, reject) => {
+      //   setTimeout(() => {
+      //     // Simulate successful cancellation
+      //     resolve({
+      //       payload: {
+      //         status: 200,
+      //         data: {
+      //           message: "Order cancelled successfully"
+      //         }
+      //       }
+      //     });
+      //   }, 2000); // Increased to 2 seconds to better show the loading state
+      // });
 
-      // Mock API call - Replace this with your actual API implementation
-      const mockCancelOrder = new Promise((resolve, reject) => {
-        setTimeout(() => {
-          // Simulate successful cancellation
-          resolve({
-            payload: {
-              status: 200,
-              data: {
-                message: "Order cancelled successfully"
-              }
-            }
-          });
-        }, 2000); // Increased to 2 seconds to better show the loading state
-      });
-
-      mockCancelOrder
-        .then((res) => {
-          if (res?.payload?.status === 200) {
-            toast.success("Order cancelled successfully!");
-            // Refresh the orders
-            dispatch(upcomingBooking({ userId: userDetail?._id }));
-            dispatch(pastBooking({ userId: userDetail?._id }));
-          } else {
-            toast.error("Failed to cancel order");
-          }
-        })
-        .catch((err) => {
-          console.log({ err });
-          toast.error("Error cancelling order");
-        })
-        .finally(() => {
-          // Remove order from cancelling list using the updated state
-          const finalCancellingOrders = Array.isArray(updatedState.cancellingOrders) 
-            ? updatedState.cancellingOrders.filter(id => id !== orderToCancel._id)
-            : [];
-            
-          updateState(prevState => ({
-            ...prevState,
-            cancellingOrders: finalCancellingOrders,
-          }));
-        });
-
-      // TODO: Replace the above mock implementation with:
-      // dispatch(cancelOrder(cancelData))
+      // mockCancelOrder
       //   .then((res) => {
       //     if (res?.payload?.status === 200) {
       //       toast.success("Order cancelled successfully!");
+      //       // Refresh the orders
       //       dispatch(upcomingBooking({ userId: userDetail?._id }));
       //       dispatch(pastBooking({ userId: userDetail?._id }));
       //     } else {
@@ -312,14 +281,41 @@ const Profile = () => {
       //     toast.error("Error cancelling order");
       //   })
       //   .finally(() => {
+      //     // Remove order from cancelling list using the updated state
       //     const finalCancellingOrders = Array.isArray(updatedState.cancellingOrders) 
       //       ? updatedState.cancellingOrders.filter(id => id !== orderToCancel._id)
       //       : [];
+            
       //     updateState(prevState => ({
       //       ...prevState,
       //       cancellingOrders: finalCancellingOrders,
       //     }));
       //   });
+
+      // TODO: Replace the above mock implementation with:
+      dispatch(cancelOrder(cancelData))
+        .then((res) => {
+          if (res?.payload?.status === 200) {
+            toast.success("Order cancelled successfully!");
+            dispatch(upcomingBooking({ userId: userDetail?._id }));
+            dispatch(pastBooking({ userId: userDetail?._id }));
+          } else {
+            toast.error("Failed to cancel order");
+          }
+        })
+        .catch((err) => {
+          console.log({ err });
+          toast.error("Error cancelling order");
+        })
+        .finally(() => {
+          const finalCancellingOrders = Array.isArray(updatedState.cancellingOrders) 
+            ? updatedState.cancellingOrders.filter(id => id !== orderToCancel._id)
+            : [];
+          updateState(prevState => ({
+            ...prevState,
+            cancellingOrders: finalCancellingOrders,
+          }));
+        });
     }
   };
 
@@ -358,7 +354,17 @@ const Profile = () => {
     });
   };
 
+  const handleViewDetails = (item) => {
+    setorder(item);
+    setShowDetails(true);
+  };
+
+  const handleCloseDetails = () => {
+    setShowDetails(false);
+  };
+
   useEffect(() => {
+    // Update phone validation state when additional_phone changes
     let newState = { ...iState };
     if (additional_phone?.length >= 10) {
       newState = { ...newState, phone_valid: false };
@@ -369,8 +375,16 @@ const Profile = () => {
     dispatch(pastBooking({ userId: userDetail?._id }));
   }, [additional_phone]);
 
-  console.log({ starLength, review_image, addressListing });
-  
+  // useEffect(() => {
+  //   // Fetch data when component mounts and when userDetail changes
+  //   if (userDetail?._id) {
+  //     dispatch(addressListing({ userId: userDetail._id }));
+  //     dispatch(upcomingBooking({ userId: userDetail._id }));
+  //     dispatch(pastBooking({ userId: userDetail._id }));
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [userDetail?._id]);
+
   return (
     <>
       <section className="CheckOutArea">
@@ -481,15 +495,15 @@ const Profile = () => {
                       </article>
                     </div>
                   </Tab.Pane>
-                  
                   {/* My Orders Tab - Current/Upcoming Orders */}
                   <Tab.Pane className="tab-pane" eventKey="upcoming-bookings">
-                    <div className="PastBookingArea">
-                      <h4 style={{ marginBottom: "20px" }}>My Current Orders</h4>
-                      {getUpcomingBooking?.data?.length > 0 ? (
-                        getUpcomingBooking?.data?.map((item, i) => {
+                    {/* Only show if there are upcoming orders */}
+                    {getUpcomingBooking?.data?.length > 0 ? (
+                      <div className="PastBookingArea">
+                        <h4 style={{ marginBottom: "20px" }}>My Current Orders</h4>
+                        {getUpcomingBooking?.data?.map((item, i) => {
                           return (
-                            <div className="PastBookingBox" key={i}>
+                            <div className="PastBookingBox" key={i} onClick={() => handleViewDetails(item)}>
                               <article>
                                 <figure>
                                   <img src={item?.prodimages} />
@@ -505,20 +519,18 @@ const Profile = () => {
                                         : "COD"}
                                     </span>
                                   </h5>
-
                                   <p
                                     dangerouslySetInnerHTML={{
                                       __html:
                                         item?.productDescription?.length > 100
                                           ? item?.productDescription?.slice(
-                                              0,
-                                              100
-                                            ) + "..."
+                                            0,
+                                            100
+                                          ) + "..."
                                           : item?.productDescription,
                                     }}
                                   ></p>
                                   <h3>₹{item?.totalAmount}</h3>
-
                                   {item?.remainingAmount ? (
                                     <>
                                       <p>
@@ -534,35 +546,31 @@ const Profile = () => {
                                   )}
                                 </figcaption>
                               </article>
-                              
                               {item?.productcustomizeDetails?.length > 0 ? (
                                 <div className="PastCutomBookingBox" key={i}>
                                   <h6>Product Customizations</h6>
-                                  {item?.productcustomizeDetails?.length > 0
-                                    ? item?.productcustomizeDetails?.map(
-                                        (customItem, customIndex) => {
-                                          return (
-                                            <article key={customIndex}>
-                                              <figure>
-                                                <img src={customItem?.customimages} />
-                                              </figure>
-                                              <figcaption>
-                                                <p>{customItem?.name}</p>
-                                                <h3>
-                                                  ₹{customItem?.price}X
-                                                  {customItem?.quantity}
-                                                </h3>
-                                              </figcaption>
-                                            </article>
-                                          );
-                                        }
-                                      )
-                                    : ""}
+                                  {item?.productcustomizeDetails?.map(
+                                    (customItem, customIndex) => {
+                                      return (
+                                        <article key={customIndex}>
+                                          <figure>
+                                            <img src={customItem?.customimages} />
+                                          </figure>
+                                          <figcaption>
+                                            <p>{customItem?.name}</p>
+                                            <h3>
+                                              ₹{customItem?.price}X
+                                              {customItem?.quantity}
+                                            </h3>
+                                          </figcaption>
+                                        </article>
+                                      );
+                                    }
+                                  )}
                                 </div>
                               ) : (
                                 ""
                               )}
-
                               <div className="timeSlot">
                                 <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
                                   <h5>
@@ -580,7 +588,6 @@ const Profile = () => {
                                     {item?.slot}
                                   </p>
                                 </div>
-                                
                                 {/* Cancel Order Button with Loading State */}
                                 <div style={{ marginTop: "10px" }}>
                                   {Array.isArray(cancellingOrders) && cancellingOrders.includes(item._id) ? (
@@ -626,7 +633,10 @@ const Profile = () => {
                                         color: "white",
                                         fontSize: "14px",
                                       }}
-                                      onClick={() => handleCancelOrder(item)}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleCancelOrder(item);
+                                      }}
                                     >
                                       Cancel Order
                                     </button>
@@ -635,27 +645,26 @@ const Profile = () => {
                               </div>
                             </div>
                           );
-                        })
-                      ) : (
-                        <div className="EmptyOrderArea">
-                          <span>
-                            <img
-                              src={require("../../assets/images/empty-img.png")}
-                            />
-                          </span>
-                          <h3>Empty Order List</h3>
-                          <p>You don't have any current orders.</p>
-                          <button
-                            className="ContinueBtn"
-                            onClick={() => navigate("/")}
-                          >
-                            Continue Shopping
-                          </button>
-                        </div>
-                      )}
-                    </div>
+                        })}
+                      </div>
+                    ) : (
+                      <div className="EmptyOrderArea">
+                        <span>
+                          <img
+                            src={require("../../assets/images/empty-img.png")}
+                          />
+                        </span>
+                        <h3>Empty Order List</h3>
+                        <p>You don't have any current orders.</p>
+                        <button
+                          className="ContinueBtn"
+                          onClick={() => navigate("/")}
+                        >
+                          Continue Shopping
+                        </button>
+                      </div>
+                    )}
                   </Tab.Pane>
-                  
                   {/* Past Bookings Tab - Order History */}
                   <Tab.Pane className="tab-pane" eventKey="past-bookings">
                     <div className="PastBookingArea">
@@ -679,20 +688,18 @@ const Profile = () => {
                                         : "COD"}
                                     </span>
                                   </h5>
-
                                   <p
                                     dangerouslySetInnerHTML={{
                                       __html:
                                         item?.productDescription?.length > 100
                                           ? item?.productDescription?.slice(
-                                              0,
-                                              100
-                                            ) + "..."
+                                            0,
+                                            100
+                                          ) + "..."
                                           : item?.productDescription,
                                     }}
                                   ></p>
                                   <h3>₹{item?.totalAmount}</h3>
-
                                   {item?.remainingAmount ? (
                                     <>
                                       <p>
@@ -708,7 +715,6 @@ const Profile = () => {
                                   )}
                                 </figcaption>
                               </article>
-                              
                               {item?.productcustomizeDetails?.length > 0 ? (
                                 <div className="PastCutomBookingBox">
                                   <h6>Product Customizations</h6>
@@ -733,7 +739,6 @@ const Profile = () => {
                               ) : (
                                 ""
                               )}
-
                               <div className="timeSlot">
                                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                   <div>
@@ -750,7 +755,6 @@ const Profile = () => {
                                       {item?.slot}
                                     </p>
                                   </div>
-                                  
                                   {/* Add Review Button */}
                                   <div>
                                     <button
@@ -792,7 +796,6 @@ const Profile = () => {
                       )}
                     </div>
                   </Tab.Pane>
-                  
                   <Tab.Pane className="tab-pane" eventKey="address">
                     <div className="AddressArea">
                       <h4>Address Details</h4>
@@ -864,7 +867,21 @@ const Profile = () => {
           </div>
         </div>
       </section>
-
+      {/* Order Details Modal - Popup */}
+      <Modal
+        show={showDetails}
+        onHide={handleCloseDetails}
+        size="lg"
+        centered
+        className="order-details-modal"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Order Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <OrderProductDetails item={order} />
+        </Modal.Body>
+      </Modal>
       {/* Profile Edit Modal */}
       <Modal
         className="ModalBox"
@@ -994,7 +1011,6 @@ const Profile = () => {
           </div>
         </div>
       </Modal>
-
       {/* Delete/Logout Confirmation Modal */}
       <Modal
         centered
@@ -1035,7 +1051,6 @@ const Profile = () => {
           </div>
         </div>
       </Modal>
-
       {/* Cancel Order Confirmation Modal */}
       <Modal
         centered
@@ -1073,7 +1088,6 @@ const Profile = () => {
           </div>
         </div>
       </Modal>
-
       {/* Review Modal */}
       <Modal
         centered
@@ -1101,7 +1115,6 @@ const Profile = () => {
                   <i className="fa-solid fa-star"></i>
                 </a>
               ))}
-
               {Array.from({ length: 5 - starLength }).map((_, index) => (
                 <a
                   key={index}
@@ -1122,7 +1135,6 @@ const Profile = () => {
                 placeholder="Share your experience with this product..."
               ></textarea>
             </div>
-
             <div className="form-group">
               <h6>Upload</h6>
               <div className="d-flex">
@@ -1155,14 +1167,12 @@ const Profile = () => {
                 Maximum size:5 MB, jpeg, jpg or png
               </small>
             </div>
-
             <button className="Button" onClick={handleSubmitReview}>
               Submit Review
             </button>
           </div>
         </div>
       </Modal>
-
       <AddAddress
         naviState={iState}
         navupdateState={updateState}

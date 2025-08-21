@@ -185,11 +185,39 @@ const orderSummarySlice = createSlice({
             state.loader = false;
             state.getPastBooking = action.error.message;
         });
-
-
     }
 })
 
+// Todo: Implement cancelOrder API
+export const cancelOrder = createAsyncThunk(
+  "listApis/cancelOrder",
+  async ({ id, reason = "No reason provided" }, { rejectWithValue }) => {
+    try {
+      if (!id) {
+        return rejectWithValue({ message: "Order ID is required" });
+      }
+      const payload = {
+        id,
+        reason,
+        status: "cancelled", 
+      };
+
+      const response = await axios.patch(
+        `${credAndUrl?.BASE_URL}customer/cancelOrder`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data || { message: "Unexpected error" });
+    }
+  }
+);
 
 export default orderSummarySlice.reducer;
 
