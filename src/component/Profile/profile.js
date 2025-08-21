@@ -44,6 +44,7 @@ const initialState = {
   cancelModal: false,
   orderToCancel: null,
   cancellingOrders: [],
+  wishlistItems: []
 };
 
 const Profile = () => {
@@ -84,6 +85,7 @@ const Profile = () => {
   );
   const [showDetails, setShowDetails] = useState(false);
   const [order, setorder] = useState({});
+  const [wishlistItems, setWishlistItems] = useState([]);
 
   const handleProfileModalHideShow = (type) => {
     if (type == "show") {
@@ -314,6 +316,40 @@ const Profile = () => {
     setShowDetails(false);
   };
 
+  // Wishlist functions
+  const getWishlistItems = () => {
+    try {
+      const wishlist = localStorage.getItem('userWishlist');
+      return wishlist ? JSON.parse(wishlist) : [];
+    } catch (error) {
+      console.error('Error getting wishlist:', error);
+      return [];
+    }
+  }
+
+  const removeFromWishlist = (productId) => {
+    try {
+      const wishlist = getWishlistItems();
+      const updatedWishlist = wishlist.filter(item => item.id !== productId);
+      localStorage.setItem('userWishlist', JSON.stringify(updatedWishlist));
+      return updatedWishlist;
+    } catch (error) {
+      console.error('Error removing from wishlist:', error);
+      return [];
+    }
+  };
+
+  const handleRemoveFromWishlist = (productId) => {
+    const updatedWishlist = removeFromWishlist(productId);
+    setWishlistItems(updatedWishlist);
+    toast.success("Item removed from wishlist!");
+  };
+
+  const handleWishlistProductClick = (item) => {
+    const productToPass = item.productData || item;
+    navigate("/products/product-details", { state: productToPass });
+  };
+
   useEffect(() => {
     // Update phone validation state when additional_phone changes
     let newState = { ...iState };
@@ -332,6 +368,28 @@ const Profile = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDetail?._id]);
+
+  useEffect(() => {
+    const loadWishlistItems = () => {
+      const items = getWishlistItems();
+      setWishlistItems(items);
+    };
+
+    loadWishlistItems();
+
+    // Listen for wishlist updates from other components
+    const handleStorageChange = () => {
+      loadWishlistItems();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('wishlistUpdated', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('wishlistUpdated', handleStorageChange);
+    };
+  }, []);
 
   return (
     <>
@@ -360,6 +418,11 @@ const Profile = () => {
                         to="/upcoming-bookings"
                       >
                         My Orders
+                      </Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Nav.Link eventKey="wishlist" as={Link} to="/wishlist">
+                        My Wishlist
                       </Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
@@ -613,6 +676,71 @@ const Profile = () => {
                       </div>
                     )}
                   </Tab.Pane>
+
+                  <Tab.Pane className="tab-pane" eventKey="wishlist">
+                    <div className="WishlistArea">
+                      <h4 style={{ marginBottom: "20px" }}>My Wishlist</h4>
+                      {wishlistItems.length > 0 ? (
+                        <div className="wishlist-grid">
+                          {wishlistItems.map((item, i) => (
+                            <div className="wishlist-item" key={item.id || i}>
+                              <div className="wishlist-image-container">
+                                <img
+                                  src={item.image || item.productimages?.[0] }
+                                  alt={item.name}
+                                  className="wishlist-image"
+                                  onClick={() => handleWishlistProductClick(item.productData || item)}
+                                />
+                                <button
+                                  className="wishlist-remove-btn"
+                                  onClick={() => handleRemoveFromWishlist(item.id)}
+                                  title="Remove from wishlist"
+                                >
+                                  <i className="fa-solid fa-times"></i>
+                                </button>
+                              </div>
+                              <div className="wishlist-content">
+                                <h5 className="wishlist-title" onClick={() => handleWishlistProductClick(item.productData || item)}>
+                                  {item.name || item.productDetails?.productname}
+                                </h5>
+                                <div className="wishlist-price">
+                                  {item.discountedPrice ? (
+                                    <>
+                                      <span className="wishlist-current-price">₹{item.discountedPrice}</span>
+                                      <span className="wishlist-original-price">₹{item.originalPrice}</span>
+                                    </>
+                                  ) : (
+                                    <span className="wishlist-current-price">₹{item.originalPrice || item.price}</span>
+                                  )}
+                                </div>
+                                <button
+                                  className="wishlist-view-btn"
+                                  onClick={() => handleWishlistProductClick(item.productData || item)}
+                                >
+                                  View Product
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="EmptyWishlistArea">
+                          <span>
+                            <i className="fa-solid fa-heart" style={{ fontSize: "4rem", color: "#e5e5e5" }}></i>
+                          </span>
+                          <h3>Your Wishlist is Empty</h3>
+                          <p>Add items you love to your wishlist and find them here.</p>
+                          <button
+                            className="ContinueBtn"
+                            onClick={() => navigate("/")}
+                          >
+                            Start Shopping
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </Tab.Pane>
+
                   {/* Past Bookings Tab - Order History */}
                   <Tab.Pane className="tab-pane" eventKey="past-bookings">
                     <div className="PastBookingArea">
