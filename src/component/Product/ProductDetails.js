@@ -10,7 +10,7 @@ import {
 import { toast, useToast } from "react-toastify";
 import { Modal } from "react-bootstrap";
 import { addtoCart } from "../../reduxToolkit/Slices/Cart/bookingApis";
-import { convertTimeFormat, formatDate } from "../../Utils/commonFunctions";
+import { convertTimeFormat, formatDate, addToRecentlyViewed, getRecentlyViewed, clearRecentlyViewed } from "../../Utils/commonFunctions.js";
 import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.min.css";
 import Lightbox from "react-image-lightbox";
@@ -50,22 +50,41 @@ const initialState = {
     photos: []
   },
   hoveredRating: 0,
-  isSubmittingReview: false
+  isSubmittingReview: false,
+  recentlyViewedProducts: []
 };
 
 const ProductDetails = () => {
 
   // State to track favourite products (by id)
-  const [favouriteProducts, setFavouriteProducts] = useState([]);
+  // const [favouriteProducts, setFavouriteProducts] = useState([]);
+  const [wishlistItems, setWishlistItems] = useState([]);
+
 
   // Toggle favourite status for a product
-  const handleFavouriteToggle = (productId) => {
-    setFavouriteProducts((prev) =>
-      prev.includes(productId)
-        ? prev.filter((id) => id !== productId)
-        : [...prev, productId]
-    );
+  // const handleFavouriteToggle = (productId) => {
+  //   setFavouriteProducts((prev) =>
+  //     prev.includes(productId)
+  //       ? prev.filter((id) => id !== productId)
+  //       : [...prev, productId]
+  //   );
+  // };
+
+  const handleFavouriteToggle = (product) => {
+    const productId = product._id || product.productDetails?.id;
+    const isInWishlist = isProductInWishlist(productId);
+
+    if (isInWishlist) {
+      const updatedWishlist = removeFromWishlist(productId);
+      setWishlistItems(updatedWishlist);
+      toast.success("Removed from wishlist!");
+    } else {
+      const updatedWishlist = addToWishlist(product);
+      setWishlistItems(updatedWishlist);
+      toast.success("Added to wishlist!");
+    }
   };
+
   const [showBookingFlow, setShowBookingFlow] = useState(false);
   const location = useLocation();
   const dispatch = useDispatch();
@@ -103,7 +122,8 @@ const ProductDetails = () => {
     showAddReviewModal,
     reviewData,
     hoveredRating,
-    isSubmittingReview
+    isSubmittingReview,
+    recentlyViewedProducts
   } = iState;
   const { getProductDetails, getSlotList, getStaticSlotList, loader } =
     useSelector((state) => state.productList);
@@ -287,11 +307,11 @@ const ProductDetails = () => {
   const calculateBookingTotal = (bookingData) => {
     const basePrice = getProductDetails?.data?.product?.priceDetails?.discountedPrice ||
       getProductDetails?.data?.product?.priceDetails?.price || 0;
-    
+
     const customizationsTotal = bookingData?.selectedCustomizations?.reduce((sum, item) => {
       return sum + (Number(item.price) || 0);
     }, 0) || 0;
-    
+
     return basePrice + customizationsTotal;
   };
 
@@ -302,7 +322,7 @@ const ProductDetails = () => {
 
     // Get user details (might be from props, localStorage, or bookingData)
     const currentUserDetail = bookingData?.loginData?.user || userDetail;
-    
+
     if (!currentUserDetail) {
       console.error('No user details available for booking');
       toast.error('Please login to complete booking');
@@ -695,6 +715,64 @@ const ProductDetails = () => {
     });
   };
 
+
+
+  const getWishlistItems = () => {
+    try {
+      const wishlist = localStorage.getItem('userWishlist');
+      return wishlist ? JSON.parse(wishlist) : [];
+    } catch (error) {
+      console.error('Error getting wishlist:', error);
+      return [];
+    }
+  };
+
+  const addToWishlist = (product) => {
+    try {
+      const wishlist = getWishlistItems();
+      const productToAdd = {
+        id: product._id || product.productDetails?.id,
+        name: product.productDetails?.productname,
+        image: product.productimages?.[0],
+        originalPrice: product.priceDetails?.price,
+        discountedPrice: product.priceDetails?.discountedPrice,
+        productData: product,
+        addedAt: new Date().toISOString()
+      };
+
+      const existingIndex = wishlist.findIndex(item => item.id === productToAdd.id);
+
+      if (existingIndex === -1) {
+        wishlist.push(productToAdd);
+        localStorage.setItem('userWishlist', JSON.stringify(wishlist));
+        window.dispatchEvent(new Event('wishlistUpdated'));
+        return wishlist;
+      }
+      return wishlist;
+    } catch (error) {
+      console.error('Error adding to wishlist:', error);
+      return [];
+    }
+  };
+
+  const removeFromWishlist = (productId) => {
+    try {
+      const wishlist = getWishlistItems();
+      const updatedWishlist = wishlist.filter(item => item.id !== productId);
+      localStorage.setItem('userWishlist', JSON.stringify(updatedWishlist));
+      window.dispatchEvent(new Event('wishlistUpdated'));
+      return updatedWishlist;
+    } catch (error) {
+      console.error('Error removing from wishlist:', error);
+      return [];
+    }
+  };
+
+  const isProductInWishlist = (productId) => {
+    const wishlist = getWishlistItems();
+    return wishlist.some(item => item.id === productId);
+  };
+
   useEffect(() => {
     if (customization?.length > 0) {
       const data = {
@@ -814,6 +892,80 @@ const ProductDetails = () => {
       };
     }
   }, [getProductDetails?.data?.similarProducts]);
+
+
+  useEffect(() => {
+    const recentlyViewed = getRecentlyViewed();
+    updateState({
+      ...iState,
+      recentlyViewedProducts: recentlyViewed
+    });
+  }, []);
+
+  useEffect(() => {
+    const loadWishlistItems = () => {
+      const items = getWishlistItems();
+      setWishlistItems(items);
+    };
+
+    loadWishlistItems();
+
+    const handleStorageChange = () => {
+      loadWishlistItems();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('wishlistUpdated', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('wishlistUpdated', handleStorageChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (getProductDetails?.data?.product) {
+      // Add current product to recently viewed
+      const updatedRecentlyViewed = addToRecentlyViewed(getProductDetails.data.product);
+
+      // Update state with new recently viewed list (excluding current product)
+      const filteredRecentlyViewed = updatedRecentlyViewed.filter(
+        product => product._id !== getProductDetails.data.product._id
+      );
+
+      updateState({
+        ...iState,
+        recentlyViewedProducts: filteredRecentlyViewed
+      });
+    }
+  }, [getProductDetails]);
+
+
+  useEffect(() => {
+    const recentlyViewed = getRecentlyViewed();
+    updateState({
+      ...iState,
+      recentlyViewedProducts: recentlyViewed
+    });
+  }, []);
+
+  useEffect(() => {
+    if (getProductDetails?.data?.product) {
+      // Add current product to recently viewed
+      const updatedRecentlyViewed = addToRecentlyViewed(getProductDetails.data.product);
+
+      // Update state with new recently viewed list (excluding current product)
+      const filteredRecentlyViewed = updatedRecentlyViewed.filter(
+        product => product._id !== getProductDetails.data.product._id
+      );
+
+      updateState({
+        ...iState,
+        recentlyViewedProducts: filteredRecentlyViewed
+      });
+    }
+  }, [getProductDetails]);
+
 
   const FixedBottomBookingBar = ({
     productPrice,
@@ -1608,14 +1760,14 @@ const ProductDetails = () => {
             <h2 className="section-title">
               Similar Products
             </h2>
-            <a href="#" className="view-more-link">View More</a>
+            <a href="/" className="view-more-link">View More</a>
           </div>
 
           <div className="similar-products-grid">
             {getProductDetails?.data?.similarProducts?.length > 0
               ? getProductDetails?.data?.similarProducts?.map((item, i) => {
                 const productId = item?.productDetails?.id || item?.productDetails?._id || i;
-                const isFavourite = favouriteProducts.includes(productId);
+                const isFavourite = isProductInWishlist(item._id || item.productDetails?.id);
                 return (
                   <div className="product-card" key={productId}>
                     <div className="product-image-wrapper">
@@ -1628,7 +1780,7 @@ const ProductDetails = () => {
                       {/* Favourite button */}
                       <button
                         className="product-favorite"
-                        onClick={() => handleFavouriteToggle(productId)}
+                        onClick={() => handleFavouriteToggle(item)}
                         aria-label={isFavourite ? "Unfavourite" : "Favourite"}
                         style={{ background: "none", border: "none", cursor: "pointer", position: "absolute", top: "15px", right: "15px", zIndex: 2 }}
                       >
@@ -1709,9 +1861,9 @@ const ProductDetails = () => {
           </div>
 
           <div className="recently-viewed-grid">
-            {getProductDetails?.data?.recentlyViewed?.length > 0 ? (
-              getProductDetails?.data?.recentlyViewed?.map((item, i) => (
-                <div className="recently-viewed-card" key={i}>
+            {recentlyViewedProducts?.length > 0 ? (
+              recentlyViewedProducts?.slice(0, 8)?.map((item, i) => (
+                <div className="recently-viewed-card" key={item._id || i}>
                   <div className="recently-viewed-image-wrapper">
                     <img
                       onClick={() => handleProduct(item)}
@@ -1721,14 +1873,25 @@ const ProductDetails = () => {
                     />
 
                     {/* Favorite Button */}
-                    <button className="recently-viewed-favorite">
-                      <i className="fa-regular fa-heart"></i>
+                    <button
+                      className="recently-viewed-favorite"
+                      onClick={() => handleFavouriteToggle(item)}
+                    >
+                      <i className={isProductInWishlist(item._id || item.productDetails?.id) ? "fa-solid fa-heart" : "fa-regular fa-heart"}></i>
                     </button>
 
-                    {/* Location Badge */}
-                    <div className="location-badge">
-                      At Your Location
-                    </div>
+                    {/* Discount Badge */}
+                    {item?.priceDetails?.discountedPrice && (
+                      <div className="discount-badge">
+                        {Math.round(
+                          ((Number(item?.priceDetails?.price) -
+                            Number(item?.priceDetails?.discountedPrice)) /
+                            Number(item?.priceDetails?.price)) *
+                          100
+                        )}% OFF
+                      </div>
+                    )}
+
 
                     {/* Hover Overlay */}
                     <div className="recently-viewed-overlay">
@@ -1748,9 +1911,20 @@ const ProductDetails = () => {
                     </h3>
 
                     <div className="recently-viewed-pricing">
-                      <span className="recently-viewed-price">
-                        ₹{item?.priceDetails?.discountedPrice || item?.priceDetails?.price}
-                      </span>
+                      {item?.priceDetails?.discountedPrice ? (
+                        <div className="price-container">
+                          <span className="recently-viewed-price">
+                            ₹{item?.priceDetails?.discountedPrice}
+                          </span>
+                          <span className="recently-viewed-original-price">
+                            ₹{item?.priceDetails?.price}
+                          </span>
+                        </div>
+                      ) : (
+                        <span className="recently-viewed-price">
+                          ₹{item?.priceDetails?.price}
+                        </span>
+                      )}
                     </div>
 
                     <div className="recently-viewed-rating">
@@ -1763,16 +1937,43 @@ const ProductDetails = () => {
                         {(4.0 + (i * 0.2)).toFixed(1)}
                       </span>
                     </div>
+                    {/* Add "Viewed on" timestamp */}
+                    <div className="recently-viewed-timestamp">
+                      <i className="fa-solid fa-clock"></i>
+                      <span>Recently viewed</span>
+                    </div>
                   </div>
                 </div>
               ))
             ) : (
               <div className="no-recently-viewed">
                 <i className="fa-solid fa-clock-rotate-left"></i>
-                <p>No recently viewed items</p>
+                <div className="no-recently-viewed-content">
+                  <h4>No recently viewed items</h4>
+                  <p>Products you view will appear here</p>
+
+                </div>
               </div>
             )}
           </div>
+          {/* Clear Recently Viewed Button */}
+          {recentlyViewedProducts?.length > 0 && (
+            <div className="recently-viewed-actions">
+              <button
+                className="clear-recently-viewed-btn"
+                onClick={() => {
+                  clearRecentlyViewed();
+                  updateState({
+                    ...iState,
+                    recentlyViewedProducts: []
+                  });
+                }}
+              >
+                <i className="fa-solid fa-trash"></i>
+                Clear Recently Viewed
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
