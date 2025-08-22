@@ -48,10 +48,15 @@ const RazorpayPayment = ({
   }
 
   const handleCODPayment = () => {
+    if (!addressList) {
+      toast.error("Please Add an Address!!");
+      return;
+    }
+
     const data = {
       userId: getOrderSummaryDetail?.data?.userId,
       itemQuantity: 1,
-      placedon:  getOrderSummaryDetail?.data?.dateAdded,
+      placedon: getOrderSummaryDetail?.data?.dateAdded,
       slot: slot,
       prodimages: getOrderSummaryDetail?.data?.productImage,
       productAmount: getOrderSummaryDetail?.data?.price,
@@ -83,8 +88,8 @@ const RazorpayPayment = ({
         }
       })
       .catch((err) => {
-        toast?.success(err?.payload?.message);
-        console.log({ err });
+        toast?.error(err?.payload?.message || "Failed to place order");
+        // console.log({ err });
       });
   };
 
@@ -179,8 +184,8 @@ const RazorpayPayment = ({
                 }
               })
               .catch((err) => {
-                toast?.success(err?.payload?.message);
-                console.log({ err });
+                toast?.error(err?.payload?.message || "Payment failed");
+                // console.log({ err });
               });
             // }
             // });
