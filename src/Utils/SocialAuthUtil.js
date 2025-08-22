@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 
 // Your actual Google Client ID
 const GOOGLE_CLIENT_ID = "100748839589-chdc48opcq06i8kkijr3a9lbrfbq8vkd.apps.googleusercontent.com";
+const FACEBOOK_APP_ID = "1337367131060570";
 
 // Google OAuth Integration
 export const initializeGoogleAuth = () => {
@@ -305,7 +306,7 @@ export const initializeFacebookSDK = () => {
 
     window.fbAsyncInit = function() {
       window.FB.init({
-        appId: process.env.REACT_APP_FACEBOOK_APP_ID || "your-facebook-app-id",
+        appId: FACEBOOK_APP_ID || 1337367131060570,
         cookie: true,
         xfbml: true,
         version: 'v18.0'
@@ -548,9 +549,9 @@ export const validateSocialAuthEnvironment = () => {
   if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID.includes('your-google')) {
     warnings.push('Google Client ID not properly configured');
   }
-  
-  if (!process.env.REACT_APP_FACEBOOK_APP_ID) {
-    warnings.push('Facebook App ID not found in environment variables');
+
+  if (!FACEBOOK_APP_ID || FACEBOOK_APP_ID.includes('your-facebook')) {
+    warnings.push('Facebook App ID not properly configured');
   }
   
   if (warnings.length > 0 && process.env.NODE_ENV === 'development') {

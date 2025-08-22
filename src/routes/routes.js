@@ -80,6 +80,10 @@ export const routes = createBrowserRouter(
           path: "return-policy",
           element: <StaticContent />,
         },
+        {
+          path: "blog",
+          element: <StaticContent />,
+        },
       ],
     },
   ],

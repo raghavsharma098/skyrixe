@@ -9,30 +9,32 @@ const StaticContent = () => {
   const { getStaticList } = useSelector((state) => state.staticList);
 
   useEffect(() => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
-  const data = {
-    endUrl:
-      pathname === "about-us"
-        ? "aboutusget"
-        : pathname === "terms-conditions"
-        ? "termget"
-        : pathname === "privacy-policy"
-        ? "privacyget"
-        : pathname === "contact-us"
-        ? "contactdata"
-        : pathname === "return-policy"
-        ? "returnpolicyget"
-        : pathname === "faq"
-        ? "faqget"
-        : "",
-  };
+    const data = {
+      endUrl:
+        pathname === "about-us"
+          ? "aboutusget"
+          : pathname === "terms-conditions"
+          ? "termget"
+          : pathname === "privacy-policy"
+          ? "privacyget"
+          : pathname === "contact-us"
+          ? "contactdata"
+          : pathname === "return-policy"
+          ? "returnpolicyget"
+          : pathname === "faq"
+          ? "faqget"
+          : pathname === "blog"
+          ? "blogget"
+          : "",
+    };
 
-  dispatch(staticDataList(data));
-}, [pathname, dispatch]);
-
+    dispatch(staticDataList(data));
+  }, [pathname, dispatch]);
 
   console.log({ getStaticList });
+  
   return (
     <>
       <div id="Main">
@@ -50,6 +52,8 @@ const StaticContent = () => {
               ? "Return Policy"
               : pathname === "faq"
               ? "Frequently Asked Questions"
+              : pathname === "blog"
+              ? "Blog"
               : ""}
           </h3>
         </div>
