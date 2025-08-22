@@ -18,6 +18,7 @@
     "drift-zoom": "^1.5.1",
     "lucide-react": "^0.539.0",
     "multiselect-react-dropdown": "^2.0.25",
+    "passport-facebook": "^3.0.0",
     "razorpay": "^2.9.6",
     "react": "^19.1.1",
     "react-bootstrap": "^2.10.10",
