@@ -9,6 +9,7 @@ import Checkout2 from "../component/CheckOut/Checkout2";
 import PaymentSuccess from "../component/Payment/PaymentSuccess";
 import StaticContent from "../component/StaticContent/StaticContent";
 import SearchProducts from "../component/Product/SearchProducts";
+import Blogcont from "../component/BlogCont/blogs";
 
 
 let basename = "/";
@@ -26,10 +27,6 @@ export const routes = createBrowserRouter(
         {
           path: "",
           element: <Main />,
-        },
-        {
-          path: ":type",
-          element: <Profile />,
         },
         {
           path: "products",
@@ -82,7 +79,11 @@ export const routes = createBrowserRouter(
         },
         {
           path: "blog",
-          element: <StaticContent />,
+          element: <Blogcont />,
+        },
+        {
+          path: ":type",
+          element: <Profile />,
         },
       ],
     },
