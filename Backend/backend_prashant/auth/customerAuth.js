@@ -6,6 +6,7 @@ const jwt=require('jsonwebtoken');
 const{ sendOtpViaMsg91, verifyOtpViaMsg91, resendOtpViaMsg91 }=require('../utils/msg91Utils')
 //multer middleware
 const upload = multerSetup(['image/jpeg', 'image/png'], 2 * 1024 * 1024);
+const {OAuth2Client} = require('google-auth-library');
 ///customer signup 
 // Save phone number and verify OTP. IMP+++OTP message service pending
 //in this if a customer come if exist user this will helps in login and if not this will create a new user/customer
@@ -341,6 +342,8 @@ const customerPersonalData = async (req, res) => {
       process.env.JWT_SECRET 
       
     );
+
+    
     //returning data
     return res.status(200).json({
       message: 'Personal information saved successfully. Login Successful.',
@@ -566,11 +569,148 @@ const customerofficeaddressData = async (req, res) => {
 // });
 
 // module.exports = router;
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+const customerGoogleLogin = async (req, res) => {
+  const { googleToken } = req.body;
+  
+  if (!googleToken) {
+    return res.status(400).json({ message: 'Google token is required', status: 400 });
+  }
+
+  try {
+    // Verify Google token
+    let ticket;
+    let payload;
+    
+    try {
+      ticket = await client.verifyIdToken({
+        idToken: googleToken,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      payload = ticket.getPayload();
+    } catch (tokenError) {
+      return res.status(401).json({
+        message: 'Invalid Google token',
+        status: 401,
+        error: tokenError.message,
+      });
+    }
+
+    const { sub: googleId, email, name, picture } = payload;
+
+    // Check if user exists by Google ID or email
+    let user = await customerauthSchemaData.findOne({ 
+      $or: [
+        { googleID: googleId },
+        { 'personalInfo.email': email }
+      ]
+    });
+
+    let isNewUser = false;
+
+    if (!user) {
+      // Create new user
+      const counter = await Counter.findOneAndUpdate(
+        { id: "customerId" },
+        { $inc: { seq: 1 } },
+        { new: true, upsert: true }
+      );
+      const customerId = `Cust-${String(counter.seq).padStart(3, "0")}`;
+
+      user = new customerauthSchemaData({
+        customerId,
+        phone: "",
+        isPhoneVerified: false,
+        isActive: true,
+        personalInfo: {
+          name: name || '',
+          email: email || '',
+          gender: '',
+          dob: null,
+        },
+        addresses: [],
+        googleId,
+        profilePicture: picture,
+        isEmailVerified: true,
+        isGoogleAuth: true,
+        authProvider: 'google',
+      });
+      await user.save();
+      isNewUser = true;
+    } else {
+      // Update existing user with Google info if not already set
+      let updateData = {};
+      
+      if (!user.googleId) updateData.googleId = googleId;
+      if (!user.personalInfo?.name && name) {
+        updateData['personalInfo.name'] = name;
+      }
+      if (!user.personalInfo?.email && email) {
+        updateData['personalInfo.email'] = email;
+      }
+      if (!user.profilePicture && picture) updateData.profilePicture = picture;
+      if (!user.isEmailVerified) updateData.isEmailVerified = true;
+      if (!user.isGoogleAuth) updateData.isGoogleAuth = true;
+      if (!user.authProvider) updateData.authProvider = 'google';
+      if (!user.isActive) updateData.isActive = true;
+      
+      if (Object.keys(updateData).length > 0) {
+        user = await customerauthSchemaData.findByIdAndUpdate(user._id, updateData, { new: true });
+      }
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { 
+        userId: user._id, 
+        phone: user.phone // Keep consistent with OTP login
+      },
+      process.env.JWT_SECRET
+    );
+
+    // Check if personal info is complete (same logic as OTP verification)
+    const personalInfo = user.personalInfo;
+    const isPersonalInfoComplete =
+      personalInfo &&
+      personalInfo.name?.trim() &&
+      personalInfo.gender?.trim() &&
+      personalInfo.dob;
+
+    if (isPersonalInfoComplete) {
+      return res.status(200).json({
+        message: isNewUser 
+          ? 'Google login successful.' 
+          : 'Google login successful.',
+        status: 200,
+        userId: user._id,
+        data: user,
+        token,
+      });
+    } else {
+      return res.status(200).json({
+        message: isNewUser 
+          ? 'Google login successful. Please complete your profile.' 
+          : 'Google login successful. Please complete your profile.',
+        status: 200,
+        userId: user._id,
+        data: user
+      });
+    }
+
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Error during Google login',
+      status: 500,
+      error: error.message,
+    });
+  }
+};
 
 
 
 
-module.exports={customerhomeaddressData,customerphoneVerification,verifyOtp,
+module.exports={customerhomeaddressData,customerphoneVerification,verifyOtp,customerGoogleLogin,
   customerPersonalData:[upload.single('photo'),customerPersonalData],customerhomeaddressData,customerofficeaddressData,resendOtp
 }
 

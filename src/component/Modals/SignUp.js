@@ -163,10 +163,15 @@ const SignUp = ({ iState, updateState }) => {
       if (method === "google") {
         try {
           const result = await handleGoogleLoginPopup();
-          handleSocialLoginSuccess(result, setCookie, dispatch, () => {
-            toast.success("Google login successful!");
-            updateState({ ...iState, signUpModal: false });
-          });
+          console.log(result);
+          const { userData } = result;
+          window.localStorage.setItem("LennyUserDetail", JSON.stringify(userData));
+          window.localStorage.setItem("LoginTimer", "false");
+          setCookie("LennyCheck", true, { path: "/" }, { expires: new Date("9999-12-31") });
+          dispatch(userDetailState(true));
+
+          toast.success("Google login successful!");
+          updateState({ ...iState, signUpModal: false });
         } catch (popupError) {
           const fallbackResult = await handleGoogleLogin();
           handleSocialLoginSuccess(fallbackResult, setCookie, dispatch, () => {

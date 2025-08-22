@@ -9,7 +9,7 @@ const router=express.Router()
 //   headers: true, // Include rate limit info in response headers
 // });
 ///////customer auth import///////////////////
-const{customerPersonalData,customerhomeaddressData,customerphoneVerification,customerofficeaddressData, verifyOtp, resendOtp}=require('../auth/customerAuth')
+const{customerPersonalData,customerhomeaddressData,customerphoneVerification,customerofficeaddressData, verifyOtp, resendOtp, customerGoogleLogin}=require('../auth/customerAuth')
 ////////////////////custoemr other routes import//
 const{customerDataUpdate,customerProfileInfo,getAllCustomerAddresses,deleteCustomerAddress,addCustomerAddress,updateCustomerAddress}=require('../controllers/customerControl')
 ///customer banner,deal-banner and categories list impirt
@@ -55,7 +55,7 @@ router.post('/:userId/customerdata',customerPersonalData);
 
 router.post('/:userId/customeraddress',customerhomeaddressData);
 
-
+router.post('/auth/google-login',customerGoogleLogin);
 //////////////////////////////////other routes////////////////////////////////////////////////////////
 
 

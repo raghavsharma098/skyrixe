@@ -1,6 +1,9 @@
 // Fixed SocialAuthUtil.js
+import { credAndUrl } from "../config/config";
 import { userDetailState } from "../reduxToolkit/Slices/ProductList/listApis";
+
 import { toast } from "react-toastify";
+import axios from "axios";;
 
 // Your actual Google Client ID
 const GOOGLE_CLIENT_ID = "100748839589-chdc48opcq06i8kkijr3a9lbrfbq8vkd.apps.googleusercontent.com";
@@ -187,7 +190,7 @@ export const handleGoogleLoginPopup = () => {
           loginDiv.style.border = '2px solid #ccc';
           loginDiv.style.borderRadius = '8px';
           loginDiv.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-          
+
           // Add close button
           const closeBtn = document.createElement('button');
           closeBtn.innerHTML = '×';
@@ -205,9 +208,9 @@ export const handleGoogleLoginPopup = () => {
               error: 'Google login cancelled by user'
             });
           };
-          
+
           loginDiv.appendChild(closeBtn);
-          
+
           // Add title
           const title = document.createElement('div');
           title.innerHTML = 'Click to sign in with Google';
@@ -215,52 +218,70 @@ export const handleGoogleLoginPopup = () => {
           title.style.textAlign = 'center';
           title.style.fontWeight = 'bold';
           loginDiv.appendChild(title);
-          
+
+          // Add loading indicator (initially hidden)
+          const loadingDiv = document.createElement('div');
+          loadingDiv.innerHTML = 'Processing login...';
+          loadingDiv.style.display = 'none';
+          loadingDiv.style.textAlign = 'center';
+          loadingDiv.style.marginTop = '15px';
+          loadingDiv.style.color = '#666';
+          loginDiv.appendChild(loadingDiv);
+
           document.body.appendChild(loginDiv);
 
           window.google.accounts.id.initialize({
             client_id: GOOGLE_CLIENT_ID,
-            callback: (credentialResponse) => {
+            callback: async (credentialResponse) => {
               try {
+                console.log('Google credential response:', credentialResponse);
+
+                // Show loading and hide button
+                const googleButton = loginDiv.querySelector('[data-type="standard"]');
+                if (googleButton) googleButton.style.display = 'none';
+                loadingDiv.style.display = 'block';
+                title.innerHTML = 'Signing you in...';
+
+                // Send Google token to backend
+                const backendResponse = await axios.post(
+                  `${credAndUrl?.BASE_URL}customer/auth/google-login`,
+                  { googleToken: credentialResponse.credential });
+
+                console.log('Backend response:', backendResponse?.data);
+
+                // Check if backend response is successful
+                if (backendResponse?.data?.status !== 200) {
+                  throw new Error(backendResponse?.data?.message || 'Backend authentication failed');
+                }
+
                 // Clean up the popup
                 if (document.getElementById('google-signin-button')) {
                   document.body.removeChild(loginDiv);
                 }
-                
-                console.log('Google credential response:', credentialResponse);
-                
-                // Decode JWT token to get user info
-                const payload = JSON.parse(atob(credentialResponse.credential.split('.')[1]));
-                console.log('Decoded payload:', payload);
-                
-                const userData = {
-                  _id: `google_${payload.sub}`,
-                  userId: `google_${payload.sub}`,
-                  data: {
-                    personalInfo: {
-                      name: payload.name,
-                      email: payload.email,
-                      photo: payload.picture || "",
-                      phone: "",
-                      gender: "",
-                      dob: "",
-                    },
-                    addresses: [],
-                    authMethod: 'google',
-                    googleId: payload.sub,
-                  }
-                };
+
 
                 resolve({
                   success: true,
-                  userData,
-                  message: "Google login successful"
+                  userData: backendResponse.data.data,
+                  message: backendResponse?.data.message || "Google login successful",
+                  isNewUser: backendResponse?.data.isNewUser || false,
+                  token: backendResponse?.data.token,
+                  status: backendResponse?.data.status
                 });
+
               } catch (error) {
                 console.error('Error processing Google credential:', error);
+
+                // Clean up popup on error
+                if (document.getElementById('google-signin-button')) {
+                  document.body.removeChild(loginDiv);
+                }
+
+                toast.error('Google login failed', { description: error.message });
+
                 reject({
                   success: false,
-                  error: 'Failed to process Google authentication'
+                  error: error.message || 'Failed to process Google authentication'
                 });
               }
             },
@@ -277,9 +298,10 @@ export const handleGoogleLoginPopup = () => {
             logo_alignment: 'left',
             width: 300,
           });
-          
+
         })
         .catch(error => {
+          toast.error('Google OAuth initialization failed');
           console.error('Google OAuth initialization failed:', error);
           reject({
             success: false,
