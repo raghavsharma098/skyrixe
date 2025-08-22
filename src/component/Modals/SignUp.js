@@ -34,7 +34,10 @@ const SignUp = ({ iState, updateState }) => {
     check: cookies?.LennyCheck || false,
     email: "",
     password: "",
+    confirmPassword: "",
+    fullName: "",
     useEmail: false,
+    isSignUp: false, // New state to toggle between login/signup
     phone_valid: true,
     disable: false,
     otpModal: false,
@@ -44,7 +47,18 @@ const SignUp = ({ iState, updateState }) => {
   };
 
   const [states, updateSignState] = useState(initialState);
-  const { phone, email, password, useEmail, disable, errors, otpModal } = states;
+  const { 
+    phone, 
+    email, 
+    password, 
+    confirmPassword, 
+    fullName, 
+    useEmail, 
+    isSignUp, 
+    disable, 
+    errors, 
+    otpModal 
+  } = states;
 
   useEffect(() => {
     validateSocialAuthEnvironment();
@@ -68,7 +82,27 @@ const SignUp = ({ iState, updateState }) => {
   };
 
   const toggleLoginMode = () => {
-    updateSignState({ ...states, useEmail: !useEmail, errors: {} });
+    updateSignState({ 
+      ...states, 
+      useEmail: !useEmail, 
+      isSignUp: false,
+      errors: {},
+      email: "",
+      password: "",
+      confirmPassword: "",
+      fullName: ""
+    });
+  };
+
+  const toggleSignUpMode = () => {
+    updateSignState({ 
+      ...states, 
+      isSignUp: !isSignUp, 
+      errors: {},
+      password: "",
+      confirmPassword: "",
+      fullName: ""
+    });
   };
 
   const handlePhoneValidation = () => {
@@ -98,42 +132,146 @@ const SignUp = ({ iState, updateState }) => {
       valid = false;
     }
 
+    // Additional validation for signup
+    if (isSignUp) {
+      if (!fullName || fullName.trim().length < 2) {
+        error.nameError = "*Full name is required (minimum 2 characters)";
+        valid = false;
+      }
+      if (password !== confirmPassword) {
+        error.confirmPasswordError = "*Passwords do not match";
+        valid = false;
+      }
+    }
+
     updateSignState({ ...states, errors: error });
     return valid;
   };
 
+  // Simulate user database - In real app, this would be API calls
+  const getUserByEmail = (email) => {
+    const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+    return users.find(user => user.email === email);
+  };
+
+  const createUser = (userData) => {
+    const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+    const newUser = {
+      id: Date.now(),
+      ...userData,
+      createdAt: new Date().toISOString()
+    };
+    users.push(newUser);
+    localStorage.setItem('registeredUsers', JSON.stringify(users));
+    return newUser;
+  };
+
+  const handleEmailSignUp = async () => {
+    if (!handleEmailValidation()) return;
+
+    try {
+      // Check if user already exists
+      const existingUser = getUserByEmail(email);
+      if (existingUser) {
+        toast.error("User already exists with this email. Please login instead.");
+        updateSignState({ ...states, isSignUp: false });
+        return;
+      }
+
+      // Create new user
+      const newUser = createUser({
+        email,
+        password, // In real app, this should be hashed
+        fullName,
+        authMethod: 'email'
+      });
+
+      // Create user session data
+      const userData = {
+        _id: `email_${newUser.id}`,
+        userId: `email_${newUser.id}`,
+        data: {
+          personalInfo: {
+            name: fullName,
+            email,
+            photo: "",
+            phone: "",
+            gender: "",
+            dob: "",
+          },
+          addresses: [],
+          authMethod: "email",
+        },
+      };
+
+      window.localStorage.setItem("LennyUserDetail", JSON.stringify(userData));
+      window.localStorage.setItem("LoginTimer", "false");
+      setCookie("LennyCheck", true, { path: "/" }, { expires: new Date("9999-12-31") });
+      dispatch(userDetailState(true));
+
+      toast.success("Account created successfully!");
+      updateState({ ...iState, signUpModal: false });
+    } catch (error) {
+      console.error('Email signup error:', error);
+      toast.error("Failed to create account. Please try again.");
+    }
+  };
+
+  const handleEmailLogin = async () => {
+    if (!handleEmailValidation()) return;
+
+    try {
+      // Check if user exists
+      const existingUser = getUserByEmail(email);
+      if (!existingUser) {
+        toast.error("No account found with this email. Please sign up first.");
+        updateSignState({ ...states, isSignUp: true });
+        return;
+      }
+
+      // Validate password
+      if (existingUser.password !== password) {
+        toast.error("Incorrect password. Please try again.");
+        return;
+      }
+
+      // Create user session data
+      const userData = {
+        _id: `email_${existingUser.id}`,
+        userId: `email_${existingUser.id}`,
+        data: {
+          personalInfo: {
+            name: existingUser.fullName,
+            email: existingUser.email,
+            photo: "",
+            phone: "",
+            gender: "",
+            dob: "",
+          },
+          addresses: [],
+          authMethod: "email",
+        },
+      };
+
+      window.localStorage.setItem("LennyUserDetail", JSON.stringify(userData));
+      window.localStorage.setItem("LoginTimer", "false");
+      setCookie("LennyCheck", true, { path: "/" }, { expires: new Date("9999-12-31") });
+      dispatch(userDetailState(true));
+
+      toast.success("Login successful!");
+      updateState({ ...iState, signUpModal: false });
+    } catch (error) {
+      console.error('Email login error:', error);
+      toast.error("Login failed. Please try again.");
+    }
+  };
+
   const handleSignIn = async () => {
     if (useEmail) {
-      if (!handleEmailValidation()) return;
-
-      try {
-        // Simulate email login (replace this with real API)
-        const userData = {
-          _id: `email_${Date.now()}`,
-          userId: `email_${Date.now()}`,
-          data: {
-            personalInfo: {
-              name: "Email User",
-              email,
-              photo: "",
-              phone: "",
-              gender: "",
-              dob: "",
-            },
-            addresses: [],
-            authMethod: "email",
-          },
-        };
-
-        window.localStorage.setItem("LennyUserDetail", JSON.stringify(userData));
-        window.localStorage.setItem("LoginTimer", "false");
-        setCookie("LennyCheck", true, { path: "/" }, { expires: new Date("9999-12-31") });
-        dispatch(userDetailState(true));
-
-        toast.success("Email login successful!");
-        updateState({ ...iState, signUpModal: false });
-      } catch (error) {
-        toast.error("Email login failed.");
+      if (isSignUp) {
+        await handleEmailSignUp();
+      } else {
+        await handleEmailLogin();
       }
     } else {
       if (!handlePhoneValidation()) return;
@@ -192,6 +330,20 @@ const SignUp = ({ iState, updateState }) => {
     }
   }, [getSignUpState]);
 
+  const getModalTitle = () => {
+    if (useEmail) {
+      return isSignUp ? "Create Account" : "Email Login";
+    }
+    return "Mobile Login";
+  };
+
+  const getSubmitButtonText = () => {
+    if (useEmail) {
+      return isSignUp ? "CREATE ACCOUNT" : "LOG IN WITH EMAIL";
+    }
+    return "LOG IN VIA OTP";
+  };
+
   return (
     <>
       {signUpModal && (
@@ -207,7 +359,7 @@ const SignUp = ({ iState, updateState }) => {
               <img src={require("../../assets/images/Header_Logo.png")} alt="Logo" />
             </div>
 
-            <h2 className="signup-title">{useEmail ? "Email Login" : "Mobile Login"}</h2>
+            <h2 className="signup-title">{getModalTitle()}</h2>
 
             {!useEmail ? (
               <>
@@ -225,6 +377,20 @@ const SignUp = ({ iState, updateState }) => {
               </>
             ) : (
               <>
+                {isSignUp && (
+                  <>
+                    <input
+                      type="text"
+                      name="fullName"
+                      placeholder="Enter Full Name"
+                      className="signup-input"
+                      value={fullName}
+                      onChange={handleInputChange}
+                    />
+                    <span className="signup-error">{errors?.nameError}</span>
+                  </>
+                )}
+
                 <input
                   type="email"
                   name="email"
@@ -244,11 +410,46 @@ const SignUp = ({ iState, updateState }) => {
                   onChange={handleInputChange}
                 />
                 <span className="signup-error">{errors?.passwordError}</span>
+
+                {isSignUp && (
+                  <>
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      placeholder="Confirm Password"
+                      className="signup-input"
+                      value={confirmPassword}
+                      onChange={handleInputChange}
+                    />
+                    <span className="signup-error">{errors?.confirmPasswordError}</span>
+                  </>
+                )}
+
+                {/* Toggle between Login/Signup */}
+                <div style={{ textAlign: 'center', margin: '10px 0' }}>
+                  <span style={{ color: '#666', fontSize: '14px' }}>
+                    {isSignUp ? "Already have an account? " : "Don't have an account? "}
+                    <button 
+                      type="button"
+                      onClick={toggleSignUpMode}
+                      style={{ 
+                        background: 'none', 
+                        border: 'none', 
+                        color: '#007bff', 
+                        textDecoration: 'underline',
+                        cursor: 'pointer',
+                        fontSize: '14px'
+                      }}
+                    >
+                      {isSignUp ? "Login here" : "Sign up here"}
+                    </button>
+                  </span>
+                </div>
               </>
             )}
 
             <button onClick={handleSignIn} className="signup-primary-btn" disabled={disable}>
-              {useEmail ? "LOG IN WITH EMAIL" : "LOG IN VIA OTP"}
+              {getSubmitButtonText()}
             </button>
 
             <div className="signup-divider">

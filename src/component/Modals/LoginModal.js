@@ -34,6 +34,9 @@ const LoginModal = ({
   const [mobileNumber, setMobileNumber] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [isEmailSignUp, setIsEmailSignUp] = useState(false); // Toggle between login/signup
   const [otp, setOtp] = useState("");
   const [otpValues, setOtpValues] = useState(Array(4).fill(""));
   const [showOtp, setShowOtp] = useState(false);
@@ -78,6 +81,24 @@ const LoginModal = ({
       resetLoginState();
     }
   }, [show]);
+
+  // Database simulation functions (same as SignUp component)
+  const getUserByEmail = (email) => {
+    const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+    return users.find(user => user.email === email);
+  };
+
+  const createUser = (userData) => {
+    const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+    const newUser = {
+      id: Date.now(),
+      ...userData,
+      createdAt: new Date().toISOString()
+    };
+    users.push(newUser);
+    localStorage.setItem('registeredUsers', JSON.stringify(users));
+    return newUser;
+  };
 
   // Handle Mobile Login
   const handleMobileSubmit = async (e) => {
@@ -272,71 +293,189 @@ const LoginModal = ({
     }
   };
 
-  // Handle Email Login
-  const handleEmailSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!email || !password) {
-      setErrors({ email: "Please enter both email and password" });
-      return;
+  // Email validation function
+  const validateEmailForm = () => {
+    const error = {};
+    let valid = true;
+
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      error.emailError = "Valid email required";
+      valid = false;
+    }
+    if (!password || password.length < 6) {
+      error.passwordError = "Password must be at least 6 characters";
+      valid = false;
     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setErrors({ email: "Please enter a valid email address" });
-      return;
+    // Additional validation for signup
+    if (isEmailSignUp) {
+      if (!fullName || fullName.trim().length < 2) {
+        error.nameError = "Full name is required (minimum 2 characters)";
+        valid = false;
+      }
+      if (password !== confirmPassword) {
+        error.confirmPasswordError = "Passwords do not match";
+        valid = false;
+      }
     }
 
-    // Password validation
-    if (password.length < 6) {
-      setErrors({ email: "Password must be at least 6 characters long" });
-      return;
-    }
+    setErrors(error);
+    return valid;
+  };
 
-    setErrors({});
-    setIsLoading(true);
+  // Handle Email Sign Up
+  const handleEmailSignUp = async () => {
+    if (!validateEmailForm()) return;
 
     try {
-      // Simulate email login - replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Mock successful login
+      setIsLoading(true);
+
+      // Check if user already exists
+      const existingUser = getUserByEmail(email);
+      if (existingUser) {
+        toast.error("User already exists with this email. Please login instead.");
+        setIsEmailSignUp(false);
+        setConfirmPassword("");
+        setFullName("");
+        return;
+      }
+
+      // Create new user
+      const newUser = createUser({
+        email,
+        password, // In real app, this should be hashed
+        fullName,
+        authMethod: 'email'
+      });
+
+      // Create user session data
       const userData = {
-        _id: `email_${Date.now()}`,
-        userId: `email_${Date.now()}`,
+        _id: `email_${newUser.id}`,
+        userId: `email_${newUser.id}`,
         data: {
           personalInfo: {
-            name: "Email User", // You'd get this from your API
-            email: email,
+            name: fullName,
+            email,
             photo: "",
             phone: "",
             gender: "",
             dob: "",
           },
           addresses: [],
-          authMethod: 'email',
-        }
+          authMethod: "email",
+        },
       };
 
-      // Store user data
+      // Store session
       window.localStorage.setItem("LennyUserDetail", JSON.stringify(userData));
       window.localStorage.setItem("LoginTimer", "false");
       setCookie("LennyCheck", true, { path: "/" }, { expires: new Date("9999-12-31") });
       dispatch(userDetailState(true));
 
-      toast.success("Email login successful!");
-      onLoginSuccess({ email, method: "email", userData });
+      toast.success("Account created successfully!");
+      
+      // Call success callback
+      onLoginSuccess({
+        email,
+        method: "email",
+        userData: userData,
+        isNewUser: true
+      });
+
       resetLoginState();
       onHide();
-      
+
     } catch (error) {
-      console.error('Email login error:', error);
-      toast.error("Login failed. Please check your credentials.");
-      setErrors({ email: "Invalid email or password" });
+      console.error('Email signup error:', error);
+      toast.error("Failed to create account. Please try again.");
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Handle Email Login
+  const handleEmailLogin = async () => {
+    if (!validateEmailForm()) return;
+
+    try {
+      setIsLoading(true);
+
+      // Check if user exists
+      const existingUser = getUserByEmail(email);
+      if (!existingUser) {
+        toast.error("No account found with this email. Please sign up first.");
+        setIsEmailSignUp(true);
+        return;
+      }
+
+      // Validate password
+      if (existingUser.password !== password) {
+        toast.error("Incorrect password. Please try again.");
+        return;
+      }
+
+      // Create user session data
+      const userData = {
+        _id: `email_${existingUser.id}`,
+        userId: `email_${existingUser.id}`,
+        data: {
+          personalInfo: {
+            name: existingUser.fullName,
+            email: existingUser.email,
+            photo: "",
+            phone: "",
+            gender: "",
+            dob: "",
+          },
+          addresses: [],
+          authMethod: "email",
+        },
+      };
+
+      // Store session
+      window.localStorage.setItem("LennyUserDetail", JSON.stringify(userData));
+      window.localStorage.setItem("LoginTimer", "false");
+      setCookie("LennyCheck", true, { path: "/" }, { expires: new Date("9999-12-31") });
+      dispatch(userDetailState(true));
+
+      toast.success("Login successful!");
+      
+      // Call success callback
+      onLoginSuccess({
+        email,
+        method: "email",
+        userData: userData
+      });
+
+      resetLoginState();
+      onHide();
+
+    } catch (error) {
+      console.error('Email login error:', error);
+      toast.error("Login failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Handle Email Submit (Login or SignUp)
+  const handleEmailSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (isEmailSignUp) {
+      await handleEmailSignUp();
+    } else {
+      await handleEmailLogin();
+    }
+  };
+
+  // Toggle between email login and signup
+  const toggleEmailSignUpMode = () => {
+    setIsEmailSignUp(!isEmailSignUp);
+    setErrors({});
+    setPassword("");
+    setConfirmPassword("");
+    setFullName("");
   };
 
   // Handle Social Login - FIXED VERSION
@@ -452,6 +591,9 @@ const LoginModal = ({
     setMobileNumber(cookies.LennyPhone_number || ""); // Keep saved mobile number
     setEmail("");
     setPassword("");
+    setConfirmPassword("");
+    setFullName("");
+    setIsEmailSignUp(false);
     setOtp("");
     setOtpValues(Array(4).fill(""));
     setShowOtp(false);
@@ -478,6 +620,7 @@ const LoginModal = ({
   const goBackToMobile = () => {
     setLoginMethod("mobile");
     setShowEmailForm(false);
+    setIsEmailSignUp(false);
     setErrors({});
   };
 
@@ -508,6 +651,16 @@ const LoginModal = ({
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const getEmailModalTitle = () => {
+    return isEmailSignUp ? "Create Account" : "Email Login";
+  };
+
+  const getEmailSubmitButtonText = () => {
+    return isEmailSignUp 
+      ? (isLoading ? "CREATING ACCOUNT..." : "CREATE ACCOUNT") 
+      : (isLoading ? "LOGGING IN..." : "LOGIN WITH EMAIL");
   };
 
   return (
@@ -609,7 +762,7 @@ const LoginModal = ({
                   </div>
                 )}
 
-                {/* Email Login */}
+                {/* Email Login/Signup */}
                 {loginMethod === "email" && (
                   <div className="EmailLogin">
                     <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
@@ -627,10 +780,24 @@ const LoginModal = ({
                       >
                         ←
                       </button>
-                      <h4>Email Login</h4>
+                      <h4>{getEmailModalTitle()}</h4>
                     </div>
                     
                     <form onSubmit={handleEmailSubmit}>
+                      {isEmailSignUp && (
+                        <div className="FormGroup">
+                          <input
+                            type="text"
+                            className="FormInput"
+                            placeholder="Enter your full name"
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
+                            disabled={isLoading}
+                          />
+                          {errors.nameError && <span className="ErrorText">{errors.nameError}</span>}
+                        </div>
+                      )}
+
                       <div className="FormGroup">
                         <input
                           type="email"
@@ -640,7 +807,9 @@ const LoginModal = ({
                           onChange={(e) => setEmail(e.target.value)}
                           disabled={isLoading}
                         />
+                        {errors.emailError && <span className="ErrorText">{errors.emailError}</span>}
                       </div>
+
                       <div className="FormGroup">
                         <input
                           type="password"
@@ -650,18 +819,57 @@ const LoginModal = ({
                           onChange={(e) => setPassword(e.target.value)}
                           disabled={isLoading}
                         />
-                        {errors.email && <span className="ErrorText">{errors.email}</span>}
+                        {errors.passwordError && <span className="ErrorText">{errors.passwordError}</span>}
                       </div>
+
+                      {isEmailSignUp && (
+                        <div className="FormGroup">
+                          <input
+                            type="password"
+                            className="FormInput"
+                            placeholder="Confirm your password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            disabled={isLoading}
+                          />
+                          {errors.confirmPasswordError && <span className="ErrorText">{errors.confirmPasswordError}</span>}
+                        </div>
+                      )}
+
+                      {/* Toggle between Login/Signup */}
+                      <div style={{ textAlign: 'center', margin: '10px 0' }}>
+                        <span style={{ color: '#666', fontSize: '14px' }}>
+                          {isEmailSignUp ? "Already have an account? " : "Don't have an account? "}
+                          <button 
+                            type="button"
+                            onClick={toggleEmailSignUpMode}
+                            style={{ 
+                              background: 'none', 
+                              border: 'none', 
+                              color: '#007bff', 
+                              textDecoration: 'underline',
+                              cursor: 'pointer',
+                              fontSize: '14px'
+                            }}
+                            disabled={isLoading}
+                          >
+                            {isEmailSignUp ? "Login here" : "Sign up here"}
+                          </button>
+                        </span>
+                      </div>
+
                       <button type="submit" className="LoginBtn" disabled={isLoading}>
-                        {isLoading ? "LOGGING IN..." : "LOGIN WITH EMAIL"}
+                        {getEmailSubmitButtonText()}
                       </button>
                     </form>
 
-                    <div className="ForgotPassword">
-                      <a href="#" onClick={(e) => e.preventDefault()}>
-                        Forgot Password?
-                      </a>
-                    </div>
+                    {!isEmailSignUp && (
+                      <div className="ForgotPassword">
+                        <a href="#" onClick={(e) => e.preventDefault()}>
+                          Forgot Password?
+                        </a>
+                      </div>
+                    )}
                   </div>
                 )}
 
