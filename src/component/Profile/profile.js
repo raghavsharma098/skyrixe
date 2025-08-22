@@ -318,6 +318,10 @@ const Profile = () => {
 
   // Wishlist functions
   const getWishlistItems = () => {
+    // Only allow fetching wishlist if user is logged in
+    if (!userDetail?._id) {
+      return [];
+    }
     try {
       const wishlist = localStorage.getItem('userWishlist');
       return wishlist ? JSON.parse(wishlist) : [];
@@ -328,6 +332,11 @@ const Profile = () => {
   }
 
   const removeFromWishlist = (productId) => {
+    // Only allow removing from wishlist if user is logged in
+    if (!userDetail?._id) {
+      toast.error("Please login to modify your wishlist.");
+      return wishlistItems;
+    }
     try {
       const wishlist = getWishlistItems();
       const updatedWishlist = wishlist.filter(item => item.id !== productId);
@@ -340,6 +349,10 @@ const Profile = () => {
   };
 
   const handleRemoveFromWishlist = (productId) => {
+    if (!userDetail?._id) {
+      toast.error("Please login to remove items from your wishlist.");
+      return;
+    }
     const updatedWishlist = removeFromWishlist(productId);
     setWishlistItems(updatedWishlist);
     toast.success("Item removed from wishlist!");

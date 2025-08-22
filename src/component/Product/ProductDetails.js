@@ -72,8 +72,11 @@ const ProductDetails = () => {
 
   const handleFavouriteToggle = (product) => {
     const productId = product._id || product.productDetails?.id;
+    if (!userDetail?._id) {
+      toast.error("Please login to add/remove favourites.");
+      return;
+    }
     const isInWishlist = isProductInWishlist(productId);
-
     if (isInWishlist) {
       const updatedWishlist = removeFromWishlist(productId);
       setWishlistItems(updatedWishlist);
@@ -728,6 +731,10 @@ const ProductDetails = () => {
   };
 
   const addToWishlist = (product) => {
+    if (!userDetail?._id) {
+      toast.error("Please login to add items to your wishlist.");
+      return wishlistItems;
+    }
     try {
       const wishlist = getWishlistItems();
       const productToAdd = {
@@ -739,9 +746,7 @@ const ProductDetails = () => {
         productData: product,
         addedAt: new Date().toISOString()
       };
-
       const existingIndex = wishlist.findIndex(item => item.id === productToAdd.id);
-
       if (existingIndex === -1) {
         wishlist.push(productToAdd);
         localStorage.setItem('userWishlist', JSON.stringify(wishlist));
@@ -756,6 +761,10 @@ const ProductDetails = () => {
   };
 
   const removeFromWishlist = (productId) => {
+    if (!userDetail?._id) {
+      toast.error("Please login to remove items from your wishlist.");
+      return wishlistItems;
+    }
     try {
       const wishlist = getWishlistItems();
       const updatedWishlist = wishlist.filter(item => item.id !== productId);
