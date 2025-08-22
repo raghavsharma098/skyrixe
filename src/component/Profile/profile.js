@@ -233,7 +233,7 @@ const Profile = () => {
   const confirmCancelOrder = () => {
     if (orderToCancel) {
       const orderId = orderToCancel._id;
-      
+
       // Add order to cancelling list to show loading state
       updateState(prevState => ({
         ...prevState,
@@ -241,12 +241,12 @@ const Profile = () => {
         orderToCancel: null,
         cancellingOrders: [...prevState.cancellingOrders, orderId],
       }));
-      
+
       const cancelData = {
         id: orderId,
         userId: userDetail?._id,
       };
-      
+
       dispatch(cancelOrder(cancelData))
         .then((res) => {
           if (res?.payload?.status === 200) {
@@ -370,7 +370,7 @@ const Profile = () => {
       newState = { ...newState, phone_valid: false };
     }
     updateState(newState);
-  }, [additional_phone]);
+  }, [additional_phone, phone]);
 
   useEffect(() => {
     // Fetch data when component mounts and when userDetail changes
@@ -699,7 +699,7 @@ const Profile = () => {
                             <div className="wishlist-item" key={item.id || i}>
                               <div className="wishlist-image-container">
                                 <img
-                                  src={item.image || item.productimages?.[0] }
+                                  src={item.image || item.productimages?.[0]}
                                   alt={item.name}
                                   className="wishlist-image"
                                   onClick={() => handleWishlistProductClick(item.productData || item)}
@@ -1078,8 +1078,8 @@ const Profile = () => {
                   placeholder="Enter your phone number"
                   name="phone"
                   value={phone}
-                  onChange={handleInputChange}
-                  disabled
+                  onChange={phone_valid ? handleInputChange : null}
+                  onKeyDown={handleKeyDown}
                 />
               </div>
               <div className="form-group">

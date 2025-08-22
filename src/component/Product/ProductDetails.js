@@ -657,11 +657,11 @@ const ProductDetails = () => {
   const canUserReview = () => {
     if (!userDetail) return false;
 
-    const hasReviewed = getRatingReviewList?.data?.review?.some(review =>
-      review?.customerId === userDetail._id
-    );
+    // const hasReviewed = getRatingReviewList?.data?.review?.some(review =>
+    //   review?.customerId === userDetail._id
+    // );
 
-    return !hasReviewed;
+    // return !hasReviewed;
   };
 
   const handlePhotoUpload = (e) => {
