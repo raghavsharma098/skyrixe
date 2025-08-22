@@ -98,7 +98,7 @@ const UserSchema = new mongoose.Schema(
     personalInfo: {
       name: { type: String },
       email: { type: String },
-      gender: { type: String, enum: ['Male', 'Female', 'Other'] },
+      gender: { type: String, enum: ['Male', 'Female', 'Other',''] },
       dob: { type: Date },
       photo: { type: String },
     },
