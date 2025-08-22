@@ -66,7 +66,7 @@ const AddressSchema = new mongoose.Schema(
     city: { type: String },
     state: { type: String },
     pincode: { type: String },
-    addresstype: { type: String, enum: ['home', 'office'], required: true }, 
+    addresstype: { type: String, enum: ['home', 'office'], required: true },
   },
   { _id: true }
 );
@@ -74,11 +74,15 @@ const AddressSchema = new mongoose.Schema(
 const UserSchema = new mongoose.Schema(
   {
     customerId: { type: String },
+    googleID: { type: String },
     fcmToken: { type: String },
     otp: { type: Number },
     phone: {
       type: String,
-      required: true,
+      // required: function() {
+      //   // Phone is required only if it's not a Google auth user
+      //   return this.googleID === undefined;
+      // },
       unique: true,
     },
     alternatePhone: { type: String },
