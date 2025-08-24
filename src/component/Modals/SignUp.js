@@ -3,6 +3,7 @@ import { useCookies } from "react-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import axios from "axios";
 import OtpVerification from "./OtpVerification";
 
 // Redux
@@ -21,6 +22,7 @@ import {
 
 // CSS
 import "../../assets/css/signup.css";
+import { credAndUrl } from "../../config/config";
 
 const SignUp = ({ iState, updateState }) => {
   const { signUpModal } = iState;
@@ -47,17 +49,17 @@ const SignUp = ({ iState, updateState }) => {
   };
 
   const [states, updateSignState] = useState(initialState);
-  const { 
-    phone, 
-    email, 
-    password, 
-    confirmPassword, 
-    fullName, 
-    useEmail, 
-    isSignUp, 
-    disable, 
-    errors, 
-    otpModal 
+  const {
+    phone,
+    email,
+    password,
+    confirmPassword,
+    fullName,
+    useEmail,
+    isSignUp,
+    disable,
+    errors,
+    otpModal
   } = states;
 
   useEffect(() => {
@@ -82,9 +84,9 @@ const SignUp = ({ iState, updateState }) => {
   };
 
   const toggleLoginMode = () => {
-    updateSignState({ 
-      ...states, 
-      useEmail: !useEmail, 
+    updateSignState({
+      ...states,
+      useEmail: !useEmail,
       isSignUp: false,
       errors: {},
       email: "",
@@ -95,9 +97,9 @@ const SignUp = ({ iState, updateState }) => {
   };
 
   const toggleSignUpMode = () => {
-    updateSignState({ 
-      ...states, 
-      isSignUp: !isSignUp, 
+    updateSignState({
+      ...states,
+      isSignUp: !isSignUp,
       errors: {},
       password: "",
       confirmPassword: "",
@@ -149,129 +151,94 @@ const SignUp = ({ iState, updateState }) => {
   };
 
   // Simulate user database - In real app, this would be API calls
-  const getUserByEmail = (email) => {
-    const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-    return users.find(user => user.email === email);
-  };
 
-  const createUser = (userData) => {
-    const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-    const newUser = {
-      id: Date.now(),
-      ...userData,
-      createdAt: new Date().toISOString()
-    };
-    users.push(newUser);
-    localStorage.setItem('registeredUsers', JSON.stringify(users));
-    return newUser;
-  };
-
-  const handleEmailSignUp = async () => {
-    if (!handleEmailValidation()) return;
-
-    try {
-      // Check if user already exists
-      const existingUser = getUserByEmail(email);
-      if (existingUser) {
-        toast.error("User already exists with this email. Please login instead.");
-        updateSignState({ ...states, isSignUp: false });
-        return;
-      }
-
-      // Create new user
-      const newUser = createUser({
-        email,
-        password, // In real app, this should be hashed
-        fullName,
-        authMethod: 'email'
-      });
-
-      // Create user session data
-      const userData = {
-        _id: `email_${newUser.id}`,
-        userId: `email_${newUser.id}`,
-        data: {
-          personalInfo: {
-            name: fullName,
-            email,
-            photo: "",
-            phone: "",
-            gender: "",
-            dob: "",
-          },
-          addresses: [],
-          authMethod: "email",
-        },
-      };
-
-      window.localStorage.setItem("LennyUserDetail", JSON.stringify(userData));
-      window.localStorage.setItem("LoginTimer", "false");
-      setCookie("LennyCheck", true, { path: "/" }, { expires: new Date("9999-12-31") });
-      dispatch(userDetailState(true));
-
-      toast.success("Account created successfully!");
-      updateState({ ...iState, signUpModal: false });
-    } catch (error) {
-      console.error('Email signup error:', error);
-      toast.error("Failed to create account. Please try again.");
+const handleEmailSignUp = async ({ name, email, password, cnfPassword, phone}) => {
+  try {
+    // Frontend validation
+    if (!fullName || !email || !password || !cnfPassword || !phone) {
+      toast.error("Please fill all required fields");
+      return;
     }
-  };
-
-  const handleEmailLogin = async () => {
-    if (!handleEmailValidation()) return;
-
-    try {
-      // Check if user exists
-      const existingUser = getUserByEmail(email);
-      if (!existingUser) {
-        toast.error("No account found with this email. Please sign up first.");
-        updateSignState({ ...states, isSignUp: true });
-        return;
-      }
-
-      // Validate password
-      if (existingUser.password !== password) {
-        toast.error("Incorrect password. Please try again.");
-        return;
-      }
-
-      // Create user session data
-      const userData = {
-        _id: `email_${existingUser.id}`,
-        userId: `email_${existingUser.id}`,
-        data: {
-          personalInfo: {
-            name: existingUser.fullName,
-            email: existingUser.email,
-            photo: "",
-            phone: "",
-            gender: "",
-            dob: "",
-          },
-          addresses: [],
-          authMethod: "email",
-        },
-      };
-
-      window.localStorage.setItem("LennyUserDetail", JSON.stringify(userData));
-      window.localStorage.setItem("LoginTimer", "false");
-      setCookie("LennyCheck", true, { path: "/" }, { expires: new Date("9999-12-31") });
-      dispatch(userDetailState(true));
-
-      toast.success("Login successful!");
-      updateState({ ...iState, signUpModal: false });
-    } catch (error) {
-      console.error('Email login error:', error);
-      toast.error("Login failed. Please try again.");
+    if (password !== cnfPassword) {
+      toast.error("Passwords do not match");
+      return;
     }
-  };
+
+    handleEmailValidation();
+    // Call backend signup API
+    const response = await axios.post(`${credAndUrl.BASE_URL}customer/auth/email-signup`, {
+      name: fullName,
+      email,
+      password,
+      cnfPassword,
+      phone: phone || null,
+      gender: "",
+      dob: null,
+    });
+
+    const data = response.data;
+
+    if (data.status !== 201) {
+      toast.error(data.message || "Signup failed");
+      return;
+    }
+
+    // Store session in localStorage + cookie
+    window.localStorage.setItem("LennyUserDetail", JSON.stringify(data.data));
+    window.localStorage.setItem("LoginTimer", "false");
+    setCookie("LennyCheck", true, { path: "/" }, { expires: new Date("9999-12-31") });
+    dispatch(userDetailState(true));
+
+    toast.success("Account created successfully!");
+    updateState({ ...iState, signUpModal: false });
+
+  } catch (error) {
+    console.error("Email signup error:", error);
+    toast.error(error.response?.data?.message || "Failed to create account. Please try again.");
+  }
+};
+
+const handleEmailLogin = async ({ email, password }) => {
+  try {
+    if (!email || !password) {
+      toast.error("Email and password are required");
+      return;
+    }
+
+    // Call backend login API
+    const response = await axios.post(`${credAndUrl.BASE_URL}customer/auth/email-login`, {
+      email,
+      password,
+    });
+
+    const data = response.data;
+
+    if (data.status !== 200) {
+      toast.error(data.message || "Login failed");
+      return;
+    }
+
+    // Store session in localStorage + cookie
+    window.localStorage.setItem("LennyUserDetail", JSON.stringify(data.data));
+    window.localStorage.setItem("LoginTimer", "false");
+    setCookie("LennyCheck", true, { path: "/" }, { expires: new Date("9999-12-31") });
+    dispatch(userDetailState(true));
+
+    toast.success("Login successful!");
+    updateState({ ...iState, signUpModal: false });
+
+  } catch (error) {
+    console.error("Email login error:", error);
+    toast.error(error.response?.data?.message || "Login failed. Please try again.");
+  }
+};
 
   const handleSignIn = async () => {
     if (useEmail) {
       if (isSignUp) {
-        await handleEmailSignUp();
+        await handleEmailSignUp({ name: fullName, password, cnfPassword: confirmPassword, email, phone });
       } else {
-        await handleEmailLogin();
+        await handleEmailLogin({ email, password });
       }
     } else {
       if (!handlePhoneValidation()) return;
@@ -427,6 +394,20 @@ const SignUp = ({ iState, updateState }) => {
                       onChange={handleInputChange}
                     />
                     <span className="signup-error">{errors?.confirmPasswordError}</span>
+
+
+
+                    <input
+                      type="text"
+                      name="phone"
+                      placeholder="Enter 10 digit Mobile Number"
+                      className="signup-input"
+                      value={phone}
+                      onChange={handleInputChange}
+                      maxLength="10"
+                      inputMode="numeric"
+                    />
+                    <span className="signup-error">{errors?.phoneError}</span>
                   </>
                 )}
 
@@ -434,13 +415,13 @@ const SignUp = ({ iState, updateState }) => {
                 <div style={{ textAlign: 'center', margin: '10px 0' }}>
                   <span style={{ color: '#666', fontSize: '14px' }}>
                     {isSignUp ? "Already have an account? " : "Don't have an account? "}
-                    <button 
+                    <button
                       type="button"
                       onClick={toggleSignUpMode}
-                      style={{ 
-                        background: 'none', 
-                        border: 'none', 
-                        color: '#007bff', 
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: '#007bff',
                         textDecoration: 'underline',
                         cursor: 'pointer',
                         fontSize: '14px'
@@ -481,19 +462,21 @@ const SignUp = ({ iState, updateState }) => {
               <a href="/privacy-policy" className="signup-link">Privacy Policy</a>.
             </p>
           </div>
-        </div>
+        </div >
       )}
 
-      {otpModal && (
-        <OtpVerification
-          states={states}
-          updateSignState={updateSignState}
-          editModal={iState}
-          editUpdate={updateState}
-          cookies={cookies}
-          setCookie={setCookie}
-        />
-      )}
+      {
+        otpModal && (
+          <OtpVerification
+            states={states}
+            updateSignState={updateSignState}
+            editModal={iState}
+            editUpdate={updateState}
+            cookies={cookies}
+            setCookie={setCookie}
+          />
+        )
+      }
     </>
   );
 };
