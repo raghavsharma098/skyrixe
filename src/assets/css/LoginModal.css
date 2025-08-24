@@ -394,6 +394,77 @@
   color: #333;
 }
 
+/* Recommended Items Section in Login Modal */
+.RecommendedItemsInfo {
+  margin-bottom: 20px;
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.RecommendedItemsInfo h6 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 12px 0 6px 12px !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.RecommendedItemsList {
+  background: transparent;
+  padding: 0;
+  margin: 12px 0 6px 12px;
+}
+
+.RecommendedItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 0;
+  border-bottom: none;
+  font-size: 13px;
+  color: #666;
+}
+
+.RecommendedItem:last-child {
+  border-bottom: none;
+}
+
+.RecommendedItem span:first-child {
+  flex: 1;
+  font-weight: 400;
+  color: #666;
+  text-align: left;
+}
+
+.RecommendedItem span:last-child {
+  font-weight: 500;
+  color: #333;
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.RecommendedItemsInfo h6 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 8px 0;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+/* Ensure consistent spacing with other sections */
+.CustomizationsInfo,
+.RecommendedItemsInfo {
+  margin: 15px 0;
+  padding: 0;
+}
+
+
 .LoginModal .LocationInfo {
   margin-bottom: 20px;
 }

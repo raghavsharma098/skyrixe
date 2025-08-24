@@ -25,6 +25,7 @@ const LoginModal = ({
   onLoginSuccess,
   bookingDetails,
   selectedProduct,
+  selectedRecommendedItems = [], // Add this prop with default value
   onEditDate,
   onEditTime,
   onEditCustomizations
@@ -639,24 +640,35 @@ const LoginModal = ({
     return timeSlot?.time || "No time selected";
   };
 
+  // Updated calculateTotal function to include recommended items
   const calculateTotal = () => {
     const basePrice = selectedProduct?.priceDetails?.discountedPrice ||
       selectedProduct?.priceDetails?.price ||
       0;
+    
     const customizationsTotal = bookingDetails?.selectedCustomizations?.reduce((sum, item) => {
       const itemPrice = item.price || 0;
       const itemQuantity = item.quantity || 1;
       return sum + (itemPrice * itemQuantity);
     }, 0) || 0;
 
+    // Add recommended items total
+    const recommendedItemsTotal = selectedRecommendedItems.reduce((sum, item) => {
+      const itemPrice = item.price || 0;
+      const itemQuantity = item.quantity || 1;
+      return sum + (itemPrice * itemQuantity);
+    }, 0);
+
     console.log('Price calculation:', {
       basePrice,
       customizationsTotal,
+      recommendedItemsTotal,
       selectedCustomizations: bookingDetails?.selectedCustomizations,
-      total: basePrice + customizationsTotal
+      selectedRecommendedItems,
+      total: basePrice + customizationsTotal + recommendedItemsTotal
     });
 
-    return basePrice + customizationsTotal;
+    return basePrice + customizationsTotal + recommendedItemsTotal;
   };
 
   const formatTimer = (seconds) => {
@@ -1000,6 +1012,23 @@ const LoginModal = ({
                     <p className="NoCustomizations">No customization added</p>
                   )}
                 </div>
+
+                {/* Add Recommended Items Section */}
+                {selectedRecommendedItems.length > 0 && (
+                  <div className="RecommendedItemsInfo">
+                    <h6>
+                      Recommended Items ({selectedRecommendedItems.length})
+                    </h6>
+                    <div className="RecommendedItemsList">
+                      {selectedRecommendedItems.map((item, index) => (
+                        <div key={index} className="RecommendedItem">
+                          <span>{item.name}</span>
+                          <span>₹{item.price}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div className="LocationInfo">
                   <div className="LocationRow">
