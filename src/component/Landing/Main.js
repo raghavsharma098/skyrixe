@@ -1120,69 +1120,73 @@ const Main = () => {
 
         <div className="reviews">
           <h1>Recent Customer Reviews</h1>
-          <div className="inro">
-            {latestReviews.map((review, index) => (
-              <div key={index} className="testimonials">
-                <div className="data">
-                  <div className="img">
-                    <img src={review.userImage || "https://cdn-icons-png.flaticon.com/512/6681/6681204.png"} alt={review.name} />
-                  </div>
-                  <h2>{review.name}</h2>
-                  <h3>{review.rating ? `Rating: ${review.rating}/5` : "Verified Purchase"}</h3>
-                  <p>{review.comment}</p>
-
-                  <div className="reviwedproduct">
-                    <div className="image">
-                      <img src={review.productImage} alt={review.productName} />
+          {latestReviews.length === 0 ? (
+            <p>No reviews available</p>
+          ) : (
+            <div className="inro">
+              {latestReviews.map((review, index) => (
+                <div key={index} className="testimonials">
+                  <div className="data">
+                    <div className="img">
+                      <img src={review.userImage || "https://cdn-icons-png.flaticon.com/512/6681/6681204.png"} alt={review.name} />
                     </div>
-                    <div className="view">{review.productName}</div>
+                    <h2>{review.name}</h2>
+                    <h3>{review.rating ? `Rating: ${review.rating}/5` : "Verified Purchase"}</h3>
+                    <p>{review.comment}</p>
+
+                    <div className="reviwedproduct">
+                      <div className="image">
+                        <img src={review.productImage} alt={review.productName} />
+                      </div>
+                      <div className="view">{review.productName}</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        <div className="text">
-          <h1>
-            <strong> Skyrixe – Celebrate Life’s Special Moments with us
-              Us&nbsp;&nbsp;&nbsp;</strong>
-          </h1>
-          <p>
-            <span>Each celebratory occasion needs a unique touch of excellence.
-              Skyrixe&nbsp; devotes itself to providing memorable experiences for every
-              moment. Do you&nbsp; remember the last time you got services tailored for
-              you? Neither can we, and that’s exactly why we go above and beyond
-              every single time, making sure that every service we offer is truly
-              remarkable. With our setup services, every special moment can come to life.
-              We provide romantic dinners and simple birthday decorations.</span>
-          </p>
-          <p class='second'>
-            <span>In our ten years of operation, we have held many events across India. We
-              have served thousands of customers as they created special memories. Our
-              dedicated team creates impressive event experiences for our customers. We
-              enhance celebrations with balloon decorations and themed party decor. We
-              cater to both small home events and large banquet functions.</span>
-          </p>
-          <h2>
-            <strong>Our Services – Fully Customizable For Your Every Event</strong>
-          </h2>
-          <p>
-            <span>Every event requires a personalized touch to be unique. Skyrixe provides
-              decoration solutions for basic birthday arrangements, anniversary
-              decorations, and complete surprise party preparations. Our deep experience
-              with multiple event decoration services enhances your special moments on all
-              occasions.</span>
-          </p>
-          <button class="show"> Show more</button>
-        </div>
-        <div className="BirthdayDecorationArea client">
-
-          <img src={require("../../assets/images/Our Clients.png")} />
-
-
-        </div>
+      <div className="text">
+        <h1>
+          <strong> Skyrixe – Celebrate Life’s Special Moments with us
+            Us&nbsp;&nbsp;&nbsp;</strong>
+        </h1>
+        <p>
+          <span>Each celebratory occasion needs a unique touch of excellence.
+            Skyrixe&nbsp; devotes itself to providing memorable experiences for every
+            moment. Do you&nbsp; remember the last time you got services tailored for
+            you? Neither can we, and that’s exactly why we go above and beyond
+            every single time, making sure that every service we offer is truly
+            remarkable. With our setup services, every special moment can come to life.
+            We provide romantic dinners and simple birthday decorations.</span>
+        </p>
+        <p class='second'>
+          <span>In our ten years of operation, we have held many events across India. We
+            have served thousands of customers as they created special memories. Our
+            dedicated team creates impressive event experiences for our customers. We
+            enhance celebrations with balloon decorations and themed party decor. We
+            cater to both small home events and large banquet functions.</span>
+        </p>
+        <h2>
+          <strong>Our Services – Fully Customizable For Your Every Event</strong>
+        </h2>
+        <p>
+          <span>Every event requires a personalized touch to be unique. Skyrixe provides
+            decoration solutions for basic birthday arrangements, anniversary
+            decorations, and complete surprise party preparations. Our deep experience
+            with multiple event decoration services enhances your special moments on all
+            occasions.</span>
+        </p>
+        <button class="show"> Show more</button>
       </div>
+      <div className="BirthdayDecorationArea client">
+
+        <img src={require("../../assets/images/Our Clients.png")} />
+
+
+      </div>
+    </div >
       <Tooltip id="my-tooltip" place="bottom" />
     </>
   );
