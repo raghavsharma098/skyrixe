@@ -57,7 +57,7 @@ const LoginModal = ({
   // Initialize and check auth environment on mount
   useEffect(() => {
     validateSocialAuthEnvironment();
-    
+
     // Pre-fill mobile number from cookies if available
     if (cookies.LennyPhone_number) {
       setMobileNumber(cookies.LennyPhone_number);
@@ -103,7 +103,7 @@ const LoginModal = ({
   // Handle Mobile Login
   const handleMobileSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validation
     if (!mobileNumber || mobileNumber.length !== 10) {
       setErrors({ mobile: "Please enter a valid 10-digit mobile number" });
@@ -123,7 +123,7 @@ const LoginModal = ({
     try {
       const response = await dispatch(loginApiSlice({ phone: mobileNumber }));
       console.log('Login API response:', response);
-      
+
       if (response?.payload?.status === 200) {
         setShowOtp(true);
         setOtpTimer(60); // Start 60 second timer
@@ -146,7 +146,7 @@ const LoginModal = ({
   // Handle OTP input change
   const handleOtpInputChange = (e, index) => {
     const value = e.target.value;
-    
+
     // Only allow digits
     if (value.length <= 1 && /^\d*$/.test(value)) {
       const newOtpValues = [...otpValues];
@@ -197,19 +197,19 @@ const LoginModal = ({
         phone: mobileNumber,
         otp: Number(otpString)
       }));
-      
+
       console.log('OTP verification response:', response);
 
       if (response?.payload?.response?.data?.status === 400) {
         const errorMessage = response?.payload?.response?.data?.message || "Invalid OTP. Please try again.";
         toast.error(errorMessage);
         setErrors({ otp: errorMessage });
-        
+
         // Reset OTP inputs on error
         setOtpValues(Array(4).fill(""));
         const firstInput = document.querySelector(`input[name="otp-0"]`);
         if (firstInput) firstInput.focus();
-        
+
       } else if (response?.payload?.data?.status === 200) {
         // Check if user needs to create account
         if (!response?.payload?.data?.message?.endsWith("Login successful.")) {
@@ -220,7 +220,7 @@ const LoginModal = ({
         } else {
           // Existing user - complete login
           const userData = response?.payload?.data?.data;
-          
+
           // Store user data
           window.localStorage.setItem("LennyUserDetail", JSON.stringify(userData));
           window.localStorage.setItem("LoginTimer", "false");
@@ -233,14 +233,14 @@ const LoginModal = ({
           dispatch(userDetailState(true));
 
           toast.success("Login successful!");
-          
+
           // Call success callback
           onLoginSuccess({
             mobileNumber,
             method: "mobile",
             userData: userData
           });
-          
+
           resetLoginState();
           onHide(); // Close modal
         }
@@ -269,16 +269,16 @@ const LoginModal = ({
     if (otpTimer > 0) return;
 
     setIsLoading(true);
-    
+
     try {
       const response = await dispatch(loginApiSlice({ phone: mobileNumber }));
-      
+
       if (response?.payload?.status === 200) {
         setOtpTimer(60);
         setOtpValues(Array(4).fill(""));
         setErrors({});
         toast.success("OTP resent successfully!");
-        
+
         // Focus first input
         const firstInput = document.querySelector(`input[name="otp-0"]`);
         if (firstInput) firstInput.focus();
@@ -373,7 +373,7 @@ const LoginModal = ({
       dispatch(userDetailState(true));
 
       toast.success("Account created successfully!");
-      
+
       // Call success callback
       onLoginSuccess({
         email,
@@ -439,7 +439,7 @@ const LoginModal = ({
       dispatch(userDetailState(true));
 
       toast.success("Login successful!");
-      
+
       // Call success callback
       onLoginSuccess({
         email,
@@ -461,7 +461,7 @@ const LoginModal = ({
   // Handle Email Submit (Login or SignUp)
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (isEmailSignUp) {
       await handleEmailSignUp();
     } else {
@@ -489,7 +489,7 @@ const LoginModal = ({
         try {
           const result = await handleGoogleLoginPopup();
           console.log('Google login result:', result);
-          
+
           if (result.success) {
             // Store user data
             window.localStorage.setItem("LennyUserDetail", JSON.stringify(result.userData));
@@ -498,26 +498,26 @@ const LoginModal = ({
             dispatch(userDetailState(true));
 
             toast.success(result.message);
-            
+
             // Call success callback with proper data structure
             onLoginSuccess({
               method: "google",
               userData: result.userData,
               user: result.userData // Add this for compatibility
             });
-            
+
             onHide(); // Close the modal on successful login
           } else {
             throw new Error(result.error || 'Google login failed');
           }
         } catch (error) {
           console.error('Google popup login failed, trying original method:', error);
-          
+
           // Fallback to original method
           try {
             const result = await handleGoogleLogin();
             console.log('Google login fallback result:', result);
-            
+
             if (result.success) {
               // Store user data
               window.localStorage.setItem("LennyUserDetail", JSON.stringify(result.userData));
@@ -526,14 +526,14 @@ const LoginModal = ({
               dispatch(userDetailState(true));
 
               toast.success(result.message);
-              
+
               // Call success callback
               onLoginSuccess({
                 method: "google",
                 userData: result.userData,
                 user: result.userData // Add this for compatibility
               });
-              
+
               onHide(); // Close the modal on successful login
             } else {
               throw new Error(result.error || 'Google login failed');
@@ -547,7 +547,7 @@ const LoginModal = ({
         try {
           const result = await handleFacebookLogin();
           console.log('Facebook login result:', result);
-          
+
           if (result.success) {
             // Store user data
             window.localStorage.setItem("LennyUserDetail", JSON.stringify(result.userData));
@@ -556,14 +556,14 @@ const LoginModal = ({
             dispatch(userDetailState(true));
 
             toast.success(result.message);
-            
+
             // Call success callback
             onLoginSuccess({
               method: "facebook",
               userData: result.userData,
               user: result.userData // Add this for compatibility
             });
-            
+
             onHide(); // Close the modal on successful login
           } else {
             throw new Error(result.error || 'Facebook login failed');
@@ -643,7 +643,19 @@ const LoginModal = ({
     const basePrice = selectedProduct?.priceDetails?.discountedPrice ||
       selectedProduct?.priceDetails?.price ||
       0;
-    const customizationsTotal = bookingDetails?.selectedCustomizations?.reduce((sum, item) => sum + item.price, 0) || 0;
+    const customizationsTotal = bookingDetails?.selectedCustomizations?.reduce((sum, item) => {
+      const itemPrice = item.price || 0;
+      const itemQuantity = item.quantity || 1;
+      return sum + (itemPrice * itemQuantity);
+    }, 0) || 0;
+
+    console.log('Price calculation:', {
+      basePrice,
+      customizationsTotal,
+      selectedCustomizations: bookingDetails?.selectedCustomizations,
+      total: basePrice + customizationsTotal
+    });
+
     return basePrice + customizationsTotal;
   };
 
@@ -658,8 +670,8 @@ const LoginModal = ({
   };
 
   const getEmailSubmitButtonText = () => {
-    return isEmailSignUp 
-      ? (isLoading ? "CREATING ACCOUNT..." : "CREATE ACCOUNT") 
+    return isEmailSignUp
+      ? (isLoading ? "CREATING ACCOUNT..." : "CREATE ACCOUNT")
       : (isLoading ? "LOGGING IN..." : "LOGIN WITH EMAIL");
   };
 
@@ -770,9 +782,9 @@ const LoginModal = ({
                         type="button"
                         className="BackBtn"
                         onClick={goBackToMobile}
-                        style={{ 
-                          background: 'none', 
-                          border: 'none', 
+                        style={{
+                          background: 'none',
+                          border: 'none',
                           fontSize: '20px',
                           cursor: 'pointer',
                           marginRight: '10px'
@@ -782,7 +794,7 @@ const LoginModal = ({
                       </button>
                       <h4>{getEmailModalTitle()}</h4>
                     </div>
-                    
+
                     <form onSubmit={handleEmailSubmit}>
                       {isEmailSignUp && (
                         <div className="FormGroup">
@@ -840,13 +852,13 @@ const LoginModal = ({
                       <div style={{ textAlign: 'center', margin: '10px 0' }}>
                         <span style={{ color: '#666', fontSize: '14px' }}>
                           {isEmailSignUp ? "Already have an account? " : "Don't have an account? "}
-                          <button 
+                          <button
                             type="button"
                             onClick={toggleEmailSignUpMode}
-                            style={{ 
-                              background: 'none', 
-                              border: 'none', 
-                              color: '#007bff', 
+                            style={{
+                              background: 'none',
+                              border: 'none',
+                              color: '#007bff',
                               textDecoration: 'underline',
                               cursor: 'pointer',
                               fontSize: '14px'
