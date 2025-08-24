@@ -316,7 +316,31 @@ const productRatingDetails = async (req, res) => {
 };
 
 
+const getAllReviews = async (req, res) => {
+  try {
+    const reviews = await reviewRatingModel.find()
+      .populate("customerId", "name profileImage")
+      .populate("productId", "name image")
+      .lean(); // optional, makes plain JS objects faster
 
+    // Format data for frontend
+    const formattedReviews = reviews.map((r) => ({
+      name: r.customerId?.name || "Anonymous",
+      userImage: r.customerId?.profileImage || "https://cdn-icons-png.flaticon.com/512/6681/6681204.png",
+      comment: r.review,
+      rating: r.rating,
+      productName: r.productId?.name || "Unknown Product",
+      productImage: r.productId?.image || r.image || "",
+      createdAt: r.createdAt,
+    }));
 
+    // ✅ Send the response
+    res.status(200).json(formattedReviews);
 
-module.exports={reviewOrRatingAdd,reviewOrRatingView,productRatingDetails}
+  } catch (err) {
+    console.error("Error fetching reviews:", err);
+    res.status(500).json({ message: "Failed to fetch reviews" });
+  }
+};
+
+module.exports={reviewOrRatingAdd,reviewOrRatingView,productRatingDetails,getAllReviews}

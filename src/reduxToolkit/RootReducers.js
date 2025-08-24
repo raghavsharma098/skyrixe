@@ -11,6 +11,7 @@ const rootReducer = combineReducers({
   staticList: staticListReducer,
   orderSummary: orderSummaryReducer,
   reviewRating:ratingListReducer,
+  reviews: ratingListReducer,
 });
 
 export default rootReducer;

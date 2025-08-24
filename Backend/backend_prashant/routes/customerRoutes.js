@@ -17,7 +17,7 @@ const{categoryList,bannerList,dealbannerList,catsubcatList}=require('../controll
 ////products list import for website
 const{birthdayitemList,anniversaryitemList,kidsitemList,ballonsitemList, detailedproductView, cityApi}=require('../controllers/customerProductsList')
 ///customer review and rating import
-const{reviewOrRatingAdd,reviewOrRatingView,productRatingDetails}=require('../controllers/customerReview&RatingControl')
+const{reviewOrRatingAdd,reviewOrRatingView,productRatingDetails, getAllReviews}=require('../controllers/customerReview&RatingControl')
 //// static control import
 // const{aboutgetData,termgetData, privacygetData,contactGet}=require('../controllers/adminStaticControl')
 
@@ -139,6 +139,8 @@ router.get('/getlistReview',reviewOrRatingView)
 
 //get count of product reviews and rating 
 router.get('/getcountData/:id',productRatingDetails)
+
+router.get("/getallReviews", getAllReviews);
 
 ///////////////////////static control routes//////////////////////////////////////////////
 
