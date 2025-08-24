@@ -1,5 +1,5 @@
 export const credAndUrl = {
-    BASE_URL:'http://localhost:4008/api/v1/',
+    BASE_URL:'https://backend.thebrandcabin.com/api/v1/',
     BUCKET_NAME: process.env.REACT_APP_BUCKET_NAME,
     DIR_NAME: process.env.REACT_APP_BUCKET_DIR,
     REGION: process.env.REACT_APP_BUCKET_REGION,
