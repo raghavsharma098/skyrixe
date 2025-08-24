@@ -1069,6 +1069,17 @@
   margin-top: 0.2rem;
 }
 
+.review-images {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.review-images img {
+  max-width: 100px;
+  border-radius: 8px;
+}
+
 .no-reviews {
   text-align: center;
   color: #b1b1b1;

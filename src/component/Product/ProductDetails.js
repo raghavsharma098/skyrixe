@@ -22,6 +22,7 @@ import { BeatLoader } from "react-spinners";
 import { addressListing } from "../../reduxToolkit/Slices/Auth/auth";
 import BookingFlow from "../Modals/BookingFlow";
 import "./ProductDetails.css";
+import { Images } from "lucide-react";
 
 const initialState = {
   largeImg: "",
@@ -629,7 +630,8 @@ const ProductDetails = () => {
         productId: item._id,
         rating: iState.reviewData.rating,
         review: iState.reviewData.reviewText,
-        title: iState.reviewData.title
+        title: iState.reviewData.title,
+        image: iState.reviewData.photos[0]?.file
       }));
 
       console.log("Add Review Response:", response);
@@ -1600,7 +1602,7 @@ const ProductDetails = () => {
                         );
                       })}
                     </div>
-
+                    {console.log('getRatingReviewList', getRatingReviewList)}
                     <div className="reviews-list">
                       {getRatingReviewList?.data?.review?.length > 0 ? (
                         getRatingReviewList?.data?.review?.slice(0, 3).map((item, i) => (
@@ -1633,6 +1635,11 @@ const ProductDetails = () => {
                                 ))}
                               </div>
                               <div className="review-text">{item?.review}</div>
+                              <div className="review-images">
+                                {item?.image?.map((img, idx) => (
+                                  <img key={idx} src={img} alt={`Review Image ${idx + 1}`} />
+                                ))}
+                              </div>
 
                               <div className="review-actions">
                                 <button className="review-helpful-btn">

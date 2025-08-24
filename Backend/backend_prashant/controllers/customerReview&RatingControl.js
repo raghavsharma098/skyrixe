@@ -87,7 +87,7 @@ const reviewOrRatingAdd = async (req, res) => {
 
 const reviewOrRatingView = async (req, res) => {
   try {
-    const { productId, customerId, rating } = req.query;
+    const { productId, customerId, rating, image } = req.query;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
@@ -236,7 +236,8 @@ const reviewOrRatingView = async (req, res) => {
         },
         ratingSummary,
         overallRating,
-        totalReviews
+        totalReviews,
+        image
       }
     });
 

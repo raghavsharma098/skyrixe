@@ -1189,7 +1189,9 @@ const Main = () => {
               with multiple event decoration services enhances your special moments on all
               occasions.</span>
           </p>
-          <button class="show"> Show more</button>
+          <a href="https://wa.me/12345678900" target="_blank" rel="noopener">
+            <button class="show">Show more</button>
+          </a>
         </div>
         <div className="BirthdayDecorationArea client">
 
