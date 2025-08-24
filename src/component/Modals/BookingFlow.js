@@ -4,7 +4,7 @@ import TimeSlotModal from "./TimeSlotModal";
 import CustomizationsModal from "./CustomizationsModal";
 import LoginModal from "./LoginModal";
 
-const BookingFlow = ({ show, onHide, onComplete, selectedProduct, user}) => {
+const BookingFlow = ({ show, onHide, onComplete, selectedProduct, user, selectedRecommendedItems = []}) => {
   const [currentStep, setCurrentStep] = useState(1);
 
   const [bookingDetails, setBookingDetails] = useState({
@@ -147,6 +147,7 @@ const BookingFlow = ({ show, onHide, onComplete, selectedProduct, user}) => {
           selectedProduct={selectedProduct}
           onLoginSuccess={handleLoginSuccess}
           onBack={goToPreviousStep}
+          selectedRecommendedItems={selectedRecommendedItems} 
           onEditDate={handleEditDate}
           onEditTime={handleEditTime}
           onEditCustomizations={handleEditCustomizations}

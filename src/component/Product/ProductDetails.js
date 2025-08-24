@@ -40,7 +40,10 @@ const initialState = {
   id: "",
   rating: [],
   activeRecommendedTab: "recommended",
-  activeFilterTag: "Entry Gate Arch",
+  activeFilterTag: "",
+  filteredRecommendedProducts: [],
+  availableFilters: [],
+  selectedRecommendedItems: [],
   recommendedScrollPosition: 0,
   maxScrollPosition: 0,
   showAddReviewModal: false,
@@ -123,6 +126,9 @@ const ProductDetails = () => {
     activeFilterTag,
     recommendedScrollPosition,
     maxScrollPosition,
+    availableFilters,
+    filteredRecommendedProducts,
+    selectedRecommendedItems,
     showAddReviewModal,
     reviewData,
     hoveredRating,
@@ -157,9 +163,16 @@ const ProductDetails = () => {
 
   // Handle filter tag clicks
   const handleFilterTagClick = (tagName) => {
+    const filtered = filterProductsByTag(
+      getProductDetails?.data?.similarProducts,
+      tagName,
+      getProductDetails?.data?.product
+    );
+
     updateState({
       ...iState,
-      activeFilterTag: tagName
+      activeFilterTag: tagName,
+      filteredRecommendedProducts: filtered
     });
   };
 
@@ -208,6 +221,139 @@ const ProductDetails = () => {
       recommendedScrollPosition: currentScroll,
       maxScrollPosition: maxScroll
     });
+  };
+
+  const getSelectedAddons = (productId) => {
+    try {
+      const stored = localStorage.getItem(`selectedAddons_${productId}`);
+      return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+      console.error('Error getting selected addons:', error);
+      return [];
+    }
+  };
+
+  const saveSelectedAddons = (productId, addons) => {
+    try {
+      localStorage.setItem(`selectedAddons_${productId}`, JSON.stringify(addons));
+    } catch (error) {
+      console.error('Error saving selected addons:', error);
+    }
+  };
+
+  const clearSelectedAddons = (productId) => {
+    try {
+      localStorage.removeItem(`selectedAddons_${productId}`);
+    } catch (error) {
+      console.error('Error clearing selected addons:', error);
+    }
+  };
+
+  // Generate dynamic filters based on product category and customizations
+  const generateDynamicFilters = (product) => {
+    const filters = [];
+
+    // Add category-based filters
+    const category = product?.productDetails?.productcategory?.toLowerCase();
+
+    if (category?.includes('birthday')) {
+      filters.push('Entry Gate Arch', 'Cake Table', 'Digit Foil Balloons', 'Lights', 'Occasion Bunting');
+    } else if (category?.includes('anniversary')) {
+      filters.push('Romantic Arch', 'Heart Balloons', 'Led Lights', 'Rose Petals', 'Photo Frame');
+    } else if (category?.includes('baby')) {
+      filters.push('Baby Arch', 'Pastel Balloons', 'Cute Bunting', 'Soft Lights', 'Baby Props');
+    } else {
+      // Default filters
+      filters.push('Entry Gate Arch', 'Cake Table', 'Digit Foil Balloons', 'Led Digit', 'Lights', 'Occasion Bunting');
+    }
+
+    // Add filters based on available customizations
+    if (product?.productcustomizeDetails?.length > 0) {
+      product.productcustomizeDetails.forEach(custom => {
+        const customName = custom.name?.toLowerCase();
+        if (customName?.includes('balloon') && !filters.includes('Balloons')) {
+          filters.push('Balloons');
+        }
+        if (customName?.includes('light') && !filters.includes('Lights')) {
+          filters.push('Lights');
+        }
+        if (customName?.includes('arch') && !filters.includes('Arch')) {
+          filters.push('Arch');
+        }
+        if (customName?.includes('cake') && !filters.includes('Cake Table')) {
+          filters.push('Cake Table');
+        }
+      });
+    }
+
+    return filters.slice(0, 6); // Limit to 6 filters
+  };
+
+  // Filter products based on selected filter
+  const filterProductsByTag = (products, filterTag, currentProduct) => {
+    if (!filterTag || !products) return products;
+
+    return products.filter(product => {
+      if (!product || !product.productDetails) return false;
+
+      const productName = product.productDetails.productname?.toLowerCase() || '';
+      const productCategory = product.productDetails.productcategory?.toLowerCase() || '';
+      const productDescription = product.productDetails.producttitledescription?.toLowerCase() || '';
+
+      const searchTerm = filterTag.toLowerCase();
+
+      // Check if filter matches product details
+      return (
+        productName.includes(searchTerm.replace(/\s+/g, '')) ||
+        productCategory.includes(searchTerm.replace(/\s+/g, '')) ||
+        productDescription.includes(searchTerm.replace(/\s+/g, '')) ||
+        (searchTerm === 'entry gate arch' && (productName.includes('arch') || productName.includes('gate'))) ||
+        (searchTerm === 'cake table' && (productName.includes('cake') || productName.includes('table'))) ||
+        (searchTerm === 'digit foil balloons' && (productName.includes('digit') || productName.includes('foil') || productName.includes('balloon'))) ||
+        (searchTerm === 'led digit' && (productName.includes('led') || productName.includes('digit'))) ||
+        (searchTerm === 'lights' && productName.includes('light')) ||
+        (searchTerm === 'occasion bunting' && (productName.includes('bunting') || productName.includes('banner')))
+      );
+    });
+  };
+
+  // Handle recommended item toggle
+  const handleRecommendedItemToggle = (product) => {
+    const productId = product._id;
+    const currentProductId = getProductDetails?.data?.product?._id;
+
+    if (!currentProductId) return;
+
+    const isSelected = selectedRecommendedItems.some(item => item._id === productId);
+
+    let updatedItems;
+
+    if (isSelected) {
+      // Remove item
+      updatedItems = selectedRecommendedItems.filter(item => item._id !== productId);
+      toast.success(`${product.productDetails.productname} removed from selection`);
+    } else {
+      // Add item
+      const newItem = {
+        _id: product._id,
+        name: product.productDetails.productname,
+        price: product.priceDetails.discountedPrice || product.priceDetails.price,
+        image: product.productimages?.[0],
+        quantity: 1
+      };
+
+      updatedItems = [...selectedRecommendedItems, newItem];
+      toast.success(`${product.productDetails.productname} added to selection`);
+    }
+
+    // Update state
+    updateState({
+      ...iState,
+      selectedRecommendedItems: updatedItems
+    });
+
+    // Save to localStorage
+    saveSelectedAddons(currentProductId, updatedItems);
   };
 
   const handleInputChange = (e) => {
@@ -335,6 +481,33 @@ const ProductDetails = () => {
 
     console.log('Processing booking for user:', currentUserDetail);
 
+    // Combine selected customizations with recommended items
+    const allCustomizations = [
+      ...(bookingData.selectedCustomizations || []),
+      ...selectedRecommendedItems.map(item => ({
+        _id: item._id,
+        name: item.name,
+        price: item.price,
+        customimages: item.image,
+        quantity: item.quantity || 1
+      }))
+    ];
+
+    // Calculate total amount including recommended items
+    const basePrice = getProductDetails?.data?.product?.priceDetails?.discountedPrice ||
+      getProductDetails?.data?.product?.priceDetails?.price || 0;
+
+    const customizationsTotal = bookingData?.selectedCustomizations?.reduce((sum, item) => {
+      return sum + (Number(item.price) || 0);
+    }, 0) || 0;
+
+    const recommendedItemsTotal = selectedRecommendedItems.reduce((sum, item) => {
+      return sum + (Number(item.price) * (item.quantity || 1));
+    }, 0);
+
+    const totalAmount = basePrice + customizationsTotal + recommendedItemsTotal;
+
+
     // Create cart data with all the booking information
     const cartData = {
       userId: currentUserDetail?._id || currentUserDetail?.userId,
@@ -350,7 +523,9 @@ const ProductDetails = () => {
       slot: bookingData.selectedTimeSlot?.time || bookingData.selectedTimeSlot,
       customization: bookingData.selectedCustomizations || [],
       totalAmount: calculateBookingTotal(bookingData),
+      recommendedItems: selectedRecommendedItems, // Store recommended items separately for tracking
     };
+
 
     console.log('Cart data being sent:', cartData);
 
@@ -359,6 +534,14 @@ const ProductDetails = () => {
       .then((res) => {
         console.log('Add to cart response:', res);
         if (res?.payload?.message === "Added Successfully") {
+          // Clear selected add-ons after successful booking
+          const currentProductId = getProductDetails?.data?.product?._id;
+          clearSelectedAddons(currentProductId);
+          updateState({
+            ...iState,
+            selectedRecommendedItems: []
+          });
+
           console.log('Navigating to checkout with:', cartData);
           navigate("/checkout-1", { state: cartData });
         } else {
@@ -653,9 +836,11 @@ const ProductDetails = () => {
       }
     } catch (error) {
       // toast.error('Failed to submit review. Please try again.');
-      updateState({ ...iState,
+      updateState({
+        ...iState,
         showAddReviewModal: false,
-      isSubmittingReview: false });
+        isSubmittingReview: false
+      });
     }
   };
 
@@ -810,6 +995,36 @@ const ProductDetails = () => {
       dispatch(addtoCart(data));
     }
   }, [customization]);
+
+  // Generate dynamic filters when product loads
+  useEffect(() => {
+    if (getProductDetails?.data?.product) {
+      const dynamicFilters = generateDynamicFilters(getProductDetails.data.product);
+      const initialFiltered = getProductDetails?.data?.similarProducts || [];
+
+      updateState({
+        // ...iState,
+        availableFilters: dynamicFilters,
+        activeFilterTag: dynamicFilters[0] || '',
+        filteredRecommendedProducts: initialFiltered
+      });
+    }
+  }, [getProductDetails]);
+
+  useEffect(() => {
+    const currentProductId = getProductDetails?.data?.product?._id;
+
+    if (currentProductId) {
+      const savedAddons = getSelectedAddons(currentProductId);
+
+      if (savedAddons.length > 0) {
+        updateState({
+          ...iState,
+          selectedRecommendedItems: savedAddons
+        });
+      }
+    }
+  }, [getProductDetails?.data?.product?._id]);
 
   useEffect(() => {
     let newState = { ...iState };
@@ -1018,6 +1233,12 @@ const ProductDetails = () => {
       }
     };
 
+    const basePrice = discountedPrice || productPrice;
+    const recommendedItemsTotal = selectedRecommendedItems.reduce((sum, item) =>
+      sum + (item.price * (item.quantity || 1)), 0
+    );
+    const totalPrice = basePrice + recommendedItemsTotal;
+
     if (!isVisible) return null;
 
     return (
@@ -1045,16 +1266,16 @@ const ProductDetails = () => {
               </button>
             </div>
           </div>
-
           <div className="bottom-booking-right">
             <div className="bottom-booking-price-section">
               <div className="bottom-booking-price">
                 <span className="bottom-booking-currency">₹</span>
                 <span className="bottom-booking-amount">
-                  {discountedPrice || productPrice}
+                  {totalPrice}
                 </span>
               </div>
               <span className="bottom-booking-setup-text">/ setup</span>
+
             </div>
 
             <button
@@ -1262,6 +1483,31 @@ const ProductDetails = () => {
                         Our decorator will come and complete the decoration <b>anytime between the selected time range</b>
                       </div>
 
+                      {/* Selected Recommended Items Display */}
+                      {selectedRecommendedItems.length > 0 && (
+                        <div className="selected-recommended-items">
+                          <h4>Customisations ({selectedRecommendedItems.length})</h4>
+                          <div className="selected-items-list">
+                            {selectedRecommendedItems.map((item, i) => (
+                              <div key={i} className="selected-item">
+                                <span className="item-name">{item.name}</span>
+                                <span className="item-price">₹{item.price}</span>
+                                <button
+                                  className="remove-item"
+                                  onClick={() => handleRecommendedItemToggle({ _id: item._id, productDetails: { productname: item.name }, priceDetails: { price: item.price } })}
+                                >
+                                  ×
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="selected-items-total">
+                            Total: ₹{selectedRecommendedItems.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0)}
+                          </div>
+                        </div>
+                      )}
+
+
                       {/* MAIN BOOK NOW BUTTON */}
                       <button
                         className="booking-summary-book-btn"
@@ -1341,56 +1587,23 @@ const ProductDetails = () => {
                       >
                         Recommended
                       </button>
-                      <button
-                        className={`recommended-tab ${activeRecommendedTab === 'engagement' ? 'active' : ''}`}
-                        onClick={() => handleRecommendedTabClick('engagement')}
-                      >
-                        Engagement Activity
-                      </button>
                     </div>
 
                     <div className="recommended-filter-tags">
-                      <button
-                        className={`filter-tag ${activeFilterTag === 'Entry Gate Arch' ? 'active' : ''}`}
-                        onClick={() => handleFilterTagClick('Entry Gate Arch')}
-                      >
-                        Entry Gate Arch
-                      </button>
-                      <button
-                        className={`filter-tag ${activeFilterTag === 'Cake Table' ? 'active' : ''}`}
-                        onClick={() => handleFilterTagClick('Cake Table')}
-                      >
-                        Cake Table
-                      </button>
-                      <button
-                        className={`filter-tag ${activeFilterTag === 'Digit Foil Balloons' ? 'active' : ''}`}
-                        onClick={() => handleFilterTagClick('Digit Foil Balloons')}
-                      >
-                        Digit Foil Balloons
-                      </button>
-                      <button
-                        className={`filter-tag ${activeFilterTag === 'Led Digit' ? 'active' : ''}`}
-                        onClick={() => handleFilterTagClick('Led Digit')}
-                      >
-                        Led Digit
-                      </button>
-                      <button
-                        className={`filter-tag ${activeFilterTag === 'Lights' ? 'active' : ''}`}
-                        onClick={() => handleFilterTagClick('Lights')}
-                      >
-                        Lights
-                      </button>
-                      <button
-                        className={`filter-tag ${activeFilterTag === 'Occasion Bunting' ? 'active' : ''}`}
-                        onClick={() => handleFilterTagClick('Occasion Bunting')}
-                      >
-                        Occasion Bunting
-                      </button>
+                      {availableFilters.map((filter, index) => (
+                        <button
+                          key={index}
+                          className={`filter-tag ${activeFilterTag === filter ? 'active' : ''}`}
+                          onClick={() => handleFilterTagClick(filter)}
+                        >
+                          {filter}
+                        </button>
+                      ))}
                     </div>
 
                     <div className="recommended-products-container">
                       <div className="recommended-products-grid">
-                        {getProductDetails?.data?.similarProducts?.slice(0, 8)?.map((item, i) => (
+                        {(filteredRecommendedProducts.length > 0 ? filteredRecommendedProducts : getProductDetails?.data?.similarProducts)?.slice(0, 8)?.map((item, i) => (
                           <div className="recommended-product-card" key={i}>
                             <div className="recommended-product-image">
                               <img
@@ -1424,7 +1637,11 @@ const ProductDetails = () => {
                                   ₹{item?.priceDetails?.discountedPrice || item?.priceDetails?.price}
                                 </div>
                                 <label className="recommended-product-toggle">
-                                  <input type="checkbox" />
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedRecommendedItems.some(selected => selected._id === item._id)}
+                                    onChange={() => handleRecommendedItemToggle(item)}
+                                  />
                                   <span className="toggle-slider"></span>
                                 </label>
                               </div>
@@ -2248,6 +2465,7 @@ const ProductDetails = () => {
         onComplete={handleBookingFlowComplete}
         selectedProduct={getProductDetails?.data?.product}
         user={userDetail}
+        selectedRecommendedItems={selectedRecommendedItems}
       />
 
       {/* Fixed Bottom Booking Bar */}
@@ -2256,6 +2474,7 @@ const ProductDetails = () => {
         discountedPrice={getProductDetails?.data?.product?.priceDetails?.discountedPrice}
         onBookNowClick={() => setShowBookingFlow(true)}
         activeTab="Overview"
+        selectedRecommendedItems={selectedRecommendedItems}
       />
 
       <Modal

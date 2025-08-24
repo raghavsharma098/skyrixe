@@ -1921,6 +1921,76 @@ i.fa-star {
   text-align: center;
   line-height: 40px;
 }
+.CheckOutDetails .RecommendedBox {
+  border: 1px solid #e4e9ee;
+  border-radius: 12px;
+  padding: 30px 20px 10px;
+  margin: 0 0 20px 0;
+}
+
+.CheckOutDetails .RecommendedBox h4 {
+  color: #0b0f0e;
+  font-weight: 600;
+  font-size: 20px;
+  margin: 0 0 15px 0;
+}
+
+.CheckOutDetails .RecommendedBox article:last-child {
+  border-bottom: none;
+  margin: 0;
+}
+
+.CheckOutDetails .RecommendedBox article {
+  display: flex;
+  margin: 0 0 20px 0;
+  position: relative;
+  border-bottom: 1px solid rgba(228, 233, 238, 1);
+}
+
+.CheckOutDetails .RecommendedBox figure {
+  background-color: rgba(246, 246, 246, 1);
+  margin: 0;
+  border-radius: 8px;
+  padding: 10px;
+  width: 100px;
+  height: 100px;
+}
+
+.CheckOutDetails .RecommendedBox article figcaption {
+  padding: 0 0 0 25px;
+}
+
+.CheckOutDetails .RecommendedBox article figcaption h2 {
+  color: #0b0f0e;
+  font-weight: 600;
+  font-size: 20px;
+  margin: 0 0 15px 0;
+  width: 80%;
+}
+
+.CheckOutDetails .RecommendedBox article figcaption p {
+  color: #818b9c;
+  font-size: 15px;
+  margin: 0 0 10px 0;
+}
+
+.CheckOutDetails .RecommendedBox article figcaption h3 {
+  color: rgba(2, 54, 111, 1);
+  font-weight: 600;
+  font-size: 20px;
+  margin: 0;
+}
+
+.CheckOutDetails .RecommendedBox article .TrashIcon {
+  position: absolute;
+  right: 0;
+  border: 1px solid rgba(228, 233, 238, 1);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+}
 
 .CheckOutDetails .ProductSummary {
   border: 1px solid #e4e9ee;
@@ -2391,6 +2461,7 @@ i.fa-star {
   cursor: pointer;
 }
 
+
 .CheckOutDetails .PastBookingArea {
   border: 1px solid #e4e9ee;
   border-radius: 12px;
@@ -2598,6 +2669,8 @@ i.fa-star {
   width: 24px;
   margin: 0 10px 0 0;
 }
+
+
 
 
 

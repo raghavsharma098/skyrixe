@@ -83,6 +83,9 @@ const initialState = {
   ],
   addressModal: false,
   editMode: false,
+  recommendedItems: [],
+  recommendedTotal: 0,
+  grandTotal: 0
 };
 
 const Checkout1 = () => {
@@ -129,6 +132,9 @@ const Checkout1 = () => {
     availableCustomizations,
     selectedCustomizations,
     totalCustomPrice,
+    recommendedItems,
+    recommendedTotal,
+    grandTotal
   } = iState;
 
   const { getOrderSummaryDetail } = useSelector(
@@ -150,9 +156,9 @@ const Checkout1 = () => {
           productname: getOrderSummaryDetail?.data?.productName,
         },
       };
-      navigate("/products/product-details", { 
+      navigate("/products/product-details", {
         state: productData,
-        replace: false 
+        replace: false
       });
     } else if (type === "custom") {
       // Open customization edit modal
@@ -199,20 +205,20 @@ const Checkout1 = () => {
       if (item._id === customItem._id) {
         const currentQty = item.quantity || 1;
         let newQty = currentQty;
-        
+
         if (action === 'increment') {
           newQty = currentQty + 1;
         } else if (action === 'decrement' && currentQty > 1) {
           newQty = currentQty - 1;
         }
-        
+
         // Update total price
         const priceDifference = (newQty - currentQty) * item.price;
         updateState(prev => ({
           ...prev,
           totalCustomPrice: prev.totalCustomPrice + priceDifference
         }));
-        
+
         return { ...item, quantity: newQty };
       }
       return item;
@@ -348,20 +354,81 @@ const Checkout1 = () => {
       }
     });
   };
+  const handleRecommendedItemRemove = (itemId) => {
+    const updatedRecommendedItems = recommendedItems.filter(item => item._id !== itemId);
+    const removedItem = recommendedItems.find(item => item._id === itemId);
+
+    // Calculate new total amount
+    const newTotalAmount = Number(getOrderSummaryDetail?.data?.totalAmount) -
+      (Number(removedItem?.price) * (removedItem?.quantity || 1));
+
+    // Update via API if needed or just update state
+    updateState({
+      ...iState,
+      recommendedItems: updatedRecommendedItems
+    });
+
+    toast.success("Recommended item removed successfully");
+  };
+
+  const RecommendedItemsSection = () => (
+    <>
+      {recommendedItems?.length > 0 && (
+        <div className="CustomProduct">
+          <h4>Recommended Add-ons</h4>
+          {recommendedItems.map((item, i) => (
+            <article key={i}>
+              <figure>
+                <img src={item?.image || item?.customimages} alt={item?.name} />
+              </figure>
+              <figcaption>
+                <h2>{item?.name}</h2>
+                <h3>₹{item?.price} x {item?.quantity || 1}</h3>
+                <p className="text-muted">Add-on item</p>
+              </figcaption>
+              <a
+                className="TrashIcon"
+                onClick={() => handleRecommendedItemRemove(item._id)}
+              >
+                <img src={require("../../assets/images/trash.png")} alt="Remove" />
+              </a>
+            </article>
+          ))}
+        </div>
+      )}
+    </>
+  );
+
+  const UpdatedProductSummary = () => {
+    const basePrice = Number(getOrderSummaryDetail?.data?.price || 0);
+    const customizationTotal = getOrderSummaryDetail?.data?.productcustomizeDetails?.reduce((sum, item) =>
+      sum + (Number(item?.price) * Number(item?.quantity)), 0) || 0;
+    const recommendedTotal = recommendedItems?.reduce((sum, item) =>
+      sum + (Number(item?.price) * Number(item?.quantity || 1)), 0) || 0;
+    const grandTotal = basePrice + customizationTotal + recommendedTotal;
+  }
+
+  const RecommendedItemsBreakdown = () => {
+    if (!recommendedItems?.length) return null;
+
+    const recommendedTotal = recommendedItems.reduce((sum, item) =>
+      sum + (Number(item?.price) * Number(item?.quantity || 1)), 0);
+  }
+
 
   // Initialize customizations when modal opens
   useEffect(() => {
     if (customEditModal && getProductDetails?.data?.product?.productcustomizeDetails) {
       const availableCustoms = getProductDetails.data.product.productcustomizeDetails;
       const currentCustoms = getOrderSummaryDetail?.data?.productcustomizeDetails || [];
-      
+
       // Map current customizations to selected state
       const selectedCustoms = currentCustoms.map(current => ({
         ...current,
         quantity: current.quantity || 1
       }));
-      
-      const totalPrice = selectedCustoms.reduce((sum, item) => 
+
+      const totalPrice = selectedCustoms.reduce((sum, item) =>
         sum + (item.price * (item.quantity || 1)), 0);
 
       updateState({
@@ -386,6 +453,7 @@ const Checkout1 = () => {
         slot: getOrderSummaryDetail?.data?.slot,
         customization: getOrderSummaryDetail?.data?.productcustomizeDetails,
         addressList: getAddressList?.data?.Addresses?.at(0),
+        recommendedItems: state?.recommendedItems || [], // Add this line
       });
       dispatch(
         slotListApi({
@@ -395,6 +463,7 @@ const Checkout1 = () => {
       );
     }
   }, [getOrderSummaryDetail, getAddressList]);
+
 
   useEffect(() => {
     let newState = { ...iState };
@@ -424,6 +493,21 @@ const Checkout1 = () => {
       });
     }
   }, [getSlotList]);
+
+  useEffect(() => {
+  const basePrice = Number(getOrderSummaryDetail?.data?.price || 0);
+  const customizationTotal = getOrderSummaryDetail?.data?.productcustomizeDetails?.reduce((sum, item) => 
+    sum + (Number(item?.price) * Number(item?.quantity)), 0) || 0;
+  const recommendedTotal = recommendedItems?.reduce((sum, item) => 
+    sum + (Number(item?.price) * Number(item?.quantity || 1)), 0) || 0;
+  
+  const newGrandTotal = basePrice + customizationTotal + recommendedTotal;
+  
+  updateState(prevState => ({
+    ...prevState,
+    grandTotal: newGrandTotal
+  }));
+}, [getOrderSummaryDetail, recommendedItems]);
 
   return (
     <>
@@ -769,6 +853,35 @@ const Checkout1 = () => {
                   })
                   : "No Customization Added"}
               </div>
+            
+            {recommendedItems?.length > 0 && (
+              <div className="RecommendedBox">
+                <aside>
+                  <h4>Recommended Add-ons</h4>
+                  <a className="EditBtn">
+                    {recommendedItems.length} item{recommendedItems.length > 1 ? 's' : ''}
+                  </a>
+                </aside>
+                {recommendedItems.map((item, i) => (
+                  <article key={i}>
+                    <figure>
+                      <img src={item?.image || item?.customimages} alt={item?.name} />
+                    </figure>
+                    <figcaption>
+                      <h2>{item?.name}</h2>
+                      <h3>₹{item?.price} x {item?.quantity || 1}</h3>
+                      <p>Add-on item</p>
+                    </figcaption>
+                    <a
+                      className="TrashIcon"
+                      onClick={() => handleRecommendedItemRemove(item._id)}
+                    >
+                      <img src={require("../../assets/images/trash.png")} alt="Remove" />
+                    </a>
+                  </article>
+                ))}
+              </div>
+            )}
             </div>
 
             {/* Right sidebar with Product Summary */}
@@ -808,28 +921,53 @@ const Checkout1 = () => {
                 <table>
                   <tbody>
                     {getOrderSummaryDetail?.data?.productcustomizeDetails?.length > 0
-                      ? getOrderSummaryDetail?.data?.productcustomizeDetails?.map((item, i) => {
-                        return (
-                          <tr
-                            key={i}
-                            className={
-                              i ==
-                                getOrderSummaryDetail?.data?.productcustomizeDetails?.length - 1
-                                ? "CustomBottom"
-                                : ""
-                            }
-                          >
-                            <td>{item?.name}</td>
+                      ? getOrderSummaryDetail?.data?.productcustomizeDetails?.map((item, i) => (
+                        <tr
+                          key={i}
+                          className={
+                            i === getOrderSummaryDetail?.data?.productcustomizeDetails?.length - 1
+                              ? "CustomBottom"
+                              : ""
+                          }
+                        >
+                          <td>{item?.name}</td>
+                          <td>₹{item?.price} x {item?.quantity}</td>
+                        </tr>
+                      ))
+                      : null}
+                  </tbody>
+                </table>
+
+                {/* Recommended Items section */}
+                {recommendedItems?.length > 0 && (
+                  <>
+                    <div className="flex justify-content-between align-items-center mt-4">
+                      <h3>Recommended Add-ons</h3>
+                      <span className="text-muted small">({recommendedItems.length} items)</span>
+                    </div>
+
+                    <table>
+                      <tbody>
+                        {recommendedItems.map((item, i) => (
+                          <tr key={i} className={i === recommendedItems.length - 1 ? "CustomBottom" : ""}>
                             <td>
-                              ₹{item?.price} x {item?.quantity}
+                              {item?.name}
+                              <small className="d-block text-muted">Add-on</small>
                             </td>
+                            <td>₹{item?.price} x {item?.quantity || 1}</td>
                           </tr>
-                        );
-                      })
-                      : ""}
+                        ))}
+                      </tbody>
+                    </table>
+                  </>
+                )}
+
+                {/* Updated totals section */}
+                <table>
+                  <tbody>
                     <tr className="CustomTr">
-                      <td>Total Price</td>
-                      <td>₹{getOrderSummaryDetail?.data?.totalAmount}</td>
+                      <td>Subtotal</td>
+                      <td>₹{grandTotal}</td>
                     </tr>
                     <tr className="CustomTr">
                       <td>Tax & Fee</td>
@@ -839,7 +977,7 @@ const Checkout1 = () => {
                   <tfoot>
                     <tr>
                       <td>Total Price</td>
-                      <td>₹{getOrderSummaryDetail?.data?.totalAmount}</td>
+                      <td>₹{grandTotal}</td>
                     </tr>
                   </tfoot>
                 </table>
@@ -849,8 +987,11 @@ const Checkout1 = () => {
                   getOrderSummaryDetail={getOrderSummaryDetail}
                   iState={iState}
                   selectedValue={selectedValue}
+                  recommendedItems={recommendedItems}
+                  grandTotal={grandTotal}
                 />
               </div>
+
 
               <div className="CommonGreyBox">
                 <ul>
@@ -865,6 +1006,8 @@ const Checkout1 = () => {
             </div>
           </div>
         </div>
+
+
       </section>
 
       {/* Existing modals remain the same... */}
@@ -1019,8 +1162,8 @@ const Checkout1 = () => {
       <Modal
         className="ModalBox LargeModal"
         show={customEditModal}
-        onHide={() => updateState({ 
-          ...iState, 
+        onHide={() => updateState({
+          ...iState,
           customEditModal: false,
           selectedCustomizations: [],
           totalCustomPrice: 0
@@ -1033,8 +1176,8 @@ const Checkout1 = () => {
             <button
               type="button"
               className="btn-close"
-              onClick={() => updateState({ 
-                ...iState, 
+              onClick={() => updateState({
+                ...iState,
                 customEditModal: false,
                 selectedCustomizations: [],
                 totalCustomPrice: 0
@@ -1052,7 +1195,7 @@ const Checkout1 = () => {
                     availableCustomizations.map((item, i) => {
                       const isSelected = selectedCustomizations.find(custom => custom._id === item._id);
                       const selectedQuantity = isSelected ? isSelected.quantity : 0;
-                      
+
                       return (
                         <div className="col-lg-3 col-md-4 col-sm-6 col-6" key={i}>
                           <div className="PrivateDiningBox customeDiningBox">
@@ -1070,7 +1213,7 @@ const Checkout1 = () => {
                                   <span
                                     className="Btn"
                                     onClick={() => handleQuantityChange(item, 'decrement')}
-                                    style={{ 
+                                    style={{
                                       cursor: selectedQuantity <= 1 ? 'not-allowed' : 'pointer',
                                       opacity: selectedQuantity <= 1 ? 0.5 : 1
                                     }}
@@ -1136,8 +1279,8 @@ const Checkout1 = () => {
             </div>
 
             {/* Summary section */}
-            <div className="customization-summary mt-4 p-3" style={{ 
-              backgroundColor: "#f8f9fa", 
+            <div className="customization-summary mt-4 p-3" style={{
+              backgroundColor: "#f8f9fa",
               borderRadius: "8px",
               border: "1px solid #dee2e6",
             }}>
@@ -1145,12 +1288,12 @@ const Checkout1 = () => {
                 <h5 className="mb-0">Selected Customizations</h5>
                 <h4 className="mb-0 text-primary">Total: ₹{totalCustomPrice}</h4>
               </div>
-              
+
               {selectedCustomizations.length > 0 ? (
                 <div className="selected-items">
                   {selectedCustomizations.map((item, i) => (
-                    <div key={i} className="d-flex justify-content-between align-items-center py-2" 
-                         style={{ borderBottom: i < selectedCustomizations.length - 1 ? "1px solid #dee2e6" : "none" }}>
+                    <div key={i} className="d-flex justify-content-between align-items-center py-2"
+                      style={{ borderBottom: i < selectedCustomizations.length - 1 ? "1px solid #dee2e6" : "none" }}>
                       <div>
                         <span className="fw-bold">{item.name}</span>
                         <small className="text-muted d-block">₹{item.price} x {item.quantity}</small>
@@ -1170,8 +1313,8 @@ const Checkout1 = () => {
             <div className="d-flex justify-content-end gap-3 mt-4">
               <button
                 className="btn btn-secondary px-4"
-                onClick={() => updateState({ 
-                  ...iState, 
+                onClick={() => updateState({
+                  ...iState,
                   customEditModal: false,
                   selectedCustomizations: [],
                   totalCustomPrice: 0
@@ -1179,7 +1322,7 @@ const Checkout1 = () => {
               >
                 Cancel
               </button>
-              
+
               <button
                 className="btn btn-primary px-4"
                 onClick={handleSaveCustomizations}
