@@ -1394,7 +1394,7 @@ const ProductDetails = () => {
                                 onClick={() => handleProduct(item)}
                               />
                             </div>
-
+                            
                             <div className="recommended-product-info">
                               <h4 className="recommended-product-title">
                                 {item?.productDetails?.productname?.length > 40
