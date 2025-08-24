@@ -632,8 +632,9 @@ const ProductDetails = () => {
         title: iState.reviewData.title
       }));
 
+      console.log("Add Review Response:", response);
       if (response.payload.success) {
-        toast.success('Review submitted successfully!');
+        // toast.success('Review submitted successfully!');
         updateState({
           ...iState,
           showAddReviewModal: false,
@@ -649,8 +650,10 @@ const ProductDetails = () => {
         }));
       }
     } catch (error) {
-      toast.error('Failed to submit review. Please try again.');
-      updateState({ ...iState, isSubmittingReview: false });
+      // toast.error('Failed to submit review. Please try again.');
+      updateState({ ...iState,
+        showAddReviewModal: false,
+      isSubmittingReview: false });
     }
   };
 

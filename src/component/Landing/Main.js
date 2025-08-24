@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
@@ -13,7 +13,7 @@ import {
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import ReactImageZoom from "react-image-zoom";
-import { CiStar } from "react-icons/ci";
+import { FaStar } from "react-icons/fa";
 import ServiceCarousel from "../Modals/ServiceCrousel";
 import { fetchLatestReviews } from "../../reduxToolkit/Slices/ReviewAndRating/reviewRatingApis";
 
@@ -519,7 +519,7 @@ const Main = () => {
                             <div class="loc">
                               <h1> At your location</h1>
                               <div className="star">
-                                <CiStar />
+                                <FaStar size={40} style={{ stroke: 'gold', fill: 'gold' }} />
 
 
                               </div>
@@ -573,8 +573,10 @@ const Main = () => {
                               Book Now
                             </button>
                             <div className="sv">
+                              <Link to="/profile">
 
-                              <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="wishlist-icon" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"></path></svg>
+                                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="wishlist-icon" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"></path></svg>
+                              </Link>
                             </div>
 
                           </div>
@@ -689,7 +691,7 @@ const Main = () => {
                             <div class="loc">
                               <h1> At your location</h1>
                               <div className="star">
-                                <CiStar />
+                                <FaStar size={40} style={{ stroke: 'gold', fill: 'gold' }} />
 
 
                               </div>
@@ -744,7 +746,10 @@ const Main = () => {
                             </button>
                             <div className="sv">
 
-                              <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="wishlist-icon" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"></path></svg>
+                              <Link to="/profile">
+
+                                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="wishlist-icon" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"></path></svg>
+                              </Link>
                             </div>
 
                           </div>
@@ -857,7 +862,7 @@ const Main = () => {
                             <div class="loc">
                               <h1> At your location</h1>
                               <div className="star">
-                                <CiStar />
+                                <FaStar size={40} style={{ stroke: 'gold', fill: 'gold' }} />
 
 
                               </div>
@@ -912,7 +917,10 @@ const Main = () => {
                             </button>
                             <div className="sv">
 
-                              <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="wishlist-icon" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"></path></svg>
+                              <Link to="/profile">
+
+                                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="wishlist-icon" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"></path></svg>
+                              </Link>
                             </div>
 
                           </div>
@@ -1025,7 +1033,7 @@ const Main = () => {
                             <div class="loc">
                               <h1> At your location</h1>
                               <div className="star">
-                                <CiStar />
+                                <FaStar size={40} style={{ stroke: 'gold', fill: 'gold' }} />
 
 
                               </div>
@@ -1080,7 +1088,10 @@ const Main = () => {
                             </button>
                             <div className="sv">
 
-                              <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="wishlist-icon" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"></path></svg>
+                              <Link to="/profile">
+
+                                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" class="wishlist-icon" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"></path></svg>
+                              </Link>
                             </div>
 
                           </div>
@@ -1147,46 +1158,46 @@ const Main = () => {
           )}
         </div>
 
-      <div className="text">
-        <h1>
-          <strong> Skyrixe – Celebrate Life’s Special Moments with us
-            Us&nbsp;&nbsp;&nbsp;</strong>
-        </h1>
-        <p>
-          <span>Each celebratory occasion needs a unique touch of excellence.
-            Skyrixe&nbsp; devotes itself to providing memorable experiences for every
-            moment. Do you&nbsp; remember the last time you got services tailored for
-            you? Neither can we, and that’s exactly why we go above and beyond
-            every single time, making sure that every service we offer is truly
-            remarkable. With our setup services, every special moment can come to life.
-            We provide romantic dinners and simple birthday decorations.</span>
-        </p>
-        <p class='second'>
-          <span>In our ten years of operation, we have held many events across India. We
-            have served thousands of customers as they created special memories. Our
-            dedicated team creates impressive event experiences for our customers. We
-            enhance celebrations with balloon decorations and themed party decor. We
-            cater to both small home events and large banquet functions.</span>
-        </p>
-        <h2>
-          <strong>Our Services – Fully Customizable For Your Every Event</strong>
-        </h2>
-        <p>
-          <span>Every event requires a personalized touch to be unique. Skyrixe provides
-            decoration solutions for basic birthday arrangements, anniversary
-            decorations, and complete surprise party preparations. Our deep experience
-            with multiple event decoration services enhances your special moments on all
-            occasions.</span>
-        </p>
-        <button class="show"> Show more</button>
-      </div>
-      <div className="BirthdayDecorationArea client">
+        <div className="text">
+          <h1>
+            <strong> Skyrixe – Celebrate Life’s Special Moments with us
+              Us&nbsp;&nbsp;&nbsp;</strong>
+          </h1>
+          <p>
+            <span>Each celebratory occasion needs a unique touch of excellence.
+              Skyrixe&nbsp; devotes itself to providing memorable experiences for every
+              moment. Do you&nbsp; remember the last time you got services tailored for
+              you? Neither can we, and that’s exactly why we go above and beyond
+              every single time, making sure that every service we offer is truly
+              remarkable. With our setup services, every special moment can come to life.
+              We provide romantic dinners and simple birthday decorations.</span>
+          </p>
+          <p class='second'>
+            <span>In our ten years of operation, we have held many events across India. We
+              have served thousands of customers as they created special memories. Our
+              dedicated team creates impressive event experiences for our customers. We
+              enhance celebrations with balloon decorations and themed party decor. We
+              cater to both small home events and large banquet functions.</span>
+          </p>
+          <h2>
+            <strong>Our Services – Fully Customizable For Your Every Event</strong>
+          </h2>
+          <p>
+            <span>Every event requires a personalized touch to be unique. Skyrixe provides
+              decoration solutions for basic birthday arrangements, anniversary
+              decorations, and complete surprise party preparations. Our deep experience
+              with multiple event decoration services enhances your special moments on all
+              occasions.</span>
+          </p>
+          <button class="show"> Show more</button>
+        </div>
+        <div className="BirthdayDecorationArea client">
 
-        <img src={require("../../assets/images/Our Clients.png")} />
+          <img src={require("../../assets/images/Our Clients.png")} />
 
 
-      </div>
-    </div >
+        </div>
+      </div >
       <Tooltip id="my-tooltip" place="bottom" />
     </>
   );

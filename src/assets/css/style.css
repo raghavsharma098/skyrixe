@@ -658,7 +658,7 @@ header .HeaderArea .HeaderRight .Login {
   background-color: #ffffff;
   border-radius: 5px;
   padding: 2px;
-  box-shadow: 0 4px 8px #c2bebe;
+  box-shadow: 5px 10px 16px #c2bebe;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -668,7 +668,7 @@ header .HeaderArea .HeaderRight .Login {
 
 @media (max-width: 600px) {
   .PrivateDiningBox {
-    height: 84vw;
+    height: 102vw;
     padding: 50px;
 
   }
@@ -4789,6 +4789,7 @@ ul.Icons li a img {
 @media (max-width: 600px) {
   .birthday-item {
     height: 80vw;
+    width:53vw;
   }
 }
 
@@ -4929,6 +4930,7 @@ ul.Icons li a img {
     padding: 20px 10px;
     /* Less padding for small screens */
     margin: 1px 20px;
+    height:118vw;
   }
 
   .kids-scroll-container>* {
@@ -5008,6 +5010,7 @@ ul.Icons li a img {
     padding: 20px 10px;
     /* Less padding for small screens */
     margin: 1px 20px;
+    height: 118vw;
   }
 
   .baby-shower-scroll-container>* {

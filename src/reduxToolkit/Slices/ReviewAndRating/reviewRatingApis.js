@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { credAndUrl } from "../../../config/config";
+import { toast } from "react-toastify";
 
 // Existing thunks
 export const addReview = createAsyncThunk(
@@ -11,8 +12,12 @@ export const addReview = createAsyncThunk(
         `${credAndUrl?.BASE_URL}customer/writeReview`,
         payload
       );
+      // console.log("Add Review Response:", payload);
+      toast.success(response?.data?.message || "Review Success");
       return response?.data;
     } catch (error) {
+      // console.log("Error in addReview:", error?.response);
+      toast.error(error?.response?.data?.message || "Failed to submit review");
       return error?.data;
     }
   }
