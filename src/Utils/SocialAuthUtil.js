@@ -3,7 +3,7 @@ import { credAndUrl } from "../config/config";
 import { userDetailState } from "../reduxToolkit/Slices/ProductList/listApis";
 
 import { toast } from "react-toastify";
-import axios from "axios";;
+import axios from "axios";
 
 // Your actual Google Client ID
 const GOOGLE_CLIENT_ID = "100748839589-chdc48opcq06i8kkijr3a9lbrfbq8vkd.apps.googleusercontent.com";
@@ -397,54 +397,111 @@ export const handleFacebookLogin = () => {
 };
 
 // Rest of your utility functions remain the same...
-export const handleEmailPasswordLogin = async (email, password) => {
-  try {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    if (!email || !password) {
-      return {
-        success: false,
-        error: 'Email and password are required'
-      };
-    }
 
-    if (!validateEmail(email)) {
-      return {
-        success: false,
-        error: 'Please enter a valid email address'
-      };
-    }
+// export const handleEmailLogin = async (email, password) => {
+//   try {
+//     // Basic frontend validation
+//     if (!email || !password) {
+//       toast.error("Email and password are required");
+//       return { success: false, error: "Email and password are required" };
+//     }
 
-    const userData = {
-      _id: `email_${Date.now()}`,
-      userId: `email_${Date.now()}`,
-      data: {
-        personalInfo: {
-          name: "Email User",
-          email: email,
-          photo: "",
-          phone: "",
-          gender: "",
-          dob: "",
-        },
-        addresses: [],
-        authMethod: 'email',
-      }
-    };
+//     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//     if (!emailRegex.test(email)) {
+//       toast.error("Please enter a valid email address");
+//       return { success: false, error: "Please enter a valid email address" };
+//     }
 
-    return {
-      success: true,
-      userData,
-      message: 'Email login successful'
-    };
-  } catch (error) {
-    console.error('Email login error:', error);
-    return {
-      success: false,
-      error: 'Network error. Please try again.'
-    };
-  }
-};
+//     // Send request to backend
+//     const response = await axios.post(
+//       `${credAndUrl?.BASE_URL}customer/auth/email-login`,
+//       { email, password }
+//     );
+
+//     const data = response?.data;
+
+//     if (data?.status !== 200) {
+//       toast.error(data?.message || "Login failed");
+//       return { success: false, error: data?.message || "Login failed" };
+//     }
+
+//     // toast.success(data?.message || "Login successful");
+
+//     return {
+//       success: true,
+//       userData: data.data,
+//       token: data.token,
+//       message: data.message,
+//       status: data.status,
+//     };
+
+//   } catch (error) {
+//     console.error("Email login error:", error);
+//     toast.error("Network error. Please try again.");
+//     return { success: false, error: "Network error. Please try again." };
+//   }
+// };
+
+
+// export const handleEmailSignup = async ({ name, email, password, cnfPassword, phone }) => {
+//   try {
+//     // Basic frontend validation
+//     if (!name || !email || !password || !cnfPassword || !phone) {
+//       toast.error("Please fill all required fields");
+//       return { success: false, error: "Please fill all required fields" };
+//     }
+
+//     if (password !== cnfPassword) {
+//       toast.error("Passwords do not match");
+//       return { success: false, error: "Passwords do not match" };
+//     }
+
+//     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//     if (!emailRegex.test(email)) {
+//       toast.error("Please enter a valid email address");
+//       return { success: false, error: "Please enter a valid email address" };
+//     }
+
+//     // Send request to backend
+//     const response = await axios.post(
+//       `${credAndUrl?.BASE_URL}customer/auth/email-signup`,
+//       {
+//         name,
+//         email,
+//         password,
+//         cnfPassword,
+//         phone: phone,
+//       }
+//     );
+
+//     const data = response?.data;
+
+//     if (data?.status !== 201) {
+//       toast.error(data?.message || "Signup failed");
+//       return { success: false, error: data?.message || "Signup failed" };
+//     }
+
+//     // Store in cache
+//     localStorage.setItem("user", JSON.stringify(data.data));
+//     localStorage.setItem("token", data.token);
+
+//     toast.success(data?.message || "Signup successful");
+
+//     return {
+//       success: true,
+//       userData: data.data,
+//       token: data.token,
+//       message: data.message,
+//       status: data.status,
+//     };
+
+//   } catch (error) {
+//     console.error("Email signup error:", error);
+//     toast.error("Network error. Please try again.");
+//     return { success: false, error: "Network error. Please try again." };
+//   }
+// };
+
 
 export const storeUserSession = (userData, loginMethod, setCookie, dispatch) => {
   try {

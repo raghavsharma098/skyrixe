@@ -77,13 +77,11 @@ const UserSchema = new mongoose.Schema(
     googleID: { type: String },
     fcmToken: { type: String },
     otp: { type: Number },
+    password: { type: String},
     phone: {
       type: String,
-      // required: function() {
-      //   // Phone is required only if it's not a Google auth user
-      //   return this.googleID === undefined;
-      // },
       unique: true,
+      sparse: true, // Allows multiple docs with null phone
     },
     alternatePhone: { type: String },
     isPhoneVerified: {
@@ -98,7 +96,7 @@ const UserSchema = new mongoose.Schema(
     personalInfo: {
       name: { type: String },
       email: { type: String },
-      gender: { type: String, enum: ['Male', 'Female', 'Other',''] },
+      gender: { type: String, enum: ['Male', 'Female', 'Other', ''] },
       dob: { type: Date },
       photo: { type: String },
     },

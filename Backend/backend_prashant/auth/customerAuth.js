@@ -1,12 +1,13 @@
-const customerauthSchemaData=require('../models/customerauthModel') ///auth model for customer signup and login
-const Counter=require('../models/counter');
-const multerSetup= require('../middlewares/uploadData');
-const jwt=require('jsonwebtoken');
+const customerauthSchemaData = require('../models/customerauthModel') ///auth model for customer signup and login
+const Counter = require('../models/counter');
+const multerSetup = require('../middlewares/uploadData');
+const jwt = require('jsonwebtoken');
+const bcrypt = require("bcryptjs");
 //message 91 service 
-const{ sendOtpViaMsg91, verifyOtpViaMsg91, resendOtpViaMsg91 }=require('../utils/msg91Utils')
+const { sendOtpViaMsg91, verifyOtpViaMsg91, resendOtpViaMsg91 } = require('../utils/msg91Utils')
 //multer middleware
 const upload = multerSetup(['image/jpeg', 'image/png'], 2 * 1024 * 1024);
-const {OAuth2Client} = require('google-auth-library');
+const { OAuth2Client } = require('google-auth-library');
 ///customer signup 
 // Save phone number and verify OTP. IMP+++OTP message service pending
 //in this if a customer come if exist user this will helps in login and if not this will create a new user/customer
@@ -220,14 +221,14 @@ const resendOtp = async (req, res) => {
   }
 
   try {
-    
+
     const user = await customerauthSchemaData.findOne({ phone });
 
     if (!user) {
       return res.status(404).json({ message: 'Phone number not registered', status: 404 });
     }
 
-    
+
     await resendOtpViaMsg91(phone);
 
     return res.status(200).json({
@@ -282,7 +283,7 @@ const resendOtp = async (req, res) => {
 //       personalInfo.name?.trim() &&
 //       personalInfo.gender?.trim() &&
 //       personalInfo.dob 
-      
+
 
 //     if (isPersonalInfoComplete) {
 //       return res.status(200).json({
@@ -322,33 +323,33 @@ const customerPersonalData = async (req, res) => {
   }
 
   try {
-    const user = await customerauthSchemaData.findById(userId); 
+    const user = await customerauthSchemaData.findById(userId);
 
     if (!user || !user.isPhoneVerified) {
       return res.status(400).json({ message: 'Invalid or unverified user', status: 400 });
     }
 
-    
-    let photoPath = user.personalInfo.photo; 
+
+    let photoPath = user.personalInfo.photo;
     if (req.file) {
       photoPath = req.file.location;
     }
     // Update personal info    
     user.personalInfo = { name, email, gender, dob, photo: photoPath, alternatePhone };
-    const savingData = await user.save(); 
+    const savingData = await user.save();
     ///token generation
     const token = jwt.sign(
       { userId: user._id, phone: user.phone },
-      process.env.JWT_SECRET 
-      
+      process.env.JWT_SECRET
+
     );
 
-    
+
     //returning data
     return res.status(200).json({
       message: 'Personal information saved successfully. Login Successful.',
       data: savingData,
-      token, 
+      token,
       status: 200,
     });
   } catch (error) {
@@ -418,10 +419,10 @@ const customerhomeaddressData = async (req, res) => {
 
     const savedUser = await user.save();
 
-    return res.status(200).json({ 
-      message: 'Home address added successfully', 
-      data: savedUser.homeAddresses, 
-      status: 200 
+    return res.status(200).json({
+      message: 'Home address added successfully',
+      data: savedUser.homeAddresses,
+      status: 200
     });
   } catch (error) {
     return res.status(500).json({ message: 'Error saving home address', error, status: 500 });
@@ -448,10 +449,10 @@ const customerofficeaddressData = async (req, res) => {
 
     const savedUser = await user.save();
 
-    return res.status(200).json({ 
-      message: 'Office address added successfully', 
-      data: savedUser.officeAddresses, 
-      status: 200 
+    return res.status(200).json({
+      message: 'Office address added successfully',
+      data: savedUser.officeAddresses,
+      status: 200
     });
   } catch (error) {
     return res.status(500).json({ message: 'Error saving office address', error, status: 500 });
@@ -528,7 +529,7 @@ const customerofficeaddressData = async (req, res) => {
 //     const { type, address, addressId } = req.body; 
 //     // type = 'home' or 'office'
 //     // addressId = optional (used for updating/deleting existing address)
-    
+
 //     let updateQuery = {};
 //     let user = await User.findById(userId);
 
@@ -573,7 +574,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const customerGoogleLogin = async (req, res) => {
   const { googleToken } = req.body;
-  
+
   if (!googleToken) {
     return res.status(400).json({ message: 'Google token is required', status: 400 });
   }
@@ -582,13 +583,15 @@ const customerGoogleLogin = async (req, res) => {
     // Verify Google token
     let ticket;
     let payload;
-    
+
     try {
       ticket = await client.verifyIdToken({
         idToken: googleToken,
         audience: process.env.GOOGLE_CLIENT_ID,
       });
       payload = ticket.getPayload();
+
+      console.log("Google token verified:", payload);
     } catch (tokenError) {
       return res.status(401).json({
         message: 'Invalid Google token',
@@ -596,11 +599,11 @@ const customerGoogleLogin = async (req, res) => {
         error: tokenError.message,
       });
     }
-
+    // console.log(payload)
     const { sub: googleId, email, name, picture } = payload;
 
     // Check if user exists by Google ID or email
-    let user = await customerauthSchemaData.findOne({ 
+    let user = await customerauthSchemaData.findOne({
       $or: [
         { googleID: googleId },
         { 'personalInfo.email': email }
@@ -618,15 +621,17 @@ const customerGoogleLogin = async (req, res) => {
       );
       const customerId = `Cust-${String(counter.seq).padStart(3, "0")}`;
 
+
       user = new customerauthSchemaData({
         customerId,
-        phone: "",
+        googleID: googleId,
+        phone: googleId,
         isPhoneVerified: false,
         isActive: true,
         personalInfo: {
           name: name || '',
           email: email || '',
-          gender: '',
+          gender: "Male" || "Female" || "Other",
           dob: null,
         },
         addresses: [],
@@ -637,11 +642,13 @@ const customerGoogleLogin = async (req, res) => {
         authProvider: 'google',
       });
       await user.save();
+
+      // console.log("New Google user created:", user.customerId);
       isNewUser = true;
     } else {
       // Update existing user with Google info if not already set
       let updateData = {};
-      
+
       if (!user.googleId) updateData.googleId = googleId;
       if (!user.personalInfo?.name && name) {
         updateData['personalInfo.name'] = name;
@@ -654,7 +661,7 @@ const customerGoogleLogin = async (req, res) => {
       if (!user.isGoogleAuth) updateData.isGoogleAuth = true;
       if (!user.authProvider) updateData.authProvider = 'google';
       if (!user.isActive) updateData.isActive = true;
-      
+
       if (Object.keys(updateData).length > 0) {
         user = await customerauthSchemaData.findByIdAndUpdate(user._id, updateData, { new: true });
       }
@@ -662,8 +669,8 @@ const customerGoogleLogin = async (req, res) => {
 
     // Generate JWT token
     const token = jwt.sign(
-      { 
-        userId: user._id, 
+      {
+        userId: user._id,
         phone: user.phone // Keep consistent with OTP login
       },
       process.env.JWT_SECRET
@@ -679,8 +686,8 @@ const customerGoogleLogin = async (req, res) => {
 
     if (isPersonalInfoComplete) {
       return res.status(200).json({
-        message: isNewUser 
-          ? 'Google login successful.' 
+        message: isNewUser
+          ? 'Google login successful.'
           : 'Google login successful.',
         status: 200,
         userId: user._id,
@@ -689,8 +696,8 @@ const customerGoogleLogin = async (req, res) => {
       });
     } else {
       return res.status(200).json({
-        message: isNewUser 
-          ? 'Google login successful. Please complete your profile.' 
+        message: isNewUser
+          ? 'Google login successful. Please complete your profile.'
           : 'Google login successful. Please complete your profile.',
         status: 200,
         userId: user._id,
@@ -707,11 +714,154 @@ const customerGoogleLogin = async (req, res) => {
   }
 };
 
+const customerEmailSignup = async (req, res) => {
+  const { email, password, cnfPassword, name, phone } = req.body;
+
+  if (!email || !password || !name || !cnfPassword || !phone) {
+    return res.status(400).json({ message: "All fields are required", status: 400 });
+  }
+
+  if (password !== cnfPassword) {
+    return res.status(400).json({ message: "Passwords do not match", status: 400 });
+  }
+
+  try {
+    // Check if email already exists
+    const existingUser = await customerauthSchemaData.findOne({ 'personalInfo.email': email });
+    if (existingUser) {
+      return res.status(409).json({ message: "Email already registered", status: 409 });
+    }
+
+
+    // check if phone is already register or not
+    const existingPhoneUser = await customerauthSchemaData.findOne({ phone: phone });
+    if (existingPhoneUser) {
+      return res.status(409).json({ message: "Phone number already registered", status: 409 });
+    }
+    
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+
+    // Generate Customer ID
+    const counter = await Counter.findOneAndUpdate(
+      { id: "customerId" },
+      { $inc: { seq: 1 } },
+      { new: true, upsert: true }
+    );
+    const customerId = `Cust-${String(counter.seq).padStart(3, "0")}`;
+
+    // Create new user
+    const newUser = new customerauthSchemaData({
+      customerId,
+      phone: phone,
+      isPhoneVerified: false,
+      isActive: true,
+      password: hashedPassword,
+      personalInfo: {
+        name: name,
+        email: email,
+        gender: "",
+        dob: null,
+      },
+      addresses: [],
+      isEmailVerified: true,
+      isGoogleAuth: false,
+      authProvider: 'email',
+    });
+
+    await newUser.save();
+
+    const token = jwt.sign(
+      { userId: newUser._id, phone: newUser.phone },
+      process.env.JWT_SECRET
+    );
+
+    return res.status(201).json({
+      message: "Signup successful",
+      status: 201,
+      userId: newUser._id,
+      data: newUser,
+      token,
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error during signup",
+      status: 500,
+      error: error.message,
+    });
+  }
+};
+
+const customerEmailLogin = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required", status: 400 });
+  }
+
+  try {
+    // Find user by email
+    const user = await customerauthSchemaData.findOne({ 'personalInfo.email': email });
+
+    if (!user || !user.password) {
+      return res.status(401).json({ message: "Invalid credentials", status: 401 });
+    }
+
+    // Compare password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials", status: 401 });
+    }
+
+    const token = jwt.sign(
+      { userId: user._id, phone: user.phone },
+      process.env.JWT_SECRET
+    );
+
+    // Check if personal info is complete
+    const personalInfo = user.personalInfo;
+    const isPersonalInfoComplete =
+      personalInfo &&
+      personalInfo.name?.trim() &&
+      personalInfo.gender?.trim() &&
+      personalInfo.dob;
+
+    if (isPersonalInfoComplete) {
+      return res.status(200).json({
+        message: "Login successful",
+        status: 200,
+        userId: user._id,
+        data: user,
+        token,
+      });
+    } else {
+      return res.status(200).json({
+        message: "Login successful. Please complete your profile.",
+        status: 200,
+        userId: user._id,
+        data: user,
+        token,
+      });
+    }
+
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error during login",
+      status: 500,
+      error: error.message,
+    });
+  }
+};
 
 
 
-module.exports={customerhomeaddressData,customerphoneVerification,verifyOtp,customerGoogleLogin,
-  customerPersonalData:[upload.single('photo'),customerPersonalData],customerhomeaddressData,customerofficeaddressData,resendOtp
+
+module.exports = {
+  customerhomeaddressData, customerphoneVerification, verifyOtp, customerGoogleLogin, customerEmailLogin, customerEmailSignup,
+  customerPersonalData: [upload.single('photo'), customerPersonalData], customerhomeaddressData, customerofficeaddressData, resendOtp
 }
 
 
