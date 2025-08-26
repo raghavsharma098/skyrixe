@@ -259,42 +259,42 @@ const Product = () => {
   }, [minPrice, maxPrice]);
 
   useEffect(() => {
-    console.log("heyyyy", minPrice, maxPrice);
-    if (getCategoryProductList) {
-      updateState({
-        ...iState,
-        set_minPrice:
-          set_minPrice == 0 ? getCategoryProductList?.minPrice : set_minPrice,
-        set_maxPrice:
-          set_maxPrice == 0 ? getCategoryProductList?.maxPrice : set_maxPrice,
-        minPrice: minPrice == 0 ? getCategoryProductList?.minPrice : minPrice,
-        maxPrice:
-          maxPrice == 10000 ? getCategoryProductList?.maxPrice : maxPrice,
-      });
-      // Initialize sortedProducts with original data
-      setSortedProducts(getCategoryProductList?.data || []);
-    }
+    if (!getCategoryProductList) return;
+    updateState(prev => ({
+      ...prev,
+      set_minPrice: prev.set_minPrice == 0 ? getCategoryProductList?.minPrice : prev.set_minPrice,
+      set_maxPrice: prev.set_maxPrice == 0 ? getCategoryProductList?.maxPrice : prev.set_maxPrice,
+      minPrice: prev.minPrice == 0 ? getCategoryProductList?.minPrice : prev.minPrice,
+      maxPrice: prev.maxPrice == 10000 ? getCategoryProductList?.maxPrice : prev.maxPrice,
+    }));
+    setSortedProducts(getCategoryProductList?.data || []);
   }, [getCategoryProductList]);
 
-  console.log(
-    { maxPrice, minPrice, set_maxPrice, set_minPrice },
-    getCategoryProductList,
-    getCategoryProductList?.maxPrice
-  );
+  useEffect(() => {
+    if (!getCategoryProductList?.data?.length) return;
 
-  console.log(
-    {
-      state,
-      filter_city,
-      city,
-      selectCity,
-      isLoc_open,
-      isPrice_open,
-    },
-    state?.item?.categoryName
-  );
+    if (sortBy === 'recommended') {
+      setSortedProducts([...getCategoryProductList.data]);
+      return;
+    }
+    let sortedData = [...getCategoryProductList.data];
 
-  console.log(sameDay, discount, "filters");
+    if (sortBy === 'priceLowToHigh') {
+      sortedData.sort((a, b) => {
+        const priceA = Number(a?.priceDetails?.discountedPrice || a?.priceDetails?.price || 0);
+        const priceB = Number(b?.priceDetails?.discountedPrice || b?.priceDetails?.price || 0);
+        return priceA - priceB;
+      });
+    } else if (sortBy === 'priceHighToLow') {
+      sortedData.sort((a, b) => {
+        const priceA = Number(a?.priceDetails?.discountedPrice || a?.priceDetails?.price || 0);
+        const priceB = Number(b?.priceDetails?.discountedPrice || b?.priceDetails?.price || 0);
+        return priceB - priceA;
+      });
+    }
+
+    setSortedProducts(sortedData);
+  }, [getCategoryProductList, sortBy]);
 
   return (
     <>
@@ -438,12 +438,12 @@ const Product = () => {
                               />
                             </figure>
                             <h6>{item?.productDetails?.productname}</h6>
-                            
+
                             {/* Location text added here */}
                             <div className="">
                               <span>At your location</span>
                             </div>
-                            
+
                             <div className="Info">
                               <button
                                 className="Buttons"

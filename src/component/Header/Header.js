@@ -59,20 +59,25 @@ const Header = () => {
   };
 
   const handleDeleteProduct = () => {
-
     const data = {
       id: getOrderSummaryDetail?.data?._id,
     };
-    // console.log({ data });
-    dispatch(deleteCartProduct(data)).then((res) => {
-      console.log({ res });
-      if (res?.payload?.status === 200) {
-        toast?.success(res?.payload?.message);
-        dispatch(orderSummary({ userId: userDetail?._id }));
-        navigate("/");
-        window.scrollTo({ top: 150, behavior: "smooth" });
-      }
-    });
+
+    dispatch(deleteCartProduct(data))
+      .then((res) => {
+        if (res?.payload?.status === 200) {
+          toast?.success(res?.payload?.message);
+          dispatch(orderSummary({ userId: userDetail?._id }));
+          navigate("/");
+          window.scrollTo({ top: 150, behavior: "smooth" });
+        } else {
+          toast?.error(res?.payload?.message || "Failed to cancel booking. Please try again.");
+        }
+      })
+      .catch((err) => {
+        toast?.error("Something went wrong while cancelling. Please try again.");
+        console.error("deleteCartProduct failed:", err);
+      });
   };
 
   const handleCitySelect = (city) => {

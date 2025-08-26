@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -462,12 +462,12 @@ const Main = () => {
                 className="custom-arrow prev birthday-scroll-arrow"
                 onClick={handleScrollLeft}
                 onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 1)';
-                  e.target.style.transform = 'translateY(-50%) scale(1.1)';
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 1)';
+                  e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-                  e.target.style.transform = 'translateY(-50%) scale(1)';
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+                  e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
                 }}
               >
                 <i className="fa-solid fa-angle-left"></i>
