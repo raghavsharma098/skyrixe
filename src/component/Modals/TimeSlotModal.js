@@ -3,7 +3,9 @@ import { Modal } from "react-bootstrap";
 import "../../assets/css/TimeSlotModal.css";
 
 const timeSlots = [
-  { id: 1, time: "2:00 PM to 11:00 AM", available: true },
+  { id: 1, time: "12:00 PM to 03:00 PM", available: true },
+  { id: 2, time: "03:00 PM to 06:00 PM", available: true },
+  { id: 3, time: "06:00 PM to 09:00 PM", available: true },
 ];
 
 const TimeSlotModal = ({ show, onHide, onTimeSelect, onBack, selectedDate }) => {

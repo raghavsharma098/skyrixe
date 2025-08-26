@@ -90,6 +90,7 @@ const initialState = {
 
 const Checkout1 = () => {
   const location = useLocation();
+  const cartData = location.state;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { getAddressList } = useSelector((state) => state.auth);
@@ -462,7 +463,7 @@ const Checkout1 = () => {
         })
       );
     }
-  }, [getOrderSummaryDetail, getAddressList]);
+  }, [getOrderSummaryDetail, getAddressList, state?.recommendedItems]);
 
 
   useEffect(() => {
@@ -495,19 +496,39 @@ const Checkout1 = () => {
   }, [getSlotList]);
 
   useEffect(() => {
-  const basePrice = Number(getOrderSummaryDetail?.data?.price || 0);
-  const customizationTotal = getOrderSummaryDetail?.data?.productcustomizeDetails?.reduce((sum, item) => 
-    sum + (Number(item?.price) * Number(item?.quantity)), 0) || 0;
-  const recommendedTotal = recommendedItems?.reduce((sum, item) => 
-    sum + (Number(item?.price) * Number(item?.quantity || 1)), 0) || 0;
-  
-  const newGrandTotal = basePrice + customizationTotal + recommendedTotal;
-  
-  updateState(prevState => ({
-    ...prevState,
-    grandTotal: newGrandTotal
-  }));
-}, [getOrderSummaryDetail, recommendedItems]);
+  // Try multiple sources to get recommended items
+  const recommendedItems = 
+    cartData?.recommendedItems || 
+    cartData?.selectedAddons || 
+    cartData?.preservedRecommendedItems ||
+    JSON.parse(sessionStorage.getItem('checkoutRecommendedItems') || '[]');
+    
+  if (recommendedItems.length > 0) {
+    // Update your checkout state with recommended items
+    console.log('Retrieved recommended items:', recommendedItems);
+    // Add logic to display these items in your checkout
+  }
+}, [cartData]);
+
+  useEffect(() => {
+    const basePrice = Number(getOrderSummaryDetail?.data?.price || 0);
+    const customizationTotal = getOrderSummaryDetail?.data?.productcustomizeDetails?.reduce((sum, item) =>
+      sum + (Number(item?.price) * Number(item?.quantity)), 0) || 0;
+    const recommendedTotal = recommendedItems?.reduce((sum, item) =>
+      sum + (Number(item?.price) * Number(item?.quantity || 1)), 0) || 0;
+
+    const newGrandTotal = basePrice + customizationTotal + recommendedTotal;
+
+    updateState(prevState => ({
+      ...prevState,
+      grandTotal: newGrandTotal,
+      recommendedTotal: recommendedTotal // Store recommended total separately
+    }));
+
+    // Also update orderDetails amount for Razorpay
+    orderDetails.amount = newGrandTotal;
+
+  }, [getOrderSummaryDetail, recommendedItems]);
 
   return (
     <>
@@ -853,35 +874,35 @@ const Checkout1 = () => {
                   })
                   : "No Customization Added"}
               </div>
-            
-            {recommendedItems?.length > 0 && (
-              <div className="RecommendedBox">
-                <aside>
-                  <h4>Recommended Add-ons</h4>
-                  <a className="EditBtn">
-                    {recommendedItems.length} item{recommendedItems.length > 1 ? 's' : ''}
-                  </a>
-                </aside>
-                {recommendedItems.map((item, i) => (
-                  <article key={i}>
-                    <figure>
-                      <img src={item?.image || item?.customimages} alt={item?.name} />
-                    </figure>
-                    <figcaption>
-                      <h2>{item?.name}</h2>
-                      <h3>₹{item?.price} x {item?.quantity || 1}</h3>
-                      <p>Add-on item</p>
-                    </figcaption>
-                    <a
-                      className="TrashIcon"
-                      onClick={() => handleRecommendedItemRemove(item._id)}
-                    >
-                      <img src={require("../../assets/images/trash.png")} alt="Remove" />
+
+              {recommendedItems?.length > 0 && (
+                <div className="RecommendedBox">
+                  <aside>
+                    <h4>Recommended Add-ons</h4>
+                    <a className="EditBtn">
+                      {recommendedItems.length} item{recommendedItems.length > 1 ? 's' : ''}
                     </a>
-                  </article>
-                ))}
-              </div>
-            )}
+                  </aside>
+                  {recommendedItems.map((item, i) => (
+                    <article key={i}>
+                      <figure>
+                        <img src={item?.image || item?.customimages} alt={item?.name} />
+                      </figure>
+                      <figcaption>
+                        <h2>{item?.name}</h2>
+                        <h3>₹{item?.price} x {item?.quantity || 1}</h3>
+                        <p>Add-on item</p>
+                      </figcaption>
+                      <a
+                        className="TrashIcon"
+                        onClick={() => handleRecommendedItemRemove(item._id)}
+                      >
+                        <img src={require("../../assets/images/trash.png")} alt="Remove" />
+                      </a>
+                    </article>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Right sidebar with Product Summary */}
@@ -983,15 +1004,18 @@ const Checkout1 = () => {
                 </table>
 
                 <RazorpayPayment
-                  orderDetails={orderDetails}
+                  orderDetails={{
+                    ...orderDetails,
+                    amount: grandTotal // Use grandTotal instead of orderDetails.amount
+                  }}
                   getOrderSummaryDetail={getOrderSummaryDetail}
                   iState={iState}
                   selectedValue={selectedValue}
                   recommendedItems={recommendedItems}
                   grandTotal={grandTotal}
+                  totalAmount={grandTotal} // Add this prop for consistency
                 />
               </div>
-
 
               <div className="CommonGreyBox">
                 <ul>

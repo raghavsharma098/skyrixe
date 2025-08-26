@@ -43,7 +43,7 @@ const initialState = {
   activeFilterTag: "",
   filteredRecommendedProducts: [],
   availableFilters: [],
-  selectedRecommendedItems: [],
+  // selectedRecommendedItems: [],
   recommendedScrollPosition: 0,
   maxScrollPosition: 0,
   showAddReviewModal: false,
@@ -63,7 +63,7 @@ const ProductDetails = () => {
   // State to track favourite products (by id)
   // const [favouriteProducts, setFavouriteProducts] = useState([]);
   const [wishlistItems, setWishlistItems] = useState([]);
-
+  const [selectedRecommendedItems, setSelectedRecommendedItems] = useState([]);
 
   // Toggle favourite status for a product
   // const handleFavouriteToggle = (productId) => {
@@ -128,7 +128,6 @@ const ProductDetails = () => {
     maxScrollPosition,
     availableFilters,
     filteredRecommendedProducts,
-    selectedRecommendedItems,
     showAddReviewModal,
     reviewData,
     hoveredRating,
@@ -249,6 +248,10 @@ const ProductDetails = () => {
     }
   };
 
+  // const getCurrentProductId = () => {
+  //   return item?._id || getProductDetails?.data?.product?._id;
+  // };
+
   // Generate dynamic filters based on product category and customizations
   const generateDynamicFilters = (product) => {
     const filters = [];
@@ -320,20 +323,17 @@ const ProductDetails = () => {
   // Handle recommended item toggle
   const handleRecommendedItemToggle = (product) => {
     const productId = product._id;
-    const currentProductId = getProductDetails?.data?.product?._id;
+    const currentProductId = item?._id;
 
     if (!currentProductId) return;
 
     const isSelected = selectedRecommendedItems.some(item => item._id === productId);
 
     let updatedItems;
-
     if (isSelected) {
-      // Remove item
       updatedItems = selectedRecommendedItems.filter(item => item._id !== productId);
       toast.success(`${product.productDetails.productname} removed from selection`);
     } else {
-      // Add item
       const newItem = {
         _id: product._id,
         name: product.productDetails.productname,
@@ -341,19 +341,12 @@ const ProductDetails = () => {
         image: product.productimages?.[0],
         quantity: 1
       };
-
       updatedItems = [...selectedRecommendedItems, newItem];
       toast.success(`${product.productDetails.productname} added to selection`);
     }
 
-    // Update state
-    updateState({
-      ...iState,
-      selectedRecommendedItems: updatedItems
-    });
-
-    // Save to localStorage
-    saveSelectedAddons(currentProductId, updatedItems);
+    setSelectedRecommendedItems(updatedItems);
+    saveSelectedAddons(currentProductId, updatedItems); // Save to localStorage
   };
 
   const handleInputChange = (e) => {
@@ -465,12 +458,11 @@ const ProductDetails = () => {
     return basePrice + customizationsTotal;
   };
 
-  // Fixed booking flow handler
+  // Replace the existing handleBookingFlowComplete function with this:
   const handleBookingFlowComplete = (bookingData) => {
     console.log('Booking completed with data:', bookingData);
     setShowBookingFlow(false);
 
-    // Get user details (might be from props, localStorage, or bookingData)
     const currentUserDetail = bookingData?.loginData?.user || userDetail;
 
     if (!currentUserDetail) {
@@ -479,21 +471,7 @@ const ProductDetails = () => {
       return;
     }
 
-    console.log('Processing booking for user:', currentUserDetail);
-
-    // Combine selected customizations with recommended items
-    const allCustomizations = [
-      ...(bookingData.selectedCustomizations || []),
-      ...selectedRecommendedItems.map(item => ({
-        _id: item._id,
-        name: item.name,
-        price: item.price,
-        customimages: item.image,
-        quantity: item.quantity || 1
-      }))
-    ];
-
-    // Calculate total amount including recommended items
+    // Calculate totals including recommended items
     const basePrice = getProductDetails?.data?.product?.priceDetails?.discountedPrice ||
       getProductDetails?.data?.product?.priceDetails?.price || 0;
 
@@ -507,8 +485,7 @@ const ProductDetails = () => {
 
     const totalAmount = basePrice + customizationsTotal + recommendedItemsTotal;
 
-
-    // Create cart data with all the booking information
+    // Create cart data with recommended items included
     const cartData = {
       userId: currentUserDetail?._id || currentUserDetail?.userId,
       productId: getProductDetails?.data?.product?._id,
@@ -522,39 +499,39 @@ const ProductDetails = () => {
       quantity: 1,
       slot: bookingData.selectedTimeSlot?.time || bookingData.selectedTimeSlot,
       customization: bookingData.selectedCustomizations || [],
-      totalAmount: calculateBookingTotal(bookingData),
-      recommendedItems: selectedRecommendedItems, // Store recommended items separately for tracking
+      recommendedItems: selectedRecommendedItems, // Include recommended items
+      totalAmount: totalAmount, // Use calculated total
+      grandTotal: totalAmount, // Add grandTotal field
+      selectedAddons: selectedRecommendedItems
     };
-
 
     console.log('Cart data being sent:', cartData);
 
-    // Add to cart and redirect to checkout
     dispatch(addtoCart(cartData))
       .then((res) => {
         console.log('Add to cart response:', res);
         if (res?.payload?.message === "Added Successfully") {
-          // Clear selected add-ons after successful booking
-          const currentProductId = getProductDetails?.data?.product?._id;
-          clearSelectedAddons(currentProductId);
-          updateState({
-            ...iState,
-            selectedRecommendedItems: []
-          });
+          // Store the recommended items in navigation state as backup
+          const navigationData = {
+            ...cartData,
+            preservedRecommendedItems: selectedRecommendedItems
+          };
 
-          console.log('Navigating to checkout with:', cartData);
-          navigate("/checkout-1", { state: cartData });
+          console.log('Navigating to checkout with:', navigationData);
+          navigate("/checkout-1", { state: navigationData });
+
+          // Clear localStorage AFTER navigation
+          const currentProductId = item?._id;
+          setTimeout(() => {
+            clearSelectedAddons(currentProductId);
+            setSelectedRecommendedItems([]);
+          }, 100);
         } else {
           console.error('Failed to add to cart:', res);
           toast.error('Failed to add item to cart. Please try again.');
         }
       })
-      .catch((err) => {
-        console.error('Cart error:', err);
-        toast.error('Something went wrong. Please try again.');
-      });
   };
-
   const handleNext = () => {
     let formIsValid = handleValidation();
     if (formIsValid) {
@@ -582,6 +559,7 @@ const ProductDetails = () => {
       customimages: item?.customimages,
       qty: item?.quantity,
       id: item?._id,
+
     };
     updateState({
       ...iState,
@@ -724,6 +702,13 @@ const ProductDetails = () => {
   };
 
   const handleProduct = (item) => {
+    // Clear current selections before navigating to prevent conflicts
+    const currentProductId = item?._id || getProductDetails?.data?.product?._id;
+    if (currentProductId) {
+      // Don't clear localStorage here, just clear component state
+      setSelectedRecommendedItems([]);
+    }
+
     navigate("/products/product-details", { state: item });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -1012,19 +997,32 @@ const ProductDetails = () => {
   }, [getProductDetails]);
 
   useEffect(() => {
-    const currentProductId = getProductDetails?.data?.product?._id;
-
+    const currentProductId = item?._id;
     if (currentProductId) {
       const savedAddons = getSelectedAddons(currentProductId);
-
       if (savedAddons.length > 0) {
-        updateState({
-          ...iState,
-          selectedRecommendedItems: savedAddons
-        });
+        setSelectedRecommendedItems(savedAddons);
       }
     }
-  }, [getProductDetails?.data?.product?._id]);
+  }, [item?._id]);
+
+  // useEffect to sync with localStorage changes across tabs
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      const currentProductId = item?._id;
+      if (currentProductId && e.key === `selectedAddons_${currentProductId}`) {
+        try {
+          const newValue = e.newValue ? JSON.parse(e.newValue) : [];
+          setSelectedRecommendedItems(newValue);
+        } catch (error) {
+          console.error('Error syncing selected addons:', error);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, [item?._id]);
 
   useEffect(() => {
     let newState = { ...iState };
@@ -1169,6 +1167,16 @@ const ProductDetails = () => {
     }
   }, [getProductDetails]);
 
+  useEffect(() => {
+    console.log('Current item._id:', item?._id);
+    console.log('Current selectedRecommendedItems:', selectedRecommendedItems);
+    console.log('LocalStorage key being used:', `selectedAddons_${item?._id}`);
+
+    if (item?._id) {
+      const stored = localStorage.getItem(`selectedAddons_${item?._id}`);
+      console.log('Stored addons for this product:', stored);
+    }
+  }, [item?._id, selectedRecommendedItems]);
 
   useEffect(() => {
     const recentlyViewed = getRecentlyViewed();
@@ -1194,6 +1202,14 @@ const ProductDetails = () => {
       });
     }
   }, [getProductDetails]);
+
+  // Add this useEffect after the existing ones
+  useEffect(() => {
+    if (selectedRecommendedItems.length > 0) {
+      // Store in sessionStorage as additional backup
+      sessionStorage.setItem('checkoutRecommendedItems', JSON.stringify(selectedRecommendedItems));
+    }
+  }, [selectedRecommendedItems]);
 
 
   const FixedBottomBookingBar = ({
@@ -1415,7 +1431,7 @@ const ProductDetails = () => {
                       </li>
                     </ul>
                   </div>*/}
-                </div> 
+                </div>
 
                 {/* Product Information */}
                 <div className="col-lg-6 col-12">
@@ -1612,7 +1628,7 @@ const ProductDetails = () => {
                                 onClick={() => handleProduct(item)}
                               />
                             </div>
-                            
+
                             <div className="recommended-product-info">
                               <h4 className="recommended-product-title">
                                 {item?.productDetails?.productname?.length > 40
@@ -2065,9 +2081,9 @@ const ProductDetails = () => {
                           </span>
                         )}
                       </div>
-                       <div className="loc">
-                      <h1> At your location</h1>
-                    </div>
+                      <div className="loc">
+                        <h1> At your location</h1>
+                      </div>
                       <div className="product-rating">
                         <div className="stars">
                           {Array.from({ length: 5 }).map((_, index) => (
@@ -2167,7 +2183,7 @@ const ProductDetails = () => {
                         </span>
                       )}
                     </div>
-                     <div className="loc">
+                    <div className="loc">
                       <h1> At your location</h1>
                     </div>
 
@@ -2181,7 +2197,7 @@ const ProductDetails = () => {
                         {(4.0 + (i * 0.2)).toFixed(1)}
                       </span>
                     </div>
-                   
+
                     {/* Add "Viewed on" timestamp */}
                     <div className="recently-viewed-timestamp">
                       <i className="fa-solid fa-clock"></i>

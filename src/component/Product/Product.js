@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { categoryProductList } from "../../reduxToolkit/Slices/ProductList/listApis";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
-import { Accordion } from "react-bootstrap";
+import { Accordion, Modal } from "react-bootstrap";
 import { BeatLoader } from "react-spinners";
 import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
@@ -43,12 +43,15 @@ const initialState = {
   isBestfilter_open: false,
   sameDay: false,
   discount: false,
+  showSortModal: false,
+  sortBy: "recommended"
 };
 
 const Product = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [iState, updateState] = useState(initialState);
+  const [sortedProducts, setSortedProducts] = useState([]);
   const {
     city,
     pincode,
@@ -68,6 +71,8 @@ const Product = () => {
     isBestfilter_open,
     sameDay,
     discount,
+    showSortModal,
+    sortBy
   } = iState;
   const [value, setValue] = useState([minPrice, maxPrice]);
   const selectCity = window.localStorage.getItem("LennyCity");
@@ -76,6 +81,7 @@ const Product = () => {
   );
   const state = location?.state;
   const navigate = useNavigate();
+
   const handleProduct = (item) => {
     navigate("product-details", { state: item });
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -122,8 +128,8 @@ const Product = () => {
             ? value
             : minPrice + ""
           : value >= 0
-          ? value
-          : maxPrice + "";
+            ? value
+            : maxPrice + "";
       updateState({ ...iState, [name]: modifiedValue });
     } else if (name == "sameDay" || name == "discount") {
       updateState({ ...iState, [name]: checked });
@@ -135,47 +141,48 @@ const Product = () => {
     window.scrollTo({ top: 150, behavior: "smooth" });
   };
 
-  const handleBestFilterApply = () => {
+  const handleSortModal = () => {
     updateState({
       ...iState,
-      isBestfilter_open: !isBestfilter_open,
+      showSortModal: !showSortModal,
     });
-    const data = {
-      category: state?.item?.categoryName,
-      subcategory: state?.subCat,
-      city: selectCity,
-      minPrice: minPrice,
-      maxPrice: maxPrice,
-      sameDay,
-      discount,
-    };
-
-    dispatch(categoryProductList(data));
   };
 
-  const handleCityApply = () => {
-    window.localStorage?.setItem("LennyCity", filter_city);
-    window.localStorage?.setItem("LennyPincode", pincode);
-    updateState({ ...iState, isLoc_open: !isLoc_open });
-  };
+  const handleSortChange = (sortOption) => {
+    updateState({
+      ...iState,
+      sortBy: sortOption,
+      showSortModal: false,
+    });
 
-  const handleRangeApply = () => {
-    updateState({ ...iState, isPrice_open: !isPrice_open });
-    const data = {
-      category: state?.item?.categoryName,
-      subcategory: state?.subCat,
-      city: selectCity,
-      minPrice: minPrice,
-      maxPrice: maxPrice,
-      sameDay,
-      discount,
-    };
+    // Sort the products based on the selected option
+    if (getCategoryProductList?.data?.length > 0) {
+      let sortedData = [...getCategoryProductList.data];
 
-    const timeoutId = setTimeout(() => {
-      dispatch(categoryProductList(data));
-    }, 300);
+      switch (sortOption) {
+        case 'priceLowToHigh':
+          sortedData.sort((a, b) => {
+            const priceA = Number(a?.priceDetails?.discountedPrice || a?.priceDetails?.price || 0);
+            const priceB = Number(b?.priceDetails?.discountedPrice || b?.priceDetails?.price || 0);
+            return priceA - priceB;
+          });
+          break;
+        case 'priceHighToLow':
+          sortedData.sort((a, b) => {
+            const priceA = Number(a?.priceDetails?.discountedPrice || a?.priceDetails?.price || 0);
+            const priceB = Number(b?.priceDetails?.discountedPrice || b?.priceDetails?.price || 0);
+            return priceB - priceA;
+          });
+          break;
+        case 'recommended':
+        default:
+          // Reset to original order
+          sortedData = [...getCategoryProductList.data];
+          break;
+      }
 
-    return () => clearTimeout(timeoutId);
+      setSortedProducts(sortedData);
+    }
   };
 
   const settings = {
@@ -191,26 +198,26 @@ const Product = () => {
     nextArrow: <CustomNextArrow />,
     responsive: [
       {
-        breakpoint: 1200, // < 1200px
+        breakpoint: 1200,
         settings: {
           slidesToShow: 4,
         },
       },
       {
-        breakpoint: 992, // < 992px
+        breakpoint: 992,
         settings: {
           slidesToShow: 3,
         },
       },
       {
-        breakpoint: 768, // < 768px
+        breakpoint: 768,
         settings: {
           slidesToShow: 3,
           arrows: true,
         },
       },
       {
-        breakpoint: 576, // < 576px
+        breakpoint: 576,
         settings: {
           slidesToShow: 2.5,
           arrows: true,
@@ -240,9 +247,7 @@ const Product = () => {
       sameDay,
       discount,
     };
-    if (!isBestfilter_open) {
-      dispatch(categoryProductList(data));
-    }
+    dispatch(categoryProductList(data));
   }, [sameDay, discount]);
 
   useEffect(() => {
@@ -255,13 +260,11 @@ const Product = () => {
       sameDay,
       discount,
     };
-    if (!isPrice_open) {
-      const timeoutId = setTimeout(() => {
-        dispatch(categoryProductList(data));
-      }, 300);
+    const timeoutId = setTimeout(() => {
+      dispatch(categoryProductList(data));
+    }, 300);
 
-      return () => clearTimeout(timeoutId);
-    }
+    return () => clearTimeout(timeoutId);
   }, [minPrice, maxPrice]);
 
   useEffect(() => {
@@ -277,6 +280,8 @@ const Product = () => {
         maxPrice:
           maxPrice == 10000 ? getCategoryProductList?.maxPrice : maxPrice,
       });
+      // Initialize sortedProducts with original data
+      setSortedProducts(getCategoryProductList?.data || []);
     }
   }, [getCategoryProductList]);
 
@@ -309,20 +314,20 @@ const Product = () => {
               state?.item?.categoryName == "BIRTHDAY"
                 ? require("../../assets/images/Birthday inner banner.png")
                 : state?.item?.categoryName == "ROOM & HALL DECOR'S"
-                ? require("../../assets/images/room decor inner banner.png")
-                : state?.item?.categoryName == "KID'S PARTY"
-                ? require("../../assets/images/Party Magic.png")
-                : state?.item?.categoryName == "PREMIUM DECOR'S"
-                ? require("../../assets/images/PREMIUM DECOR'S inner banner.png")
-                : state?.item?.categoryName == "THEME DECOR'S"
-                ? require("../../assets/images/THEME DECOR'S inner banner.png")
-                : state?.item?.categoryName == "ANNIVERSARY"
-                ? require("../../assets/images/Anniversary inner banner png.png")
-                : state?.item?.categoryName == "BABY SHOWER"
-                ? require("../../assets/images/baby shower inner banner.png")
-                : state?.item?.categoryName == "BALLOON BOUQUET"
-                ? require("../../assets/images/ballon banguetes inner banner.png")
-                : ""
+                  ? require("../../assets/images/room decor inner banner.png")
+                  : state?.item?.categoryName == "KID'S PARTY"
+                    ? require("../../assets/images/Party Magic.png")
+                    : state?.item?.categoryName == "PREMIUM DECOR'S"
+                      ? require("../../assets/images/PREMIUM DECOR'S inner banner.png")
+                      : state?.item?.categoryName == "THEME DECOR'S"
+                        ? require("../../assets/images/THEME DECOR'S inner banner.png")
+                        : state?.item?.categoryName == "ANNIVERSARY"
+                          ? require("../../assets/images/Anniversary inner banner png.png")
+                          : state?.item?.categoryName == "BABY SHOWER"
+                            ? require("../../assets/images/baby shower inner banner.png")
+                            : state?.item?.categoryName == "BALLOON BOUQUET"
+                              ? require("../../assets/images/ballon banguetes inner banner.png")
+                              : ""
             }
           />
         </div>
@@ -355,7 +360,6 @@ const Product = () => {
                           </figure>
 
                           <h4
-                            // data-tooltip-id="my-tooltip"
                             data-tooltip-content={item?.subcategoryName}
                           >
                             {item?.subcategoryName}
@@ -378,35 +382,34 @@ const Product = () => {
                 <Slider {...settings}>
                   {getCategoryProductList?.subcategory?.length > 0
                     ? getCategoryProductList?.subcategory?.map((item, i) => {
-                        return (
-                          <div className="item" key={i}>
-                            <div className="FeatureBoxMain">
-                              <div className="FeatureBox1">
-                                <figure
-                                  onClick={() =>
-                                    handleCategory(
-                                      {
-                                        categoryName: state?.item?.categoryName,
-                                      },
-                                      item?.subcategoryName
-                                    )
-                                  }
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  <img src={item?.subcategoryImage} />
-                                </figure>
+                      return (
+                        <div className="item" key={i}>
+                          <div className="FeatureBoxMain">
+                            <div className="FeatureBox1">
+                              <figure
+                                onClick={() =>
+                                  handleCategory(
+                                    {
+                                      categoryName: state?.item?.categoryName,
+                                    },
+                                    item?.subcategoryName
+                                  )
+                                }
+                                style={{ cursor: "pointer" }}
+                              >
+                                <img src={item?.subcategoryImage} />
+                              </figure>
 
-                                <h4
-                                  // data-tooltip-id="my-tooltip"
-                                  data-tooltip-content={item?.subcategoryName}
-                                >
-                                  {item?.subcategoryName}
-                                </h4>
-                              </div>
+                              <h4
+                                data-tooltip-content={item?.subcategoryName}
+                              >
+                                {item?.subcategoryName}
+                              </h4>
                             </div>
                           </div>
-                        );
-                      })
+                        </div>
+                      );
+                    })
                     : ""}
                 </Slider>
               </div>
@@ -417,388 +420,23 @@ const Product = () => {
           <div className="container-fluid">
             <div className="section-title">
               <h2>{state?.subCat}</h2>
-              {/* <p>
-                Lorem ipsum dolor sit amet consectetur. Integer cursus cursus in
-              </p> */}
             </div>
             <div className="row">
-              <div className="col-lg-3 col-md-4 col-sm-6 col-12">
-                <div className="FilterArea">
-                  <h3 className="Heading">Filter Option</h3>
-
-                  <Accordion defaultActiveKey={["0", "1", "2"]} alwaysOpen>
-                    <Accordion.Item eventKey="0">
-                      <Accordion.Header>Best Filters</Accordion.Header>
-                      <Accordion.Body>
-                        <div className="card card-body">
-                          <label className="CheckBox">
-                            {" "}
-                            Same-day delivery
-                            <input
-                              type="checkbox"
-                              name="sameDay"
-                              onClick={handleInputChange}
-                            />
-                            <span className="checkmark" />
-                          </label>
-                          <label className="CheckBox">
-                            {" "}
-                            Discount
-                            <input
-                              type="checkbox"
-                              name="discount"
-                              onClick={handleInputChange}
-                            />
-                            <span className="checkmark" />
-                          </label>
-                        </div>
-                      </Accordion.Body>
-                    </Accordion.Item>
-                    <Accordion.Item eventKey="1">
-                      <Accordion.Header>Location</Accordion.Header>
-                      <Accordion.Body>
-                        <div className="card card-body">
-                          {getCityList?.data?.length && showAll == false > 0
-                            ? getCityList?.data?.map((cityItem, i) => {
-                                if (i < 5) {
-                                  return (
-                                    <div className="form-group mb-2" key={i}>
-                                      <label className="Radio">
-                                        {cityItem?.cityName
-                                          .charAt(0)
-                                          .toUpperCase() +
-                                          cityItem?.cityName.slice(1)}
-                                        <input
-                                          type="radio"
-                                          name="city"
-                                          value={JSON.stringify(cityItem)}
-                                          checked={city == cityItem?.cityName}
-                                          onChange={handleInputChange}
-                                        />
-                                        <span className="checkmark" />
-                                      </label>
-                                    </div>
-                                  );
-                                }
-                              })
-                            : ""}
-                          {getCityList?.data?.length && showAll == true > 0
-                            ? getCityList?.data?.map((cityItem, i) => {
-                                return (
-                                  <div className="form-group mb-2" key={i}>
-                                    <label className="Radio">
-                                      {cityItem?.cityName
-                                        .charAt(0)
-                                        .toUpperCase() +
-                                        cityItem?.cityName.slice(1)}
-                                      <input
-                                        type="radio"
-                                        name="city"
-                                        value={JSON.stringify(cityItem)}
-                                        checked={city == cityItem?.cityName}
-                                        onChange={handleInputChange}
-                                      />
-                                      <span className="checkmark" />
-                                    </label>
-                                  </div>
-                                );
-                              })
-                            : ""}
-                          <a
-                            className="ShowAll"
-                            onClick={() =>
-                              updateState({ ...iState, showAll: !showAll })
-                            }
-                          >
-                            Show {showAll ? "Less" : "All"}
-                          </a>
-                        </div>
-                      </Accordion.Body>
-                    </Accordion.Item>
-                    <Accordion.Item eventKey="2">
-                      <Accordion.Header>Price Range</Accordion.Header>
-                      <Accordion.Body>
-                        <div className="card card-body border-0">
-                          {/* <div className="PriceRangeBox">
-                            <select className="form-control">
-                              <option selected="">INR</option>
-                            </select>
-                            <input
-                              type="text"
-                              name="minPrice"
-                              value={minPrice}
-                              onChange={handleInputChange}
-                              placeholder="Minimum price"
-                            />
-                          </div>
-                          <div className="PriceRangeBox">
-                            <select className="form-control">
-                              <option selected="">INR</option>
-                            </select>
-                            <input
-                              type="text"
-                              name="maxPrice"
-                              value={maxPrice}
-                              onChange={handleInputChange}
-                              placeholder="Maximum price"
-                            />
-                          </div> */}
-                          <RangeSlider
-                            value={value}
-                            onInput={(event) => handleChangeSlider(event)}
-                            min={set_minPrice}
-                            max={set_maxPrice}
-                          />
-                          <ul>
-                            <p
-                              style={{ marginTop: "10px" }}
-                            >{`₹${minPrice}-₹${maxPrice}`}</p>
-                            <li />
-                          </ul>
-                        </div>
-                      </Accordion.Body>
-                    </Accordion.Item>
-                  </Accordion>
-                  <br />
-                </div>
-              </div>
-              <div className="col-lg-9 col-md-8 col-sm-6 col-12">
-                <div className="col-12">
-                  <div className="FilterArea2">
-                    <ul className="Tabs">
-                      <li>
-                        <a
-                          onClick={() =>
-                            updateState({
-                              ...iState,
-                              isBestfilter_open: !isBestfilter_open,
-                            })
-                          }
-                          className="bestFilterBtn "
-                        >
-                          Best Filters
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          onClick={() =>
-                            updateState({ ...iState, isLoc_open: !isLoc_open })
-                          }
-                          className="locationFilterBtn"
-                        >
-                          Location
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          onClick={() =>
-                            updateState({
-                              ...iState,
-                              isPrice_open: !isPrice_open,
-                            })
-                          }
-                          className="priceRangeBtn"
-                        >
-                          Price Range
-                        </a>
-                      </li>
-                    </ul>
-
-                    <div
-                      className={
-                        isBestfilter_open
-                          ? `bestFilterBox bestFilterBoxAdd`
-                          : `bestFilterBox`
-                      }
-                    >
-                      <ul>
-                        <h5>Best Filter</h5>
-                        <li>
-                          <label class="CheckBox">
-                            {" "}
-                            Same-day delivery
-                            <input
-                              type="checkbox"
-                              name="sameDay"
-                              onClick={handleInputChange}
-                            />
-                            <span class="checkmark"></span>
-                          </label>
-                        </li>
-                        <li>
-                          <label class="CheckBox">
-                            {" "}
-                            Discount
-                            <input
-                              type="checkbox"
-                              name="discount"
-                              onClick={handleInputChange}
-                            />
-                            <span class="checkmark"></span>
-                          </label>
-                        </li>
-                      </ul>
-                      <div className="Buttons">
-                        <button
-                          className="closeBestFilter"
-                          style={{ color: "red" }}
-                          onClick={() =>
-                            updateState({
-                              ...iState,
-                              isBestfilter_open: !isBestfilter_open,
-                            })
-                          }
-                        >
-                          Close
-                        </button>
-                        <button
-                          className="closeBestFilter"
-                          style={{ color: "#4a174b" }}
-                          onClick={handleBestFilterApply}
-                        >
-                          Apply
-                        </button>
-                      </div>
-                    </div>
-                    <div
-                      className={
-                        isLoc_open
-                          ? `locationFilterBox locationFilterAdd`
-                          : `locationFilterBox`
-                      }
-                    >
-                      <ul>
-                        {getCityList?.data?.length && showAll == false > 0
-                          ? getCityList?.data?.map((cityItem, i) => {
-                              if (i < 5) {
-                                return (
-                                  <li key={i}>
-                                    <label className="Radio">
-                                      {cityItem?.cityName
-                                        .charAt(0)
-                                        .toUpperCase() +
-                                        cityItem?.cityName.slice(1)}
-                                      <input
-                                        type="radio"
-                                        name="filter_city"
-                                        value={JSON.stringify(cityItem)}
-                                        checked={
-                                          filter_city == cityItem?.cityName
-                                        }
-                                        onChange={handleInputChange}
-                                      />
-                                      <span className="checkmark" />
-                                    </label>
-                                  </li>
-                                );
-                              }
-                            })
-                          : ""}
-                        {getCityList?.data?.length && showAll == true > 0
-                          ? getCityList?.data?.map((cityItem, i) => {
-                              return (
-                                <div className="form-group mb-2" key={i}>
-                                  <label className="Radio">
-                                    {cityItem?.cityName
-                                      .charAt(0)
-                                      .toUpperCase() +
-                                      cityItem?.cityName.slice(1)}
-                                    <input
-                                      type="radio"
-                                      name="filter_city"
-                                      value={JSON.stringify(cityItem)}
-                                      checked={
-                                        filter_city == cityItem?.cityName
-                                      }
-                                      onChange={handleInputChange}
-                                    />
-                                    <span className="checkmark" />
-                                  </label>
-                                </div>
-                              );
-                            })
-                          : ""}
-                      </ul>
-                      <a
-                        className="showAllBtn"
-                        onClick={() =>
-                          updateState({ ...iState, showAll: !showAll })
-                        }
-                      >
-                        Show {showAll ? "Less" : "All"}
-                      </a>
-                      <div className="Buttons">
-                        <button
-                          className="closeLocationFilter"
-                          style={{ color: "red" }}
-                          onClick={() =>
-                            updateState({ ...iState, isLoc_open: !isLoc_open })
-                          }
-                        >
-                          Close
-                        </button>
-                        <button
-                          style={{ color: "#4a174b" }}
-                          className="closeLocationFilter"
-                          onClick={handleCityApply}
-                        >
-                          Apply
-                        </button>
-                      </div>
-                    </div>
-
-                    <div
-                      className={
-                        isPrice_open
-                          ? `priceRangeBox priceRangeBoxAdd`
-                          : `priceRangeBox`
-                      }
-                    >
-                      Price Range
-                      <div className="filterRange">
-                        <RangeSlider
-                          value={value}
-                          onInput={(event) => handleChangeSlider(event)}
-                          min={set_minPrice}
-                          max={set_maxPrice}
-                        />
-                        <ul>
-                          <p
-                            style={{ marginTop: "10px" }}
-                          >{`₹${minPrice}-₹${maxPrice}`}</p>
-                          <li />
-                        </ul>
-                      </div>
-                      <div className="Buttons">
-                        <button
-                          className="closePriceFilter"
-                          style={{ color: "red" }}
-                          onClick={() =>
-                            updateState({
-                              ...iState,
-                              isPrice_open: !isPrice_open,
-                            })
-                          }
-                        >
-                          Close
-                        </button>
-                        <button
-                          style={{ color: "#4a174b" }}
-                          className="closePriceFilter"
-                          onClick={handleRangeApply}
-                        >
-                          Apply
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div className="col-12" style={{ position: 'relative' }}>
+                {/* Sort Button */}
+                <button
+                  onClick={handleSortModal}
+                  className="sort-btn"
+                >
+                  <i className="fa-solid fa-sort"></i>
+                  <span>Sort</span>
+                </button>
                 <div className="row gy-5">
-                  {getCategoryProductList?.data?.length > 0 ? (
-                    getCategoryProductList?.data?.map((item, i) => {
+                  {sortedProducts?.length > 0 ? (
+                    sortedProducts?.map((item, i) => {
                       return (
                         <div
-                          className="col-lg-4 col-md-6 col-sm-12 col-6"
+                          className="col-lg-3 col-md-4 col-sm-6 col-6"
                           key={i}
                         >
                           <div className="PrivateDiningBox flexDirection">
@@ -836,7 +474,7 @@ const Product = () => {
                                             item?.priceDetails?.discountedPrice
                                           )) /
                                           Number(item?.priceDetails?.price)) *
-                                          100
+                                        100
                                       )}
                                       % off
                                     </span>
@@ -849,8 +487,8 @@ const Product = () => {
                                   {i % 2 == 0 && i !== 0
                                     ? `${i % 2}` + 5 + i - 1
                                     : i == 0
-                                    ? `14${i % 2}`
-                                    : `${i % 2}` + 2 + i - 1}
+                                      ? `14${i % 2}`
+                                      : `${i % 2}` + 2 + i - 1}
                                 </p>
                               </div>
                             </div>
@@ -876,7 +514,65 @@ const Product = () => {
           </div>
         </div>
       </div>
-      {/* <Tooltip id="my-tooltip" place="bottom" /> */}
+
+      {/* Sort Modal */}
+      <Modal
+        show={showSortModal}
+        onHide={handleSortModal}
+        centered
+        size="sm"
+        className="sort-modal"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Sort By</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="sort-options-container">
+            <div
+              className={`sort-option ${sortBy === 'recommended' ? 'active' : ''}`}
+              onClick={() => handleSortChange('recommended')}
+            >
+              <span className="sort-option-text">Recommended</span>
+              <input
+                type="radio"
+                name="sortOption"
+                value="recommended"
+                checked={sortBy === 'recommended'}
+                onChange={() => handleSortChange('recommended')}
+                className="sort-radio"
+              />
+            </div>
+            <div
+              className={`sort-option ${sortBy === 'priceLowToHigh' ? 'active' : ''}`}
+              onClick={() => handleSortChange('priceLowToHigh')}
+            >
+              <span className="sort-option-text">Price (Low to High)</span>
+              <input
+                type="radio"
+                name="sortOption"
+                value="priceLowToHigh"
+                checked={sortBy === 'priceLowToHigh'}
+                onChange={() => handleSortChange('priceLowToHigh')}
+                className="sort-radio"
+              />
+            </div>
+            <div
+              className={`sort-option ${sortBy === 'priceHighToLow' ? 'active' : ''}`}
+              onClick={() => handleSortChange('priceHighToLow')}
+            >
+              <span className="sort-option-text">Price (High to Low)</span>
+              <input
+                type="radio"
+                name="sortOption"
+                value="priceHighToLow"
+                checked={sortBy === 'priceHighToLow'}
+                onChange={() => handleSortChange('priceHighToLow')}
+                className="sort-radio"
+              />
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };
