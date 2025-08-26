@@ -163,7 +163,7 @@ const ProductDetails = () => {
   // Handle filter tag clicks
   const handleFilterTagClick = (tagName) => {
     const filtered = filterProductsByTag(
-      getProductDetails?.data?.similarProducts,
+      getProductDetails?.data?.product?.productcustomizeDetails,
       tagName,
       getProductDetails?.data?.product
     );
@@ -293,61 +293,61 @@ const ProductDetails = () => {
   };
 
   // Filter products based on selected filter
-  const filterProductsByTag = (products, filterTag, currentProduct) => {
-    if (!filterTag || !products) return products;
+  const filterProductsByTag = (customizations, filterTag, currentProduct) => {
+    if (!filterTag || !customizations) return customizations;
 
-    return products.filter(product => {
-      if (!product || !product.productDetails) return false;
+    return customizations.filter(customization => {
+      if (!customization || !customization.name) return false;
 
-      const productName = product.productDetails.productname?.toLowerCase() || '';
-      const productCategory = product.productDetails.productcategory?.toLowerCase() || '';
-      const productDescription = product.productDetails.producttitledescription?.toLowerCase() || '';
+      const customizationName = customization.name?.toLowerCase() || '';
+      const customizationDescription = customization.description?.toLowerCase() || '';
 
       const searchTerm = filterTag.toLowerCase();
 
-      // Check if filter matches product details
+      // Check if filter matches customization details
       return (
-        productName.includes(searchTerm.replace(/\s+/g, '')) ||
-        productCategory.includes(searchTerm.replace(/\s+/g, '')) ||
-        productDescription.includes(searchTerm.replace(/\s+/g, '')) ||
-        (searchTerm === 'entry gate arch' && (productName.includes('arch') || productName.includes('gate'))) ||
-        (searchTerm === 'cake table' && (productName.includes('cake') || productName.includes('table'))) ||
-        (searchTerm === 'digit foil balloons' && (productName.includes('digit') || productName.includes('foil') || productName.includes('balloon'))) ||
-        (searchTerm === 'led digit' && (productName.includes('led') || productName.includes('digit'))) ||
-        (searchTerm === 'lights' && productName.includes('light')) ||
-        (searchTerm === 'occasion bunting' && (productName.includes('bunting') || productName.includes('banner')))
+        customizationName.includes(searchTerm.replace(/\s+/g, '')) ||
+        customizationDescription.includes(searchTerm.replace(/\s+/g, '')) ||
+        (searchTerm === 'entry gate arch' && (customizationName.includes('arch') || customizationName.includes('gate'))) ||
+        (searchTerm === 'cake table' && (customizationName.includes('cake') || customizationName.includes('table'))) ||
+        (searchTerm === 'digit foil balloons' && (customizationName.includes('digit') || customizationName.includes('foil') || customizationName.includes('balloon'))) ||
+        (searchTerm === 'led digit' && (customizationName.includes('led') || customizationName.includes('digit'))) ||
+        (searchTerm === 'lights' && customizationName.includes('light')) ||
+        (searchTerm === 'occasion bunting' && (customizationName.includes('bunting') || customizationName.includes('banner')))
       );
     });
   };
 
+
   // Handle recommended item toggle
-  const handleRecommendedItemToggle = (product) => {
-    const productId = product._id;
+  const handleRecommendedItemToggle = (customization) => {
+    const customizationId = customization._id;
     const currentProductId = item?._id;
 
     if (!currentProductId) return;
 
-    const isSelected = selectedRecommendedItems.some(item => item._id === productId);
+    const isSelected = selectedRecommendedItems.some(item => item._id === customizationId);
 
     let updatedItems;
     if (isSelected) {
-      updatedItems = selectedRecommendedItems.filter(item => item._id !== productId);
-      toast.success(`${product.productDetails.productname} removed from selection`);
+      updatedItems = selectedRecommendedItems.filter(item => item._id !== customizationId);
+      toast.success(`${customization.name} removed from selection`);
     } else {
       const newItem = {
-        _id: product._id,
-        name: product.productDetails.productname,
-        price: product.priceDetails.discountedPrice || product.priceDetails.price,
-        image: product.productimages?.[0],
+        _id: customization._id,
+        name: customization.name,
+        price: customization.price,
+        image: customization.customimages,
         quantity: 1
       };
       updatedItems = [...selectedRecommendedItems, newItem];
-      toast.success(`${product.productDetails.productname} added to selection`);
+      toast.success(`${customization.name} added to selection`);
     }
 
     setSelectedRecommendedItems(updatedItems);
-    saveSelectedAddons(currentProductId, updatedItems); // Save to localStorage
+    saveSelectedAddons(currentProductId, updatedItems);
   };
+
 
   const handleInputChange = (e) => {
     const { name, value, checked } = e.target;
@@ -985,16 +985,18 @@ const ProductDetails = () => {
   useEffect(() => {
     if (getProductDetails?.data?.product) {
       const dynamicFilters = generateDynamicFilters(getProductDetails.data.product);
-      const initialFiltered = getProductDetails?.data?.similarProducts || [];
+
+      // Use customization data instead of similar products for initial filtered products
+      const customizationProducts = getProductDetails?.data?.product?.productcustomizeDetails || [];
 
       updateState({
-        // ...iState,
+        ...iState,
         availableFilters: dynamicFilters,
         activeFilterTag: dynamicFilters[0] || '',
-        filteredRecommendedProducts: initialFiltered
+        filteredRecommendedProducts: customizationProducts
       });
     }
-  }, [getProductDetails]);
+  }, [getProductDetails])
 
   useEffect(() => {
     const currentProductId = item?._id;
@@ -1619,38 +1621,40 @@ const ProductDetails = () => {
 
                     <div className="recommended-products-container">
                       <div className="recommended-products-grid">
-                        {(filteredRecommendedProducts.length > 0 ? filteredRecommendedProducts : getProductDetails?.data?.similarProducts)?.slice(0, 8)?.map((item, i) => (
+                        {(filteredRecommendedProducts.length > 0 ? filteredRecommendedProducts : getProductDetails?.data?.product?.productcustomizeDetails)?.slice(0, 8)?.map((item, i) => (
                           <div className="recommended-product-card" key={i}>
                             <div className="recommended-product-image">
                               <img
-                                src={item?.productimages?.at(0)}
-                                alt={item?.productDetails?.productname}
-                                onClick={() => handleProduct(item)}
+                                src={item?.customimages || 'https://via.placeholder.com/200x150?text=No+Image'}
+                                alt={item?.name}
+                                onError={(e) => {
+                                  e.target.src = 'https://via.placeholder.com/200x150?text=No+Image';
+                                }}
                               />
                             </div>
 
                             <div className="recommended-product-info">
                               <h4 className="recommended-product-title">
-                                {item?.productDetails?.productname?.length > 40
-                                  ? `${item?.productDetails?.productname?.substring(0, 40)}...`
-                                  : item?.productDetails?.productname
+                                {item?.name?.length > 40
+                                  ? `${item?.name?.substring(0, 40)}...`
+                                  : item?.name
                                 }
                               </h4>
 
                               <p className="recommended-product-description">
-                                {item?.productDetails?.producttitledescription?.length > 60
-                                  ? `${item?.productDetails?.producttitledescription?.substring(0, 60)}...`
-                                  : item?.productDetails?.producttitledescription || 'Beautiful decoration for your special occasions'
+                                {item?.description?.length > 60
+                                  ? `${item?.description?.substring(0, 60)}...`
+                                  : item?.description || 'Premium customization for your special occasions'
                                 }
                               </p>
 
                               <div className="recommended-product-link">
-                                <span onClick={() => handleProduct(item)}>see more</span>
+                                <span>see details</span>
                               </div>
 
                               <div className="recommended-product-footer">
                                 <div className="recommended-product-price">
-                                  ₹{item?.priceDetails?.discountedPrice || item?.priceDetails?.price}
+                                  ₹{item?.price}
                                 </div>
                                 <label className="recommended-product-toggle">
                                   <input
@@ -1665,48 +1669,48 @@ const ProductDetails = () => {
                           </div>
                         ))}
 
-                        {/* If less than 8 similar products, show fallback cards */}
-                        {getProductDetails?.data?.similarProducts?.length < 8 && (
-                          Array.from({ length: 8 - (getProductDetails?.data?.similarProducts?.length || 0) }).map((_, i) => (
+                        {/* If less than 8 customizations, show fallback cards */}
+                        {getProductDetails?.data?.product?.productcustomizeDetails?.length < 8 && (
+                          Array.from({ length: 8 - (getProductDetails?.data?.product?.productcustomizeDetails?.length || 0) }).map((_, i) => (
                             <div className="recommended-product-card" key={`fallback-${i}`}>
                               <div className="recommended-product-image">
                                 <img
-                                  src="https://via.placeholder.com/200x150/f0f0f0/666666?text=Product"
-                                  alt="Recommended Product"
+                                  src="https://via.placeholder.com/200x150/f0f0f0/666666?text=Customization"
+                                  alt="Recommended Customization"
                                 />
                               </div>
 
                               <div className="recommended-product-info">
                                 <h4 className="recommended-product-title">
-                                  {i === 0 ? 'Double Door Balloon Arch' :
-                                    i === 1 ? 'L-Shaped Balloon Gate' :
-                                      i === 2 ? 'Balloon Entry Gate Decor' :
-                                        i === 3 ? 'Small Door Entrance' :
-                                          i === 4 ? 'Premium Balloon Arch' :
-                                            i === 5 ? 'Deluxe Gate Decoration' :
-                                              i === 6 ? 'Royal Entry Arch' : 'Classic Balloon Gate'}
+                                  {i === 0 ? 'LED String Lights' :
+                                    i === 1 ? 'Balloon Bouquet Set' :
+                                      i === 2 ? 'Photo Frame Props' :
+                                        i === 3 ? 'Confetti Cannons' :
+                                          i === 4 ? 'Party Banners' :
+                                            i === 5 ? 'Cake Toppers' :
+                                              i === 6 ? 'Rose Petals' : 'Gift Wrapping'}
                                 </h4>
 
                                 <p className="recommended-product-description">
-                                  {i === 0 ? 'Add 200 Latex and Chrome Balloons gate for two door entrance...' :
-                                    i === 1 ? 'Add L-shaped balloon gate of 100 latex and metallic balloons by...' :
-                                      i === 2 ? '200 Latex & Chrome balloons gate for an entrance with lady...' :
-                                        i === 3 ? '150 Latex and Chrome Balloons gate to cover single door using wall...' :
-                                          i === 4 ? 'Premium balloon arch with metallic finish and LED lights...' :
-                                            i === 5 ? 'Deluxe gate decoration with floral arrangements and balloons...' :
-                                              i === 6 ? 'Royal entry arch with gold and silver balloon combinations...' :
-                                                'Classic balloon gate with traditional color schemes...'}
+                                  {i === 0 ? 'Beautiful LED lights to illuminate your celebration space...' :
+                                    i === 1 ? 'Colorful balloon bouquets to enhance the party atmosphere...' :
+                                      i === 2 ? 'Fun photo frame props for memorable pictures...' :
+                                        i === 3 ? 'Exciting confetti cannons for the perfect moment...' :
+                                          i === 4 ? 'Custom party banners with personalized messages...' :
+                                            i === 5 ? 'Elegant cake toppers for the birthday cake...' :
+                                              i === 6 ? 'Fresh rose petals for romantic decoration...' :
+                                                'Premium gift wrapping service for presents...'}
                                 </p>
 
                                 <div className="recommended-product-link">
-                                  <span>see more</span>
+                                  <span>see details</span>
                                 </div>
 
                                 <div className="recommended-product-footer">
                                   <div className="recommended-product-price">
-                                    ₹{i === 0 ? '1599' : i === 1 ? '999' : i === 2 ? '1999' :
-                                      i === 3 ? '1399' : i === 4 ? '2299' : i === 5 ? '2799' :
-                                        i === 6 ? '3199' : '1799'}
+                                    ₹{i === 0 ? '299' : i === 1 ? '499' : i === 2 ? '199' :
+                                      i === 3 ? '399' : i === 4 ? '249' : i === 5 ? '149' :
+                                        i === 6 ? '599' : '99'}
                                   </div>
                                   <label className="recommended-product-toggle">
                                     <input type="checkbox" />
@@ -1719,7 +1723,7 @@ const ProductDetails = () => {
                         )}
                       </div>
 
-                      {/* Navigation arrows with functionality */}
+                      {/* Navigation arrows remain the same */}
                       <button
                         className={`recommended-nav-arrow recommended-nav-prev ${recommendedScrollPosition <= 0 ? 'disabled' : ''}`}
                         onClick={() => handleRecommendedScroll('left')}
@@ -1735,228 +1739,228 @@ const ProductDetails = () => {
                         <i className="fa-solid fa-chevron-right"></i>
                       </button>
                     </div>
-                  </div>
 
-                  {/* INCLUSIONS SECTION */}
-                  <div className="inclusions-section">
-                    <div className="section-title">
-                      <i className="fa-solid fa-list-check"></i>
-                      Inclusions
-                    </div>
-                    <div className="inclusion-list">
-                      {getProductDetails?.data?.product?.productdescription?.inclusion?.map(
-                        (item, i) => (
-                          <div key={i} className="inclusion-item">
-                            <div
-                              className="inclusion-text"
-                              dangerouslySetInnerHTML={{ __html: item }}
-                            />
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </div>
-
-                  {/* EXPERIENCE SECTION */}
-                  <div className="experience-section">
-                    <div className="section-title">
-                      <i className="fa-solid fa-info-circle"></i>
-                      About The Experience
-                    </div>
-                    <div className="description-content">
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: getProductDetails?.data?.product?.productdescription?.aboutexperience,
-                        }}
-                      />
-                      {!readMore && (
-                        <span
-                          className="show-less-link"
-                          onClick={() => updateState({ ...iState, readMore: true })}
-                        >
-                          - Show Less
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* REVIEWS SECTION */}
-                  <div className="reviews-section-card">
-                    <div className="reviews-section-header">
+                    {/* INCLUSIONS SECTION */}
+                    <div className="inclusions-section">
                       <div className="section-title">
-                        <i className="fa-solid fa-star reviews-section-icon" />
-                        Reviews & Ratings
+                        <i className="fa-solid fa-list-check"></i>
+                        Inclusions
                       </div>
-
-                      {/* Add Review Button */}
-                      {canUserReview() && (
-                        <button
-                          className="add-review-btn"
-                          onClick={() => updateState({ ...iState, showAddReviewModal: true })}
-                        >
-                          <i className="fa-solid fa-plus"></i>
-                          Write a Review
-                        </button>
-                      )}
-                    </div>
-
-                    <div className="reviews-header">
-                      <h3 className="reviews-title">
-                        {getRatingReviewList?.data?.overallRating?.toFixed(1) || '0.0'}
-                      </h3>
-                      <div className="reviews-summary">
-                        <span className="reviews-stars">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <i key={i} className={`fa-star ${i < Math.round(getRatingReviewList?.data?.overallRating || 0) ? 'fa-solid reviews-star-filled' : 'fa-regular reviews-star-empty'}`}></i>
-                          ))}
-                        </span>
-                        <span className="reviews-count">{getRatingReviewList?.data?.totalReviews || 0} Reviews</span>
-                      </div>
-                    </div>
-
-                    {/* Rating Breakdown */}
-                    <div className="rating-breakdown">
-                      {[5, 4, 3, 2, 1].map((star) => {
-                        const count = getRatingReviewList?.data?.review?.filter(review => review.rating === star)?.length || 0;
-                        const totalReviews = getRatingReviewList?.data?.totalReviews || 0;
-                        const percentage = totalReviews > 0 ? (count / totalReviews) * 100 : 0;
-
-                        return (
-                          <div key={star} className="rating-breakdown-row">
-                            <span className="rating-breakdown-star">{star} ★</span>
-                            <div className="rating-breakdown-bar">
+                      <div className="inclusion-list">
+                        {getProductDetails?.data?.product?.productdescription?.inclusion?.map(
+                          (item, i) => (
+                            <div key={i} className="inclusion-item">
                               <div
-                                className="rating-breakdown-fill"
-                                style={{ width: `${percentage}%` }}
+                                className="inclusion-text"
+                                dangerouslySetInnerHTML={{ __html: item }}
                               />
                             </div>
-                            <span className="rating-breakdown-count">({count})</span>
-                          </div>
-                        );
-                      })}
+                          )
+                        )}
+                      </div>
                     </div>
-                    {console.log('getRatingReviewList', getRatingReviewList)}
-                    <div className="reviews-list">
-                      {getRatingReviewList?.data?.review?.length > 0 ? (
-                        getRatingReviewList?.data?.review?.slice(0, 3).map((item, i) => (
-                          <div key={i} className="review-item">
-                            <div className="review-avatar">
-                              <i className="fa-solid fa-user"></i>
-                            </div>
-                            <div className="review-content">
-                              <div className="review-header">
-                                <div className="review-author">
-                                  {item?.data?.personalInfo?.name || 'Anonymous'}
-                                </div>
-                                <div className="review-date">
-                                  {new Date(item?.createdAt || new Date()).toLocaleDateString('en-US', {
-                                    month: 'long',
-                                    year: 'numeric'
-                                  })}
-                                </div>
-                              </div>
-                              <div className="review-verified">✓ Verified Purchase</div>
-                              {item?.title && (
-                                <div className="review-title">{item.title}</div>
-                              )}
-                              <div className="review-stars">
-                                {Array.from({ length: item?.rating }).map((_, idx) => (
-                                  <i key={idx} className="fa-solid fa-star reviews-star-filled"></i>
-                                ))}
-                                {Array.from({ length: 5 - Number(item?.rating) }).map((_, idx) => (
-                                  <i key={idx} className="fa-regular fa-star reviews-star-empty"></i>
-                                ))}
-                              </div>
-                              <div className="review-text">{item?.review}</div>
-                              <div className="review-images">
-                                {item?.image?.map((img, idx) => (
-                                  <img key={idx} src={img} alt={`Review Image ${idx + 1}`} />
-                                ))}
-                              </div>
 
-                              <div className="review-actions">
-                                <button className="review-helpful-btn">
-                                  <i className="fa-regular fa-thumbs-up"></i>
-                                  Helpful (0)
-                                </button>
-                                <button className="review-report-btn">
-                                  <i className="fa-regular fa-flag"></i>
-                                  Report
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        ))
-                      ) : (
-                        <div className="no-reviews">
-                          <i className="fa-solid fa-star-half-stroke"></i>
-                          <h4>No reviews yet</h4>
-                          <p>Be the first to review this product!</p>
-                          {userDetail && (
-                            <button
-                              className="first-review-btn"
-                              onClick={() => updateState({ ...iState, showAddReviewModal: true })}
-                            >
-                              Write the First Review
-                            </button>
-                          )}
+                    {/* EXPERIENCE SECTION */}
+                    <div className="experience-section">
+                      <div className="section-title">
+                        <i className="fa-solid fa-info-circle"></i>
+                        About The Experience
+                      </div>
+                      <div className="description-content">
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: getProductDetails?.data?.product?.productdescription?.aboutexperience,
+                          }}
+                        />
+                        {/* {!readMore && (
+                          <span
+                            className="show-less-link"
+                            onClick={() => updateState({ ...iState, readMore: true })}
+                          >
+                            - Show Less
+                          </span>
+                        )} */}
+                      </div>
+                    </div>
+
+                    {/* REVIEWS SECTION */}
+                    <div className="reviews-section-card">
+                      <div className="reviews-section-header">
+                        <div className="section-title">
+                          <i className="fa-solid fa-star reviews-section-icon" />
+                          Reviews & Ratings
                         </div>
-                      )}
-                    </div>
 
-                    <div className="reviews-readmore">
-                      <span className="reviews-readmore-link">+ Read All {getRatingReviewList?.data?.totalReviews || 0} Reviews</span>
-                    </div>
-                  </div>
-
-                  {/* NEED TO KNOW SECTION */}
-                  <div className="need-to-know-section">
-                    <div className="section-title">
-                      <i className="fas fa-info-circle needtoknow-icon" />
-                      Need To Know
-                    </div>
-                    <div className="needtoknow-content" dangerouslySetInnerHTML={{
-                      __html: getProductDetails?.data?.product?.productdescription?.need,
-                    }} />
-                  </div>
-
-                  {/* FAQ SECTION */}
-                  <div className="faq-section">
-                    <div className="section-title">
-                      <i className="fas fa-question-circle faq-icon" />
-                      Frequently Asked Questions
-                    </div>
-                    <div className="faq-list">
-                      <div className="faq-item">
-                        <div className="faq-question">How will you take my address and other details ?</div>
-                        <div className="faq-answer">After the payment is completed a form will open on the website or the app which will ask you for your address, balloon color choices, cake flavor etc. Which you can fill online. If we have any doubts someone from CherishX team will call you and take additional details. You will always have our post-sales number in-case you want to discuss something.</div>
+                        {/* Add Review Button */}
+                        {canUserReview() && (
+                          <button
+                            className="add-review-btn"
+                            onClick={() => updateState({ ...iState, showAddReviewModal: true })}
+                          >
+                            <i className="fa-solid fa-plus"></i>
+                            Write a Review
+                          </button>
+                        )}
                       </div>
-                      <div className="faq-item">
-                        <div className="faq-question">What balloon colors do you have & how can I select the balloon colors?</div>
-                        <div className="faq-answer">Decoration will be done as in the pictures. In case you require different color balloons combination, please inform us over email or call us at 8081833833</div>
+
+                      <div className="reviews-header">
+                        <h3 className="reviews-title">
+                          {getRatingReviewList?.data?.overallRating?.toFixed(1) || '0.0'}
+                        </h3>
+                        <div className="reviews-summary">
+                          <span className="reviews-stars">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <i key={i} className={`fa-star ${i < Math.round(getRatingReviewList?.data?.overallRating || 0) ? 'fa-solid reviews-star-filled' : 'fa-regular reviews-star-empty'}`}></i>
+                            ))}
+                          </span>
+                          <span className="reviews-count">{getRatingReviewList?.data?.totalReviews || 0} Reviews</span>
+                        </div>
                       </div>
-                      <div className="faq-readmore">+ Read More FAQ's</div>
-                    </div>
-                  </div>
 
-                  {/* LOCATION SECTION */}
-                  <div className="location-section">
-                    <div className="section-title">
-                      <i className="fas fa-map-marker-alt location-icon" />
-                      Location
-                    </div>
-                    <div className="location-content">At Your Home</div>
-                  </div>
+                      {/* Rating Breakdown */}
+                      <div className="rating-breakdown">
+                        {[5, 4, 3, 2, 1].map((star) => {
+                          const count = getRatingReviewList?.data?.review?.filter(review => review.rating === star)?.length || 0;
+                          const totalReviews = getRatingReviewList?.data?.totalReviews || 0;
+                          const percentage = totalReviews > 0 ? (count / totalReviews) * 100 : 0;
 
-                  {/* CANCELLATION POLICY SECTION */}
-                  <div className="cancellation-section">
-                    <div className="section-title">
-                      <i className="fa-solid fa-ban cancellation-icon" />
-                      Cancellation Policy
+                          return (
+                            <div key={star} className="rating-breakdown-row">
+                              <span className="rating-breakdown-star">{star} ★</span>
+                              <div className="rating-breakdown-bar">
+                                <div
+                                  className="rating-breakdown-fill"
+                                  style={{ width: `${percentage}%` }}
+                                />
+                              </div>
+                              <span className="rating-breakdown-count">({count})</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      {console.log('getRatingReviewList', getRatingReviewList)}
+                      <div className="reviews-list">
+                        {getRatingReviewList?.data?.review?.length > 0 ? (
+                          getRatingReviewList?.data?.review?.slice(0, 3).map((item, i) => (
+                            <div key={i} className="review-item">
+                              <div className="review-avatar">
+                                <i className="fa-solid fa-user"></i>
+                              </div>
+                              <div className="review-content">
+                                <div className="review-header">
+                                  <div className="review-author">
+                                    {item?.data?.personalInfo?.name || 'Anonymous'}
+                                  </div>
+                                  <div className="review-date">
+                                    {new Date(item?.createdAt || new Date()).toLocaleDateString('en-US', {
+                                      month: 'long',
+                                      year: 'numeric'
+                                    })}
+                                  </div>
+                                </div>
+                                <div className="review-verified">✓ Verified Purchase</div>
+                                {item?.title && (
+                                  <div className="review-title">{item.title}</div>
+                                )}
+                                <div className="review-stars">
+                                  {Array.from({ length: item?.rating }).map((_, idx) => (
+                                    <i key={idx} className="fa-solid fa-star reviews-star-filled"></i>
+                                  ))}
+                                  {Array.from({ length: 5 - Number(item?.rating) }).map((_, idx) => (
+                                    <i key={idx} className="fa-regular fa-star reviews-star-empty"></i>
+                                  ))}
+                                </div>
+                                <div className="review-text">{item?.review}</div>
+                                <div className="review-images">
+                                  {item?.image?.map((img, idx) => (
+                                    <img key={idx} src={img} alt={`Review Image ${idx + 1}`} />
+                                  ))}
+                                </div>
+
+                                <div className="review-actions">
+                                  <button className="review-helpful-btn">
+                                    <i className="fa-regular fa-thumbs-up"></i>
+                                    Helpful (0)
+                                  </button>
+                                  <button className="review-report-btn">
+                                    <i className="fa-regular fa-flag"></i>
+                                    Report
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="no-reviews">
+                            <i className="fa-solid fa-star-half-stroke"></i>
+                            <h4>No reviews yet</h4>
+                            <p>Be the first to review this product!</p>
+                            {userDetail && (
+                              <button
+                                className="first-review-btn"
+                                onClick={() => updateState({ ...iState, showAddReviewModal: true })}
+                              >
+                                Write the First Review
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="reviews-readmore">
+                        <span className="reviews-readmore-link">+ Read All {getRatingReviewList?.data?.totalReviews || 0} Reviews</span>
+                      </div>
                     </div>
-                    <div className="cancellation-content" dangerouslySetInnerHTML={{
-                      __html: getProductDetails?.data?.product?.productdescription?.cancellation,
-                    }} />
+
+                    {/* NEED TO KNOW SECTION */}
+                    <div className="need-to-know-section">
+                      <div className="section-title">
+                        <i className="fas fa-info-circle needtoknow-icon" />
+                        Need To Know
+                      </div>
+                      <div className="needtoknow-content" dangerouslySetInnerHTML={{
+                        __html: getProductDetails?.data?.product?.productdescription?.need,
+                      }} />
+                    </div>
+
+                    {/* FAQ SECTION */}
+                    <div className="faq-section">
+                      <div className="section-title">
+                        <i className="fas fa-question-circle faq-icon" />
+                        Frequently Asked Questions
+                      </div>
+                      <div className="faq-list">
+                        <div className="faq-item">
+                          <div className="faq-question">How will you take my address and other details ?</div>
+                          <div className="faq-answer">After the payment is completed a form will open on the website or the app which will ask you for your address, balloon color choices, cake flavor etc. Which you can fill online. If we have any doubts someone from CherishX team will call you and take additional details. You will always have our post-sales number in-case you want to discuss something.</div>
+                        </div>
+                        <div className="faq-item">
+                          <div className="faq-question">What balloon colors do you have & how can I select the balloon colors?</div>
+                          <div className="faq-answer">Decoration will be done as in the pictures. In case you require different color balloons combination, please inform us over email or call us at 8081833833</div>
+                        </div>
+                        <div className="faq-readmore">+ Read More FAQ's</div>
+                      </div>
+                    </div>
+
+                    {/* LOCATION SECTION */}
+                    <div className="location-section">
+                      <div className="section-title">
+                        <i className="fas fa-map-marker-alt location-icon" />
+                        Location
+                      </div>
+                      <div className="location-content">At Your Home</div>
+                    </div>
+
+                    {/* CANCELLATION POLICY SECTION */}
+                    <div className="cancellation-section">
+                      <div className="section-title">
+                        <i className="fa-solid fa-ban cancellation-icon" />
+                        Cancellation Policy
+                      </div>
+                      <div className="cancellation-content" dangerouslySetInnerHTML={{
+                        __html: getProductDetails?.data?.product?.productdescription?.cancellation,
+                      }} />
+                    </div>
                   </div>
                 </div>
               </div>
