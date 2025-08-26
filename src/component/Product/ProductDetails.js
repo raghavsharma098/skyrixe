@@ -1391,7 +1391,7 @@ const ProductDetails = () => {
                     </div>
                   </div>
 
-                  {/* Why Skyrixe Info Box */}
+                  {/* Why Skyrixe Info Box
                   <div className="why-skyrixe-box">
                     <h3 className="why-skyrixe-title">
                       Why <span className="why-skyrixe-heart">❤</span> Skyrixe ?
@@ -1414,8 +1414,8 @@ const ProductDetails = () => {
                         <span><b>100% Refund</b> - In case of non-availability, a complete refund of total amount is initiated</span>
                       </li>
                     </ul>
-                  </div>
-                </div>
+                  </div>*/}
+                </div> 
 
                 {/* Product Information */}
                 <div className="col-lg-6 col-12">
@@ -2065,6 +2065,9 @@ const ProductDetails = () => {
                           </span>
                         )}
                       </div>
+                       <div className="loc">
+                      <h1> At your location</h1>
+                    </div>
                       <div className="product-rating">
                         <div className="stars">
                           {Array.from({ length: 5 }).map((_, index) => (
@@ -2164,6 +2167,9 @@ const ProductDetails = () => {
                         </span>
                       )}
                     </div>
+                     <div className="loc">
+                      <h1> At your location</h1>
+                    </div>
 
                     <div className="recently-viewed-rating">
                       <div className="recently-viewed-stars">
@@ -2175,6 +2181,7 @@ const ProductDetails = () => {
                         {(4.0 + (i * 0.2)).toFixed(1)}
                       </span>
                     </div>
+                   
                     {/* Add "Viewed on" timestamp */}
                     <div className="recently-viewed-timestamp">
                       <i className="fa-solid fa-clock"></i>
