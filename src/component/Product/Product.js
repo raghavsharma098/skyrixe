@@ -440,7 +440,7 @@ const Product = () => {
                             <h6>{item?.productDetails?.productname}</h6>
                             
                             {/* Location text added here */}
-                            <div className="loc">
+                            <div className="">
                               <span>At your location</span>
                             </div>
                             
