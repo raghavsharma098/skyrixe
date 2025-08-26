@@ -59,10 +59,11 @@ const Header = () => {
   };
 
   const handleDeleteProduct = () => {
+
     const data = {
       id: getOrderSummaryDetail?.data?._id,
     };
-    console.log({ data });
+    // console.log({ data });
     dispatch(deleteCartProduct(data)).then((res) => {
       console.log({ res });
       if (res?.payload?.status === 200) {

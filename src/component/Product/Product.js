@@ -1,26 +1,25 @@
-import React, { Children, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { useDispatch, useSelector } from "react-redux";
 import { categoryProductList } from "../../reduxToolkit/Slices/ProductList/listApis";
-import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
-import { Accordion, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { BeatLoader } from "react-spinners";
-import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
+
 
 const CustomPrevArrow = ({ onClick }) => (
   <div className="custom-arrow prev" onClick={onClick}>
-    <i class="fa-solid fa-angle-left"></i>
+    <i className="fa-solid fa-angle-left"></i>
   </div>
 );
 
 const CustomNextArrow = ({ onClick }) => (
   <div className="custom-arrow next" onClick={onClick}>
-    <i class="fa-solid fa-angle-right"></i>
+    <i className="fa-solid fa-angle-right"></i>
   </div>
 );
 
@@ -54,21 +53,13 @@ const Product = () => {
   const [sortedProducts, setSortedProducts] = useState([]);
   const {
     city,
-    pincode,
     filter_city,
     minPrice,
     maxPrice,
-    filter_minPrice,
-    filter_maxPrice,
-    showAll,
     set_maxPrice,
     set_minPrice,
-    set_filter_minPrice,
-    set_filter_maxPrice,
-    cityApply,
     isLoc_open,
     isPrice_open,
-    isBestfilter_open,
     sameDay,
     discount,
     showSortModal,
@@ -76,7 +67,7 @@ const Product = () => {
   } = iState;
   const [value, setValue] = useState([minPrice, maxPrice]);
   const selectCity = window.localStorage.getItem("LennyCity");
-  const { loader, getCategoryProductList, getCityList } = useSelector(
+  const { loader, getCategoryProductList } = useSelector(
     (state) => state.productList
   );
   const state = location?.state;
@@ -447,6 +438,12 @@ const Product = () => {
                               />
                             </figure>
                             <h6>{item?.productDetails?.productname}</h6>
+                            
+                            {/* Location text added here */}
+                            <div className="loc">
+                              <span>At your location</span>
+                            </div>
+                            
                             <div className="Info">
                               <button
                                 className="Buttons"
@@ -483,7 +480,7 @@ const Product = () => {
                                   )}
                                 </div>
                                 <p>
-                                  4.8 <i class="fa-solid fa-star"></i> |{" "}
+                                  4.8 <i className="fa-solid fa-star"></i> |{" "}
                                   {i % 2 == 0 && i !== 0
                                     ? `${i % 2}` + 5 + i - 1
                                     : i == 0

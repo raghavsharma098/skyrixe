@@ -1,18 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import { Link,useNavigate } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
 import { useDispatch, useSelector } from "react-redux";
 import { Carousel } from "bootstrap";
-import {
-  birthdayDecoList,
-  categoryList,
-  dealBannerList,
-} from "../../reduxToolkit/Slices/ProductList/listApis";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
-import ReactImageZoom from "react-image-zoom";
 import { FaStar } from "react-icons/fa";
 import ServiceCarousel from "../Modals/ServiceCrousel";
 import { fetchLatestReviews } from "../../reduxToolkit/Slices/ReviewAndRating/reviewRatingApis";
@@ -516,7 +509,7 @@ const Main = () => {
                           </figure>
                           <h6>{item?.productDetails?.productname}</h6>
                           <div class="rightcard">
-                            <div class="loc">
+                            <div className="loc">
                               <h1> At your location</h1>
                               <div className="star">
                                 <FaStar size={40} style={{ stroke: 'gold', fill: 'gold' }} />
