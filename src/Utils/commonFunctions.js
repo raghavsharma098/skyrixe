@@ -6,7 +6,7 @@ export function getPathName() {
 }
 
 export function convertTimeFormat(startDate, endDate) {
-  console.log(startDate,endDate)
+  // console.log(startDate,endDate)
   function formatTime(time) {
     let [hours, minutes] = time?.split(":").map(Number);
     const period = hours >= 12 ? "PM" : "AM";

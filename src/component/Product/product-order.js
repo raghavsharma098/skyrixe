@@ -5,7 +5,7 @@ import '../../assets/css/product-order.css';
 //product-order.js
 
 const OrderProductDetails = ({ item }) => {
-  console.log(item);
+  console.log("item", item);
   if (!item) return <BeatLoader />;
 
   // Fallbacks and conversions
@@ -35,30 +35,33 @@ const OrderProductDetails = ({ item }) => {
           {item.status}
         </div>
         <div className="event-info">
-          <p><strong>Event:</strong> Birthday (Assumed)</p>
-          <p><strong>Date & Time:</strong> {orderDate} at 6:00 PM (Static)</p>
+          <p><strong>Event:</strong> {item.occasion || "N/A"}</p>
+          <p><strong>Date & Time:</strong> {item.deliveryDate ? new Date(item.deliveryDate).toLocaleString() : "N/A"} at {item.slot || "N/A"}</p>
         </div>
       </div>
 
       <div className="venue-section">
         <h3>Venue Details</h3>
         <div className="venue-address">
-          <p><strong>Venue:</strong> Not Provided</p>
-          <p>Address line placeholder</p>
-          <p><strong>Landmark:</strong> N/A</p>
+          <p><strong>Venue:</strong> {userDetail?.Addresses[0]?.addresstype?.toUpperCase() || "N/A"}</p>
+          <p>{userDetail?.Addresses[0]?.houseNo}, {userDetail?.Addresses[0]?.street}, {userDetail?.Addresses[0]?.city}, {userDetail?.Addresses[0]?.state} - {userDetail?.Addresses[0]?.pincode}</p>
+          <p><strong>Landmark:</strong> {userDetail?.Addresses[0]?.landmark || "N/A"}</p>
         </div>
       </div>
 
       <div className="decoration-section">
         <div className="decoration-image">
           <div className="image-placeholder">
-            <span>Decoration Preview</span>
+            <img src={item?.prodimages || "placeholder.jpg"} alt="Decoration Preview" />
           </div>
         </div>
         <div className="decoration-info">
-          <h2>Balloon Decoration</h2>
+          <h2>{item?.productName || "N/A"}</h2>
           <p className="decoration-description">
-            A beautiful set of customized balloon decoration for your special event.
+            {item?.productDescription?.length > 100
+              ? `${item?.productDescription?.substring(0, 100)}...`
+              : item?.productDescription || 'Beautiful balloon decorations for your special occasions.'
+            }
           </p>
 
           {item.ballonsName && item.ballonsName.length > 0 ? (
@@ -106,14 +109,14 @@ const OrderProductDetails = ({ item }) => {
       </div>
 
       {item.paymentStatus === "Paid" && (
-      <div className="payment-section">
-        <h3>Payment Details</h3>
-        <div className="payment-info">
-          <p><strong>Payment Mode:</strong> {item.paymentMode}</p>
-          <p><strong>Transaction ID:</strong> {orderId}</p>
-          <p><strong>Payment Date:</strong> {paymentDate}</p>
+        <div className="payment-section">
+          <h3>Payment Details</h3>
+          <div className="payment-info">
+            <p><strong>Payment Mode:</strong> {item.paymentMode}</p>
+            <p><strong>Transaction ID:</strong> {orderId}</p>
+            <p><strong>Payment Date:</strong> {paymentDate}</p>
+          </div>
         </div>
-      </div>
       )}
 
       <div className="customer-section">
@@ -127,7 +130,7 @@ const OrderProductDetails = ({ item }) => {
 
       <div className="action-buttons">
         <button className="contact-btn">Contact Support</button>
-        <button className="reorder-btn">Edit Order</button>
+        {/* <button className="reorder-btn">Edit Order</button> */}
       </div>
     </div>
   );

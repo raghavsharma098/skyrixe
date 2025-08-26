@@ -11,6 +11,7 @@ const BookingFlow = ({ show, onHide, onComplete, selectedProduct, user, selected
     selectedDate: null,
     selectedTimeSlot: null,
     selectedCustomizations: [],
+    selectedRecommendedItems: [],
   });
 
   const isLoggedIn = !!user;
@@ -23,6 +24,7 @@ const BookingFlow = ({ show, onHide, onComplete, selectedProduct, user, selected
         selectedDate: null,
         selectedTimeSlot: null,
         selectedCustomizations: [],
+        selectedRecommendedItems: [],
       });
     }
   }, [show]);
@@ -47,8 +49,12 @@ const BookingFlow = ({ show, onHide, onComplete, selectedProduct, user, selected
     setBookingDetails((prev) => ({
       ...prev,
       selectedCustomizations: customizations,
+    }))
+    setBookingDetails((prev) => ({
+      ...prev,
+      selectedRecommendedItems: customizations,
     }));
-    
+
     // Check if user is already logged in - if yes, complete booking
     if (isLoggedIn) {
       handleBookingComplete(customizations);

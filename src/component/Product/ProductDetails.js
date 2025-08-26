@@ -337,12 +337,15 @@ const ProductDetails = () => {
         _id: customization._id,
         name: customization.name,
         price: customization.price,
-        image: customization.customimages,
+        customimages: customization.customimages,
         quantity: 1
       };
       updatedItems = [...selectedRecommendedItems, newItem];
       toast.success(`${customization.name} added to selection`);
     }
+
+    // console.log(updatedItems)
+
 
     setSelectedRecommendedItems(updatedItems);
     saveSelectedAddons(currentProductId, updatedItems);
@@ -460,7 +463,7 @@ const ProductDetails = () => {
 
   // Replace the existing handleBookingFlowComplete function with this:
   const handleBookingFlowComplete = (bookingData) => {
-    console.log('Booking completed with data:', bookingData);
+    // console.log('Booking completed with data:', bookingData);
     setShowBookingFlow(false);
 
     const currentUserDetail = bookingData?.loginData?.user || userDetail;
@@ -470,6 +473,7 @@ const ProductDetails = () => {
       toast.error('Please login to complete booking');
       return;
     }
+
 
     // Calculate totals including recommended items
     const basePrice = getProductDetails?.data?.product?.priceDetails?.discountedPrice ||
@@ -498,8 +502,13 @@ const ProductDetails = () => {
       dateAdded: bookingData.selectedDate,
       quantity: 1,
       slot: bookingData.selectedTimeSlot?.time || bookingData.selectedTimeSlot,
-      customization: bookingData.selectedCustomizations || [],
-      recommendedItems: selectedRecommendedItems, // Include recommended items
+      customization: [
+        ...(bookingData.selectedCustomizations || []),
+        ...(bookingData.selectedRecommendedItems || selectedRecommendedItems || [])
+      ],
+
+
+      // recommendedItems: selectedRecommendedItems, // Include recommended items
       totalAmount: totalAmount, // Use calculated total
       grandTotal: totalAmount, // Add grandTotal field
       selectedAddons: selectedRecommendedItems
@@ -1641,12 +1650,12 @@ const ProductDetails = () => {
                                 }
                               </h4>
 
-                              <p className="recommended-product-description">
+                              {/* <p className="recommended-product-description">
                                 {item?.description?.length > 60
                                   ? `${item?.description?.substring(0, 60)}...`
                                   : item?.description || 'Premium customization for your special occasions'
                                 }
-                              </p>
+                              </p> */}
 
                               <div className="recommended-product-link">
                                 <span>see details</span>

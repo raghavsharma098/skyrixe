@@ -297,6 +297,7 @@ const Checkout1 = () => {
     } else {
       updateState({ ...iState, [name]: value });
     }
+
   };
 
   const handleDateTimeSlot = () => {
@@ -496,19 +497,19 @@ const Checkout1 = () => {
   }, [getSlotList]);
 
   useEffect(() => {
-  // Try multiple sources to get recommended items
-  const recommendedItems = 
-    cartData?.recommendedItems || 
-    cartData?.selectedAddons || 
-    cartData?.preservedRecommendedItems ||
-    JSON.parse(sessionStorage.getItem('checkoutRecommendedItems') || '[]');
-    
-  if (recommendedItems.length > 0) {
-    // Update your checkout state with recommended items
-    console.log('Retrieved recommended items:', recommendedItems);
-    // Add logic to display these items in your checkout
-  }
-}, [cartData]);
+    // Try multiple sources to get recommended items
+    const recommendedItems =
+      cartData?.recommendedItems ||
+      cartData?.selectedAddons ||
+      cartData?.preservedRecommendedItems ||
+      JSON.parse(sessionStorage.getItem('checkoutRecommendedItems') || '[]');
+
+    if (recommendedItems.length > 0) {
+      // Update your checkout state with recommended items
+      console.log('Retrieved recommended items:', recommendedItems);
+      // Add logic to display these items in your checkout
+    }
+  }, [cartData]);
 
   useEffect(() => {
     const basePrice = Number(getOrderSummaryDetail?.data?.price || 0);
@@ -713,11 +714,26 @@ const Checkout1 = () => {
                           <Multiselect
                             options={options}
                             selectedValues={selectedValue}
-                            onSelect={onSelect}
-                            onRemove={onRemove}
+                            onSelect={(selectedList, selectedItem) => {
+                              if (selectedItem.name === 'Same as product') {
+                                // Replace all selections with "Same as product"
+                                setSelectedValue([selectedItem]);
+                              } else {
+                                // Remove "Same as product" if it exists
+                                const filtered = selectedList.filter(item => item.name !== 'Same as product');
+                                setSelectedValue(filtered);
+                              }
+                            }}
+                            onRemove={(removedItem) => {
+                              setSelectedValue(prev => prev.filter(item => item.name !== removedItem.name));
+                            }}
                             displayValue="name"
-                            selectionLimit={3}
+                            selectionLimit={
+                              selectedValue.some(item => item.name === 'Same as product') ? 1 : 3
+                            }
                           />
+
+                          {console.log("selectedValue", selectedValue)}
                         </div>
                       </div>
                       <div
