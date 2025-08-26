@@ -3045,6 +3045,191 @@ i.fa-star {
   width: 95%;
 }
 
+/* Sort Button Styles */
+.sort-btn {
+  position: fixed !important;
+  bottom: 20px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 15px !important;
+  padding: 12px 24px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  font-size: 23px !important;
+  font-weight: 500 !important;
+  color: #663399 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  z-index: 1000 !important;
+  transition: all 0.2s ease !important;
+  min-width: 60px !important;
+  height: 50px !important;
+}
+
+.sort-btn:hover {
+  background-color: #f8f9fa !important;
+  border-color: #d0d7de !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+.sort-btn:active {
+  transform: translateX(-50%) scale(0.98) !important;
+}
+
+.sort-btn i {
+  font-size: 12px !important;
+  color: #666666 !important;
+}
+
+/* Sort Modal Styles */
+.sort-modal .modal-dialog {
+  max-width: 250px !important;
+  margin: auto !important;
+
+}
+
+.sort-modal .modal-content {
+  border-radius: 8px !important;
+  border: none !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2) !important;
+  overflow: hidden !important;
+  padding: 10px;
+}
+
+.sort-modal .modal-header {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+  padding: 10px 20px 12px 20px !important;
+}
+
+.sort-modal .modal-title {
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: black !important;
+  margin: 0 !important;
+}
+
+.sort-modal .btn-close {
+  background: none !important;
+  border: none !important;
+  font-size: 18px !important;
+  opacity: 0.6 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.sort-modal .btn-close:hover {
+  opacity: 1 !important;
+}
+
+.sort-modal .modal-body {
+  padding: 0 !important;
+  background-color: #ffffff !important;
+}
+
+/* Sort Options Container */
+.sort-options-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+}
+
+/* Individual Sort Option */
+.sort-option {
+  padding: 12px 20px !important;
+  border-bottom: 1px solid #f5f5f5 !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  transition: background-color 0.15s ease !important;
+  background-color: #ffffff !important;
+}
+
+.sort-option:last-child {
+  border-bottom: none !important;
+}
+
+.sort-option:hover {
+  background-color: #f8f9fa !important;
+}
+
+.sort-option.active {
+  background-color: #fff5f5 !important;
+}
+
+.sort-option-text {
+  font-size: 15px !important;
+  color: black !important;
+  font-weight: 400 !important;
+  margin: 0 !important;
+}
+
+.sort-option.active .sort-option-text {
+  color: #e91e63 !important;
+  font-weight: 500 !important;
+}
+
+/* Custom Radio Button */
+.sort-radio {
+  width: 20px !important;
+  height: 20px !important;
+  border: 2px solid #ddd !important;
+  border-radius: 50% !important;
+  background-color: #ffffff !important;
+  position: relative !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  outline: none !important;
+}
+
+.sort-radio:checked {
+  border-color: #e91e63 !important;
+  background-color: #ffffff !important;
+}
+
+.sort-radio:checked::after {
+  content: '' !important;
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  background-color: #e91e63 !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.sort-radio:hover {
+  border-color: #e91e63 !important;
+}
+
+/* Modal Backdrop */
+.sort-modal .modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .sort-modal .modal-dialog {
+    max-width: 90% !important;
+    margin: 20px auto !important;
+  }
+  
+  .sort-btn {
+    bottom: 80px !important;
+    padding: 10px 20px !important;
+    font-size: 13px !important;
+  }
+}
+
 footer {
   background-image: url("../images/bottomm\ navigation\ bar.png");
 }

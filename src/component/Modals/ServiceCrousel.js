@@ -80,13 +80,7 @@ const EventServicesApp = () => {
             "🎶Make your event unforgettable by engaging your guests! Choose from over 10 amazing services:",
             "🎶Tattoo Artist"
           ]
-        }
-      ]
-    },
-    {
-      sectionTitle: "Helium Balloons",
-      subtitle: "We offer a variety of services, differing in the total value of needed.",
-      services: [
+        },
         {
           title: "Advertising PVC Sky Balloon",
           image: "https://www.imgworldstickets.ae/blog/wp-content/uploads/2023/01/birthday-parties-at-IMG.jpg",
@@ -116,13 +110,8 @@ const EventServicesApp = () => {
             "🎉 Best prices, timely service, and support",
             "✨ Rated 4.6⭐"
           ]
-        }
-      ]
-    },
-    {
-      sectionTitle: "Balloon Artist",
-      subtitle: "We offer a variety of services, differing in the total value of needed.",
-      services: [
+        },
+
         {
           title: "DJ",
           image: "https://www.imgworldstickets.ae/blog/wp-content/uploads/2023/01/birthday-parties-at-IMG.jpg",
