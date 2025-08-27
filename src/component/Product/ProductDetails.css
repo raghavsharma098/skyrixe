@@ -64,7 +64,7 @@
   border-radius: 6px;
   padding: 1rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  position: sticky;
+  position: sticky !important;
   top: 32px;
   z-index: 2;
   margin: 0 auto;
