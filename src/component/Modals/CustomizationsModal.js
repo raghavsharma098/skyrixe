@@ -151,7 +151,7 @@ const CustomizationsModal = ({
   }, [availableCustomizations]);
 
   // Tab state: 'recommended' or 'other'
-  const [activeTab, setActiveTab] = useState('recommended');
+  const [activeTab, setActiveTab] = useState('other');
 
   return (
     <Modal className="ModalBox CustomizationsModal" show={show} onHide={onHide} centered size="xl">
@@ -168,12 +168,6 @@ const CustomizationsModal = ({
 
         {/* Tabs for Recommended and Other Items */}
         <div className="CustomizationTabs">
-          <button
-            className={`TabBtn${activeTab === 'recommended' ? ' active' : ''}`}
-            onClick={() => setActiveTab('recommended')}
-          >
-            Recommended
-          </button>
           <button
             className={`TabBtn${activeTab === 'other' ? ' active' : ''}`}
             onClick={() => setActiveTab('other')}
