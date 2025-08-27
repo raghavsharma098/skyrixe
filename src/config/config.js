@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 export const credAndUrl = {
     BASE_URL: 'https://skyrixe.com/api/v1/',
     BUCKET_NAME: process.env.REACT_APP_BUCKET_NAME,
@@ -9,4 +10,17 @@ export const credAndUrl = {
 
 //https://backend.thebrandcabin.com/api/v1/',
 // 'https://skyrixe.com/api/v1/',
+=======
+export const credAndUrl = {
+    BASE_URL: 'https://skyrixe.com/api/v1/',
+    BUCKET_NAME: process.env.REACT_APP_BUCKET_NAME,
+    DIR_NAME: process.env.REACT_APP_BUCKET_DIR,
+    REGION: process.env.REACT_APP_BUCKET_REGION,
+    ACCESS_KEY_ID: process.env.REACT_APP_BUCKET_ACCESSKEYID,
+    SECRET_ACCESS_KEY: process.env.REACT_APP_BUCKET_SECRETACCESSKEY,
+}
+
+//https://backend.thebrandcabin.com/api/v1/',
+// 'https://skyrixe.com/api/v1/',
+>>>>>>> c106fa07a9c394b6cdd7708024a41fdea105aba6
 // http://localhost:4008/api/v1/
