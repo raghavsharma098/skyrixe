@@ -1,0 +1,182 @@
+.TimeSlotModal .modal-content {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.TimeSlotModal .ModalArea {
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  max-width: 500px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.TimeSlotModal .ModalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.TimeSlotModal .ModalHeader h3 {
+  margin: 0;
+  color: #333;
+  font-weight: 500;
+  font-size: 20px;
+  flex: 1;
+  text-align: center;
+}
+
+.TimeSlotModal .BackBtn {
+  background: none;
+  border: none;
+  color: #e91e63;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+  font-weight: 500;
+}
+
+.TimeSlotModal .BackBtn:hover {
+  text-decoration: underline;
+}
+
+.TimeSlotModal .CloseModal {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.TimeSlotModal .TimeSlotsList {
+  margin-bottom: 32px;
+}
+
+.TimeSlotModal .TimeSlotItem {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.TimeSlotModal .TimeSlotItem:hover:not(.unavailable) {
+  border-color: #1a73e8;
+  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.15);
+}
+
+.TimeSlotModal .TimeSlotItem.selected {
+  border-color: #1a73e8;
+  background-color: #f0f4ff;
+}
+
+.TimeSlotModal .TimeSlotItem.unavailable {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #f8f9fa;
+}
+
+.TimeSlotModal .SlotContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+}
+
+.TimeSlotModal .SlotTime {
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+}
+
+.TimeSlotModal .RadioButton {
+  position: relative;
+}
+
+.TimeSlotModal .RadioButton input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ddd;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.TimeSlotModal .RadioButton input[type="radio"]:checked {
+  border-color: #1a73e8;
+  background: white;
+}
+
+.TimeSlotModal .RadioButton input[type="radio"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: #1a73e8;
+  border-radius: 50%;
+}
+
+.TimeSlotModal .RadioButton input[type="radio"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.TimeSlotModal .WhatsAppHelp {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  color: #666;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.TimeSlotModal .HelpIcon {
+  flex-shrink: 0;
+}
+
+.TimeSlotModal .HelpIcon img {
+  width: 20px;
+  height: 20px;
+}
+
+.TimeSlotModal .WhatsAppHelp a {
+  color: #1a73e8;
+  text-decoration: none;
+}
+
+.TimeSlotModal .WhatsAppHelp a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .TimeSlotModal .ModalArea {
+    padding: 20px;
+    margin: 16px;
+  }
+  
+  .TimeSlotModal .SlotContent {
+    padding: 16px 20px;
+  }
+}
