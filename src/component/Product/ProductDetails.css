@@ -64,11 +64,7 @@
   border-radius: 6px;
   padding: 1rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-<<<<<<< HEAD
-  position: sticky;
-=======
   position: sticky !important;
->>>>>>> c106fa07a9c394b6cdd7708024a41fdea105aba6
   top: 32px;
   z-index: 2;
   margin: 0 auto;
