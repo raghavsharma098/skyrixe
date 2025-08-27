@@ -309,7 +309,7 @@ const Profile = () => {
 
   const handleViewDetails = (item) => {
     setorder(item);
-    setShowDetails(true);
+    setShowDetails(false);
   };
 
   const handleCloseDetails = () => {

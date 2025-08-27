@@ -73,7 +73,7 @@ export const createCODorder = createAsyncThunk(
     "listApis/createCODorder",
     async (payload) => {
         try {
-            const response = await axios.post(`${credAndUrl?.BASE_URL}/customer/createcodOrder`,payload);
+            const response = await axios.post(`${credAndUrl?.BASE_URL}customer/createcodOrder`,payload);
             return response?.data;
         } catch (error) {
             return error?.data;

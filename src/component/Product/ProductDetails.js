@@ -514,7 +514,7 @@ const ProductDetails = () => {
       selectedAddons: selectedRecommendedItems
     };
 
-    console.log('Cart data being sent:', cartData);
+    // console.log('Cart data being sent:', cartData);
 
     dispatch(addtoCart(cartData))
       .then((res) => {
@@ -526,7 +526,7 @@ const ProductDetails = () => {
             preservedRecommendedItems: selectedRecommendedItems
           };
 
-          console.log('Navigating to checkout with:', navigationData);
+          // console.log('Navigating to checkout with:', navigationData);
           navigate("/checkout-1", { state: navigationData });
 
           // Clear localStorage AFTER navigation
@@ -780,10 +780,12 @@ const ProductDetails = () => {
 
   const handleReviewInputChange = (e) => {
     const { name, value } = e.target;
+    console.log("changes in ",name,value)
     updateState({
       ...iState,
       reviewData: { ...iState.reviewData, [name]: value }
     });
+    console.log("Changes :",reviewData)
   };
 
   const handleReviewSubmit = async (e) => {
