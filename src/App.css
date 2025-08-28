@@ -34,17 +34,18 @@
 @media (max-width: 600px) {
   .cards {
     grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
+    gap: 6px;
     justify-content: left;
   }
 
   .card1 {
-    max-width: 78px;
+    max-width: 67px;
     padding: 6px 0;
   }
 
   .card1 img {
-    width: 72px;
+    /* width: 72px; */
+    width: 52px;
   }
 
   .card1 p {
@@ -359,7 +360,8 @@
 
 @media (max-width: 600px) {
   .birthday-scroll-container {
-    height: 118vw;
+    /* height: 118vw; */
+    height: 134vw;
   }
 }
 
@@ -565,7 +567,8 @@
 
 @media (max-width: 480px) {
   .rightcard {
-    gap: 40px;
+    /* gap: 40px; */
+    gap: 100px;
     flex-direction: row;
     align-items: stretch;
 
@@ -709,7 +712,8 @@
 @media (max-width: 600px) {
   
   .anniversary-scroll-container{
-    height: 118vw;
+    /* height: 118vw; */
+    height: 134vw;
   }
 }
 
@@ -804,4 +808,9 @@
   height: 75px;
   
 
+}
+@media (max-width: 600px){
+  .PrivateDiningBox{
+    gap: 1px;
+  }
 }

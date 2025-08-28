@@ -65,7 +65,7 @@
     .ProductDetailsArea .carousel-indicators [data-bs-target]{width: 18%;}
     footer .FooterTop .FooterLogo {padding-right: 0;}
     footer .FooterTop {padding: 25px 0;}
-    .PrivateDiningBox {padding: 5px;}
+    .PrivateDiningBox {padding: 1px;}
     .PrivateDiningBox figure {width: 100%;margin-bottom: 0.5rem;}
     .FooterLinks {margin: 0 0 15px 0;}
     footer .FooterLinks h3 {margin: 0 0 10px 0;}
@@ -111,7 +111,7 @@
     .PrivateDiningBox .Info h5 {font-size: 14px;}
     .BirthdayDecorationArea .container-fluid .row .col-6 {padding: 5px;}
     footer .FooterLinks ul li a {font-size: 14px;}
-    .BirthdayDecorationArea img {height: 214px;}
+    .BirthdayDecorationArea img {height: 220px;}
     .HeroRight img {height: 160px;}
     .Hero-Section {margin: 0 0 25px 0;}
     .BirthdayDecorationArea .section-title {margin: 0 0 25px 0;}

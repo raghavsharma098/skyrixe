@@ -5047,7 +5047,8 @@ ul.Icons li a img {
 @media (max-width: 600px) {
   .birthday-item {
     height: 80vw;
-    width:53vw;
+    /* width:53vw; */
+    width: 67vw;
   }
 }
 
@@ -5132,6 +5133,7 @@ ul.Icons li a img {
 @media (max-width: 600px) {
   .anniversary-item {
     height: 80vw;
+    width: 67vw;
   }
 }
 
@@ -5188,7 +5190,8 @@ ul.Icons li a img {
     padding: 20px 10px;
     /* Less padding for small screens */
     margin: 1px 20px;
-    height:118vw;
+    /* height:118vw; */
+    height: 134vw;
   }
 
   .kids-scroll-container>* {
@@ -5213,6 +5216,7 @@ ul.Icons li a img {
 @media (max-width: 600px) {
   .kids-item {
     height: 80vw;
+    width: 67vw;
   }
 }
 
@@ -5268,7 +5272,9 @@ ul.Icons li a img {
     padding: 20px 10px;
     /* Less padding for small screens */
     margin: 1px 20px;
-    height: 118vw;
+    /* height: 118vw; */
+    height: 134vw;
+
   }
 
   .baby-shower-scroll-container>* {
@@ -5294,6 +5300,7 @@ ul.Icons li a img {
 @media (max-width: 600px) {
   .baby-shower-item {
     height: 80vw;
+    width: 67vw;
   }
 }
 
