@@ -214,14 +214,14 @@ faqItems.forEach(item => {
       <div className="Hero-Section">
         {/* New Optimized 10-Card Categories Section */}
         <div className="category-cards-container">
-          <div className="category-card" onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}>
+          <div className="category-card spacing-after" onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}>
             <div className="category-image">
               <img src={require("../../assets/images/on.png")} alt="Birthday Decorations" />
             </div>
             <p className="category-text">Birthday<br />Decorations</p>
           </div>
 
-          <div className="category-card" onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}>
+          <div className="category-card spacing-after" onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}>
             <div className="category-image">
               <img src={require("../../assets/images/td.png")} alt="Same Day Decorations" />
             </div>
@@ -249,7 +249,7 @@ faqItems.forEach(item => {
             <p className="category-text">Candlelight<br />Dinner</p>
           </div>
 
-          <div className="category-card" onClick={() => handleCategory({ categoryName: "BABY SHOWER" })}>
+          <div className="category-card spacing-after" onClick={() => handleCategory({ categoryName: "BABY SHOWER" })}>
             <div className="category-image">
               <img src={require("../../assets/images/sixthcard.png")} alt="Baby Shower" />
             </div>
@@ -263,7 +263,7 @@ faqItems.forEach(item => {
             <p className="category-text">Baby Welcome</p>
           </div>
 
-          <div className="category-card" onClick={() => handleCategory({ categoryName: "ANNIVERSARY" })}>
+          <div className="category-card spacing-after" onClick={() => handleCategory({ categoryName: "ANNIVERSARY" })}>
             <div className="category-image">
               <img src={require("../../assets/images/anni-1.png")} alt="Festive Celebrations" />
             </div>
@@ -277,7 +277,7 @@ faqItems.forEach(item => {
             <p className="category-text">Games &<br />Activities</p>
           </div>
 
-          <div className="category-card" onClick={() => handleCategory({ categoryName: "BALLOON BOUQUET" })}>
+          <div className="category-card spacing-after" onClick={() => handleCategory({ categoryName: "BALLOON BOUQUET" })}>
             <div className="category-image">
               <img src={require("../../assets/images/ninthcard.png")} alt="Balloon Bouquet" />
             </div>

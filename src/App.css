@@ -71,15 +71,14 @@
 /* New Optimized Category Cards Section */
 .category-cards-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   gap: 8px;
   margin: 20px auto;
   padding: 0 15px;
   width: 100%;
   max-width: 100%;
-  flex-wrap: nowrap;
-  overflow-x: auto;
+  flex-wrap: wrap;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
 }
@@ -101,6 +100,11 @@
   border-radius: 12px;
   background: transparent;
   position: relative;
+}
+
+/* Add spacing after specific categories */
+.category-card.spacing-after {
+  margin-right: 25px;
 }
 
 .category-card:hover {
@@ -164,6 +168,11 @@
     max-width: calc(20% - 6px);
     margin-bottom: 8px;
   }
+
+  /* Reduce spacing on mobile */
+  .category-card.spacing-after {
+    margin-right: 10px;
+  }
   
   .category-image {
     width: 50px;
@@ -188,6 +197,11 @@
     min-width: calc(20% - 6px);
     max-width: calc(20% - 6px);
     margin-bottom: 10px;
+  }
+
+  /* Adjust spacing for tablet */
+  .category-card.spacing-after {
+    margin-right: 15px;
   }
   
   .category-image {
