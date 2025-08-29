@@ -318,7 +318,13 @@ header .HeaderArea {
   flex: 1;
   align-items: center;
   margin: 0 0 0 15px;
-  padding: 15px 0;
+  padding: 30px 20px;
+}
+
+/* Header container padding */
+header .navbar .container-fluid {
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 header .HeaderArea .HeaderSearch {
@@ -388,18 +394,105 @@ header .HeaderArea .HeaderSearch span {
   display: flex;
   align-items: center;
   margin: 0;
+  gap: 20px;
+}
+
+/* Consistent spacing for all navigation elements */
+.headerTwoBtn {
+  gap: 15px !important;
+}
+
+/* Equal margins for all navigation buttons */
+.headerTwoBtn .help,
+.headerTwoBtn .citySelectorBtn,
+.headerTwoBtn ul.Icons,
+.headerTwoBtn .Login,
+.headerTwoBtn .loginBtn {
+  margin: 0 !important;
+}
+
+/* Ensure consistent button sizing */
+.headerTwoBtn .help,
+.headerTwoBtn .citySelectorBtn,
+.headerTwoBtn .Login,
+.headerTwoBtn .loginBtn {
+  height: 44px !important;
+  min-width: 100px !important;
+  padding: 8px 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.headerTwoBtn > * {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ensure all navigation elements have consistent appearance */
+.nav-button-consistent {
+  height: 44px;
+  min-width: 44px;
+  padding: 10px 15px;
+  border: 1px solid #e4e9ee;
+  border-radius: 8px;
+  background-color: transparent;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.nav-button-consistent:hover {
+  border-color: #303943;
+  background-color: rgba(48, 57, 67, 0.05);
+  color: #333;
 }
 
 .headerTwoBtn .CustomSelect {
-  border: 1px solid #303943;
+  border: 1px solid #e4e9ee;
   align-items: center;
   border-radius: 8px;
   cursor: pointer;
   position: relative;
   display: flex;
   justify-content: space-between;
-  height: 42px;
+  height: 44px;
   width: 145px;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.headerTwoBtn .CustomSelect:hover {
+  border-color: #303943;
+  background-color: rgba(48, 57, 67, 0.05);
+}
+
+/* City selector button styling */
+.citySelectorBtn .cityButton {
+  height: 44px !important;
+  min-width: 120px;
+  padding: 8px 12px !important;
+  border: 1px solid #e4e9ee !important;
+  border-radius: 8px !important;
+  background-color: transparent !important;
+  color: #333 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
+}
+
+.citySelectorBtn .cityButton:hover {
+  border-color: #303943 !important;
+  background-color: rgba(48, 57, 67, 0.05) !important;
 }
 
 .headerTwoBtn .CustomSelect .Select {
@@ -444,39 +537,197 @@ header .HeaderArea .HeaderSearch span {
 header .HeaderArea .HeaderRight ul.Icons {
   display: flex;
   align-items: center;
-  margin: 0 0 0 0px;
+  margin: 0;
+  gap: 20px;
+  list-style: none;
+  padding: 0;
 }
 
+header .HeaderArea .HeaderRight ul.Icons li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+/* Ensure consistent styling for all navigation elements */
+header .HeaderArea .HeaderRight ul.Icons li > * {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+}
+
+/* Remove last child special styling for consistent spacing */
 .headerTwoBtn ul.Icons li:last-child {
-  padding: 0 0 0 15px;
-  border-left: 1px solid #e4e9ee;
-  margin: 0 0 0 5px;
+  padding-left: 0;
+  border-left: none;
+  margin-left: 0;
 }
 
 header .HeaderArea .HeaderRight ul.Icons li .UserIcon {
   border: 1px solid #e4e9ee;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background-color: transparent;
+}
+
+header .HeaderArea .HeaderRight ul.Icons li .UserIcon:hover {
+  border-color: #303943;
+  background-color: rgba(48, 57, 67, 0.05);
 }
 
 header .HeaderArea .HeaderRight ul.Icons li a img {
   width: 24px;
 }
 
+/* Shopping cart icon styling */
+header .HeaderArea .HeaderRight ul.Icons li svg {
+  width: 24px;
+  height: 24px;
+  color: #333;
+}
+
+header .HeaderArea .HeaderRight ul.Icons li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 44px;
+  text-decoration: none;
+  border-radius: 8px;
+  border: 1px solid #e4e9ee;
+  background-color: transparent;
+  transition: all 0.3s ease;
+  padding: 8px;
+}
+
+header .HeaderArea .HeaderRight ul.Icons li a:hover {
+  background-color: rgba(48, 57, 67, 0.05);
+  border-color: #303943;
+}
+
+/* Mobile search bar - hidden on desktop */
+.mobile-search-container {
+  display: none;
+}
+
+/* Ensure consistent icon sizing across all navigation elements */
+.help-center-btn i,
+.LocationIcon i,
+header .HeaderArea .HeaderRight ul.Icons li svg,
+header .HeaderArea .HeaderRight ul.Icons li i {
+  font-size: 16px !important;
+  color: #303943;
+  transition: color 0.3s ease;
+}
+
+/* Better spacing for cart icon within list */
+header .HeaderArea .HeaderRight ul.Icons li .cart-icon-link {
+  margin: 0 15px !important;
+  padding: 8px !important;
+  border: 1px solid #e4e9ee !important;
+  border-radius: 8px !important;
+  background-color: transparent !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Correct selector for shopping cart in headerTwoBtn */
+.headerTwoBtn ul.Icons li .cart-icon-link {
+  margin: 0 15px !important;
+  padding: 8px !important;
+  border: 1px solid #e4e9ee !important;
+  border-radius: 8px !important;
+  background-color: transparent !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease !important;
+}
+
+header .HeaderArea .HeaderRight ul.Icons li .cart-icon-link:hover {
+  background-color: rgba(48, 57, 67, 0.05) !important;
+  border-color: #303943 !important;
+}
+
+.headerTwoBtn ul.Icons li .cart-icon-link:hover {
+  background-color: rgba(48, 57, 67, 0.05) !important;
+  border-color: #303943 !important;
+}
+
+/* Ensure login button in headerTwoBtn has consistent sizing */
+.headerTwoBtn .Login,
+.headerTwoBtn .loginBtn {
+  color: #fff !important;
+  background-color: #303943 !important;
+  border-radius: 8px !important;
+  padding: 10px 20px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  height: 44px !important;
+  min-width: 100px !important;
+  text-decoration: none !important;
+  border: 1px solid #303943 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Ensure the shopping cart ul.Icons has proper gap */
+header .headerTwoBtn ul.Icons {
+  display: flex !important;
+  align-items: center !important;
+  gap: 20px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
 /* header .HeaderArea .HeaderRight ul.Icons li */
 header .HeaderArea .HeaderRight .Login {
   color: #fff;
   background-color: #303943;
-  border-radius: 5px;
-  padding: 5px 20px;
-  display: inline-block;
-  margin: 0 0 0 10px;
-  font-size: 16px;
+  border-radius: 8px;
+  padding: 10px 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-size: 14px;
   font-weight: 500;
+  height: 44px;
+  min-width: 100px;
+  text-decoration: none;
+  border: 1px solid #303943;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+header .HeaderArea .HeaderRight .Login:hover {
+  background-color: #1e2329;
+  border-color: #1e2329;
+  color: #fff;
 }
 
 .ProfileDropdown {
@@ -4318,6 +4569,7 @@ header nav ul li:hover .Sub_Categories_dropdown {
 
 .newHeader {
   display: block;
+  padding: 8px 0; /* Add top and bottom padding to header */
 }
 
 .newHeader .navbar {
@@ -5712,5 +5964,245 @@ ul.Icons li a img {
 
   .EmptyWishlistArea {
     padding: 40px 15px;
+  }
+}
+
+/* Navigation responsive styles */
+@media (max-width: 768px) {
+  header .HeaderArea {
+    padding: 20px 15px;
+  }
+  
+  header .navbar .container-fluid {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  .headerTwoBtn {
+    gap: 10px;
+  }
+  
+  .headerTwoBtn > * {
+    height: 40px;
+  }
+  
+  .headerTwoBtn .CustomSelect {
+    width: 120px;
+    height: 40px;
+  }
+  
+  .headerTwoBtn .CustomSelect .Select {
+    font-size: 14px;
+  }
+  
+  .citySelectorBtn .cityButton {
+    height: 40px !important;
+    min-width: 100px !important;
+    padding: 6px 12px !important;
+    font-size: 13px !important;
+    margin-right: 10px;
+  }
+  
+  header .HeaderArea .HeaderRight ul.Icons {
+    gap: 10px;
+  }
+  
+  header .HeaderArea .HeaderRight ul.Icons li {
+    height: 40px;
+  }
+  
+  header .HeaderArea .HeaderRight ul.Icons li > * {
+    height: 40px;
+    min-width: 40px;
+  }
+  
+  header .HeaderArea .HeaderRight .Login {
+    height: 40px;
+    padding: 8px 15px;
+    font-size: 13px;
+    min-width: 70px;
+  }
+  
+  header .HeaderArea .HeaderRight ul.Icons li svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  header .HeaderArea .HeaderRight ul.Icons li a img {
+    width: 18px;
+  }
+  
+  header .HeaderArea .HeaderRight ul.Icons li .UserIcon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  header .HeaderArea .HeaderRight ul.Icons li a {
+    min-width: 40px;
+    height: 40px;
+    padding: 6px;
+  }
+  
+  .help-center-btn {
+    height: 40px !important;
+    min-width: 100px !important;
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+  }
+  
+  .help-center-btn i {
+    font-size: 14px !important;
+  }
+  
+  .LocationIcon i {
+    font-size: 14px !important;
+  }
+  
+  /* Hide excessive components on tablet and mobile */
+  .CategoriesResponsive2,
+  .web-hidden,
+  .navbar-nav {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  header .HeaderArea {
+    padding: 12px 0;
+  }
+  
+  .headerTwoBtn {
+    gap: 8px;
+  }
+  
+  .headerTwoBtn > * {
+    height: 36px;
+  }
+  
+  .headerTwoBtn .CustomSelect {
+    width: 100px;
+    height: 36px;
+  }
+  
+  .headerTwoBtn .CustomSelect .Select {
+    font-size: 12px;
+  }
+  
+  .citySelectorBtn .cityButton {
+    height: 36px !important;
+    min-width: 80px !important;
+    padding: 5px 8px !important;
+    font-size: 12px !important;
+  }
+  
+  header .HeaderArea .HeaderRight ul.Icons {
+    gap: 8px;
+  }
+  
+  header .HeaderArea .HeaderRight ul.Icons li {
+    height: 36px;
+  }
+  
+  header .HeaderArea .HeaderRight ul.Icons li > * {
+    height: 36px;
+    min-width: 36px;
+  }
+  
+  header .HeaderArea .HeaderRight .Login {
+    height: 36px;
+    padding: 6px 12px;
+    font-size: 12px;
+    min-width: 60px;
+  }
+  
+  header .HeaderArea .HeaderRight ul.Icons li svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  header .HeaderArea .HeaderRight ul.Icons li a img {
+    width: 16px;
+  }
+  
+  header .HeaderArea .HeaderRight ul.Icons li .UserIcon {
+    width: 36px;
+    height: 36px;
+  }
+  
+  header .HeaderArea .HeaderRight ul.Icons li a {
+    min-width: 36px;
+    height: 36px;
+    padding: 5px;
+  }
+  
+  .headerTwoBtn ul.Icons li:last-child {
+    padding-left: 6px;
+    margin-left: 2px;
+  }
+  
+  .help-center-btn {
+    height: 36px !important;
+    min-width: 70px !important;
+    padding: 6px 8px !important;
+    font-size: 12px !important;
+  }
+  
+  .help-center-btn i {
+    font-size: 12px !important;
+  }
+  
+  .LocationIcon i {
+    font-size: 12px !important;
+  }
+  
+  .help-center-btn span {
+    display: none;
+  }
+  
+  /* Mobile search bar below navigation */
+  .mobile-search-container {
+    display: block !important;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e4e9ee;
+  }
+  
+  .mobile-search-wrapper {
+    position: relative;
+    max-width: 100%;
+  }
+  
+  .mobile-search-input {
+    width: 100%;
+    padding: 12px 45px 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 14px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .mobile-search-input:focus {
+    outline: none;
+    border-color: #303943;
+    box-shadow: 0 2px 12px rgba(48, 57, 67, 0.2);
+  }
+  
+  .mobile-search-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    pointer-events: none;
+  }
+  
+  header .HeaderArea {
+    padding: 15px 10px;
+  }
+  
+  header .navbar .container-fluid {
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }

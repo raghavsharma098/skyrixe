@@ -216,8 +216,8 @@ faqItems.forEach(item => {
           <div className="card1">
             {/* <img src="https://cheetah.cherishx.com/website_layout/ganpati_menu_icon_desk.jpg?format=avif" alt="" /> */}
              <img src={require("../../assets/images/on.png")} />
-            <p>celebration<br /> Decoration</p>
-          </div>
+            <p>Birthday</p>
+          </div> 
           <div
             className="card1"
             style={{ cursor: "pointer" }}
@@ -229,14 +229,14 @@ faqItems.forEach(item => {
             /> */}
             <img src={require("../../assets/images/td.png")} />
             <p>
-              Kids birthday <br /> Decors
+              Balloon <br />  bouquet
             </p>
           </div>
-          <div className="card1">
+          {/* <div className="card1">
             <img src="https://cheetah.cherishx.com/website_layout/1737544205__original_layout_55.jpg?format=avif" alt="" />
                 
             <p> Same day <br /> Decoration</p>
-          </div>
+          </div> */}
           <div
             className="card1"
             style={{ cursor: "pointer" }}
@@ -248,13 +248,13 @@ faqItems.forEach(item => {
             /> */}
                <img src={require("../../assets/images/thd.png")} />
             <p>
-              Birthday <br /> Decoration
+              Premium <br /> Decoration
             </p>
           </div>
           <div className="card1">
             {/* <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_03_20240930_132612.jpg?format=avif" alt="" /> */}
              <img src={require("../../assets/images/forthcard.png")} />
-            <p> Personalised <br /> Gifts</p>
+            <p> Theme <br /> decoration</p>
           </div>
           <div
             className="card1"
@@ -267,7 +267,7 @@ faqItems.forEach(item => {
             /> */}
              <img src={require("../../assets/images/fifthcard.png")} />
             <p>
-              Candlelight <br /> Dinner
+              Kids <br /> Party
             </p>
           </div>
 
@@ -282,7 +282,7 @@ faqItems.forEach(item => {
             /> */}
              <img src={require("../../assets/images/sixthcard.png")} />
             <p>
-              Baby <br /> Shower
+              Room <br /> & Hall
             </p>
           </div>
 
@@ -297,19 +297,19 @@ faqItems.forEach(item => {
             /> */}
              <img className="imgmat"src={require("../../assets/images/seventhcard.png")} />
             <p>
-              Baby <br /> Welcome
+              Anniversary
             </p>
           </div>
           <div className="card1">
             {/* <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_02_20241018_123157.jpg?format=avif" alt="" /> */}
              <img src={require("../../assets/images/eightcard.png")} />
             
-            <p> Festive <br /> Celebrations</p>
+            <p> Premium <br /> decoration</p>
           </div>
           <div className="card1">
             {/* <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_08_20240930_132612.jpg?format=avif" alt="" /> */}
              <img className="imgmat"src={require("../../assets/images/ninthcard.png")} />
-            <p> Games & <br /> Activities</p>
+            <p> Balloon <br /> bouquet</p>
           </div>
 
 

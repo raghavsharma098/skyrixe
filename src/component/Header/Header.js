@@ -672,19 +672,34 @@ const Header = () => {
                       style={{
                         display: 'flex',
                         alignItems: 'center',
+                        justifyContent: 'center',
                         gap: '8px',
                         whiteSpace: 'nowrap',
-                        padding: '5px 10px',
+                        padding: '10px 15px',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
-                        border: '1px solid #ddd',
-                        borderRadius: '6px',
-                        backgroundColor: '#f8f9fa',
-                        cursor: 'pointer'
+                        border: '1px solid #e4e9ee',
+                        borderRadius: '8px',
+                        backgroundColor: 'transparent',
+                        color: '#333',
+                        fontSize: '14px',
+                        fontWeight: '500',
+                        height: '44px',
+                        minWidth: '120px',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.backgroundColor = 'rgba(48, 57, 67, 0.05)';
+                        e.target.style.borderColor = '#303943';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.backgroundColor = 'transparent';
+                        e.target.style.borderColor = '#e4e9ee';
                       }}
                     >
                       <span className="LocationIcon">
-                        <i className="fa-solid fa-location-dot" style={{ fontSize: '18px', color: '#303943' }}></i>
+                        <i className="fa-solid fa-location-dot" style={{ fontSize: '16px', color: '#303943' }}></i>
                       </span>
                       <span className="cityText" style={{ flex: 1, minWidth: 0 }}>
                         {selectCity
@@ -743,18 +758,45 @@ const Header = () => {
                       </div>
                     </div>
                   ) : (
-                    <Link
-                      to="/upcoming-bookings"
-                      className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 outline-none focus:outline-none focus:ring-0"
-                    >
-                      <MdAddShoppingCart
-                        className="w-6 h-6 hover:text-blue-600"
-                        style={{ fontSize: '28px', color: '#1f2937' }}
-                      />
-                    </Link>
+                    ""
                   )}
 
                   <ul className="Icons">
+                    <li>
+                      <Link
+                        to="/upcoming-bookings"
+                        className="cart-icon-link"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          padding: '8px',
+                          border: '1px solid #e4e9ee',
+                          borderRadius: '8px',
+                          backgroundColor: 'transparent',
+                          textDecoration: 'none',
+                          transition: 'all 0.3s ease',
+                          height: '44px',
+                          minWidth: '44px',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.backgroundColor = 'rgba(48, 57, 67, 0.05)';
+                          e.target.style.borderColor = '#303943';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.backgroundColor = 'transparent';
+                          e.target.style.borderColor = '#e4e9ee';
+                        }}
+                      >
+                        <MdAddShoppingCart
+                          style={{ 
+                            fontSize: '20px', 
+                            color: '#303943',
+                            transition: 'color 0.3s ease'
+                          }}
+                        />
+                      </Link>
+                    </li>
                     <li>
                       {userDetail ? (
                         <Link to="/profile" className="UserIcon">
@@ -877,6 +919,22 @@ const Header = () => {
             </div>
           </li>
         </ul>
+        
+        {/* Mobile Search Bar */}
+        <div className="mobile-search-container">
+          <div className="mobile-search-wrapper">
+            <input
+              type="search"
+              className="mobile-search-input"
+              placeholder="What are you celebrating?"
+              value={search}
+              onChange={(e) => {
+                updateState({ ...iState, search: e.target.value });
+              }}
+            />
+            <i className="fa-solid fa-search mobile-search-icon"></i>
+          </div>
+        </div>
       </header>
 
       {showCitySelector && (

@@ -38,20 +38,36 @@ const HelpCenter = () => {
       <button
         type="button"
         onClick={() => setShowHelpModal(true)}
+        className="help-center-btn"
         style={{
           display: "flex",
           alignItems: "center",
+          justifyContent: "center",
           gap: "8px",
-          padding: "5px 10px",
-          border: "1px solid #ddd",
-          borderRadius: "6px",
-          backgroundColor: "#f8f9fa",
+          padding: "10px 15px",
+          border: "1px solid #e4e9ee",
+          borderRadius: "8px",
+          backgroundColor: "transparent",
+          color: "#333",
+          fontSize: "14px",
+          fontWeight: "500",
+          height: "44px",
+          minWidth: "120px",
           cursor: "pointer",
+          transition: "all 0.3s ease",
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.backgroundColor = 'rgba(48, 57, 67, 0.05)';
+          e.target.style.borderColor = '#303943';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.backgroundColor = 'transparent';
+          e.target.style.borderColor = '#e4e9ee';
         }}
       >
         <i
-          className="fa-solid fa-circle-question"
-          style={{ fontSize: "18px", color: "#303943" }}
+          className="fa-solid fa-headset"
+          style={{ fontSize: "16px", color: "#303943" }}
         ></i>
         <span>Help Center</span>
       </button>
