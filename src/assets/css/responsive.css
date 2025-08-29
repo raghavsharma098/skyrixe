@@ -65,8 +65,8 @@
     .ProductDetailsArea .carousel-indicators [data-bs-target]{width: 18%;}
     footer .FooterTop .FooterLogo {padding-right: 0;}
     footer .FooterTop {padding: 25px 0;}
-    .PrivateDiningBox {padding: 1px;}
-    .PrivateDiningBox figure {width: 100%;margin-bottom: 0.5rem;}
+    .PrivateDiningBox {padding: 8px; border-radius: 12px;}
+    .PrivateDiningBox figure {width: 100%;margin-bottom: 0.5rem; border-radius: 10px;}
     .FooterLinks {margin: 0 0 15px 0;}
     footer .FooterLinks h3 {margin: 0 0 10px 0;}
     .FilterArea {margin: 0 0 20px 0; display: none;}
@@ -97,7 +97,7 @@
     .FeatureArea .FeatureBoxMain {min-height: auto;}
     .FeatureArea .FeatureBox aside {min-width: auto;min-height: auto;}
     .FeatureArea .FeatureBoxMain .FeatureBox h4 {font-size: 14px;}
-    .PrivateDiningBox figure {margin: 0;height: 155px;}
+    .PrivateDiningBox figure {margin: 0;height: 155px; border-radius: 10px;}
     .PrivateDiningBox h6 {font-size: 13px;line-height: 16px;margin: 0 0 5px 0;}
     .PrivateDiningBox .Info {flex-direction: column-reverse;align-items: flex-start;}
     .PrivateDiningBox h6 {min-height: auto;}
@@ -122,7 +122,7 @@
     .Modal .PrivateDiningBox .Info {flex-direction: column!important;}
     .CustomizationsArea.Modal .row .col-6:nth-child(odd) {padding-right: 5px;}
     .CustomizationsArea.Modal .row .col-6:nth-child(even) {padding-left: 5px;}
-    .PrivateDiningBox img {margin: 0 0 5px 0;}
+    .PrivateDiningBox img {margin: 0 0 5px 0; border-radius: 8px;}
     .ModalArea h3 {font-size: 20px;}
     .ModalBox .modal-content {padding: 20px 10px;}
     .FeatureArea .row .col-6 {padding-left: 5px;padding-right: 5px;}
