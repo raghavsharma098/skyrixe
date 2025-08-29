@@ -1,7 +1,20 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import '../../assets/css/serviceCrousel.css';
 
 const EventServicesApp = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
   const servicesData = [
     {
       sectionTitle: "Enjoy Every Moment of Life",
@@ -156,7 +169,7 @@ const EventServicesApp = () => {
           ]
         },
         {
-          title: "🔥 Pyro Effects",
+          title: "Pyro Effects",
           image: "https://www.imgworldstickets.ae/blog/wp-content/uploads/2023/01/birthday-parties-at-IMG.jpg",
           features: [
             "✨ Sparkle showers & cold fire pyros",
@@ -166,7 +179,7 @@ const EventServicesApp = () => {
           ]
         },
         {
-          title: "🫧 Bubble Machine",
+          title: "Bubble Machine",
           image: "https://www.imgworldstickets.ae/blog/wp-content/uploads/2023/01/birthday-parties-at-IMG.jpg",
           features: [
             "✨ Endless stream of bubbles for kids & adults",
@@ -223,22 +236,28 @@ const EventServicesApp = () => {
 
   const ServiceSection = ({ section, index }) => {
     const scrollRef = useRef(null);
+    const isEnjoyLifeSection = section.sectionTitle === "Enjoy Every Moment of Life";
+    const shouldHideHeading = isEnjoyLifeSection && isMobile;
     
     return (
-      <div className="service-section">
-        <h1 className="section-title-service">
-          <span>
-            {section.sectionTitle.split(' ').map((word, wordIndex) => {
-              const isHighlighted = ['Life', 'Balloons', 'Artist', 'Entry'].includes(word);
-              return (
-                <span key={wordIndex} className={isHighlighted ? 'highlight-text' : ''}>
-                  {word}{wordIndex < section.sectionTitle.split(' ').length - 1 ? ' ' : ''}
-                </span>
-              );
-            })}
-          </span>
-        </h1>
-        <p className="section-subtitle">{section.subtitle}</p>
+      <div className={`service-section ${isEnjoyLifeSection ? "enjoy-life-section" : ""}`}>
+        {!shouldHideHeading && (
+          <>
+            <h1 className="section-title-service">
+              <span>
+                {section.sectionTitle.split(' ').map((word, wordIndex) => {
+                  const isHighlighted = ['Life', 'Balloons', 'Artist', 'Entry'].includes(word);
+                  return (
+                    <span key={wordIndex} className={isHighlighted ? 'highlight-text' : ''}>
+                      {word}{wordIndex < section.sectionTitle.split(' ').length - 1 ? ' ' : ''}
+                    </span>
+                  );
+                })}
+              </span>
+            </h1>
+            <p className="section-subtitle">{section.subtitle}</p>
+          </>
+        )}
         
         <div className="scroll-container">
           {/* Left Arrow */}
@@ -273,7 +292,6 @@ const EventServicesApp = () => {
 
   return (
     <div className="app-container">
-  
       {/* Main Content */}
       <div className="main-content">
         {servicesData.map((section, index) => (
