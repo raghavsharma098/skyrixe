@@ -399,10 +399,7 @@
   padding: 20px;
   /* min-height: 600px; */
   background-color: #ffffff;
-
 }
-
-
 
 .reviews h1 {
   text-align: center;
@@ -414,23 +411,95 @@
   text-transform: uppercase;
 }
 
+.reviews-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.reviews-arrow-left,
+.reviews-arrow-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #e91e63;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 20;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), inset 0 0 0 2px #c2185b;
+  transition: all 0.3s ease;
+  font-size: 20px;
+  opacity: 1;
+}
+
+.reviews-arrow-left {
+  left: 50px;
+}
+
+.reviews-arrow-right {
+  right: 30px;
+}
+
+.reviews-arrow-left:hover,
+.reviews-arrow-right:hover {
+  background-color: #c2185b;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), inset 0 0 0 2px #a8144e;
+}
+
 .inro {
   position: relative;
   display: flex;
   flex-direction: row;
   width: max-content;
-  animation: scrollSlider 40s linear infinite;
+  min-width: 100%;
+  /* animation: scrollSlider 40s linear infinite; */
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  padding: 0 70px; /* Add padding to prevent arrows from covering content */
+}
+
+.inro::-webkit-scrollbar {
+  display: none; /* WebKit */
 }
 
 @media (max-width: 600px) {
   .inro {
     width: 78vw;
   }
+  
+  .reviews-arrow-left,
+  .reviews-arrow-right {
+    width: 45px;
+    height: 45px;
+    font-size: 16px;
+  }
+  
+  .reviews-arrow-left {
+    left: 25px !important;
+  }
+  
+  .reviews-arrow-right {
+    right: 15px;
+  }
 }
 
 .testimonials {
   /*  flex: 0 0 25%;*/
-  max-width: 25%;
+  min-width: 300px;
+  max-width: 300px;
   background-color: #fff;
   height: 27vw;
   /* height: auto; */
@@ -442,6 +511,7 @@
   padding: 24px 22px;
   box-sizing: border-box;
   margin-right: 20px;
+  flex-shrink: 0;
 }
 
 
