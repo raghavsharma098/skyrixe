@@ -54,7 +54,7 @@ const EventServicesApp = () => {
           ]
         },
         {
-          title: "🎈 Balloon Artist",
+          title: "Balloon Artist",
           image: "https://burst.shopifycdn.com/photos/dj-crowd.jpg?width=1000&format=pjpg&exif=0&iptc=0",
           features: [
             "✨ Creative balloon animals, hats & cartoon shapes",
@@ -65,7 +65,7 @@ const EventServicesApp = () => {
           ]
         },
         {
-          title: "🎶 DJ",
+          title: "DJ",
           image: "https://media.istockphoto.com/id/1292256043/photo/fast-delivery-truck-travelling-through-the-city-streets.jpg?s=612x612&w=0&k=20&c=ndH4s7k1UHpadvoavYT29mhdzWWkX1hf4_nqj70ELJY=",
           features: [
             "✨ High-energy music & dance floor lighting",
@@ -75,7 +75,7 @@ const EventServicesApp = () => {
           ]
         },
         {
-          title: "📸 Photographer",
+          title: "Photographer",
           image: "https://media.istockphoto.com/id/625736338/photo/stack-of-hands-showing-unity.jpg?s=612x612&w=0&k=20&c=20mAQjGRQ5XVKqHe2qFguqGZ4dwto6lxxinciCfnVI0=",
           features: [
             "✨ Professional photography & candid shots",
@@ -86,7 +86,7 @@ const EventServicesApp = () => {
           ]
         },
         {
-          title: "🐻 Mascot",
+          title: "Mascot",
           image: "https://mattersindia.com/wp-content/uploads/2024/04/stress-free.jpg",
           features: [
             "✨ Cartoon mascots like Mickey, Doraemon, Chhota Bheem",
@@ -97,7 +97,7 @@ const EventServicesApp = () => {
           ]
         },
         {
-          title: "🎤 Anchor",
+          title: "Anchor",
           image: "https://www.imgworldstickets.ae/blog/wp-content/uploads/2023/01/birthday-parties-at-IMG.jpg",
           features: [
             "✨ Professional hosting for smooth events",
@@ -108,7 +108,7 @@ const EventServicesApp = () => {
           ]
         },
         {
-          title: "🎩 Magicians",
+          title: "Magicians",
           image: "https://www.imgworldstickets.ae/blog/wp-content/uploads/2023/01/birthday-parties-at-IMG.jpg",
           features: [
             "✨ Fun stage shows & close-up tricks",
@@ -119,7 +119,7 @@ const EventServicesApp = () => {
           ]
         },
         {
-          title: "🎨 Tattoo Artist",
+          title: "Tattoo Artist",
           image: "https://www.imgworldstickets.ae/blog/wp-content/uploads/2023/01/birthday-parties-at-IMG.jpg",
           features: [
             "✨ Stylish temporary tattoos for kids & adults",
@@ -136,7 +136,7 @@ const EventServicesApp = () => {
       subtitle: "We offer a variety of services, differing in the total value of needed.",
       services: [
         {
-          title: "❄️ Dry Ice Fog Machine",
+          title: "Dry Ice Fog Machine",
           image: "https://www.imgworldstickets.ae/blog/wp-content/uploads/2023/01/birthday-parties-at-IMG.jpg",
           features: [
             "✨ Creates a magical low-lying fog effect",
@@ -146,7 +146,7 @@ const EventServicesApp = () => {
           ]
         },
         {
-          title: "🎈 Balloon Blasting",
+          title: "Balloon Blasting",
           image: "https://www.imgworldstickets.ae/blog/wp-content/uploads/2023/01/birthday-parties-at-IMG.jpg",
           features: [
             "✨ Grand balloon drop or blast effect",
@@ -195,24 +195,29 @@ const EventServicesApp = () => {
   };
 
   const ServiceCard = ({ service }) => (
-    <div className="service-card">
-      <img 
-        src={service.image} 
-        alt={service.title}
-        className="service-card-image"
-      />
+    <div 
+      className="service-card"
+      style={{
+        backgroundImage: `url(${service.image})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
       <h2 className="service-card-title">{service.title}</h2>
-      <ul className="service-card-features">
-        {service.features.map((feature, index) => (
-          <li key={index} className="service-card-feature">{feature}</li>
-        ))}
-      </ul>
-      <button 
-        onClick={() => handleEnquiry(service.title)}
-        className="service-card-button"
-      >
-        Enquiry Now
-      </button>
+      <div className="service-card-content">
+        <ul className="service-card-features">
+          {service.features.map((feature, index) => (
+            <li key={index} className="service-card-feature">{feature}</li>
+          ))}
+        </ul>
+        <button 
+          onClick={() => handleEnquiry(service.title)}
+          className="service-card-button"
+        >
+          Enquiry Now
+        </button>
+      </div>
     </div>
   );
 
