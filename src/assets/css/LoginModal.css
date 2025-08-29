@@ -1,0 +1,574 @@
+.LoginModal .modal-content {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  max-width: none;
+}
+
+.LoginModal .ModalArea {
+  padding: 0;
+  background: white;
+  min-height: 100vh;
+  position: relative;
+}
+
+.LoginModal .ModalContent {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  min-height: calc(100vh - 80px);
+}
+
+.LoginModal .LoginSection {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.LoginModal .LoginSection h3 {
+  margin: 0 0 40px 0;
+  color: #333;
+  font-weight: 600;
+  font-size: 28px;
+  text-align: center;
+}
+
+.LoginModal .LoginMethods h4 {
+  margin: 0 0 24px 0;
+  color: #333;
+  font-weight: 600;
+  font-size: 20px;
+}
+.LoginModal .OTPInputContainer {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.LoginModal .OTPInput {
+  width: 60px !important;
+  height: 60px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  border: 2px solid black;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  color: black;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.LoginModal .EditPhoneBtn {
+  background: none;
+  border: none;
+  color: black;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+  padding: 0;
+}
+
+.LoginModal .CloseModal {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.9);
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #666;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.LoginModal .CloseModal:hover {
+  background: rgba(255, 255, 255, 1);
+  color: #333;
+  transform: scale(1.1);
+}
+
+.LoginModal .ResendBtn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+}
+
+
+.LoginModal .FormGroup {
+  margin-bottom: 20px;
+}
+
+.LoginModal .FormInput {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.2s;
+  background-color: #fff;
+}
+
+.LoginModal .FormInput:focus {
+  outline: none;
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+}
+
+.LoginModal .ErrorText {
+  color: #d32f2f;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}
+
+.LoginModal .LoginBtn {
+  width: 100%;
+  background: #7b1fa2;
+  color: white;
+  border: none;
+  padding: 16px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+
+.LoginModal .LoginBtn:hover {
+  background: #6a1b9a;
+  transform: translateY(-1px);
+}
+
+.LoginModal .Divider {
+  text-align: center;
+  margin: 32px 0;
+  position: relative;
+}
+
+.LoginModal .Divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: #e0e0e0;
+}
+
+.LoginModal .Divider span {
+  background-color: #fff;
+  padding: 0 16px;
+  color: #666;
+  font-size: 14px;
+}
+
+.LoginModal .SocialLogin {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.LoginModal .SocialBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: white;
+}
+
+.LoginModal .FacebookBtn {
+  background-color: #3b5998;
+}
+
+.LoginModal .FacebookBtn:hover {
+  background-color: #2d4373;
+  transform: translateY(-1px);
+}
+
+.LoginModal .GoogleBtn {
+  background-color: #db4437;
+}
+
+.LoginModal .GoogleBtn:hover {
+  background-color: #c23321;
+  transform: translateY(-1px);
+}
+
+.LoginModal .EmailBtn {
+  background-color: #00bcd4;
+}
+
+.LoginModal .EmailBtn:hover {
+  background-color: #0097a7;
+  transform: translateY(-1px);
+}
+
+.LoginModal .TermsText {
+  color: #666;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.LoginModal .TermsText a {
+  color: #1a73e8;
+  text-decoration: none;
+}
+
+.LoginModal .TermsText a:hover {
+  text-decoration: underline;
+}
+
+.LoginModal .OrderSummary {
+  background: #f8f9fa;
+  padding: 24px;
+  border-left: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+}
+
+.LoginModal .OrderSummary h4 {
+  margin: 0 0 24px 0;
+  color: #333;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.LoginModal .SummaryContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.LoginModal .LoginPrompt {
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  font-size: 13px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.LoginModal .BookingDetails {
+  margin-bottom: 20px;
+}
+
+.LoginModal .BookingInfo {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.LoginModal .InfoRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+.LoginModal .InfoRow i {
+  color: #666;
+  width: 16px;
+}
+
+.LoginModal .EditBtn {
+  background: none;
+  border: none;
+  color: #1a73e8;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.LoginModal .EditBtn:hover {
+  text-decoration: underline;
+}
+
+.LoginModal .ProductInfo {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.LoginModal .ProductImage {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.LoginModal .ProductImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.LoginModal .ProductDetails h5 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.LoginModal .ProductPrice {
+  color: #333;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.LoginModal .CustomizationsInfo {
+  margin-bottom: 20px;
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.LoginModal .CustomizationsInfo h6 {
+  margin: 0 0 12px 0;
+  color: #333;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.LoginModal .CustomizationsInfo h6 i {
+  color: #1a73e8;
+  cursor: pointer;
+}
+
+.LoginModal .NoCustomizations {
+  color: #666;
+  font-size: 13px;
+  margin: 0;
+}
+
+.LoginModal .CustomizationsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.LoginModal .CustomizationItem {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #333;
+}
+
+/* Recommended Items Section in Login Modal */
+.RecommendedItemsInfo {
+  margin-bottom: 20px;
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.RecommendedItemsInfo h6 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 12px 0 6px 12px !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.RecommendedItemsList {
+  background: transparent;
+  padding: 0;
+  margin: 12px 0 6px 12px;
+}
+
+.RecommendedItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 0;
+  border-bottom: none;
+  font-size: 13px;
+  color: #666;
+}
+
+.RecommendedItem:last-child {
+  border-bottom: none;
+}
+
+.RecommendedItem span:first-child {
+  flex: 1;
+  font-weight: 400;
+  color: #666;
+  text-align: left;
+}
+
+.RecommendedItem span:last-child {
+  font-weight: 500;
+  color: #333;
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.RecommendedItemsInfo h6 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 8px 0;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+/* Ensure consistent spacing with other sections */
+.CustomizationsInfo,
+.RecommendedItemsInfo {
+  margin: 15px 0;
+  padding: 0;
+}
+
+
+.LoginModal .LocationInfo {
+  margin-bottom: 20px;
+}
+
+.LoginModal .LocationRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.LoginModal .SummaryTotal {
+  margin-bottom: 24px;
+  padding-top: 16px;
+  border-top: 2px solid #e0e0e0;
+}
+
+.LoginModal .TotalRow {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 18px;
+  color: #333;
+}
+
+.LoginModal .SecurePayments h6 {
+  margin: 0 0 12px 0;
+  color: #333;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.LoginModal .PaymentIcons {
+  display: flex;
+  gap: 12px;
+  color: #666;
+  font-size: 24px;
+}
+
+.LoginModal .ModalFooter {
+  border-top: 1px solid #e0e0e0;
+  padding: 20px;
+  background: white;
+}
+
+.LoginModal .WhatsAppHelp {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: #666;
+  font-size: 13px;
+  text-align: center;
+  justify-content: center;
+  line-height: 1.4;
+}
+
+.LoginModal .HelpIcon {
+  flex-shrink: 0;
+}
+
+.LoginModal .HelpIcon img {
+  width: 20px;
+  height: 20px;
+}
+
+.LoginModal .WhatsAppHelp a {
+  color: #1a73e8;
+  text-decoration: none;
+}
+
+.LoginModal .WhatsAppHelp a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .LoginModal .ModalContent {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  
+  .LoginModal .OrderSummary {
+    border-left: none;
+    border-top: 1px solid #e0e0e0;
+  }
+  
+  .LoginModal .LoginSection {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .LoginModal .ModalArea {
+    min-height: auto;
+  }
+  
+  .LoginModal .LoginSection {
+    padding: 20px;
+  }
+  
+  .LoginModal .LoginSection h3 {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+}

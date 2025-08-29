@@ -1,0 +1,198 @@
+.DateSelectionModal .modal-content {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.DateSelectionModal .ModalArea {
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  max-width: 500px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.DateSelectionModal .ModalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.DateSelectionModal .ModalHeader h3 {
+  margin: 0;
+  color: #333;
+  font-weight: 500;
+  font-size: 20px;
+  flex: 1;
+}
+
+.DateSelectionModal .CloseModal {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.DateSelectionModal .CalendarContainer {
+  margin-bottom: 24px;
+}
+
+.DateSelectionModal .CalendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 0 8px;
+}
+
+.DateSelectionModal .MonthYear {
+  margin: 0;
+  color: #333;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.DateSelectionModal .MonthNavBtn {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.DateSelectionModal .MonthNavBtn:hover {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.DateSelectionModal .WeekDays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+  margin-bottom: 8px;
+}
+
+.DateSelectionModal .WeekDay {
+  text-align: center;
+  padding: 12px 8px;
+  font-weight: 500;
+  color: #666;
+  font-size: 14px;
+}
+
+.DateSelectionModal .CalendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.DateSelectionModal .CalendarDay {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 15px;
+  transition: all 0.2s;
+  position: relative;
+  min-height: 44px;
+}
+
+.DateSelectionModal .CalendarDay.selectable {
+  color: #333;
+  background-color: #fff;
+}
+
+.DateSelectionModal .CalendarDay.selectable:hover {
+  background-color: #f0f4ff;
+  color: #1a73e8;
+}
+
+.DateSelectionModal .CalendarDay.selected {
+  background-color: #1a73e8 !important;
+  color: white !important;
+  font-weight: 600;
+}
+
+.DateSelectionModal .CalendarDay.today {
+  background-color: #f0f4ff;
+  color: #1a73e8;
+  font-weight: 600;
+}
+
+.DateSelectionModal .CalendarDay.other-month {
+  color: #ccc;
+  background-color: transparent;
+}
+
+.DateSelectionModal .CalendarDay.disabled {
+  color: #ccc;
+  background-color: transparent;
+  cursor: not-allowed;
+}
+
+.DateSelectionModal .CalendarDay.disabled:hover {
+  background-color: transparent;
+}
+
+.DateSelectionModal .WhatsAppHelp {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  color: #666;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.DateSelectionModal .HelpIcon {
+  flex-shrink: 0;
+}
+
+.DateSelectionModal .HelpIcon img {
+  width: 20px;
+  height: 20px;
+}
+
+.DateSelectionModal .WhatsAppHelp a {
+  color: #1a73e8;
+  text-decoration: none;
+}
+
+.DateSelectionModal .WhatsAppHelp a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .DateSelectionModal .ModalArea {
+    padding: 5px;
+    margin: 16px;
+  }
+  
+  .DateSelectionModal .CalendarDay {
+    min-height: 40px;
+    font-size: 14px;
+  }
+}
