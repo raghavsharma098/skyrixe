@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "../../assets/css/dropdownNav.css";
 import birth1 from "../../assets/images/TopSellers/birthdaytop1.jpg";
 import birth2 from "../../assets/images/TopSellers/birthdaytop2.jpg";
@@ -27,34 +27,23 @@ import { useNavigate } from "react-router-dom";
 
 const NavigationDropdown = () => {
     const [activeMenu, setActiveMenu] = useState(null);
+    const [dropdownPosition, setDropdownPosition] = useState({ left: 0 });
+    const menuRefs = useRef({});
+    const containerRef = useRef(null);
     const navigate = useNavigate();
     const menuData = {
-        Birthday: {
-            "CANDLELIGHT DINNERS": [
-                "Private Couple Experiences",
-                "Rooftop Dinners",
-                "Poolside Candlelight Dinners",
-                "Private Dinner & Movie",
+        "BIRTHDAY": {
+            "BIRTHDAY": [
+                "Birthday Decoration",
+                "Simple Birthday Decoration", 
+                "Neon & Sequin Birthday Decoration",
+                "Terrace Decoration",
+                "Car Boot Decoration"
             ],
-            "BIRTHDAY DECORATIONS": [
-                "Birthday Decors for Him",
-                "Birthday Decors for Her",
-                "1st Birthday Decorations",
-                "18th Birthday Special",
-                "Car Boot Decorations",
-                "Terrace Decorations",
-                "Rosegold Themed Decorations",
-                "Kids Themed Decorations",
-            ],
-            "BIRTHDAY GIFTS": [
-                "Bubble Balloon Buckets",
-                "Photo Frames",
-                "Balloon Box Surprise",
-                "Digital Surprises",
-                "Cake & Bouquet Combos",
-                "Photo Gifts",
-                "Heart Shape Cakes",
-                "Bouquets",
+            "KID'S PARTY": [
+                "Kids Birthday Decoration",
+                "1st Birthday Decoration",
+                "Naming Ceremony Decoration"
             ],
             "TOP SELLERS": [
                 { title: "White & Gold Floral Birthday Decoration", image: birth1 },
@@ -63,31 +52,17 @@ const NavigationDropdown = () => {
                 { title: "Romantic Candlelight Dinner", image: birth4 },
             ],
         },
-        Anniversary: {
-            "CANDLELIGHT DINNERS": [
-                "Private Couple Experiences",
-                "Rooftop Dinners",
-                "Poolside Candlelight Dinners",
-                "Private Dinner & Movie",
+        "ANNIVERSARY": {
+            "ANNIVERSARY": [
+                "Anniversary Decoration",
+                "Bride To Be",
+                "Haldi-Mehndi Balloon Decoration",
+                "Let's Party",
+                "Better Together"
             ],
-            "DECORATIONS": [
-                "Anniversary Party Decors",
-                "Hotel Room Decoration",
-                "1st Anniversary Decors",
-                "25th Anniversary Decors",
-                "50th Anniversary Decors",
-                "Canopy Decorations at Home",
-                "Wedding Night Decorations",
-            ],
-            "ANNIVERSARY GIFTS": [
-                "Bubble Balloon Buckets",
-                "Photo Frames",
-                "Balloon Box Surprise",
-                "Digital Surprises",
-                "Cake & Bouquet Combos",
-                "Photo Gifts",
-                "Heart Shape Cakes",
-                "Bouquets",
+            "ROOM & HALL DECOR'S": [
+                "Room & Hall Decor",
+                "Canopy Decor"
             ],
             "TOP SELLERS": [
                 { title: "I Love You Balloon Bouquet", image: aniv1 },
@@ -96,114 +71,120 @@ const NavigationDropdown = () => {
                 { title: "Personalised Photoframe", image: aniv4 },
             ],
         },
-        "Candlelight Dinners": {
-            "TRENDING": [
-                { title: "Open Air Poolside Candlelight Dinner", image: cd1 },
+        "BABY SHOWER": {
+            "BABY SHOWER": [
+                "Baby Shower Decoration",
+                "Oh Baby",
+                "Welcome",
+                "Naming Ceremony"
             ],
-            "CATEGORIES": [
-                "Private Couple Experiences",
-                "Rooftop Dinners",
-                "Poolside Candlelight Dinners",
-                "Private Dinner & Movie",
+            "BALLOON BOUQUET": [
+                "Balloon Bouquet"
             ],
-            "SPOTLIGHT": [
-                { title: "Evening Elegance Candlelight Dining", image: cd2 },
-            ],
-            "OUR RECOMMENDATIONS": [
-                "Private Supreme Show Movie Experience",
-                "Open Air Poolside Dining",
-                "Open Air Candlelight Dinner at Ella Hotel",
-                "Rooftop Candlelight Dinner",
-                "Dinner on a Swing",
-            ],
-        },
-        Decorations: {
-            "BY TYPE": [
-                "Balloon Decorations",
-                "Rosegold Themed Decorations",
-                "Umbrella Decorations",
-                "Flower Decorations",
-            ],
-            "BY OCCASION": [
-                "Baby Shower",
-                "Kids Birthday Party",
-                "Birthday Decorations",
-                "Welcome Baby Decorations",
-                "Anniversary Decorations",
-                "Pre-Wedding Events",
-                "First Night Decorations",
-                "Festive Decorations",
-                "Bachelorette Decorations",
-            ],
-            "KIDS THEME DECOR": [
-                "Minion Theme Decorations",
-                "Unicorn Decorations",
-                "Superhero Theme Decor",
-                "Harry Potter Decorations",
-                "Peppa Pig Decorations",
-                "All Kids Themes",
+            "PREMIUM DECOR'S": [
+                "Premium Decor's"
             ],
             "TOP SELLERS": [
-                { title: "Hexagon Neon Birthday Decoration", image: de1 },
-                { title: "Luxury Ring Decoration", image: de2 },
-                { title: "Flower Wall Decoration", image: de3 },
-                { title: "Balloon Arch Decoration", image: de4 },
+                { title: "Baby Shower Decoration", image: de1 },
+                { title: "Oh Baby Theme", image: de2 },
+                { title: "Welcome Baby", image: de3 },
+                { title: "Premium Decor", image: de4 },
             ],
         },
-        Festivals: {
-            "BY OCCASION": [
-                "Lohri Decorations (13th Jan)",
-                "Republic Day Decorations (26th Jan)",
-                "Valentine's Day Special (14th Feb)",
-                "Women's Day Special (8th March)",
-                "Holi Decorations (14th March)",
-                "Mother's Day Special (11th May)",
-                "Father's Day Special (15th June)",
-                "Guruji Birthday Setups (7th July)",
-                "Independence Day Decorations (15th August)",
-                "Ganesh Chaturthi (26th Aug)"
+        "THEME DECOR'S FOR BOYS": {
+            "POPULAR THEMES": [
+                "Boss Baby",
+                "Jungle Theme", 
+                "Cars",
+                "Dinosaur",
+                "Peppa Pig",
+                "Spiderman",
+                "Baby Shark"
             ],
-            "": [
-                "Navratri Decorations",
-                "Halloween Decorations (31st October)",
-                "Karva Chauth Surprises (9th October)",
-                "Diwali Decorations & Gifts (18th October)",
-                "Christmas Decorations & Gifts (25th December)",
-                "New Year Party Decorations & Gifts (1st Jan 2026)",
+            "ADVENTURE THEMES": [
+                "Donut",
+                "Cocomelon",
+                "Mickey Mouse",
+                "Football",
+                "Aeroplane",
+                "Space"
             ],
-            "UPCOMING FESTIVALS": [
-                { title: "Mother's Day Special", image: fes1 },
-                { title: "Guruji Birthday Setups", image: fes2 },
-                { title: "Independence Day Decorations", image: fes3 },
-                { title: "Ganesh Chaturthi", image: fes4 },
-            ],
-        },
-        "Kid's Party": {
-            "REQUIREMENT": [
-                "Decorations",
-                "Birthday Activities",
-                "All Cakes",
-                "Balloon Bouquets",
-            ],
-            "BY EVENT TYPE": [
-                "Kids Birthday Decoration",
-                "Welcome Baby Decorations",
-                "First Birthday Decorations",
-                "Naming Ceremony Decorations",
-                "Baby Shower Decorations",
-                "Annaprashan Decorations",
+            "ACTION THEMES": [
+                "Superhero",
+                "Teddy",
+                "Paw Patrol",
+                "Unicorn Theme",
+                "Captain America Theme",
+                "Minecraft Theme"
             ],
             "TOP SELLERS": [
-                { title: "First Birthday Decoration", image: kid1 },
-                { title: "Unicorn Theme Decoration", image: kid2 },
-                { title: "Superhero Theme Decoration", image: kid3 },
-                { title: "Princess Theme Decoration", image: kid4 },
+                { title: "Boss Baby Theme Decoration", image: kid1 },
+                { title: "Superhero Theme Decoration", image: kid2 },
+                { title: "Cars Theme Decoration", image: kid3 },
+                { title: "Spiderman Theme Decoration", image: kid4 },
+            ],
+        },
+        "THEME DECOR'S FOR GIRLS": {
+            "PRINCESS THEMES": [
+                "Minnie Mouse",
+                "Barbie Theme",
+                "Frozen",
+                "Mermaid",
+                "Princess"
+            ],
+            "MAGICAL THEMES": [
+                "Rainbow",
+                "Butterfly",
+                "Candyland",
+                "Masha and the Bear"
+            ],
+            "TOP SELLERS": [
+                { title: "Minnie Mouse Theme Decoration", image: fes1 },
+                { title: "Princess Theme Decoration", image: fes2 },
+                { title: "Frozen Theme Decoration", image: fes3 },
+                { title: "Barbie Theme Decoration", image: fes4 },
             ],
         }
     };
 
     const toggleMenu = (menu) => {
+        if (menu && menu !== activeMenu) {
+            // Calculate dropdown position based on menu item
+            const menuElement = menuRefs.current[menu];
+            const containerElement = containerRef.current;
+            
+            if (menuElement && containerElement) {
+                const menuRect = menuElement.getBoundingClientRect();
+                const containerRect = containerElement.getBoundingClientRect();
+                
+                // Calculate optimal left position
+                const menuCenter = menuRect.left + menuRect.width / 2 - containerRect.left;
+                const dropdownWidth = getDropdownWidth(menu);
+                let leftPosition = menuCenter - dropdownWidth / 2;
+                
+                // Ensure dropdown doesn't overflow container
+                const maxLeft = containerRect.width - dropdownWidth;
+                leftPosition = Math.max(0, Math.min(leftPosition, maxLeft));
+                
+                setDropdownPosition({ left: leftPosition });
+            }
+        }
         setActiveMenu(activeMenu === menu ? null : menu);
+    };
+
+    // Helper function to determine dropdown width based on content
+    const getDropdownWidth = (menu) => {
+        const menuContent = menuData[menu];
+        const sectionCount = Object.keys(menuContent).length;
+        
+        // Boys theme has 4 sections (3 text + 1 image), girls has 3 sections (2 text + 1 image)
+        if (menu === "THEME DECOR'S FOR BOYS") {
+            return Math.min(800, sectionCount * 160 + 40); // 4 sections * 160px + padding
+        } else if (menu === "THEME DECOR'S FOR GIRLS") {
+            return Math.min(650, sectionCount * 160 + 40); // 3 sections * 160px + padding
+        } else {
+            return Math.min(700, sectionCount * 160 + 40); // Default width
+        }
     };
 
     // Helper function to determine if a section has images and how many
@@ -221,22 +202,30 @@ const NavigationDropdown = () => {
 
     return (
         <nav className="dropdown-navbar">
-            <div className="dropdown-nav-container">
+            <div className="dropdown-nav-container" ref={containerRef}>
                 {Object.keys(menuData).map((menu) => (
                     <div
                         key={menu}
                         className="dropdown-nav-item"
+                        ref={(el) => (menuRefs.current[menu] = el)}
                         onMouseEnter={() => toggleMenu(menu)}
                         onMouseLeave={() => toggleMenu(null)}
                     >
                         <button className="dropdown-nav-button">
                             {menu} <span className="chevron">▼</span>
                         </button>
-                        {/* Dropdown */}
+                        {/* Dropdown with Smart Positioning */}
                         <div
                             className={`dropdown-nav-dropdown ${activeMenu === menu ? "active" : ""}`}
+                            style={{
+                                left: activeMenu === menu ? `${dropdownPosition.left}px` : '0',
+                                width: activeMenu === menu ? `${getDropdownWidth(menu)}px` : 'auto'
+                            }}
                         >
-                            <div className="dropdown-nav-dropdown-content">
+                            <div className={`dropdown-nav-dropdown-content ${
+                                menu === "THEME DECOR'S FOR BOYS" ? "boys-theme" : 
+                                menu === "THEME DECOR'S FOR GIRLS" ? "girls-theme" : ""
+                            }`}>
                                 {Object.entries(menuData[menu]).map(([category, items], idx) => {
                                     const imageCount = getImageCount(items);
                                     const hasImages = imageCount > 0;
@@ -252,7 +241,8 @@ const NavigationDropdown = () => {
                                                             <div className="dropdown-nav-item-link"
                                                                 style={{ cursor: "pointer" }}
                                                                 onClick={() => handleCategory({
-                                                                    categoryName: menu === "Candlelight Dinners" ? "ANNIVERSARY" : menu.toUpperCase()
+                                                                    categoryName: menu.toUpperCase().replace("'S", "S"),
+                                                                    subcategory: item
                                                                 })}
                                                             >
                                                                 {item}
@@ -260,7 +250,13 @@ const NavigationDropdown = () => {
                                                         </li>
                                                     ) : (
                                                         // case: object with image & title
-                                                        <li key={i} className="dropdown-nav-item-with-image">
+                                                        <li key={i} className="dropdown-nav-item-with-image"
+                                                            onClick={() => handleCategory({
+                                                                categoryName: menu.toUpperCase().replace("'S", "S"),
+                                                                subcategory: item.title
+                                                            })}
+                                                            style={{ cursor: "pointer" }}
+                                                        >
                                                             <img
                                                                 src={item.image}
                                                                 alt={item.title}

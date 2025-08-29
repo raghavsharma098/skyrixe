@@ -304,6 +304,7 @@ header {
   display: none;
   border-bottom: 1px solid #ddd;
   box-shadow: rgba(0, 0, 0, 0.10) 0px 1px 3px, rgba(0, 0, 0, 0.20) 0px 1px 2px;
+  border-radius: 0 0 12px 12px; /* Add subtle roundness to bottom corners */
 }
 
 header nav {
@@ -3205,10 +3206,6 @@ i.fa-star {
 
 /* .FeatureArea2 .owl-item img {display: inline-block!important; width: auto!important;} */
 
-.FeatureArea .section-title {
-  /* margin: 0 0 30px 0; */
-}
-
 .FeatureArea .section-title h2 {
   color: #02366f;
   font-size: 36px;
@@ -4570,6 +4567,8 @@ header nav ul li:hover .Sub_Categories_dropdown {
 .newHeader {
   display: block;
   padding: 8px 0; /* Add top and bottom padding to header */
+  border-radius: 0 0 12px 12px; /* Add subtle roundness to bottom corners only */
+  overflow: hidden; /* Ensure child elements respect the border-radius */
 }
 
 .newHeader .navbar {
