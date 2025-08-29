@@ -212,108 +212,77 @@ faqItems.forEach(item => {
   return (
     <>
       <div className="Hero-Section">
-        <div className="cards">
-          <div className="card1">
-            {/* <img src="https://cheetah.cherishx.com/website_layout/ganpati_menu_icon_desk.jpg?format=avif" alt="" /> */}
-             <img src={require("../../assets/images/on.png")} />
-            <p>Birthday</p>
-          </div> 
-          <div
-            className="card1"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "KIDS BIRTHDAY" })}
-          >
-            {/* <img
-              src="https://cheetah.cherishx.com/website_layout/1755324921__original_layout_55.jpg?format=avif"
-              alt="Kids Birthday"
-            /> */}
-            <img src={require("../../assets/images/td.png")} />
-            <p>
-              Balloon <br />  bouquet
-            </p>
-          </div>
-          {/* <div className="card1">
-            <img src="https://cheetah.cherishx.com/website_layout/1737544205__original_layout_55.jpg?format=avif" alt="" />
-                
-            <p> Same day <br /> Decoration</p>
-          </div> */}
-          <div
-            className="card1"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}
-          >
-            {/* <img
-              src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_03_20241018_123157.jpg?format=avif"
-              alt="Birthday Decoration"
-            /> */}
-               <img src={require("../../assets/images/thd.png")} />
-            <p>
-              Premium <br /> Decoration
-            </p>
-          </div>
-          <div className="card1">
-            {/* <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_03_20240930_132612.jpg?format=avif" alt="" /> */}
-             <img src={require("../../assets/images/forthcard.png")} />
-            <p> Theme <br /> decoration</p>
-          </div>
-          <div
-            className="card1"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "ANNIVERSARY" })}
-          >
-            {/* <img
-              src="https://cheetah.cherishx.com/website_layout/1755170285__original_layout_55.jpg?format=avif"
-              alt="Candlelight Dinner"
-            /> */}
-             <img src={require("../../assets/images/fifthcard.png")} />
-            <p>
-              Kids <br /> Party
-            </p>
+        {/* New Optimized 10-Card Categories Section */}
+        <div className="category-cards-container">
+          <div className="category-card" onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}>
+            <div className="category-image">
+              <img src={require("../../assets/images/on.png")} alt="Birthday Decorations" />
+            </div>
+            <p className="category-text">Birthday<br />Decorations</p>
           </div>
 
-          <div
-            className="card1"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "BABY SHOWER" })}
-          >
-            {/* <img
-              src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_01_20241018_123157.jpg?format=avif"
-              alt="Baby Shower"
-            /> */}
-             <img src={require("../../assets/images/sixthcard.png")} />
-            <p>
-              Room <br /> & Hall
-            </p>
+          <div className="category-card" onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}>
+            <div className="category-image">
+              <img src={require("../../assets/images/td.png")} alt="Same Day Decorations" />
+            </div>
+            <p className="category-text">Same Day<br />Decorations</p>
           </div>
 
-          <div
-            className="card1"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "BABY SHOWER" })}
-          >
-            {/* <img
-              src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_01_20241018_123157.jpg?format=avif"
-              alt="Baby Shower"
-            /> */}
-             <img className="imgmat"src={require("../../assets/images/seventhcard.png")} />
-            <p>
-              Anniversary
-            </p>
-          </div>
-          <div className="card1">
-            {/* <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_02_20241018_123157.jpg?format=avif" alt="" /> */}
-             <img src={require("../../assets/images/eightcard.png")} />
-            
-            <p> Premium <br /> decoration</p>
-          </div>
-          <div className="card1">
-            {/* <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_08_20240930_132612.jpg?format=avif" alt="" /> */}
-             <img className="imgmat"src={require("../../assets/images/ninthcard.png")} />
-            <p> Balloon <br /> bouquet</p>
+          <div className="category-card" onClick={() => handleCategory({ categoryName: "KIDS BIRTHDAY" })}>
+            <div className="category-image">
+              <img src={require("../../assets/images/forthcard.png")} alt="Kids Birthday Decors" />
+            </div>
+            <p className="category-text">Kids Birthday<br />Decors</p>
           </div>
 
+          <div className="category-card" onClick={() => handleCategory({ categoryName: "PERSONALIZED GIFTS" })}>
+            <div className="category-image">
+              <img src={require("../../assets/images/fifthcard.png")} alt="Personalised Gifts" />
+            </div>
+            <p className="category-text">Personalised<br />Gifts</p>
+          </div>
 
+          <div className="category-card" onClick={() => handleCategory({ categoryName: "CANDLELIGHT DINNER" })}>
+            <div className="category-image">
+              <img src={require("../../assets/images/dining-1.png")} alt="Candlelight Dinner" />
+            </div>
+            <p className="category-text">Candlelight<br />Dinner</p>
+          </div>
 
+          <div className="category-card" onClick={() => handleCategory({ categoryName: "BABY SHOWER" })}>
+            <div className="category-image">
+              <img src={require("../../assets/images/sixthcard.png")} alt="Baby Shower" />
+            </div>
+            <p className="category-text">Baby Shower</p>
+          </div>
+
+          <div className="category-card" onClick={() => handleCategory({ categoryName: "BABY WELCOME" })}>
+            <div className="category-image">
+              <img src={require("../../assets/images/seventhcard.png")} alt="Baby Welcome" />
+            </div>
+            <p className="category-text">Baby Welcome</p>
+          </div>
+
+          <div className="category-card" onClick={() => handleCategory({ categoryName: "ANNIVERSARY" })}>
+            <div className="category-image">
+              <img src={require("../../assets/images/anni-1.png")} alt="Festive Celebrations" />
+            </div>
+            <p className="category-text">Festive<br />Celebrations</p>
+          </div>
+
+          <div className="category-card" onClick={() => handleCategory({ categoryName: "GAMES & ACTIVITIES" })}>
+            <div className="category-image">
+              <img src={require("../../assets/images/anni-2.png")} alt="Games & Activities" />
+            </div>
+            <p className="category-text">Games &<br />Activities</p>
+          </div>
+
+          <div className="category-card" onClick={() => handleCategory({ categoryName: "BALLOON BOUQUET" })}>
+            <div className="category-image">
+              <img src={require("../../assets/images/ninthcard.png")} alt="Balloon Bouquet" />
+            </div>
+            <p className="category-text">Balloon<br />Bouquet</p>
+          </div>
         </div>
         <div id="carouselExampleIndicators" className="carousel slide">
           <div className="carousel-inner">
@@ -352,7 +321,7 @@ faqItems.forEach(item => {
 
       <div className="Main">
         <div className="FeatureArea">
-          <div className="container-fluid" style={{ width: "100%", padding: "0", margin: "0" }}>
+          <div className="container-fluid">
             <div className="section-title">
               <h2>Celebrations We Create</h2>
             </div>
