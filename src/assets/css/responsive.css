@@ -111,8 +111,8 @@
     .PrivateDiningBox .Info h5 {font-size: 14px;}
     .BirthdayDecorationArea .container-fluid .row .col-6 {padding: 5px;}
     footer .FooterLinks ul li a {font-size: 14px;}
-    .BirthdayDecorationArea img {height: 220px;}
-    .HeroRight img {height: 160px;}
+    .BirthdayDecorationArea img {height: 220px; border-radius: 12px;}
+    .HeroRight img {height: 160px; border-radius: 12px;}
     .Hero-Section {margin: 0 0 25px 0;}
     .BirthdayDecorationArea .section-title {margin: 0 0 25px 0;}
     .CategoriesMenu .Categories_dropdown article aside {width: 100%;}
