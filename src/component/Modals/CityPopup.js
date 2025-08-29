@@ -369,20 +369,20 @@ const CityPopup = ({ cities, onSelect, onClose }) => {
   const [filteredCities, setFilteredCities] = useState([]);
   const [showAllCities, setShowAllCities] = useState(false);
   const cityIcons = {
-    'Mumbai': (props) => <img src={Mumbai} alt="Mumbai" {...props} style={{ height: 48 }} />,
-    'Delhi': (props) => <img src={delhi} alt="Delhi" {...props} style={{ height: 40, width: 40, objectFit: 'contain' }} />,
-    'Azamgarh': (props) => <img src={Azamgarh} alt="Azamgarh" {...props} style={{ height: 40, width: 40, objectFit: 'contain' }} />,
-    'Lucknow': (props) => <img src={Lucknow} alt="Lucknow" {...props} style={{ height: 68 }} />,
-    'Prayagraj': (props) => <img src={Prayagraj} alt="Prayagraj" {...props} style={{ height: 40, width: 40, objectFit: 'contain' }} />,
-    'Allahabad': (props) => <img src={Prayagraj} alt="Allahabad" {...props} style={{ height: 40, width: 40, objectFit: 'contain' }} />,
-    'Hyderabad': (props) => <img src={Hyderabad} alt="Hyderabad" {...props} style={{ height: 60 }} />,
-    'Ambedkar Nagar': (props) => <img src={ahmed} alt="Ambedkar Nagar" {...props} style={{ height: 40, width: 40, objectFit: 'contain' }} />,
-    'Mau': (props) => <img src={Mau} alt="Mau" {...props} style={{ height: 40, width: 40, objectFit: 'contain' }} />,
-    'Nashik': (props) => <img src={Nashik} alt="Nashik" {...props} style={{ height: 40, width: 40, objectFit: 'contain' }} />,
-    'Pune': (props) => <img src={Pune} alt="Pune" {...props} style={{ height: 40, width: 40, objectFit: 'contain' }} />,
-    'Jaunpur': (props) => <img src={Jaunpur} alt="Jaunpur" {...props} style={{ height: 40, width: 40, objectFit: 'contain' }} />,
-    'Kanpur': (props) => <img src={kanpur} alt="Kanpur" {...props} style={{ height: 40, width: 40, objectFit: 'contain' }} />,
-    'Ahmedabad': (props) => <img src={ahmed} alt="Ahmedabad" {...props} style={{ height: 40, width: 40, objectFit: 'contain' }} />
+    'Mumbai': (props) => <img src={Mumbai} alt="Mumbai" {...props} className="city-image" />,
+    'Delhi': (props) => <img src={delhi} alt="Delhi" {...props} className="city-image" />,
+    'Azamgarh': (props) => <img src={Azamgarh} alt="Azamgarh" {...props} className="city-image" />,
+    'Lucknow': (props) => <img src={Lucknow} alt="Lucknow" {...props} className="city-image" />,
+    'Prayagraj': (props) => <img src={Prayagraj} alt="Prayagraj" {...props} className="city-image" />,
+    'Allahabad': (props) => <img src={Prayagraj} alt="Allahabad" {...props} className="city-image" />,
+    'Hyderabad': (props) => <img src={Hyderabad} alt="Hyderabad" {...props} className="city-image" />,
+    'Ambedkar Nagar': (props) => <img src={ahmed} alt="Ambedkar Nagar" {...props} className="city-image" />,
+    'Mau': (props) => <img src={Mau} alt="Mau" {...props} className="city-image" />,
+    'Nashik': (props) => <img src={Nashik} alt="Nashik" {...props} className="city-image" />,
+    'Pune': (props) => <img src={Pune} alt="Pune" {...props} className="city-image" />,
+    'Jaunpur': (props) => <img src={Jaunpur} alt="Jaunpur" {...props} className="city-image" />,
+    'Kanpur': (props) => <img src={kanpur} alt="Kanpur" {...props} className="city-image" />,
+    'Ahmedabad': (props) => <img src={ahmed} alt="Ahmedabad" {...props} className="city-image" />
   };
 
   // Merge available cities with all cities data

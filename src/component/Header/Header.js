@@ -34,7 +34,7 @@ const initialState = {
 const Header = () => {
   const [showCitySelector, setShowCitySelector] = useState(false);
   const [iState, updateState] = useState(initialState);
-  let categoryArr = ["Birthday", "Anniversary", "Kid's Party", "Baby Shower"];
+  let categoryArr = ["BIRTHDAY", "ANNIVERSARY", "BABY SHOWER", "THEME DECOR'S FOR BOYS", "THEME DECOR'S FOR GIRLS"];
   const dispatch = useDispatch();
   const pathDetail = useLocation();
 
@@ -393,169 +393,92 @@ const Header = () => {
                       >
                         {category_name}
                       </a>
-                      {category_name == "Birthday" ? (
+                      {category_name == "BIRTHDAY" ? (
                         <ul
                           class="dropdown-menu"
                           aria-labelledby={`navbarDropdown${index}`}
                         >
-                          {getCategorySubCatList?.data?.length > 0
-                            ? getCategorySubCatList?.data?.map((item, i) => {
-                              if (item?.categoryName == "BIRTHDAY") {
-                                return (
-                                  <>
-                                    {item?.subcategories?.length > 0
-                                      ? item?.subcategories?.map(
-                                        (subCat, index) => {
-                                          return (
-                                            <li key={index}>
-                                              <a
-                                                class="dropdown-item"
-                                                style={{
-                                                  "--hover-color":
-                                                    "#f26a10",
-                                                }}
-                                                onClick={() =>
-                                                  handleCategory(
-                                                    item,
-                                                    subCat
-                                                  )
-                                                }
-                                              >
-                                                {subCat}
-                                              </a>
-                                            </li>
-                                          );
-                                        }
-                                      )
-                                      : ""}
-                                  </>
-                                );
-                              }
-                            })
-                            : ""}
+                          <li><a class="dropdown-item" style={{"--hover-color": "#f26a10"}} onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Birthday Decoration")}>Birthday Decoration</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#f26a10"}} onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Simple Birthday Decoration")}>Simple Birthday Decoration</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#f26a10"}} onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Neon & Sequin Birthday Decoration")}>Neon & Sequin Birthday Decoration</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#f26a10"}} onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Terrace Decoration")}>Terrace Decoration</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#f26a10"}} onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Car Boot Decoration")}>Car Boot Decoration</a></li>
+                          <li><hr class="dropdown-divider" /></li>
+                          <li><h6 class="dropdown-header">Kid's Party</h6></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#f26a10"}} onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Kids Birthday Decoration")}>Kids Birthday Decoration</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#f26a10"}} onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "1st Birthday Decoration")}>1st Birthday Decoration</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#f26a10"}} onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Naming Ceremony Decoration")}>Naming Ceremony Decoration</a></li>
                         </ul>
-                      ) : category_name == "Anniversary" ? (
+                      ) : category_name == "ANNIVERSARY" ? (
                         <ul
                           class="dropdown-menu"
                           aria-labelledby={`navbarDropdown${index}`}
                         >
-                          {getCategorySubCatList?.data?.length > 0
-                            ? getCategorySubCatList?.data?.map((item, i) => {
-                              if (item?.categoryName == "ANNIVERSARY") {
-                                return (
-                                  <>
-                                    {item?.subcategories?.length > 0
-                                      ? item?.subcategories?.map(
-                                        (subCat, index) => {
-                                          return (
-                                            <li key={index}>
-                                              <a
-                                                class="dropdown-item"
-                                                style={{
-                                                  "--hover-color":
-                                                    "#f2c210",
-                                                }}
-                                                onClick={() =>
-                                                  handleCategory(
-                                                    item,
-                                                    subCat
-                                                  )
-                                                }
-                                              >
-                                                {subCat}
-                                              </a>
-                                            </li>
-                                          );
-                                        }
-                                      )
-                                      : ""}
-                                  </>
-                                );
-                              }
-                            })
-                            : ""}
+                          <li><a class="dropdown-item" style={{"--hover-color": "#f2c210"}} onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Anniversary Decoration")}>Anniversary Decoration</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#f2c210"}} onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Bride To Be")}>Bride To Be</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#f2c210"}} onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Haldi-Mehndi Balloon Decoration")}>Haldi-Mehndi Balloon Decoration</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#f2c210"}} onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Let's Party")}>Let's Party</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#f2c210"}} onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Better Together")}>Better Together</a></li>
+                          <li><hr class="dropdown-divider" /></li>
+                          <li><h6 class="dropdown-header">Room & Hall Decor's</h6></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#f2c210"}} onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Room & Hall Decor")}>Room & Hall Decor</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#f2c210"}} onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Canopy Decor")}>Canopy Decor</a></li>
                         </ul>
-                      ) : category_name == "Kid's Party" ? (
+                      ) : category_name == "BABY SHOWER" ? (
                         <ul
                           class="dropdown-menu"
                           aria-labelledby={`navbarDropdown${index}`}
                         >
-                          {getCategorySubCatList?.data?.length > 0
-                            ? getCategorySubCatList?.data?.map((item, i) => {
-                              if (item?.categoryName == "KID'S PARTY") {
-                                return (
-                                  <>
-                                    {item?.subcategories?.length > 0
-                                      ? item?.subcategories?.map(
-                                        (subCat, index) => {
-                                          return (
-                                            <li key={index}>
-                                              <a
-                                                class="dropdown-item"
-                                                style={{
-                                                  "--hover-color":
-                                                    "#0db7af",
-                                                }}
-                                                onClick={() =>
-                                                  handleCategory(
-                                                    item,
-                                                    subCat
-                                                  )
-                                                }
-                                              >
-                                                {subCat}
-                                              </a>
-                                            </li>
-                                          );
-                                        }
-                                      )
-                                      : ""}
-                                  </>
-                                );
-                              }
-                            })
-                            : ""}
+                          <li><a class="dropdown-item" style={{"--hover-color": "#ff3f6c"}} onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Baby Shower Decoration")}>Baby Shower Decoration</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#ff3f6c"}} onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Oh Baby")}>Oh Baby</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#ff3f6c"}} onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Welcome")}>Welcome</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#ff3f6c"}} onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Naming Ceremony")}>Naming Ceremony</a></li>
+                          <li><hr class="dropdown-divider" /></li>
+                          <li><h6 class="dropdown-header">Balloon Bouquet</h6></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#ff3f6c"}} onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Balloon Bouquet")}>Balloon Bouquet</a></li>
+                          <li><hr class="dropdown-divider" /></li>
+                          <li><h6 class="dropdown-header">Premium Decor's</h6></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#ff3f6c"}} onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Premium Decor's")}>Premium Decor's</a></li>
                         </ul>
-                      ) : category_name == "Baby Shower" ? (
+                      ) : category_name == "THEME DECOR'S FOR BOYS" ? (
                         <ul
                           class="dropdown-menu"
                           aria-labelledby={`navbarDropdown${index}`}
                         >
-                          {getCategorySubCatList?.data?.length > 0
-                            ? getCategorySubCatList?.data?.map((item, i) => {
-                              if (item?.categoryName == "BABY SHOWER") {
-                                return (
-                                  <>
-                                    {item?.subcategories?.length > 0
-                                      ? item?.subcategories?.map(
-                                        (subCat, index) => {
-                                          return (
-                                            <li key={index}>
-                                              <a
-                                                class="dropdown-item"
-                                                style={{
-                                                  "--hover-color":
-                                                    "#ff3f6c",
-                                                }}
-                                                onClick={() =>
-                                                  handleCategory(
-                                                    item,
-                                                    subCat
-                                                  )
-                                                }
-                                              >
-                                                {subCat}
-                                              </a>
-                                            </li>
-                                          );
-                                        }
-                                      )
-                                      : ""}
-                                  </>
-                                );
-                              }
-                            })
-                            : ""}
+                          <li><a class="dropdown-item" style={{"--hover-color": "#0db7af"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Boss Baby")}>Boss Baby</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#0db7af"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Jungle Theme")}>Jungle Theme</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#0db7af"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Cars")}>Cars</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#0db7af"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Dinosaur")}>Dinosaur</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#0db7af"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Peppa Pig")}>Peppa Pig</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#0db7af"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Spiderman")}>Spiderman</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#0db7af"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Baby Shark")}>Baby Shark</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#0db7af"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Donut")}>Donut</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#0db7af"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Cocomelon")}>Cocomelon</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#0db7af"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Mickey Mouse")}>Mickey Mouse</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#0db7af"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Football")}>Football</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#0db7af"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Aeroplane")}>Aeroplane</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#0db7af"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Space")}>Space</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#0db7af"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Superhero")}>Superhero</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#0db7af"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Teddy")}>Teddy</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#0db7af"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Paw Patrol")}>Paw Patrol</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#0db7af"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Unicorn Theme")}>Unicorn Theme</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#0db7af"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Captain America Theme")}>Captain America Theme</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#0db7af"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Minecraft Theme")}>Minecraft Theme</a></li>
+                        </ul>
+                      ) : category_name == "THEME DECOR'S FOR GIRLS" ? (
+                        <ul
+                          class="dropdown-menu"
+                          aria-labelledby={`navbarDropdown${index}`}
+                        >
+                          <li><a class="dropdown-item" style={{"--hover-color": "#e91e63"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Minnie Mouse")}>Minnie Mouse</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#e91e63"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Barbie Theme")}>Barbie Theme</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#e91e63"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Frozen")}>Frozen</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#e91e63"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Mermaid")}>Mermaid</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#e91e63"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Rainbow")}>Rainbow</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#e91e63"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Princess")}>Princess</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#e91e63"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Butterfly")}>Butterfly</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#e91e63"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Candyland")}>Candyland</a></li>
+                          <li><a class="dropdown-item" style={{"--hover-color": "#e91e63"}} onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Masha and the Bear")}>Masha and the Bear</a></li>
                         </ul>
                       ) : (
                         ""
@@ -595,44 +518,97 @@ const Header = () => {
                       <p>All Categories</p>
                       <div className="Categories_dropdown">
                         <article>
-                          {getCategorySubCatList?.data?.length > 0
-                            ? getCategorySubCatList?.data?.map((item, i) => {
-                              return (
-                                <aside key={i}>
-                                  <h6
-                                  // style={{ color: i%2==0 ? "#02366F" : "Orange" }}
-                                  >
-                                    {item?.categoryName}
-                                  </h6>
-                                  <ul>
-                                    {item?.subcategories?.length > 0
-                                      ? item?.subcategories?.map(
-                                        (subCat, index) => {
-                                          if (index <= 4) {
-                                            return (
-                                              <li key={index}>
-                                                <a
-                                                  onClick={() =>
-                                                    handleCategory(
-                                                      item,
-                                                      subCat
-                                                    )
-                                                  }
-                                                >
-                                                  {subCat}
-                                                </a>
-                                              </li>
-                                            );
-                                          }
-                                        }
-                                      )
-                                      : ""}
-                                  </ul>
-                                  <div className="category-border"></div>
-                                </aside>
-                              );
-                            })
-                            : ""}
+                          <aside>
+                            <h6>BIRTHDAY</h6>
+                            <ul>
+                              <li><a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Birthday Decoration")}>Birthday Decoration</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Simple Birthday Decoration")}>Simple Birthday Decoration</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Neon & Sequin Birthday Decoration")}>Neon & Sequin Birthday Decoration</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Terrace Decoration")}>Terrace Decoration</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Car Boot Decoration")}>Car Boot Decoration</a></li>
+                            </ul>
+                            <h6 style={{marginTop: "10px", fontSize: "14px", color: "#666"}}>KID'S PARTY</h6>
+                            <ul>
+                              <li><a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Kids Birthday Decoration")}>Kids Birthday Decoration</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "1st Birthday Decoration")}>1st Birthday Decoration</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Naming Ceremony Decoration")}>Naming Ceremony Decoration</a></li>
+                            </ul>
+                            <div className="category-border"></div>
+                          </aside>
+                          <aside>
+                            <h6>ANNIVERSARY</h6>
+                            <ul>
+                              <li><a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Anniversary Decoration")}>Anniversary Decoration</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Bride To Be")}>Bride To Be</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Haldi-Mehndi Balloon Decoration")}>Haldi-Mehndi Balloon Decoration</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Let's Party")}>Let's Party</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Better Together")}>Better Together</a></li>
+                            </ul>
+                            <h6 style={{marginTop: "10px", fontSize: "14px", color: "#666"}}>ROOM & HALL DECOR'S</h6>
+                            <ul>
+                              <li><a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Room & Hall Decor")}>Room & Hall Decor</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Canopy Decor")}>Canopy Decor</a></li>
+                            </ul>
+                            <div className="category-border"></div>
+                          </aside>
+                          <aside>
+                            <h6>BABY SHOWER</h6>
+                            <ul>
+                              <li><a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Baby Shower Decoration")}>Baby Shower Decoration</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Oh Baby")}>Oh Baby</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Welcome")}>Welcome</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Naming Ceremony")}>Naming Ceremony</a></li>
+                            </ul>
+                            <h6 style={{marginTop: "10px", fontSize: "14px", color: "#666"}}>BALLOON BOUQUET</h6>
+                            <ul>
+                              <li><a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Balloon Bouquet")}>Balloon Bouquet</a></li>
+                            </ul>
+                            <h6 style={{marginTop: "10px", fontSize: "14px", color: "#666"}}>PREMIUM DECOR'S</h6>
+                            <ul>
+                              <li><a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Premium Decor's")}>Premium Decor's</a></li>
+                            </ul>
+                            <div className="category-border"></div>
+                          </aside>
+                          <aside>
+                            <h6>THEME DECOR'S FOR BOYS</h6>
+                            <ul>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Boss Baby")}>Boss Baby</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Jungle Theme")}>Jungle Theme</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Cars")}>Cars</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Dinosaur")}>Dinosaur</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Peppa Pig")}>Peppa Pig</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Spiderman")}>Spiderman</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Baby Shark")}>Baby Shark</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Donut")}>Donut</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Cocomelon")}>Cocomelon</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Mickey Mouse")}>Mickey Mouse</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Football")}>Football</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Aeroplane")}>Aeroplane</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Space")}>Space</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Superhero")}>Superhero</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Teddy")}>Teddy</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Paw Patrol")}>Paw Patrol</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Unicorn Theme")}>Unicorn Theme</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Captain America Theme")}>Captain America Theme</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Minecraft Theme")}>Minecraft Theme</a></li>
+                            </ul>
+                            <div className="category-border"></div>
+                          </aside>
+                          <aside>
+                            <h6>THEME DECOR'S FOR GIRLS</h6>
+                            <ul>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Minnie Mouse")}>Minnie Mouse</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Barbie Theme")}>Barbie Theme</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Frozen")}>Frozen</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Mermaid")}>Mermaid</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Rainbow")}>Rainbow</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Princess")}>Princess</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Butterfly")}>Butterfly</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Candyland")}>Candyland</a></li>
+                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Masha and the Bear")}>Masha and the Bear</a></li>
+                            </ul>
+                            <div className="category-border"></div>
+                          </aside>
                         </article>
                       </div>
                     </div>
