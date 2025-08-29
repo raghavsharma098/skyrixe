@@ -38,6 +38,7 @@ const Main = () => {
 
   const [scrollPosition, setScrollPosition] = useState(0);
   const scrollContainerRef = useRef(null);
+  const reviewsScrollRef = useRef(null);
   const [reviews, setReviews] = useState([]);
 
   const { latestReviews = [], loading, error } = useSelector(
@@ -75,6 +76,29 @@ const Main = () => {
   const handleScroll = () => {
     if (scrollContainerRef.current) {
       setScrollPosition(scrollContainerRef.current.scrollLeft);
+    }
+  };
+
+  // Reviews scroll functions
+  const handleReviewsScrollLeft = () => {
+    if (reviewsScrollRef.current) {
+      const container = reviewsScrollRef.current;
+      const scrollAmount = 300; // Scroll by one card width approximately
+      container.scrollBy({
+        left: -scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleReviewsScrollRight = () => {
+    if (reviewsScrollRef.current) {
+      const container = reviewsScrollRef.current;
+      const scrollAmount = 300; // Scroll by one card width approximately
+      container.scrollBy({
+        left: scrollAmount,
+        behavior: 'smooth'
+      });
     }
   };
 
@@ -1091,26 +1115,34 @@ faqItems.forEach(item => {
           {latestReviews.length === 0 ? (
             <p>No reviews available</p>
           ) : (
-            <div className="inro">
-              {latestReviews.map((review, index) => (
-                <div key={index} className="testimonials">
-                  <div className="data">
-                    <div className="img">
-                      <img src={review.userImage || "https://cdn-icons-png.flaticon.com/512/6681/6681204.png"} alt={review.name} />
-                    </div>
-                    <h2>{review.name}</h2>
-                    <h3>{review.rating ? `Rating: ${review.rating}/5` : "Verified Purchase"}</h3>
-                    <p>{review.comment}</p>
-
-                    <div className="reviwedproduct">
-                      <div className="image">
-                        <img src={review.productImage} alt={review.productName} />
+            <div className="reviews-container">
+              <button className="custom-arrow prev reviews-arrow-left" onClick={handleReviewsScrollLeft}>
+                <i className="fa-solid fa-angle-left"></i>
+              </button>
+              <div className="inro" ref={reviewsScrollRef}>
+                {latestReviews.map((review, index) => (
+                  <div key={index} className="testimonials">
+                    <div className="data">
+                      <div className="img">
+                        <img src={review.userImage || "https://cdn-icons-png.flaticon.com/512/6681/6681204.png"} alt={review.name} />
                       </div>
-                      <div className="view">{review.productName}</div>
+                      <h2>{review.name}</h2>
+                      <h3>{review.rating ? `Rating: ${review.rating}/5` : "Verified Purchase"}</h3>
+                      <p>{review.comment}</p>
+
+                      <div className="reviwedproduct">
+                        <div className="image">
+                          <img src={review.productImage} alt={review.productName} />
+                        </div>
+                        <div className="view">{review.productName}</div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+              <button className="custom-arrow next reviews-arrow-right" onClick={handleReviewsScrollRight}>
+                <i className="fa-solid fa-angle-right"></i>
+              </button>
             </div>
           )}
         </div>
