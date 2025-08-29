@@ -241,21 +241,26 @@ const EventServicesApp = () => {
         <p className="section-subtitle">{section.subtitle}</p>
         
         <div className="scroll-container">
-          {/* Left Arrow */}
-          <button 
-            onClick={() => scrollLeft(scrollRef)}
-            className="scroll-arrow scroll-arrow-left"
-          >
-            ←
-          </button>
-          
-          {/* Right Arrow */}
-          <button 
-            onClick={() => scrollRight(scrollRef)}
-            className="scroll-arrow scroll-arrow-right"
-          >
-            →
-          </button>
+          {/* Conditionally render arrows - hide for Wedding Entry section */}
+          {section.sectionTitle !== "Wedding Entry" && (
+            <>
+              {/* Left Arrow */}
+              <button 
+                onClick={() => scrollLeft(scrollRef)}
+                className="scroll-arrow scroll-arrow-left"
+              >
+                ←
+              </button>
+              
+              {/* Right Arrow */}
+              <button 
+                onClick={() => scrollRight(scrollRef)}
+                className="scroll-arrow scroll-arrow-right"
+              >
+                →
+              </button>
+            </>
+          )}
           
           {/* Horizontal Scrollable Container */}
           <div 

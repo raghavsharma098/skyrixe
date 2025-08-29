@@ -3997,26 +3997,31 @@ header .HeaderArea .HeaderRight .Avater .cartArea .row .ProdectDec .Links a:last
 }
 
 .custom-arrow {
-  background-color: rgba(0, 0, 0, 0.5) !important;
-  margin: 0 10px 0 0;
-  color: #fff !important;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
   position: absolute;
-  text-align: center;
-  line-height: 40px;
-  top: 30%;
-  transform: translateY(-40%);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+  color: #374151;
+  font-size: 1.2rem;
 }
 
 .custom-arrow.prev {
-  left: -20px;
+  left: -30px;
 }
 
 .custom-arrow.next {
-  right: -50px;
+  right: -30px;
 }
 
 .para {
@@ -5254,41 +5259,45 @@ ul.Icons li a img {
 }
 
 
-/* Custom Arrow Styles */
+/* Custom Arrow Styles - Unified */
 .custom-arrow {
   position: absolute;
-  top: 40%;
+  top: 50%;
   transform: translateY(-50%);
   z-index: 10;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.95);
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  border: 1px solid #ddd;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e7eb;
   transition: all 0.3s ease;
+  color: #374151;
+  font-size: 1.2rem;
 }
 
 .custom-arrow.prev {
-  left: -60px;
+  left: -30px;
 }
 
 .custom-arrow.next {
-  right: -60px;
+  right: -30px;
 }
 
 .custom-arrow:hover {
   background-color: rgba(255, 255, 255, 1);
   transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  color: #1f2937;
 }
 
 .custom-arrow i {
   font-size: 18px;
-  color: #333;
+  color: inherit;
 }
 
 /* Scroll Container Wrapper */
