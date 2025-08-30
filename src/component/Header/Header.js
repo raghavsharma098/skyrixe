@@ -29,6 +29,7 @@ const initialState = {
   search: "",
   citySearch: "",
   openSidebar: false,
+  expandedCategory: null, // For mobile category expansion
 };
 
 const Header = () => {
@@ -41,7 +42,7 @@ const Header = () => {
   const navigate = useNavigate();
   const [disableHover, setDisableHover] = useState(false);
 
-  const { selectCity, search, citySearch, openSidebar } = iState;
+  const { selectCity, search, citySearch, openSidebar, expandedCategory } = iState;
   const { getUserDetailState, getCityList, getCategorySubCatList } =
     useSelector((state) => state.productList);
   const LoginTimer = JSON.parse(window.localStorage.getItem("LoginTimer"));
@@ -52,10 +53,17 @@ const Header = () => {
 
   const handleCategory = (item, subCat) => {
     setDisableHover(true);
-    updateState({ ...iState, openSidebar: false });
+    updateState({ ...iState, openSidebar: false, expandedCategory: null });
     navigate("/products", { state: { item, subCat, selectCity } });
     // setDisableHover(false);
     window.scrollTo({ top: 150, behavior: "smooth" });
+  };
+
+  const toggleMobileCategory = (categoryName) => {
+    updateState({
+      ...iState,
+      expandedCategory: expandedCategory === categoryName ? null : categoryName
+    });
   };
 
   const handleDeleteProduct = () => {
@@ -206,6 +214,25 @@ const Header = () => {
       return () => clearInterval(timeoutId);
     }
   }, [LoginTimer]);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (openSidebar && !event.target.closest('.mobile-navigation') && !event.target.closest('.navbar-toggler')) {
+        updateState(prevState => ({ ...prevState, openSidebar: false, expandedCategory: null }));
+      }
+    };
+
+    if (openSidebar) {
+      document.addEventListener('mousedown', handleClickOutside);
+      // Prevent body scroll when menu is open
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+        document.body.style.overflow = 'unset';
+      };
+    }
+  }, [openSidebar]);
 
 
 
@@ -370,7 +397,8 @@ const Header = () => {
               class={`collapse navbar-collapse ${openSidebar ? "Left" : ""}`}
               id={`${openSidebar ? "navbarSupportedContent" : "link"}`}
             >
-              <ul class="navbar-nav  me-auto mb-2 mb-lg-0 align-items-lg-center ">
+              {/* Desktop Navigation */}
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center d-none d-lg-flex">
                 {categoryArr?.map((category_name, index) => {
                   return (
                     <li class="nav-item web-hidden dropdown" key={index}>
@@ -506,133 +534,154 @@ const Header = () => {
                     </span>
                   </div>
                 </li>
-                <li className="nav-item dropdown-item Categories d-block d-lg-none">
-                  <div
-                    className={`Categories_hover ${disableHover ? "disable-hover" : ""
-                      }`}
-                  >
-                    <div
-                      className="CategoriesMenu"
-                      onMouseEnter={() => setDisableHover(false)}
-                    >
-                      <p>All Categories</p>
-                      <div className="Categories_dropdown">
-                        <article>
-                          <aside>
-                            <h6>BIRTHDAY</h6>
-                            <ul>
-                              <li><a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Birthday Decoration")}>Birthday Decoration</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Simple Birthday Decoration")}>Simple Birthday Decoration</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Neon & Sequin Birthday Decoration")}>Neon & Sequin Birthday Decoration</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Terrace Decoration")}>Terrace Decoration</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Car Boot Decoration")}>Car Boot Decoration</a></li>
-                            </ul>
-                            <h6 style={{marginTop: "10px", fontSize: "14px", color: "#666"}}>KID'S PARTY</h6>
-                            <ul>
-                              <li><a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Kids Birthday Decoration")}>Kids Birthday Decoration</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "1st Birthday Decoration")}>1st Birthday Decoration</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Naming Ceremony Decoration")}>Naming Ceremony Decoration</a></li>
-                            </ul>
-                            <div className="category-border"></div>
-                          </aside>
-                          <aside>
-                            <h6>ANNIVERSARY</h6>
-                            <ul>
-                              <li><a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Anniversary Decoration")}>Anniversary Decoration</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Bride To Be")}>Bride To Be</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Haldi-Mehndi Balloon Decoration")}>Haldi-Mehndi Balloon Decoration</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Let's Party")}>Let's Party</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Better Together")}>Better Together</a></li>
-                            </ul>
-                            <h6 style={{marginTop: "10px", fontSize: "14px", color: "#666"}}>ROOM & HALL DECOR'S</h6>
-                            <ul>
-                              <li><a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Room & Hall Decor")}>Room & Hall Decor</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Canopy Decor")}>Canopy Decor</a></li>
-                            </ul>
-                            <div className="category-border"></div>
-                          </aside>
-                          <aside>
-                            <h6>BABY SHOWER</h6>
-                            <ul>
-                              <li><a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Baby Shower Decoration")}>Baby Shower Decoration</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Oh Baby")}>Oh Baby</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Welcome")}>Welcome</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Naming Ceremony")}>Naming Ceremony</a></li>
-                            </ul>
-                            <h6 style={{marginTop: "10px", fontSize: "14px", color: "#666"}}>BALLOON BOUQUET</h6>
-                            <ul>
-                              <li><a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Balloon Bouquet")}>Balloon Bouquet</a></li>
-                            </ul>
-                            <h6 style={{marginTop: "10px", fontSize: "14px", color: "#666"}}>PREMIUM DECOR'S</h6>
-                            <ul>
-                              <li><a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Premium Decor's")}>Premium Decor's</a></li>
-                            </ul>
-                            <div className="category-border"></div>
-                          </aside>
-                          <aside>
-                            <h6>THEME DECOR'S FOR BOYS</h6>
-                            <ul>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Boss Baby")}>Boss Baby</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Jungle Theme")}>Jungle Theme</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Cars")}>Cars</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Dinosaur")}>Dinosaur</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Peppa Pig")}>Peppa Pig</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Spiderman")}>Spiderman</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Baby Shark")}>Baby Shark</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Donut")}>Donut</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Cocomelon")}>Cocomelon</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Mickey Mouse")}>Mickey Mouse</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Football")}>Football</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Aeroplane")}>Aeroplane</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Space")}>Space</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Superhero")}>Superhero</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Teddy")}>Teddy</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Paw Patrol")}>Paw Patrol</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Unicorn Theme")}>Unicorn Theme</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Captain America Theme")}>Captain America Theme</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Minecraft Theme")}>Minecraft Theme</a></li>
-                            </ul>
-                            <div className="category-border"></div>
-                          </aside>
-                          <aside>
-                            <h6>THEME DECOR'S FOR GIRLS</h6>
-                            <ul>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Minnie Mouse")}>Minnie Mouse</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Barbie Theme")}>Barbie Theme</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Frozen")}>Frozen</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Mermaid")}>Mermaid</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Rainbow")}>Rainbow</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Princess")}>Princess</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Butterfly")}>Butterfly</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Candyland")}>Candyland</a></li>
-                              <li><a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Masha and the Bear")}>Masha and the Bear</a></li>
-                            </ul>
-                            <div className="category-border"></div>
-                          </aside>
-                        </article>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="CategoriesSearch d-none">
-                    <input
-                      name="search"
-                      value={search}
-                      onChange={(e) => {
-                        updateState({ ...iState, search: e.target.value });
-                      }}
-                      className="form-control me-2"
-                      type="search"
-                      placeholder="Find the perfect decor for your special event.."
-                    />
-                    <span>
-                      <img
-                        src={require("../../assets/images/search-normal.png")}
-                      />
-                    </span>
-                  </div>
-                </li>
               </ul>
+
+              {/* Mobile Navigation - Visible only when hamburger is clicked */}
+              <div className={`mobile-navigation d-lg-none ${openSidebar ? 'active' : ''}`}>
+                <div className="mobile-nav-content">
+                  {/* Close Button */}
+                  <div className="mobile-nav-header">
+                    <button 
+                      className="mobile-close-btn"
+                      onClick={() => updateState({ ...iState, openSidebar: false, expandedCategory: null })}
+                    >
+                      <i className="fa-solid fa-times"></i>
+                    </button>
+                  </div>
+                  
+                  {/* Mobile Categories */}
+                  <div className="mobile-categories">
+                    {categoryArr?.map((category_name, index) => {
+                      const isExpanded = expandedCategory === category_name;
+                      const categoryColor = index == 0
+                        ? "#f26a10"
+                        : index == 1
+                          ? "#f2c210"
+                          : index == 2
+                            ? "#ff3f6c"
+                            : index == 3
+                              ? "#0db7af"
+                              : "#e91e63";
+
+                      return (
+                        <div key={index} className="mobile-category-item">
+                          <div 
+                            className="mobile-category-header"
+                            onClick={() => toggleMobileCategory(category_name)}
+                            style={{ borderLeftColor: categoryColor }}
+                          >
+                            <span className="category-name">{category_name}</span>
+                            <i className={`fa-solid ${isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+                          </div>
+                          
+                          {isExpanded && (
+                            <div className="mobile-category-content">
+                              {category_name === "BIRTHDAY" && (
+                                <div className="mobile-subcategories">
+                                  <div className="subcategory-group">
+                                    <a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Birthday Decoration")}>Birthday Decoration</a>
+                                    <a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Simple Birthday Decoration")}>Simple Birthday Decoration</a>
+                                    <a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Neon & Sequin Birthday Decoration")}>Neon & Sequin Birthday Decoration</a>
+                                    <a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Terrace Decoration")}>Terrace Decoration</a>
+                                    <a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Car Boot Decoration")}>Car Boot Decoration</a>
+                                  </div>
+                                  <div className="subcategory-group">
+                                    <h6 className="subcategory-title">Kid's Party</h6>
+                                    <a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Kids Birthday Decoration")}>Kids Birthday Decoration</a>
+                                    <a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "1st Birthday Decoration")}>1st Birthday Decoration</a>
+                                    <a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Naming Ceremony Decoration")}>Naming Ceremony Decoration</a>
+                                  </div>
+                                </div>
+                              )}
+                              
+                              {category_name === "ANNIVERSARY" && (
+                                <div className="mobile-subcategories">
+                                  <div className="subcategory-group">
+                                    <a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Anniversary Decoration")}>Anniversary Decoration</a>
+                                    <a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Bride To Be")}>Bride To Be</a>
+                                    <a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Haldi-Mehndi Balloon Decoration")}>Haldi-Mehndi Balloon Decoration</a>
+                                    <a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Let's Party")}>Let's Party</a>
+                                    <a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Better Together")}>Better Together</a>
+                                  </div>
+                                  <div className="subcategory-group">
+                                    <h6 className="subcategory-title">Room & Hall Decor's</h6>
+                                    <a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Room & Hall Decor")}>Room & Hall Decor</a>
+                                    <a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Canopy Decor")}>Canopy Decor</a>
+                                  </div>
+                                </div>
+                              )}
+                              
+                              {category_name === "BABY SHOWER" && (
+                                <div className="mobile-subcategories">
+                                  <div className="subcategory-group">
+                                    <a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Baby Shower Decoration")}>Baby Shower Decoration</a>
+                                    <a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Oh Baby")}>Oh Baby</a>
+                                    <a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Welcome")}>Welcome</a>
+                                    <a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Naming Ceremony")}>Naming Ceremony</a>
+                                  </div>
+                                  <div className="subcategory-group">
+                                    <h6 className="subcategory-title">Balloon Bouquet</h6>
+                                    <a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Balloon Bouquet")}>Balloon Bouquet</a>
+                                  </div>
+                                  <div className="subcategory-group">
+                                    <h6 className="subcategory-title">Premium Decor's</h6>
+                                    <a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Premium Decor's")}>Premium Decor's</a>
+                                  </div>
+                                </div>
+                              )}
+                              
+                              {category_name === "THEME DECOR'S FOR BOYS" && (
+                                <div className="mobile-subcategories">
+                                  <div className="subcategory-group">
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Boss Baby")}>Boss Baby</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Jungle Theme")}>Jungle Theme</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Cars")}>Cars</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Dinosaur")}>Dinosaur</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Peppa Pig")}>Peppa Pig</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Spiderman")}>Spiderman</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Baby Shark")}>Baby Shark</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Donut")}>Donut</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Cocomelon")}>Cocomelon</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Mickey Mouse")}>Mickey Mouse</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Football")}>Football</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Aeroplane")}>Aeroplane</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Space")}>Space</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Superhero")}>Superhero</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Teddy")}>Teddy</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Paw Patrol")}>Paw Patrol</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Unicorn Theme")}>Unicorn Theme</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Captain America Theme")}>Captain America Theme</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Minecraft Theme")}>Minecraft Theme</a>
+                                  </div>
+                                </div>
+                              )}
+                              
+                              {category_name === "THEME DECOR'S FOR GIRLS" && (
+                                <div className="mobile-subcategories">
+                                  <div className="subcategory-group">
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Minnie Mouse")}>Minnie Mouse</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Barbie Theme")}>Barbie Theme</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Frozen")}>Frozen</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Mermaid")}>Mermaid</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Rainbow")}>Rainbow</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Princess")}>Princess</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Butterfly")}>Butterfly</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Candyland")}>Candyland</a>
+                                    <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Masha and the Bear")}>Masha and the Bear</a>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* Mobile Overlay */}
+              {openSidebar && <div className="mobile-overlay d-lg-none" onClick={() => updateState({ ...iState, openSidebar: false, expandedCategory: null })}></div>}
               {/* Help Center */}
               <div className="help">
                 <HelpCenter />
@@ -895,22 +944,6 @@ const Header = () => {
             </div>
           </li>
         </ul>
-        
-        {/* Mobile Search Bar */}
-        <div className="mobile-search-container">
-          <div className="mobile-search-wrapper">
-            <input
-              type="search"
-              className="mobile-search-input"
-              placeholder="What are you celebrating?"
-              value={search}
-              onChange={(e) => {
-                updateState({ ...iState, search: e.target.value });
-              }}
-            />
-            <i className="fa-solid fa-search mobile-search-icon"></i>
-          </div>
-        </div>
       </header>
 
       {showCitySelector && (

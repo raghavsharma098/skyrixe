@@ -23,22 +23,6 @@ const CustomNextArrow = ({ onClick }) => (
 );
 
 const Main = () => {
-  // FAQ accordion functionality
-  const handleFaqToggle = (index) => {
-    const faqItems = document.querySelectorAll('.faq-item');
-    const currentItem = faqItems[index];
-    
-    // Toggle current item
-    currentItem.classList.toggle('active');
-    
-    // Close other items (optional - remove if you want multiple items open)
-    faqItems.forEach((item, i) => {
-      if (i !== index) {
-        item.classList.remove('active');
-      }
-    });
-  };
-
   const {
     getBirthdayList,
     getAnniversaryList,
@@ -54,7 +38,6 @@ const Main = () => {
 
   const [scrollPosition, setScrollPosition] = useState(0);
   const scrollContainerRef = useRef(null);
-  const reviewsScrollRef = useRef(null);
   const [reviews, setReviews] = useState([]);
 
   const { latestReviews = [], loading, error } = useSelector(
@@ -92,29 +75,6 @@ const Main = () => {
   const handleScroll = () => {
     if (scrollContainerRef.current) {
       setScrollPosition(scrollContainerRef.current.scrollLeft);
-    }
-  };
-
-  // Reviews scroll functions
-  const handleReviewsScrollLeft = () => {
-    if (reviewsScrollRef.current) {
-      const container = reviewsScrollRef.current;
-      const scrollAmount = 300; // Scroll by one card width approximately
-      container.scrollBy({
-        left: -scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  const handleReviewsScrollRight = () => {
-    if (reviewsScrollRef.current) {
-      const container = reviewsScrollRef.current;
-      const scrollAmount = 300; // Scroll by one card width approximately
-      container.scrollBy({
-        left: scrollAmount,
-        behavior: 'smooth'
-      });
     }
   };
 
@@ -252,77 +212,119 @@ faqItems.forEach(item => {
   return (
     <>
       <div className="Hero-Section">
-        {/* New Optimized 10-Card Categories Section */}
-        <div className="category-cards-container">
-          <div className="category-card spacing-after" onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}>
-            <div className="category-image">
-              <img src={require("../../assets/images/on.png")} alt="Birthday Decorations" />
-            </div>
-            <p className="category-text">Birthday<br />Decorations</p>
+        <div className="cards">
+          <div className="card1">
+            {/* <img src="https://cheetah.cherishx.com/website_layout/ganpati_menu_icon_desk.jpg?format=avif" alt="" /> */}
+             <img src={require("../../assets/images/on.png")} />
+            <p>Birthday</p>
+          </div> 
+          <div
+            className="card1"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleCategory({ categoryName: "KIDS BIRTHDAY" })}
+          >
+            {/* <img
+              src="https://cheetah.cherishx.com/website_layout/1755324921__original_layout_55.jpg?format=avif"
+              alt="Kids Birthday"
+            /> */}
+            <img src={require("../../assets/images/td.png")} />
+            <p>
+              Balloon <br />  bouquet
+            </p>
+          </div>
+          {/* <div className="card1">
+            <img src="https://cheetah.cherishx.com/website_layout/1737544205__original_layout_55.jpg?format=avif" alt="" />
+                
+            <p> Same day <br /> Decoration</p>
+          </div> */}
+          <div
+            className="card1"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}
+          >
+            {/* <img
+              src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_03_20241018_123157.jpg?format=avif"
+              alt="Birthday Decoration"
+            /> */}
+               <img src={require("../../assets/images/thd.png")} />
+            <p>
+              Premium <br /> Decoration
+            </p>
+          </div>
+          <div className="card1">
+            {/* <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_03_20240930_132612.jpg?format=avif" alt="" /> */}
+             <img src={require("../../assets/images/forthcard.png")} />
+            <p> Theme <br /> decoration</p>
+          </div>
+          <div
+            className="card1"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleCategory({ categoryName: "ANNIVERSARY" })}
+          >
+            {/* <img
+              src="https://cheetah.cherishx.com/website_layout/1755170285__original_layout_55.jpg?format=avif"
+              alt="Candlelight Dinner"
+            /> */}
+             <img src={require("../../assets/images/fifthcard.png")} />
+            <p>
+              Kids <br /> Party
+            </p>
           </div>
 
-          <div className="category-card spacing-after" onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}>
-            <div className="category-image">
-              <img src={require("../../assets/images/td.png")} alt="Same Day Decorations" />
-            </div>
-            <p className="category-text">Same Day<br />Decorations</p>
+          <div
+            className="card1"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleCategory({ categoryName: "BABY SHOWER" })}
+          >
+            {/* <img
+              src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_01_20241018_123157.jpg?format=avif"
+              alt="Baby Shower"
+            /> */}
+             <img src={require("../../assets/images/sixthcard.png")} />
+            <p>
+              Room <br /> & Hall
+            </p>
           </div>
 
-          <div className="category-card" onClick={() => handleCategory({ categoryName: "KIDS BIRTHDAY" })}>
-            <div className="category-image">
-              <img src={require("../../assets/images/forthcard.png")} alt="Kids Birthday Decors" />
-            </div>
-            <p className="category-text">Kids Birthday<br />Decors</p>
+          <div
+            className="card1"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleCategory({ categoryName: "BABY SHOWER" })}
+          >
+            {/* <img
+              src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_01_20241018_123157.jpg?format=avif"
+              alt="Baby Shower"
+            /> */}
+             <img className="imgmat"src={require("../../assets/images/seventhcard.png")} />
+            <p>
+              Anniversary
+            </p>
+          </div>
+          <div className="card1">
+            {/* <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_02_20241018_123157.jpg?format=avif" alt="" /> */}
+             <img src={require("../../assets/images/eightcard.png")} />
+            
+            <p> Premium <br /> decoration</p>
+          </div>
+          <div className="card1">
+            {/* <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_08_20240930_132612.jpg?format=avif" alt="" /> */}
+             <img className="imgmat"src={require("../../assets/images/ninthcard.png")} />
+            <p> Balloon <br /> bouquet</p>
           </div>
 
-          <div className="category-card" onClick={() => handleCategory({ categoryName: "PERSONALIZED GIFTS" })}>
-            <div className="category-image">
-              <img src={require("../../assets/images/fifthcard.png")} alt="Personalised Gifts" />
-            </div>
-            <p className="category-text">Personalised<br />Gifts</p>
+          {/* NEW 10th CARD - Same Day Decorations */}
+          <div
+            className="card1"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}
+          >
+            <img src={require("../../assets/images/td.png")} />
+            <p>
+              Same Day <br /> Decorations
+            </p>
           </div>
 
-          <div className="category-card" onClick={() => handleCategory({ categoryName: "CANDLELIGHT DINNER" })}>
-            <div className="category-image">
-              <img src={require("../../assets/images/dining-1.png")} alt="Candlelight Dinner" />
-            </div>
-            <p className="category-text">Candlelight<br />Dinner</p>
-          </div>
 
-          <div className="category-card spacing-after" onClick={() => handleCategory({ categoryName: "BABY SHOWER" })}>
-            <div className="category-image">
-              <img src={require("../../assets/images/sixthcard.png")} alt="Baby Shower" />
-            </div>
-            <p className="category-text">Baby Shower</p>
-          </div>
-
-          <div className="category-card" onClick={() => handleCategory({ categoryName: "BABY WELCOME" })}>
-            <div className="category-image">
-              <img src={require("../../assets/images/seventhcard.png")} alt="Baby Welcome" />
-            </div>
-            <p className="category-text">Baby Welcome</p>
-          </div>
-
-          <div className="category-card spacing-after" onClick={() => handleCategory({ categoryName: "ANNIVERSARY" })}>
-            <div className="category-image">
-              <img src={require("../../assets/images/anni-1.png")} alt="Festive Celebrations" />
-            </div>
-            <p className="category-text">Festive<br />Celebrations</p>
-          </div>
-
-          <div className="category-card" onClick={() => handleCategory({ categoryName: "GAMES & ACTIVITIES" })}>
-            <div className="category-image">
-              <img src={require("../../assets/images/anni-2.png")} alt="Games & Activities" />
-            </div>
-            <p className="category-text">Games &<br />Activities</p>
-          </div>
-
-          <div className="category-card spacing-after" onClick={() => handleCategory({ categoryName: "BALLOON BOUQUET" })}>
-            <div className="category-image">
-              <img src={require("../../assets/images/ninthcard.png")} alt="Balloon Bouquet" />
-            </div>
-            <p className="category-text">Balloon<br />Bouquet</p>
-          </div>
         </div>
         <div id="carouselExampleIndicators" className="carousel slide">
           <div className="carousel-inner">
@@ -361,7 +363,7 @@ faqItems.forEach(item => {
 
       <div className="Main">
         <div className="FeatureArea">
-          <div className="container-fluid">
+          <div className="container-fluid" style={{ width: "100%", padding: "0", margin: "0" }}>
             <div className="section-title">
               <h2>Celebrations We Create</h2>
             </div>
@@ -1126,119 +1128,36 @@ faqItems.forEach(item => {
         </article>
 
 
-        <div className="reviews-section">
-          <div className="container">
-            <div className="reviews-header">
-              <h1>What Customers Say</h1>
-              <p>Genuine feedback from our delighted customers who trusted us with their special moments</p>
+        <div className="reviews">
+          <h1>Recent Customer Reviews</h1>
+          {latestReviews.length === 0 ? (
+            <p>No reviews available</p>
+          ) : (
+            <div className="inro">
+              {latestReviews.map((review, index) => (
+                <div key={index} className="testimonials">
+                  <div className="data">
+                    <div className="img">
+                      <img src={review.userImage || "https://cdn-icons-png.flaticon.com/512/6681/6681204.png"} alt={review.name} />
+                    </div>
+                    <h2>{review.name}</h2>
+                    <h3>{review.rating ? `Rating: ${review.rating}/5` : "Verified Purchase"}</h3>
+                    <p>{review.comment}</p>
+
+                    <div className="reviwedproduct">
+                      <div className="image">
+                        <img src={review.productImage} alt={review.productName} />
+                      </div>
+                      <div className="view">{review.productName}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-            {latestReviews.length === 0 ? (
-              <div className="testimonials-container">
-                <button className="testimonial-nav-btn prev" onClick={handleReviewsScrollLeft}>
-                  <i className="fa-solid fa-chevron-left"></i>
-                </button>
-                <div className="testimonials-slider" ref={reviewsScrollRef}>
-                  {/* Sample reviews with better names */}
-                  {[
-                    { name: "Priya Sharma", rating: 5, comment: "Absolutely amazing birthday decoration! The team was professional and the setup was beyond our expectations.", productName: "Birthday Decoration Premium", userImage: "https://images.unsplash.com/photo-1494790108755-2616b612b739?w=150&h=150&fit=crop&crop=face" },
-                    { name: "Rahul Patel", rating: 4, comment: "Great service for our anniversary celebration. The balloon arrangements were beautiful and exactly what we wanted.", productName: "Anniversary Special", userImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" },
-                    { name: "Sneha Verma", rating: 5, comment: "Perfect decoration for our baby shower! Every detail was taken care of and the colors were just perfect.", productName: "Baby Shower Deluxe", userImage: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" },
-                    { name: "Arjun Singh", rating: 4, comment: "Excellent work on our wedding decoration. The team was punctual and very creative with their designs.", productName: "Wedding Decoration", userImage: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face" },
-                    { name: "Kavya Reddy", rating: 5, comment: "Outstanding birthday surprise setup! My daughter was absolutely delighted. Highly recommend their services.", productName: "Kids Birthday Special", userImage: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face" },
-                    { name: "Vikram Joshi", rating: 5, comment: "Fantastic decoration for our office party. Professional team and beautiful execution. Will definitely use again!", productName: "Corporate Event", userImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face" }
-                  ].map((review, index) => (
-                    <div key={index} className="testimonial-card">
-                      <div className="testimonial-header">
-                        <div className="customer-info">
-                          <div className="customer-avatar">
-                            <img src={review.userImage} alt={review.name} />
-                          </div>
-                          <div className="customer-details">
-                            <h3>{review.name}</h3>
-                            <div className="rating-stars">
-                              {[...Array(5)].map((_, i) => (
-                                <i 
-                                  key={i} 
-                                  className={`fa-solid fa-star ${i < review.rating ? 'filled' : ''}`}
-                                ></i>
-                              ))}
-                              <span className="rating-text">({review.rating}/5)</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="verified-badge">
-                          <i className="fa-solid fa-badge-check"></i>
-                          <span>Verified</span>
-                        </div>
-                      </div>
-                      <div className="testimonial-content">
-                        <p>"{review.comment}"</p>
-                      </div>
-                      <div className="product-info">
-                        <div className="product-tag">
-                          <i className="fa-solid fa-gift"></i>
-                          <span>{review.productName}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <button className="testimonial-nav-btn next" onClick={handleReviewsScrollRight}>
-                  <i className="fa-solid fa-chevron-right"></i>
-                </button>
-              </div>
-            ) : (
-              <div className="testimonials-container">
-                <button className="testimonial-nav-btn prev" onClick={handleReviewsScrollLeft}>
-                  <i className="fa-solid fa-chevron-left"></i>
-                </button>
-                <div className="testimonials-slider" ref={reviewsScrollRef}>
-                  {latestReviews.map((review, index) => (
-                    <div key={index} className="testimonial-card">
-                      <div className="testimonial-header">
-                        <div className="customer-info">
-                          <div className="customer-avatar">
-                            <img src={review.userImage || "https://cdn-icons-png.flaticon.com/512/6681/6681204.png"} alt={review.name || "Customer"} />
-                          </div>
-                          <div className="customer-details">
-                            <h3>{review.name || "Valued Customer"}</h3>
-                            <div className="rating-stars">
-                              {[...Array(5)].map((_, i) => (
-                                <i 
-                                  key={i} 
-                                  className={`fa-solid fa-star ${i < (review.rating || 5) ? 'filled' : ''}`}
-                                ></i>
-                              ))}
-                              <span className="rating-text">({review.rating || 5}/5)</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="verified-badge">
-                          <i className="fa-solid fa-badge-check"></i>
-                          <span>Verified</span>
-                        </div>
-                      </div>
-                      <div className="testimonial-content">
-                        <p>"{review.comment}"</p>
-                      </div>
-                      <div className="product-info">
-                        <div className="product-tag">
-                          <i className="fa-solid fa-gift"></i>
-                          <span>{review.productName || "Celebration Package"}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <button className="testimonial-nav-btn next" onClick={handleReviewsScrollRight}>
-                  <i className="fa-solid fa-chevron-right"></i>
-                </button>
-              </div>
-            )}
-          </div>
+          )}
         </div>
 
-        <div className="about-section">
+        <div className="text">
           <h1>
             <strong> Skyrixe – Celebrate Life’s Special Moments with us
               Us&nbsp;&nbsp;&nbsp;</strong>
@@ -1269,6 +1188,9 @@ faqItems.forEach(item => {
               with multiple event decoration services enhances your special moments on all
               occasions.</span>
           </p>
+          <a href="https://wa.me/12345678900" target="_blank" rel="noopener">
+            <button class="show">Show more</button>
+          </a>
 
           <div class="city-links">
   <a href="#">Balloon decoration in Bangalore</a> |
@@ -1286,88 +1208,49 @@ faqItems.forEach(item => {
 
         </div>
 
-        <div className="faq-section-enhanced">
-          <div className="container">
-            <div className="section-title">
-              <h2>Frequently Asked Questions</h2>
-              <p>Everything you need to know about our decoration services</p>
-            </div>
-            
-            <div className="faq-grid">
-              <div className="faq-item">
-                <div className="faq-question" onClick={() => handleFaqToggle(0)}>
-                  <h3>What kind of events do you provide your decorations for?</h3>
-                  <div className="faq-toggle">
-                    <i className="fa-solid fa-plus"></i>
-                  </div>
-                </div>
-                <div className="faq-answer">
-                  <p>We provide decorations for all types of celebrations including birthdays, weddings, anniversaries, baby showers, corporate events, housewarming parties, engagement ceremonies, and festival celebrations. Our team specializes in creating magical moments for every occasion.</p>
-                </div>
-              </div>
-              
-              <div className="faq-item">
-                <div className="faq-question" onClick={() => handleFaqToggle(1)}>
-                  <h3>How do we book a service with you?</h3>
-                  <div className="faq-toggle">
-                    <i className="fa-solid fa-plus"></i>
-                  </div>
-                </div>
-                <div className="faq-answer">
-                  <p>Booking is easy! You can book through our website, call us directly, message us on WhatsApp, or reach out via our social media channels. Our team will guide you through the entire process and help customize your perfect celebration.</p>
-                </div>
-              </div>
-              
-              <div className="faq-item">
-                <div className="faq-question" onClick={() => handleFaqToggle(2)}>
-                  <h3>How much does simple birthday decoration cost?</h3>
-                  <div className="faq-toggle">
-                    <i className="fa-solid fa-plus"></i>
-                  </div>
-                </div>
-                <div className="faq-answer">
-                  <p>Our simple birthday decoration packages start from ₹2,999 and can go up to ₹15,000+ depending on your requirements. We offer various packages to suit different budgets and preferences. Contact us for a personalized quote.</p>
-                </div>
-              </div>
-              
-              <div className="faq-item">
-                <div className="faq-question" onClick={() => handleFaqToggle(3)}>
-                  <h3>In which cities is Skyrixe available?</h3>
-                  <div className="faq-toggle">
-                    <i className="fa-solid fa-plus"></i>
-                  </div>
-                </div>
-                <div className="faq-answer">
-                  <p>We currently serve major cities including Bangalore, Mumbai, Delhi, Chennai, Hyderabad, Pune, Kolkata, Gurgaon, Noida, Bhubaneswar, and Patna. We're continuously expanding to serve more cities across India.</p>
-                </div>
-              </div>
-              
-              <div className="faq-item">
-                <div className="faq-question" onClick={() => handleFaqToggle(4)}>
-                  <h3>Do you provide same-day decoration services?</h3>
-                  <div className="faq-toggle">
-                    <i className="fa-solid fa-plus"></i>
-                  </div>
-                </div>
-                <div className="faq-answer">
-                  <p>Yes, we offer same-day decoration services based on availability. However, we recommend booking at least 24-48 hours in advance to ensure we can accommodate your specific requirements and preferences.</p>
-                </div>
-              </div>
-              
-              <div className="faq-item">
-                <div className="faq-question" onClick={() => handleFaqToggle(5)}>
-                  <h3>Can I customize the decoration according to my theme?</h3>
-                  <div className="faq-toggle">
-                    <i className="fa-solid fa-plus"></i>
-                  </div>
-                </div>
-                <div className="faq-answer">
-                  <p>Absolutely! We specialize in custom decorations. Share your theme, color preferences, and specific requirements with our team, and we'll create a unique decoration setup tailored to your vision and budget.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+  
+  <div class="faq-item">
+    <button class="faq-question">
+      What kind of events do you provide your decorations for?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer">
+      Decorations are available for birthdays, weddings, corporate events, baby showers, anniversaries, and more.
+    </div>
+  </div>
+  
+  <div class="faq-item">
+    <button class="faq-question">
+      How do we book a service with you?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer">
+      You can book via our website, phone, or social media.
+    </div>
+  </div>
+  
+  <div class="faq-item">
+    <button class="faq-question">
+      How much does simple birthday decoration cost?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer">
+      Simple birthday decoration packages start from affordable prices.
+    </div>
+  </div>
+  
+  <div class="faq-item">
+    <button class="faq-question">
+      In which cities is BalloonDekor available?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-answer">
+      Services are available in major cities; please contact us to confirm availability.
+    </div>
+  </div>
+</div>
 
 
         <div className="BirthdayDecorationArea client">

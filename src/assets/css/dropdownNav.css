@@ -1,10 +1,6 @@
 /* Ensure full width for dropdown */
 body {
-  overflow-x: hidden !important;
-}
-
-html {
-  overflow-x: hidden !important;
+  overflow-x: visible !important;
 }
 
 .dropdown-navbar {
