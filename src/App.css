@@ -1285,9 +1285,28 @@
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
+
+/* Large Tablets and Small Desktops */
+@media (max-width: 1024px) {
+  .testimonials-container {
+    padding: 0 15px;
+  }
+  
+  .testimonial-card {
+    min-width: 350px;
+    max-width: 350px;
+    padding: 28px;
+  }
+  
+  .testimonials-slider {
+    gap: 20px;
+  }
+}
+
+/* Tablets */
 @media (max-width: 768px) {
   .reviews-section {
-    padding: 60px 0;
+    padding: 60px 15px;
   }
   
   .reviews-header {
@@ -1295,13 +1314,56 @@
   }
   
   .reviews-header h1 {
-    font-size: 24px;
+    font-size: 28px;
+  }
+  
+  .reviews-header p {
+    font-size: 15px;
+  }
+  
+  .testimonials-container {
+    padding: 0 10px;
   }
   
   .testimonial-card {
-    min-width: 320px;
-    max-width: 320px;
+    min-width: 300px;
+    max-width: 300px;
     padding: 24px;
+  }
+  
+  .testimonial-header {
+    margin-bottom: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .customer-info {
+    gap: 12px;
+    width: 100%;
+  }
+  
+  .customer-avatar {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .customer-details h3 {
+    font-size: 1rem;
+  }
+  
+  .verified-badge {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    align-self: flex-end;
+    margin-top: -4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: fit-content;
+  }
+  
+  .testimonial-content p {
+    font-size: 0.95rem;
   }
   
   .testimonial-nav-btn {
@@ -1316,6 +1378,219 @@
   
   .testimonial-nav-btn.next {
     right: 10px;
+  }
+}
+
+/* Small Tablets and Large Phones */
+@media (max-width: 640px) {
+  .reviews-section {
+    padding: 50px 10px;
+  }
+  
+  .reviews-header h1 {
+    font-size: 24px;
+  }
+  
+  .reviews-header p {
+    font-size: 14px;
+  }
+  
+  .testimonials-container {
+    padding: 0 5px;
+  }
+  
+  .testimonial-card {
+    min-width: 280px;
+    max-width: 280px;
+    padding: 20px;
+    border-radius: 20px;
+  }
+  
+  .testimonial-header {
+    margin-bottom: 20px;
+  }
+  
+  .customer-info {
+    gap: 10px;
+  }
+  
+  .customer-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 15px;
+  }
+  
+  .customer-details h3 {
+    font-size: 0.95rem;
+  }
+  
+  .rating-stars .fa-star {
+    font-size: 13px;
+  }
+  
+  .verified-badge {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+  }
+  
+  .testimonial-content {
+    margin-bottom: 20px;
+  }
+  
+  .testimonial-content p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  
+  .testimonials-slider {
+    gap: 15px;
+    padding: 15px 0;
+  }
+}
+
+/* Mobile Phones */
+@media (max-width: 480px) {
+  .reviews-section {
+    padding: 40px 8px;
+  }
+  
+  .reviews-header {
+    margin-bottom: 30px;
+  }
+  
+  .reviews-header h1 {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+  
+  .reviews-header p {
+    font-size: 13px;
+  }
+  
+  .testimonials-container {
+    padding: 0;
+  }
+  
+  .testimonial-card {
+    min-width: 260px;
+    max-width: 260px;
+    padding: 18px;
+    border-radius: 18px;
+  }
+  
+  .testimonial-header {
+    margin-bottom: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .customer-info {
+    gap: 8px;
+    width: 100%;
+  }
+  
+  .customer-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+  }
+  
+  .customer-details h3 {
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+  
+  .rating-stars {
+    gap: 3px;
+  }
+  
+  .rating-stars .fa-star {
+    font-size: 12px;
+  }
+  
+  .rating-text {
+    font-size: 0.8rem;
+    margin-left: 6px;
+  }
+  
+  .verified-badge {
+    padding: 4px 8px;
+    font-size: 0.7rem;
+    align-self: flex-end;
+  }
+  
+  .testimonial-content {
+    margin-bottom: 16px;
+  }
+  
+  .testimonial-content p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  
+  .testimonials-slider {
+    gap: 12px;
+    padding: 12px 0;
+  }
+  
+  .testimonial-nav-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
+  }
+  
+  .testimonial-nav-btn.prev {
+    left: 5px;
+  }
+  
+  .testimonial-nav-btn.next {
+    right: 5px;
+  }
+}
+
+/* Very Small Phones */
+@media (max-width: 360px) {
+  .reviews-section {
+    padding: 35px 5px;
+  }
+  
+  .reviews-header h1 {
+    font-size: 20px;
+  }
+  
+  .testimonial-card {
+    min-width: 240px;
+    max-width: 240px;
+    padding: 16px;
+    border-radius: 16px;
+  }
+  
+  .testimonial-header {
+    margin-bottom: 14px;
+  }
+  
+  .customer-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+  
+  .customer-details h3 {
+    font-size: 0.85rem;
+  }
+  
+  .testimonial-content p {
+    font-size: 0.8rem;
+  }
+  
+  .verified-badge {
+    font-size: 0.65rem;
+    padding: 3px 6px;
+  }
+  
+  .testimonials-slider {
+    gap: 10px;
   }
   
   .about-section {

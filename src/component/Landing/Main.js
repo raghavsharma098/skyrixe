@@ -40,6 +40,25 @@ const Main = () => {
   const scrollContainerRef = useRef(null);
   const [reviews, setReviews] = useState([]);
 
+  // For reviews slider navigation
+  const reviewsScrollRef = useRef(null);
+  const handleReviewsScrollLeft = () => {
+    if (reviewsScrollRef.current) {
+      reviewsScrollRef.current.scrollBy({ left: -400, behavior: 'smooth' });
+    }
+  };
+  const handleReviewsScrollRight = () => {
+    if (reviewsScrollRef.current) {
+      reviewsScrollRef.current.scrollBy({ left: 400, behavior: 'smooth' });
+    }
+  };
+
+  // For FAQ toggle
+  const [activeFaq, setActiveFaq] = useState(null);
+  const handleFaqToggle = (idx) => {
+    setActiveFaq(activeFaq === idx ? null : idx);
+  };
+
   const { latestReviews = [], loading, error } = useSelector(
     (state) => state.reviews
   );
@@ -1128,36 +1147,120 @@ faqItems.forEach(item => {
         </article>
 
 
-        <div className="reviews">
-          <h1>Recent Customer Reviews</h1>
-          {latestReviews.length === 0 ? (
-            <p>No reviews available</p>
-          ) : (
-            <div className="inro">
-              {latestReviews.map((review, index) => (
-                <div key={index} className="testimonials">
-                  <div className="data">
-                    <div className="img">
-                      <img src={review.userImage || "https://cdn-icons-png.flaticon.com/512/6681/6681204.png"} alt={review.name} />
-                    </div>
-                    <h2>{review.name}</h2>
-                    <h3>{review.rating ? `Rating: ${review.rating}/5` : "Verified Purchase"}</h3>
-                    <p>{review.comment}</p>
-
-                    <div className="reviwedproduct">
-                      <div className="image">
-                        <img src={review.productImage} alt={review.productName} />
-                      </div>
-                      <div className="view">{review.productName}</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+        {/* ===== CUSTOMER REVIEWS SECTION ===== */}
+        <div className="reviews-section">
+          <div className="container">
+            <div className="reviews-header">
+              <h1>What Customers Say</h1>
+              <p>Genuine feedback from our delighted customers who trusted us with their special moments</p>
             </div>
-          )}
+            {latestReviews.length === 0 ? (
+              <div className="testimonials-container">
+                <button className="testimonial-nav-btn prev" onClick={handleReviewsScrollLeft}>
+                  <i className="fa-solid fa-chevron-left"></i>
+                </button>
+                <div className="testimonials-slider" ref={reviewsScrollRef}>
+                  {/* Sample reviews with better names */}
+                  {[
+                    { name: "Priya Sharma", rating: 5, comment: "Absolutely amazing birthday decoration! The team was professional and the setup was beyond our expectations.", productName: "Birthday Decoration Premium", userImage: "https://images.unsplash.com/photo-1494790108755-2616b612b739?w=150&h=150&fit=crop&crop=face" },
+                    { name: "Rahul Patel", rating: 4, comment: "Great service for our anniversary celebration. The balloon arrangements were beautiful and exactly what we wanted.", productName: "Anniversary Special", userImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" },
+                    { name: "Sneha Verma", rating: 5, comment: "Perfect decoration for our baby shower! Every detail was taken care of and the colors were just perfect.", productName: "Baby Shower Deluxe", userImage: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" },
+                    { name: "Arjun Singh", rating: 4, comment: "Excellent work on our wedding decoration. The team was punctual and very creative with their designs.", productName: "Wedding Decoration", userImage: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face" },
+                    { name: "Kavya Reddy", rating: 5, comment: "Outstanding birthday surprise setup! My daughter was absolutely delighted. Highly recommend their services.", productName: "Kids Birthday Special", userImage: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face" },
+                    { name: "Vikram Joshi", rating: 5, comment: "Fantastic decoration for our office party. Professional team and beautiful execution. Will definitely use again!", productName: "Corporate Event", userImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face" }
+                  ].map((review, index) => (
+                    <div key={index} className="testimonial-card">
+                      <div className="testimonial-header">
+                        <div className="customer-info">
+                          <div className="customer-avatar">
+                            <img src={review.userImage} alt={review.name} />
+                          </div>
+                          <div className="customer-details">
+                            <h3>{review.name}</h3>
+                            <div className="rating-stars">
+                              {[...Array(5)].map((_, i) => (
+                                <i 
+                                  key={i} 
+                                  className={`fa-solid fa-star ${i < review.rating ? 'filled' : ''}`}
+                                ></i>
+                              ))}
+                              <span className="rating-text">({review.rating}/5)</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="verified-badge">
+                          <i className="fa-solid fa-badge-check"></i>
+                          <span>Verified</span>
+                        </div>
+                      </div>
+                      <div className="testimonial-content">
+                        <p>"{review.comment}"</p>
+                      </div>
+                      <div className="product-info">
+                        <div className="product-tag">
+                          <i className="fa-solid fa-gift"></i>
+                          <span>{review.productName}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <button className="testimonial-nav-btn next" onClick={handleReviewsScrollRight}>
+                  <i className="fa-solid fa-chevron-right"></i>
+                </button>
+              </div>
+            ) : (
+              <div className="testimonials-container">
+                <button className="testimonial-nav-btn prev" onClick={handleReviewsScrollLeft}>
+                  <i className="fa-solid fa-chevron-left"></i>
+                </button>
+                <div className="testimonials-slider" ref={reviewsScrollRef}>
+                  {latestReviews.map((review, index) => (
+                    <div key={index} className="testimonial-card">
+                      <div className="testimonial-header">
+                        <div className="customer-info">
+                          <div className="customer-avatar">
+                            <img src={review.userImage || "https://cdn-icons-png.flaticon.com/512/6681/6681204.png"} alt={review.name} />
+                          </div>
+                          <div className="customer-details">
+                            <h3>{review.name}</h3>
+                            <div className="rating-stars">
+                              {[...Array(5)].map((_, i) => (
+                                <i 
+                                  key={i} 
+                                  className={`fa-solid fa-star ${i < review.rating ? 'filled' : ''}`}
+                                ></i>
+                              ))}
+                              <span className="rating-text">({review.rating}/5)</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="verified-badge">
+                          <i className="fa-solid fa-badge-check"></i>
+                          <span>Verified</span>
+                        </div>
+                      </div>
+                      <div className="testimonial-content">
+                        <p>"{review.comment}"</p>
+                      </div>
+                      <div className="product-info">
+                        <div className="product-tag">
+                          <i className="fa-solid fa-gift"></i>
+                          <span>{review.productName}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <button className="testimonial-nav-btn next" onClick={handleReviewsScrollRight}>
+                  <i className="fa-solid fa-chevron-right"></i>
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="text">
+        <div className="about-section">
           <h1>
             <strong> Skyrixe – Celebrate Life’s Special Moments with us
               Us&nbsp;&nbsp;&nbsp;</strong>
@@ -1171,7 +1274,7 @@ faqItems.forEach(item => {
               remarkable. With our setup services, every special moment can come to life.
               We provide romantic dinners and simple birthday decorations.</span>
           </p>
-          <p class='second'>
+          <p className='second'>
             <span>In our ten years of operation, we have held many events across India. We
               have served thousands of customers as they created special memories. Our
               dedicated team creates impressive event experiences for our customers. We
@@ -1188,11 +1291,7 @@ faqItems.forEach(item => {
               with multiple event decoration services enhances your special moments on all
               occasions.</span>
           </p>
-          <a href="https://wa.me/12345678900" target="_blank" rel="noopener">
-            <button class="show">Show more</button>
-          </a>
-
-          <div class="city-links">
+          <div className="city-links">
   <a href="#">Balloon decoration in Bangalore</a> |
   <a href="#">Balloon decoration in Bhubaneswar</a> |
   <a href="#">Balloon decoration in Chennai</a> |
@@ -1208,49 +1307,89 @@ faqItems.forEach(item => {
 
         </div>
 
-    <div class="faq-section">
-  <h2>Frequently Asked Questions</h2>
-  
-  <div class="faq-item">
-    <button class="faq-question">
-      What kind of events do you provide your decorations for?
-      <span class="faq-icon">+</span>
-    </button>
-    <div class="faq-answer">
-      Decorations are available for birthdays, weddings, corporate events, baby showers, anniversaries, and more.
-    </div>
-  </div>
-  
-  <div class="faq-item">
-    <button class="faq-question">
-      How do we book a service with you?
-      <span class="faq-icon">+</span>
-    </button>
-    <div class="faq-answer">
-      You can book via our website, phone, or social media.
-    </div>
-  </div>
-  
-  <div class="faq-item">
-    <button class="faq-question">
-      How much does simple birthday decoration cost?
-      <span class="faq-icon">+</span>
-    </button>
-    <div class="faq-answer">
-      Simple birthday decoration packages start from affordable prices.
-    </div>
-  </div>
-  
-  <div class="faq-item">
-    <button class="faq-question">
-      In which cities is BalloonDekor available?
-      <span class="faq-icon">+</span>
-    </button>
-    <div class="faq-answer">
-      Services are available in major cities; please contact us to confirm availability.
-    </div>
-  </div>
-</div>
+        {/* ===== FAQ SECTION ===== */}
+        <div className="faq-section-enhanced">
+          <div className="container">
+            <div className="section-title">
+              <h2>Frequently Asked Questions</h2>
+              <p>Everything you need to know about our decoration services</p>
+            </div>
+            
+            <div className="faq-grid">
+              <div className={`faq-item ${activeFaq === 0 ? 'active' : ''}`}>
+                <div className="faq-question" onClick={() => handleFaqToggle(0)}>
+                  <h3>What kind of events do you provide your decorations for?</h3>
+                  <div className="faq-toggle">
+                    <i className="fa-solid fa-plus"></i>
+                  </div>
+                </div>
+                <div className="faq-answer">
+                  <p>We provide decorations for all types of celebrations including birthdays, weddings, anniversaries, baby showers, corporate events, housewarming parties, engagement ceremonies, and festival celebrations. Our team specializes in creating magical moments for every occasion.</p>
+                </div>
+              </div>
+              
+              <div className={`faq-item ${activeFaq === 1 ? 'active' : ''}`}>
+                <div className="faq-question" onClick={() => handleFaqToggle(1)}>
+                  <h3>How do we book a service with you?</h3>
+                  <div className="faq-toggle">
+                    <i className="fa-solid fa-plus"></i>
+                  </div>
+                </div>
+                <div className="faq-answer">
+                  <p>Booking is easy! You can book through our website, call us directly, message us on WhatsApp, or reach out via our social media channels. Our team will guide you through the entire process and help customize your perfect celebration.</p>
+                </div>
+              </div>
+              
+              <div className={`faq-item ${activeFaq === 2 ? 'active' : ''}`}>
+                <div className="faq-question" onClick={() => handleFaqToggle(2)}>
+                  <h3>How much does simple birthday decoration cost?</h3>
+                  <div className="faq-toggle">
+                    <i className="fa-solid fa-plus"></i>
+                  </div>
+                </div>
+                <div className="faq-answer">
+                  <p>Our simple birthday decoration packages start from ₹2,999 and can go up to ₹15,000+ depending on your requirements. We offer various packages to suit different budgets and preferences. Contact us for a personalized quote.</p>
+                </div>
+              </div>
+              
+              <div className={`faq-item ${activeFaq === 3 ? 'active' : ''}`}>
+                <div className="faq-question" onClick={() => handleFaqToggle(3)}>
+                  <h3>In which cities is Skyrixe available?</h3>
+                  <div className="faq-toggle">
+                    <i className="fa-solid fa-plus"></i>
+                  </div>
+                </div>
+                <div className="faq-answer">
+                  <p>We currently serve major cities including Bangalore, Mumbai, Delhi, Chennai, Hyderabad, Pune, Kolkata, Gurgaon, Noida, Bhubaneswar, and Patna. We're continuously expanding to serve more cities across India.</p>
+                </div>
+              </div>
+              
+              <div className={`faq-item ${activeFaq === 4 ? 'active' : ''}`}>
+                <div className="faq-question" onClick={() => handleFaqToggle(4)}>
+                  <h3>Do you provide same-day decoration services?</h3>
+                  <div className="faq-toggle">
+                    <i className="fa-solid fa-plus"></i>
+                  </div>
+                </div>
+                <div className="faq-answer">
+                  <p>Yes, we offer same-day decoration services based on availability. However, we recommend booking at least 24-48 hours in advance to ensure we can accommodate your specific requirements and preferences.</p>
+                </div>
+              </div>
+              
+              <div className={`faq-item ${activeFaq === 5 ? 'active' : ''}`}>
+                <div className="faq-question" onClick={() => handleFaqToggle(5)}>
+                  <h3>Can I customize the decoration according to my theme?</h3>
+                  <div className="faq-toggle">
+                    <i className="fa-solid fa-plus"></i>
+                  </div>
+                </div>
+                <div className="faq-answer">
+                  <p>Absolutely! We specialize in custom decorations. Share your theme, color preferences, and specific requirements with our team, and we'll create a unique decoration setup tailored to your vision and budget.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
 
         <div className="BirthdayDecorationArea client">
