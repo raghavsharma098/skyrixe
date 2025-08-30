@@ -282,9 +282,29 @@
     .CategoriesMenu .Categories_dropdown article aside {width: 50%;}
     .hidePara p {display: none;}
     .newHeader .collapse.navbar-collapse {top: 96px;}
-    .FeatureArea {padding-top: 30px;}
+    .FeatureArea {
+        padding: 30px 15px 0;
+    }
+    .FeatureArea .FeatureBoxMain {margin-bottom: 18px;}
+    .FeatureArea .FeatureBox {height: auto;}
+    .FeatureArea .FeatureBox aside {width: 200px; height: 200px; max-width: 200px; margin: 0 auto;}
+    .FeatureArea .FeatureBox figure {width: 200px; height: 200px; max-width: 200px; margin: 0 auto;}
+    .FeatureArea [class*="col-"] {padding-left: 12px !important; padding-right: 12px !important; margin-bottom: 10px;}
     .Categories .CategoriesMenu p:after {right: 10px;font-size: 12px;}
 }
+
+@media (max-width: 600px) {
+    .FeatureArea {
+        padding: 25px 12px 0;
+    }
+    .FeatureArea .FeatureBoxMain {margin-bottom: 22px;}
+    .FeatureArea .FeatureBox {height: auto;}
+    .FeatureArea .FeatureBox aside {width: 170px; height: 170px; max-width: 170px; margin: 0 auto;}
+    .FeatureArea .FeatureBox figure {width: 170px; height: 170px; max-width: 170px; margin: 0 auto;}
+    .FeatureArea [class*="col-"] {padding-left: 8px !important; padding-right: 8px !important; margin-bottom: 12px;}
+    .FeatureArea .FeatureBoxMain .FeatureBox h4 {font-size: 13px; margin-top: 8px;}
+}
+
 @media (max-width:576px){
     /* Ensure search bar container is visible on very small screens */
     .CategoriesResponsive {display: block !important;}
@@ -322,8 +342,11 @@
     .PrivacyPolicyArea {padding: 50px 15px;}
     .TabCommonBox.TermsConditionsContent h2{font-size: 18px;}
     .VerticalTabs .TabCommonBox h3 {font-size: 18px;}
-    .FeatureArea .FeatureBoxMain {min-height: auto;}
-    .FeatureArea .FeatureBox aside {min-width: auto;min-height: auto;}
+    .FeatureArea .FeatureBoxMain {min-height: auto; margin-bottom: 15px;}
+    .FeatureArea .FeatureBox {height: auto;}
+    .FeatureArea .FeatureBox aside {min-width: auto; min-height: auto; width: 280px; height: 280px; max-width: 280px; margin: 0 auto;}
+    .FeatureArea .FeatureBox figure {width: 280px; height: 280px; max-width: 280px; margin: 0 auto;}
+    .FeatureArea [class*="col-"] {padding-left: 12px !important; padding-right: 12px !important; margin-bottom: 8px;}
     .FeatureArea .FeatureBoxMain .FeatureBox h4 {font-size: 14px;}
     .PrivateDiningBox figure {margin: 0;height: 155px;}
     .PrivateDiningBox h6 {font-size: 13px;line-height: 16px;margin: 0 0 5px 0;}
@@ -339,8 +362,8 @@
     .PrivateDiningBox .Info h5 {font-size: 14px;}
     .BirthdayDecorationArea .container-fluid .row .col-6 {padding: 5px;}
     footer .FooterLinks ul li a {font-size: 14px;}
-    .BirthdayDecorationArea img {height: 220px;}
-    .HeroRight img {height: 160px;}
+    .BirthdayDecorationArea img {width: 100%; height: auto;}
+    .HeroRight img {width: 100%; height: auto;}
     .Hero-Section {margin: 0 0 25px 0;}
     .BirthdayDecorationArea .section-title {margin: 0 0 25px 0;}
     .CategoriesMenu .Categories_dropdown article aside {width: 100%;}
@@ -354,6 +377,10 @@
     .ModalArea h3 {font-size: 20px;}
     .ModalBox .modal-content {padding: 20px 10px;}
     .FeatureArea .row .col-6 {padding-left: 5px;padding-right: 5px;}
+    .FeatureArea .FeatureBox aside {width: 150px; height: 150px; max-width: 150px; margin: 0 auto;}
+    .FeatureArea .FeatureBox figure {width: 150px; height: 150px; max-width: 150px; margin: 0 auto;}
+    .FeatureArea .FeatureBoxMain {margin-bottom: 25px;}
+    .FeatureArea [class*="col-"] {padding-left: 10px !important; padding-right: 10px !important; margin-bottom: 15px;}
     .newHeader .CustomSelect {height: 34px;}
     .newHeader .navbar-toggler {margin-right: 5px;}
     .newHeader .CustomSelect .LocationIcon {width: 14px;}
@@ -409,6 +436,22 @@
     /* .headerTwoBtn {margin-left:0;} */
     .navbar-toggler {padding: .25rem .5rem;font-size: 1rem;}
     .PrivateDiningBox .Info .AddToCartBtn {font-size: 12px;}
+    .FeatureArea .FeatureBox aside {width: 130px; height: 130px; max-width: 130px; margin: 0 auto;}
+    .FeatureArea .FeatureBox figure {width: 130px; height: 130px; max-width: 130px; margin: 0 auto;}
+    .FeatureArea .FeatureBoxMain {margin-bottom: 20px;}
+    .FeatureArea [class*="col-"] {padding-left: 8px !important; padding-right: 8px !important; margin-bottom: 12px;}
+    .FeatureArea .FeatureBoxMain .FeatureBox h4 {font-size: 12px; margin-top: 8px;}
 
 
+}
+
+@media (max-width: 320px) {
+    .FeatureArea {
+        padding: 20px 10px 0;
+    }
+    .FeatureArea .FeatureBox aside {width: 110px; height: 110px; max-width: 110px; margin: 0 auto;}
+    .FeatureArea .FeatureBox figure {width: 110px; height: 110px; max-width: 110px; margin: 0 auto;}
+    .FeatureArea .FeatureBoxMain {margin-bottom: 18px;}
+    .FeatureArea [class*="col-"] {padding-left: 5px !important; padding-right: 5px !important; margin-bottom: 10px;}
+    .FeatureArea .FeatureBoxMain .FeatureBox h4 {font-size: 11px; margin-top: 6px; line-height: 1.2;}
 }

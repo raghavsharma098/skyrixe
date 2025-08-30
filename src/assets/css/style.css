@@ -866,7 +866,7 @@ header .HeaderArea .HeaderRight .Login:hover {
   border-radius: 16px;
   width: 100%;
   height: auto;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .PrivateDining {
@@ -914,7 +914,7 @@ header .HeaderArea .HeaderRight .Login:hover {
   border-radius: 16px;
   width: 100%;
   height: auto;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform 0.3s ease;
 }
 
@@ -3023,19 +3023,20 @@ i.fa-star {
 } */
 
 .FeatureArea {
-  padding: 75px 50px 0;
+  padding: 40px 30px 30px;
+  overflow: hidden;
   /* background-image: linear-gradient(#fff,#e5097f7a,#fff); */
 }
 
 .FeatureArea .FeatureBox {
-  height: 100%;
+  height: auto;
 }
 
 .FeatureArea .FeatureBox figure {
-  margin: 0;
+  margin: 0 auto;
   height: 320px;
-  width: 100%;
-  max-width: 350px;
+  width: 320px;
+  max-width: 320px;
   position: relative;
   flex-shrink: 0;
   border-radius: 20px;
@@ -3057,6 +3058,9 @@ i.fa-star {
 .FeatureArea .row {
   margin: 0 !important;
   width: 100% !important;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .FeatureArea .FeatureBox aside {
@@ -3064,13 +3068,14 @@ i.fa-star {
   border-style: solid;
   padding: 0px;
   border-radius: 20px;
-  width: 100%;
-  max-width: 350px;
+  width: 320px;
+  max-width: 320px;
   height: 320px;
   text-align: center;
   overflow: hidden;
   position: relative;
   display: block;
+  margin: 0 auto;
 }
 
 .FeatureArea .FeatureBoxMain .FeatureBox h4 {
@@ -3078,10 +3083,10 @@ i.fa-star {
   font-weight: 700;
   font-size: 16px;
   text-align: center;
-  margin: 8px auto 15px auto;
+  margin: 10px auto 12px auto;
   position: relative;
   background: transparent;
-  padding: 5px 2px;
+  padding: 8px 4px;
   border-radius: 0;
   z-index: 100;
   display: block !important;
@@ -3090,7 +3095,7 @@ i.fa-star {
   box-sizing: border-box;
   visibility: visible !important;
   opacity: 1 !important;
-  line-height: 1.2;
+  line-height: 1.3;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3114,13 +3119,14 @@ i.fa-star {
 }
 
 .FeatureArea .FeatureBoxMain {
-  min-height: 420px;
-  margin-bottom: -70px;
+  min-height: auto;
+  margin-bottom: 20px;
 }
 
 .FeatureArea [class*="col-"] {
-  padding-left: 10px !important;
-  padding-right: 10px !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+  margin-bottom: 15px;
 }
 
 .FeatureArea .FeatureBox1 aside {
@@ -3270,7 +3276,7 @@ i.fa-star {
 
 .FeatureArea .section-title {
   text-align: center !important;
-  margin: 40px auto;
+  margin: 40px auto 50px auto;
   padding: 0 16px;
   width: 100%;
   display: block;
