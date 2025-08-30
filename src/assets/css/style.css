@@ -3656,7 +3656,7 @@ i.fa-star {
 }
 
 footer {
-  background-image: url("../images/bottomm\ navigation\ bar.png");
+  background-image: url("../images/bottomm navigation bar.png");
 }
 
 
@@ -4042,7 +4042,7 @@ header .HeaderArea .HeaderRight .Icons .UserIcon {
   width: 500px;
   position: absolute;
   background: #fff;
-  box-shadow: 0 3px 11px 0 rgb(0 0 0 / 10%);
+  box-shadow: 0 3px 11px 0 rgba(0, 0, 0, 0.10);
   -webkit-transform: perspective(600px) rotateX(-90deg);
   transform: perspective(600px) rotateX(-90deg);
   -webkit-transform-origin: 0 0 0;
@@ -5817,7 +5817,7 @@ ul.Icons li a img {
 }
 
 .sixImages ul li {
-  width: calc(100% / 6 - 10px);
+  width: calc(16.666% - 10px);
   margin: 0 5px;
 }
 
