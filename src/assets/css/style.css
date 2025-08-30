@@ -5490,7 +5490,7 @@ ul.Icons li a img {
 @media (max-width: 600px) {
   .birthday-item {
     height: auto;
-    min-height: 80vw;
+    min-height: 85vw;
     /* width:53vw; */
     width: 67vw;
   }
@@ -6501,7 +6501,12 @@ ul.Icons li a img {
 
 /* Mobile optimization for smallest screens */
 @media (max-width: 400px) {
-  .birthday-item,
+  .birthday-item {
+    width: 75vw;
+    height: auto;
+    min-height: 100vw;
+  }
+  
   .anniversary-item,
   .kids-item,
   .baby-shower-item {
@@ -6509,7 +6514,13 @@ ul.Icons li a img {
     min-height: 95vw;
   }
   
-  .birthday-scroll-container,
+  .birthday-scroll-container {
+    height: auto;
+    min-height: 105vw;
+    padding: 12px 5px;
+    margin: 1px 15px;
+  }
+  
   .anniversary-scroll-container,
   .kids-scroll-container,
   .baby-shower-scroll-container {

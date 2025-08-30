@@ -45,59 +45,66 @@ const SearchProducts = () => {
             {getSearchProductList?.data?.product?.length > 0 ? (
               getSearchProductList?.data?.product?.map((item, i) => {
                 return (
-                  <div className="col-lg-3 col-md-4 col-sm-6 col-6">
-                    <div className="PrivateDiningBox flexDirection">
+                  <div className="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12" key={i}>
+                    <div className="PrivateDiningBox">
                       <figure>
                         <img
                           src={item?.productimages?.at(0)}
                           onClick={() => handleProduct(item)}
+                          style={{ cursor: 'pointer' }}
+                          alt={item?.productDetails?.productname}
                         />
                       </figure>
+                      
                       <h6>{item?.productDetails?.productname}</h6>
-                      <div className="Info">
-                        <button
-                          className="Buttons"
-                          onClick={() => handleProduct(item)}
-                        >
-                          Book
-                        </button>
-                        <div className="text-right">
+                      
+                      <div className="rightcard">
+                        <div className="loc">
+                          <h1>At your location</h1>
+                        </div>
+                        
+                        <div className="Info">
+                          <div className="text-right">
                             <div className="priceArea">
                               {item?.priceDetails?.discountedPrice ? (
                                 <h5>
                                   ₹{item?.priceDetails?.discountedPrice}
-                                  <p className="actualPrice">
+                                  <span className="actualPrice">
                                     ₹{item?.priceDetails?.price}
-                                  </p>
+                                  </span>
                                 </h5>
                               ) : (
                                 <h5>₹{item?.priceDetails?.price}</h5>
                               )}
-                              {item?.priceDetails?.discountedPrice ? (
+                              {item?.priceDetails?.discountedPrice && (
                                 <span>
                                   {Math.round(
                                     ((Number(item?.priceDetails?.price) -
-                                      Number(
-                                        item?.priceDetails?.discountedPrice
-                                      )) /
-                                      Number(item?.priceDetails?.price)) *
-                                      100
-                                  )}
-                                  % off
+                                      Number(item?.priceDetails?.discountedPrice)) /
+                                      Number(item?.priceDetails?.price)) * 100
+                                  )}% off
                                 </span>
-                              ) : (
-                                ""
                               )}
                             </div>
                             <p>
-                              4.8 <i class="fa-solid fa-star"></i> |{" "}
+                              4.8 <i className="fa-solid fa-star"></i> |{" "}
                               {i % 2 == 0 && i !== 0
                                 ? `${i % 2}` + 5 + i - 1
                                 : i == 0
-                                ? `14${i % 2}`
-                                : `${i % 2}` + 2 + i - 1}
+                                  ? `14${i % 2}`
+                                  : `${i % 2}` + 2 + i - 1}
                             </p>
                           </div>
+                        </div>
+                      </div>
+                      
+                      <div className="endbuttons">
+                        <button
+                          className="Buttons"
+                          onClick={() => handleProduct(item)}
+                        >
+                          Book Now
+                        </button>
                       </div>
                     </div>
                   </div>

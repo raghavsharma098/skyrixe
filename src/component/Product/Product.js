@@ -427,67 +427,68 @@ const Product = () => {
                     sortedProducts?.map((item, i) => {
                       return (
                         <div
-                          className="col-lg-3 col-md-4 col-sm-6 col-6"
+                          className="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12"
                           key={i}
                         >
-                          <div className="PrivateDiningBox flexDirection">
+                          <div className="PrivateDiningBox">
                             <figure>
                               <img
                                 onClick={() => handleProduct(item)}
                                 src={item?.productimages?.at(0)}
+                                style={{ cursor: 'pointer' }}
+                                alt={item?.productDetails?.productname}
                               />
                             </figure>
+                            
                             <h6>{item?.productDetails?.productname}</h6>
-
-                            {/* Location text added here */}
-                            <div className="">
-                              <span>At your location</span>
+                            
+                            <div className="rightcard">
+                              <div className="loc">
+                                <h1>At your location</h1>
+                              </div>
+                              
+                              <div className="Info">
+                                <div className="text-right">
+                                  <div className="priceArea">
+                                    {item?.priceDetails?.discountedPrice ? (
+                                      <h5>
+                                        ₹{item?.priceDetails?.discountedPrice}
+                                        <span className="actualPrice">
+                                          ₹{item?.priceDetails?.price}
+                                        </span>
+                                      </h5>
+                                    ) : (
+                                      <h5>₹{item?.priceDetails?.price}</h5>
+                                    )}
+                                    {item?.priceDetails?.discountedPrice && (
+                                      <span>
+                                        {Math.round(
+                                          ((Number(item?.priceDetails?.price) -
+                                            Number(item?.priceDetails?.discountedPrice)) /
+                                            Number(item?.priceDetails?.price)) * 100
+                                        )}% off
+                                      </span>
+                                    )}
+                                  </div>
+                                  <p>
+                                    4.8 <i className="fa-solid fa-star"></i> |{" "}
+                                    {i % 2 == 0 && i !== 0
+                                      ? `${i % 2}` + 5 + i - 1
+                                      : i == 0
+                                        ? `14${i % 2}`
+                                        : `${i % 2}` + 2 + i - 1}
+                                  </p>
+                                </div>
+                              </div>
                             </div>
-
-                            <div className="Info">
+                            
+                            <div className="endbuttons">
                               <button
                                 className="Buttons"
                                 onClick={() => handleProduct(item)}
                               >
-                                Book
+                                Book Now
                               </button>
-                              <div className="text-right">
-                                <div className="priceArea">
-                                  {item?.priceDetails?.discountedPrice ? (
-                                    <h5>
-                                      ₹{item?.priceDetails?.discountedPrice}
-                                      <p className="actualPrice">
-                                        ₹{item?.priceDetails?.price}
-                                      </p>
-                                    </h5>
-                                  ) : (
-                                    <h5>₹{item?.priceDetails?.price}</h5>
-                                  )}
-                                  {item?.priceDetails?.discountedPrice ? (
-                                    <span>
-                                      {Math.round(
-                                        ((Number(item?.priceDetails?.price) -
-                                          Number(
-                                            item?.priceDetails?.discountedPrice
-                                          )) /
-                                          Number(item?.priceDetails?.price)) *
-                                        100
-                                      )}
-                                      % off
-                                    </span>
-                                  ) : (
-                                    ""
-                                  )}
-                                </div>
-                                <p>
-                                  4.8 <i className="fa-solid fa-star"></i> |{" "}
-                                  {i % 2 == 0 && i !== 0
-                                    ? `${i % 2}` + 5 + i - 1
-                                    : i == 0
-                                      ? `14${i % 2}`
-                                      : `${i % 2}` + 2 + i - 1}
-                                </p>
-                              </div>
                             </div>
                           </div>
                         </div>
