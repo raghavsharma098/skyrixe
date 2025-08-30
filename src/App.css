@@ -1987,7 +1987,8 @@
   
   .anniversary-scroll-container{
     /* height: 118vw; */
-    height: 134vw;
+    height: auto;
+    min-height: 134vw;
   }
 }
 

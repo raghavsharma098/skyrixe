@@ -531,56 +531,48 @@ faqItems.forEach(item => {
                   getBirthdayList?.data?.map((item, i) => {
                     return (
                       <div key={i} className="birthday-item">
-                        <div className="PrivateDiningBox flexDirection">
+                        <div className="PrivateDiningBox">
                           <figure>
                             <img
                               src={item?.productimages?.at(0)}
                               onClick={() => handleProduct(item)}
                               style={{ cursor: 'pointer' }}
+                              alt={item?.productDetails?.productname}
                             />
                           </figure>
+                          
                           <h6>{item?.productDetails?.productname}</h6>
-                          <div class="rightcard">
+                          
+                          <div className="rightcard">
                             <div className="loc">
-                              <h1> At your location</h1>
-                              <div className="star">
-                                <FaStar size={40} style={{ stroke: 'gold', fill: 'gold' }} />
-
-
-                              </div>
+                              <h1>At your location</h1>
                             </div>
+                            
                             <div className="Info">
-
                               <div className="text-right">
                                 <div className="priceArea">
                                   {item?.priceDetails?.discountedPrice ? (
                                     <h5>
                                       ₹{item?.priceDetails?.discountedPrice}
-                                      <p className="actualPrice">
+                                      <span className="actualPrice">
                                         ₹{item?.priceDetails?.price}
-                                      </p>
+                                      </span>
                                     </h5>
                                   ) : (
                                     <h5>₹{item?.priceDetails?.price}</h5>
                                   )}
-                                  {item?.priceDetails?.discountedPrice ? (
+                                  {item?.priceDetails?.discountedPrice && (
                                     <span>
                                       {Math.round(
                                         ((Number(item?.priceDetails?.price) -
-                                          Number(
-                                            item?.priceDetails?.discountedPrice
-                                          )) /
-                                          Number(item?.priceDetails?.price)) *
-                                        100
-                                      )}
-                                      % off
+                                          Number(item?.priceDetails?.discountedPrice)) /
+                                          Number(item?.priceDetails?.price)) * 100
+                                      )}% off
                                     </span>
-                                  ) : (
-                                    ""
                                   )}
                                 </div>
                                 <p>
-                                  4.8 <i class="fa-solid fa-star"></i> |{" "}
+                                  4.8 <i className="fa-solid fa-star"></i> |{" "}
                                   {i % 2 == 0 && i !== 0
                                     ? `${i % 2}` + 5 + i - 1
                                     : i == 0
@@ -590,6 +582,7 @@ faqItems.forEach(item => {
                               </div>
                             </div>
                           </div>
+                          
                           <div className="endbuttons">
                             <button
                               className="Buttons"
@@ -597,13 +590,6 @@ faqItems.forEach(item => {
                             >
                               Book Now
                             </button>
-                            {/* <div className="sv">
-                              <Link to="/profile">
-
-                                <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 512 512" class="wishlist-icon" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M458.4 64.3C400.6 15.7 311.3 23 256 79.3 200.7 23 111.4 15.6 53.6 64.3-21.6 127.6-10.6 230.8 43 285.5l175.4 178.7c10 10.2 23.4 15.9 37.6 15.9 14.3 0 27.6-5.6 37.6-15.8L469 285.6c53.5-54.7 64.7-157.9-10.6-221.3zm-23.6 187.5L259.4 430.5c-2.4 2.4-4.4 2.4-6.8 0L77.2 251.8c-36.5-37.2-43.9-107.6 7.3-150.7 38.9-32.7 98.9-27.8 136.5 10.5l35 35.7 35-35.7c37.8-38.5 97.8-43.2 136.5-10.6 51.1 43.1 43.5 113.9 7.3 150.8z"></path></svg>
-                              </Link>
-                            </div> */}
-
                           </div>
                         </div>
                       </div>
@@ -701,56 +687,48 @@ faqItems.forEach(item => {
                   getAnniversaryList?.data?.map((item, i) => {
                     return (
                       <div key={i} className="anniversary-item">
-                        <div className="PrivateDiningBox flexDirection">
+                        <div className="PrivateDiningBox">
                           <figure>
                             <img
                               src={item?.productimages?.at(0)}
                               onClick={() => handleProduct(item)}
                               style={{ cursor: 'pointer' }}
+                              alt={item?.productDetails?.productname}
                             />
                           </figure>
+                          
                           <h6>{item?.productDetails?.productname}</h6>
-                          <div class="rightcard">
-                            <div class="loc">
-                              <h1> At your location</h1>
-                              <div className="star">
-                                <FaStar size={40} style={{ stroke: 'gold', fill: 'gold' }} />
-
-
-                              </div>
+                          
+                          <div className="rightcard">
+                            <div className="loc">
+                              <h1>At your location</h1>
                             </div>
+                            
                             <div className="Info">
-
                               <div className="text-right">
                                 <div className="priceArea">
                                   {item?.priceDetails?.discountedPrice ? (
                                     <h5>
                                       ₹{item?.priceDetails?.discountedPrice}
-                                      <p className="actualPrice">
+                                      <span className="actualPrice">
                                         ₹{item?.priceDetails?.price}
-                                      </p>
+                                      </span>
                                     </h5>
                                   ) : (
                                     <h5>₹{item?.priceDetails?.price}</h5>
                                   )}
-                                  {item?.priceDetails?.discountedPrice ? (
+                                  {item?.priceDetails?.discountedPrice && (
                                     <span>
                                       {Math.round(
                                         ((Number(item?.priceDetails?.price) -
-                                          Number(
-                                            item?.priceDetails?.discountedPrice
-                                          )) /
-                                          Number(item?.priceDetails?.price)) *
-                                        100
-                                      )}
-                                      % off
+                                          Number(item?.priceDetails?.discountedPrice)) /
+                                          Number(item?.priceDetails?.price)) * 100
+                                      )}% off
                                     </span>
-                                  ) : (
-                                    ""
                                   )}
                                 </div>
                                 <p>
-                                  4.8 <i class="fa-solid fa-star"></i> |{" "}
+                                  4.8 <i className="fa-solid fa-star"></i> |{" "}
                                   {i % 2 == 0 && i !== 0
                                     ? `${i % 2}` + 5 + i - 1
                                     : i == 0
@@ -760,6 +738,7 @@ faqItems.forEach(item => {
                               </div>
                             </div>
                           </div>
+                          
                           <div className="endbuttons">
                             <button
                               className="Buttons"
@@ -767,7 +746,6 @@ faqItems.forEach(item => {
                             >
                               Book Now
                             </button>
-
                           </div>
                         </div>
                       </div>
@@ -864,56 +842,48 @@ faqItems.forEach(item => {
                   getKidsList?.data?.map((item, i) => {
                     return (
                       <div key={i} className="kids-item">
-                        <div className="PrivateDiningBox flexDirection">
+                        <div className="PrivateDiningBox">
                           <figure>
                             <img
                               src={item?.productimages?.at(0)}
                               onClick={() => handleProduct(item)}
                               style={{ cursor: 'pointer' }}
+                              alt={item?.productDetails?.productname}
                             />
                           </figure>
+                          
                           <h6>{item?.productDetails?.productname}</h6>
-                          <div class="rightcard">
-                            <div class="loc">
-                              <h1> At your location</h1>
-                              <div className="star">
-                                <FaStar size={40} style={{ stroke: 'gold', fill: 'gold' }} />
-
-
-                              </div>
+                          
+                          <div className="rightcard">
+                            <div className="loc">
+                              <h1>At your location</h1>
                             </div>
+                            
                             <div className="Info">
-
                               <div className="text-right">
                                 <div className="priceArea">
                                   {item?.priceDetails?.discountedPrice ? (
                                     <h5>
                                       ₹{item?.priceDetails?.discountedPrice}
-                                      <p className="actualPrice">
+                                      <span className="actualPrice">
                                         ₹{item?.priceDetails?.price}
-                                      </p>
+                                      </span>
                                     </h5>
                                   ) : (
                                     <h5>₹{item?.priceDetails?.price}</h5>
                                   )}
-                                  {item?.priceDetails?.discountedPrice ? (
+                                  {item?.priceDetails?.discountedPrice && (
                                     <span>
                                       {Math.round(
                                         ((Number(item?.priceDetails?.price) -
-                                          Number(
-                                            item?.priceDetails?.discountedPrice
-                                          )) /
-                                          Number(item?.priceDetails?.price)) *
-                                        100
-                                      )}
-                                      % off
+                                          Number(item?.priceDetails?.discountedPrice)) /
+                                          Number(item?.priceDetails?.price)) * 100
+                                      )}% off
                                     </span>
-                                  ) : (
-                                    ""
                                   )}
                                 </div>
                                 <p>
-                                  4.8 <i class="fa-solid fa-star"></i> |{" "}
+                                  4.8 <i className="fa-solid fa-star"></i> |{" "}
                                   {i % 2 == 0 && i !== 0
                                     ? `${i % 2}` + 5 + i - 1
                                     : i == 0
@@ -923,6 +893,7 @@ faqItems.forEach(item => {
                               </div>
                             </div>
                           </div>
+                          
                           <div className="endbuttons">
                             <button
                               className="Buttons"
@@ -930,7 +901,6 @@ faqItems.forEach(item => {
                             >
                               Book Now
                             </button>
-
                           </div>
                         </div>
                       </div>
@@ -1027,56 +997,48 @@ faqItems.forEach(item => {
                   getWeddingDecoList?.data?.map((item, i) => {
                     return (
                       <div key={i} className="baby-shower-item">
-                        <div className="PrivateDiningBox flexDirection">
+                        <div className="PrivateDiningBox">
                           <figure>
                             <img
                               src={item?.productimages?.at(0)}
                               onClick={() => handleProduct(item)}
                               style={{ cursor: 'pointer' }}
+                              alt={item?.productDetails?.productname}
                             />
                           </figure>
+                          
                           <h6>{item?.productDetails?.productname}</h6>
-                          <div class="rightcard">
-                            <div class="loc">
-                              <h1> At your location</h1>
-                              <div className="star">
-                                <FaStar size={40} style={{ stroke: 'gold', fill: 'gold' }} />
-
-
-                              </div>
+                          
+                          <div className="rightcard">
+                            <div className="loc">
+                              <h1>At your location</h1>
                             </div>
+                            
                             <div className="Info">
-
                               <div className="text-right">
                                 <div className="priceArea">
                                   {item?.priceDetails?.discountedPrice ? (
                                     <h5>
                                       ₹{item?.priceDetails?.discountedPrice}
-                                      <p className="actualPrice">
+                                      <span className="actualPrice">
                                         ₹{item?.priceDetails?.price}
-                                      </p>
+                                      </span>
                                     </h5>
                                   ) : (
                                     <h5>₹{item?.priceDetails?.price}</h5>
                                   )}
-                                  {item?.priceDetails?.discountedPrice ? (
+                                  {item?.priceDetails?.discountedPrice && (
                                     <span>
                                       {Math.round(
                                         ((Number(item?.priceDetails?.price) -
-                                          Number(
-                                            item?.priceDetails?.discountedPrice
-                                          )) /
-                                          Number(item?.priceDetails?.price)) *
-                                        100
-                                      )}
-                                      % off
+                                          Number(item?.priceDetails?.discountedPrice)) /
+                                          Number(item?.priceDetails?.price)) * 100
+                                      )}% off
                                     </span>
-                                  ) : (
-                                    ""
                                   )}
                                 </div>
                                 <p>
-                                  4.8 <i class="fa-solid fa-star"></i> |{" "}
+                                  4.8 <i className="fa-solid fa-star"></i> |{" "}
                                   {i % 2 == 0 && i !== 0
                                     ? `${i % 2}` + 5 + i - 1
                                     : i == 0
@@ -1086,6 +1048,7 @@ faqItems.forEach(item => {
                               </div>
                             </div>
                           </div>
+                          
                           <div className="endbuttons">
                             <button
                               className="Buttons"
@@ -1093,7 +1056,6 @@ faqItems.forEach(item => {
                             >
                               Book Now
                             </button>
-
                           </div>
                         </div>
                       </div>

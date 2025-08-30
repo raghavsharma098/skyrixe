@@ -945,141 +945,230 @@ header .HeaderArea .HeaderRight .Login:hover {
 
 .PrivateDiningBox {
   background-color: #ffffff;
-  border-radius: 5px;
-  padding: 2px;
-  box-shadow: 5px 10px 16px #c2bebe;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  height: 95%;
-  transition: all 0.5s;
+  height: auto;
+  transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
 }
 
 @media (max-width: 600px) {
   .PrivateDiningBox {
-    height: 102vw;
-    padding: 50px;
-
+    padding: 8px;
+    margin-bottom: 15px;
   }
 }
 
 .PrivateDiningBox:hover {
-  transform: scale(1.07);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
+/* Image styling - ensure it fits completely */
 .PrivateDiningBox img {
   width: 100%;
-
-  margin: 0 0 15px 0;
-  cursor: pointer;
-  /* height: 100%; */
-  border-radius: 0%;
-  /* object-fit: cover; */
-  height: 22vw;
+  height: auto;
+  border-radius: 8px;
+  object-fit: contain;
+  background-color: #f8f9fa;
+  margin-bottom: 8px;
 }
 
-.PrivateDiningBox .star {
-  width: 21%;
-  margin: 0px 2px;
-  position: relative;
-  top: 0px;
-
-}
-
+/* Title styling */
 .PrivateDiningBox h6 {
-  color: #0b0f0e;
+  color: #333;
   font-weight: 600;
-  letter-spacing: -0.19px;
   font-size: 16px;
-  margin: 0 0 0 0;
-  min-height: 40px;
-  margin-left: 10px;
+  line-height: 1.3;
+  margin: 0 0 6px 0;
+  padding: 0;
+  min-height: auto;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.PrivateDiningBox .Info {
+/* Location section */
+.PrivateDiningBox .rightcard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.PrivateDiningBox .loc {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
+  margin-bottom: 6px;
 }
 
-.PrivateDiningBox.flexDirection .Info {
-  flex-direction: column-reverse;
-  align-items: flex-start;
-
-}
-
-.PrivateDiningBox .Info button {
-  margin: 0;
-  width: auto;
-  padding: 6px 25px;
-  transition: background-color 0.3s ease-in-out;
-  margin: 10px 0 0 0;
-}
-
-.PrivateDiningBox .Info button:hover {
-  background-color: #e5097f;
-  border-color: #e5097f;
-  color: #fff !important;
-}
-
-.PrivateDiningBox .Info .StarIcon {
-  clip-path: polygon(50% 0%,
-      61% 35%,
-      98% 35%,
-      68% 57%,
-      79% 91%,
-      50% 70%,
-      21% 91%,
-      32% 57%,
-      2% 35%,
-      39% 35%);
-  background-color: #ebf30c;
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  margin: 0 3px;
-}
-
-.PrivateDiningBox .Info p {
-  color: #0b0f0e;
+.PrivateDiningBox .loc h1 {
+  color: #666;
+  font-size: 13px;
   font-weight: 400;
-  font-size: 12px;
+  margin: 0;
+  text-transform: none;
+}
+
+.PrivateDiningBox .star {
+  display: none; /* Hide star as per reference design */
+}
+
+/* Price and rating section */
+.PrivateDiningBox .Info {
+  margin-bottom: 12px;
+}
+
+.PrivateDiningBox .Info .text-right {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.PrivateDiningBox .Info .priceArea {
   display: flex;
   align-items: center;
-}
-
-.PrivateDiningBox .Info p i {
-  color: #2ba501;
-  margin: 0 5px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .PrivateDiningBox .Info h5 {
-  display: flex;
-  color: #02366f;
+  color: #333;
   font-weight: 700;
-  font-size: 15px;
-  margin-bottom: 0px;
-  letter-spacing: -0.2px;
-  text-align: right;
-  margin: 0px 0 5px 0;
+  font-size: 18px;
+  margin: 0;
+  display: inline-block;
 }
 
 .PrivateDiningBox .Info h5 .actualPrice {
-  text-decoration: line-through !important;
-  color: gray;
-  font-size: 15px;
-  margin-left: 8px;
+  text-decoration: line-through;
+  color: #999;
+  font-size: 14px;
+  font-weight: 400;
+  margin-left: 6px;
+  display: inline;
 }
 
-.PrivateDiningBox .Info .AddToCartBtn {
-  background-color: rgba(2, 54, 111, 1);
-  padding: 5px 15px;
-  border-radius: 4px;
-  color: #fff;
+.PrivateDiningBox .Info .priceArea span {
+  background-color: #e8f5e8;
+  color: #2d8a2f;
+  font-size: 12px;
   font-weight: 600;
-  font-size: 13px;
-  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.PrivateDiningBox .Info p {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.PrivateDiningBox .Info p i {
+  color: #ffa500;
+  font-size: 12px;
+}
+
+/* Button styling */
+.PrivateDiningBox .endbuttons {
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.PrivateDiningBox .endbuttons .Buttons {
+  background-color: #8b2694;
+  border: 1px solid #8b2694;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 20px;
+  width: 100%;
+  margin: 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.PrivateDiningBox .endbuttons .Buttons:hover {
+  background-color: #7a2284;
+  transform: translateY(-1px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .PrivateDiningBox h6 {
+    font-size: 15px;
+  }
+  
+  .PrivateDiningBox .loc h1 {
+    font-size: 12px;
+  }
+  
+  .PrivateDiningBox .Info h5 {
+    font-size: 16px;
+  }
+  
+  .PrivateDiningBox .Info p {
+    font-size: 13px;
+  }
+  
+  .PrivateDiningBox .endbuttons .Buttons {
+    font-size: 15px;
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .PrivateDiningBox h6 {
+    font-size: 14px;
+    -webkit-line-clamp: 3;
+  }
+  
+  .PrivateDiningBox .loc h1 {
+    font-size: 11px;
+  }
+  
+  .PrivateDiningBox .Info h5 {
+    font-size: 15px;
+  }
+  
+  .PrivateDiningBox .Info h5 .actualPrice {
+    font-size: 13px;
+  }
+  
+  .PrivateDiningBox .Info p {
+    font-size: 12px;
+  }
+  
+  .PrivateDiningBox .endbuttons .Buttons {
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+  
+  /* Ensure cards have enough height on very small screens */
+  .birthday-item,
+  .anniversary-item,
+  .kids-item,
+  .baby-shower-item {
+    min-height: 85vw;
+  }
+  
+  /* Adjust scroll container heights for very small screens */
+  .birthday-scroll-container,
+  .anniversary-scroll-container,
+  .kids-scroll-container,
+  .baby-shower-scroll-container {
+    min-height: 90vw;
+    padding: 15px 8px;
+  }
 }
 
 .PrivateDining .section-title {
@@ -5373,6 +5462,8 @@ ul.Icons li a img {
     padding: 20px 10px;
     /* Less padding for small screens */
     margin: 1px 30px;
+    height: auto;
+    min-height: 85vw;
   }
 
   .birthday-scroll-container>* {
@@ -5392,12 +5483,14 @@ ul.Icons li a img {
   flex-shrink: 0; */
   background-color: #ffffff;
   width: 25vw;
-  height: 38vw;
+  height: auto;
+  min-height: 38vw;
 }
 
 @media (max-width: 600px) {
   .birthday-item {
-    height: 80vw;
+    height: auto;
+    min-height: 80vw;
     /* width:53vw; */
     width: 67vw;
   }
@@ -5406,8 +5499,8 @@ ul.Icons li a img {
 @media (min-width: 768px) and (max-width: 1024px) {
   .birthday-item {
     width: 44vw;
-    height: 56vw;
-
+    height: auto;
+    min-height: 56vw;
   }
 }
 
@@ -5456,10 +5549,12 @@ ul.Icons li a img {
 
 /* MOBILE: Only one item visible at a time */
 @media (max-width: 600px) {
-  .annivesary-scroll-container {
+  .anniversary-scroll-container {
     padding: 20px 10px;
     /* Less padding for small screens */
     margin: 1px 20px;
+    height: auto;
+    min-height: 85vw;
   }
 
   .anniversary-scroll-container>* {
@@ -5478,12 +5573,14 @@ ul.Icons li a img {
   flex-shrink: 0; */
   background-color: #ffffff;
   width: 25vw;
-  height: 38vw;
+  height: auto;
+  min-height: 38vw;
 }
 
 @media (max-width: 600px) {
   .anniversary-item {
-    height: 80vw;
+    height: auto;
+    min-height: 80vw;
     width: 67vw;
   }
 }
@@ -5491,8 +5588,8 @@ ul.Icons li a img {
 @media (min-width: 768px) and (max-width: 1024px) {
   .anniversary-item {
     width: 44vw;
-    height: 56vw;
-
+    height: auto;
+    min-height: 56vw;
   }
 }
 
@@ -5542,7 +5639,8 @@ ul.Icons li a img {
     /* Less padding for small screens */
     margin: 1px 20px;
     /* height:118vw; */
-    height: 134vw;
+    height: auto;
+    min-height: 85vw;
   }
 
   .kids-scroll-container>* {
@@ -5561,12 +5659,14 @@ ul.Icons li a img {
   flex-shrink: 0; */
   background-color: #ffffff;
   width: 25vw;
-  height: 38vw;
+  height: auto;
+  min-height: 38vw;
 }
 
 @media (max-width: 600px) {
   .kids-item {
-    height: 80vw;
+    height: auto;
+    min-height: 80vw;
     width: 67vw;
   }
 }
@@ -5574,8 +5674,8 @@ ul.Icons li a img {
 @media (min-width: 768px) and (max-width: 1024px) {
   .kids-item {
     width: 44vw;
-    height: 56vw;
-
+    height: auto;
+    min-height: 56vw;
   }
 }
 
@@ -5624,8 +5724,8 @@ ul.Icons li a img {
     /* Less padding for small screens */
     margin: 1px 20px;
     /* height: 118vw; */
-    height: 134vw;
-
+    height: auto;
+    min-height: 85vw;
   }
 
   .baby-shower-scroll-container>* {
@@ -5645,12 +5745,14 @@ ul.Icons li a img {
   flex-shrink: 0; */
   background-color: #ffffff;
   width: 25vw;
-  height: 38vw;
+  height: auto;
+  min-height: 38vw;
 }
 
 @media (max-width: 600px) {
   .baby-shower-item {
-    height: 80vw;
+    height: auto;
+    min-height: 80vw;
     width: 67vw;
   }
 }
@@ -5658,8 +5760,8 @@ ul.Icons li a img {
 @media (min-width: 768px) and (max-width: 1024px) {
   .baby-shower-item {
     width: 44vw;
-    height: 56vw;
-
+    height: auto;
+    min-height: 56vw;
   }
 }
 
@@ -6394,5 +6496,34 @@ ul.Icons li a img {
   
   .view-all-content i {
     font-size: 18px;
+  }
+}
+
+/* Mobile optimization for smallest screens */
+@media (max-width: 400px) {
+  .birthday-item,
+  .anniversary-item,
+  .kids-item,
+  .baby-shower-item {
+    width: 75vw;
+    min-height: 95vw;
+  }
+  
+  .birthday-scroll-container,
+  .anniversary-scroll-container,
+  .kids-scroll-container,
+  .baby-shower-scroll-container {
+    min-height: 100vw;
+    padding: 12px 5px;
+    margin: 1px 15px;
+  }
+  
+  .PrivateDiningBox {
+    padding: 10px;
+  }
+  
+  .PrivateDiningBox .endbuttons .Buttons {
+    font-size: 13px;
+    padding: 8px 12px;
   }
 }
