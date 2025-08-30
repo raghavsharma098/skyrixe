@@ -65,7 +65,7 @@
     .ProductDetailsArea .carousel-indicators [data-bs-target]{width: 18%;}
     footer .FooterTop .FooterLogo {padding-right: 0;}
     footer .FooterTop {padding: 25px 0;}
-    .PrivateDiningBox {padding: 8px; border-radius: 12px;}
+    .PrivateDiningBox {padding: 12px; border-radius: 14px;}
     .PrivateDiningBox figure {width: 100%;margin-bottom: 0.5rem; border-radius: 10px;}
     .FooterLinks {margin: 0 0 15px 0;}
     footer .FooterLinks h3 {margin: 0 0 10px 0;}
@@ -132,7 +132,7 @@
     .newHeader .CustomSelect .LocationIcon {left: 5px;}
     .custom-arrow.next {right: -20px;}
     .custom-arrow.prev {left: -15px;z-index: 99;}
-    .PrivateDining {padding: 0 0 50px;}
+    .PrivateDining {padding: 25px 15px 50px 15px;}
     .PrivateDining .col-6 {padding-left: 5px;padding-right: 5px;}
     .FilterArea2 {display: block;}
     .ProductDetailsArea {padding-top: 25px;}
