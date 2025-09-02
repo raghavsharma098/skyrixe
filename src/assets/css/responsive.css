@@ -1,6 +1,57 @@
 @media (max-width:992px){
-    footer .FooterTop {padding: 50px 0;}
-    .FeatureArea {padding: 50px 0 0;}
+    /* Ensure consistent 15px padding on tablet */
+    .FeatureArea {padding: 50px 15px 0;}
+    .PrivateDining {padding: 50px 15px;}
+    .BirthdayDecorationArea {padding: 20px 15px;}
+    .ProductReviewsArea {padding: 50px 15px;}
+    footer .FooterTop {padding: 50px 15px;}
+    .hero-section {padding: 0 15px;}
+    .Hero-Section {padding: 50px 15px;}
+    .reviews-section {padding: 50px 15px;}
+    .about-section {padding: 50px 15px;}
+    .faq-section-enhanced {padding: 50px 15px;}
+    .service-section {padding: 50px 15px;}
+    .enjoy-life-section {padding: 50px 15px;}
+    
+    /* FeatureArea 4x2 Grid - Tablet */
+    .FeatureArea .row {
+        gap: 20px 12px !important;
+        padding: 15px 0 !important;
+    }
+    
+    .FeatureArea .FeatureBox aside {
+        max-width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 1 !important;
+        border-radius: 16px !important;
+        margin: 0 auto 12px auto !important;
+    }
+    
+    .FeatureArea .FeatureBox figure {
+        border-radius: 16px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+    
+    .FeatureArea .FeatureBox figure img {
+        border-radius: 16px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        display: block !important;
+    }
+    
+    .FeatureArea .FeatureBoxMain .FeatureBox h4 {
+        font-size: 16px !important;
+        margin: 0 auto !important;
+        padding: 6px 2px !important;
+    }
+    
+    /* Other tablet responsive rules */
     .PrivateDining .section-title h2,
     .FeatureArea .section-title h2,
     .BirthdayDecorationArea .section-title h2{font-size: 24px;}
@@ -258,6 +309,81 @@
     .custom-arrow.next {right: -20px;}
     }
 @media (max-width:768px){
+    /* Ensure consistent padding and no overflow on mobile */
+    .FeatureArea {
+        padding: 25px 12px 0;
+        width: 100%;
+        overflow-x: hidden;
+    }
+    .PrivateDining {padding: 50px 12px;}
+    .BirthdayDecorationArea {padding: 20px 12px;}
+    .ProductReviewsArea {padding: 50px 12px;}
+    footer .FooterTop {padding: 50px 12px;}
+    .hero-section {padding: 0 12px;}
+    .Hero-Section {padding: 30px 12px;}
+    .reviews-section {padding: 30px 12px;}
+    .about-section {padding: 30px 12px;}
+    .faq-section-enhanced {padding: 30px 12px;}
+    .service-section {padding: 30px 12px;}
+    .enjoy-life-section {padding: 30px 12px;}
+    
+    /* FeatureArea 2x4 Grid - Mobile (2 columns, 4 rows) */
+    .FeatureArea .row {
+        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-rows: repeat(4, 1fr) !important;
+        gap: 15px 10px !important;
+        padding: 8px 0 !important;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .FeatureArea .FeatureBox aside {
+        max-width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 1 !important;
+        border-radius: 15px !important;
+        margin: 0 auto 10px auto !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        position: relative !important;
+    }
+    
+    .FeatureArea .FeatureBox figure {
+        border-radius: 15px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+    }
+    
+    .FeatureArea .FeatureBox figure img {
+        border-radius: 15px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        display: block !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+    }
+    
+    .FeatureArea .FeatureBoxMain .FeatureBox h4 {
+        font-size: 14px !important;
+        margin: 0 auto !important;
+        padding: 4px !important;
+        line-height: 1.2 !important;
+    }
+    
+    /* Mobile navigation and search */
     /* Make sure CategoriesResponsive is visible on smaller screens */
     .CategoriesResponsive {display: block !important;}
     /* Keep horizontal navigation hidden on smaller mobile screens */
@@ -285,24 +411,71 @@
     .FeatureArea {
         padding: 30px 15px 0;
     }
-    .FeatureArea .FeatureBoxMain {margin-bottom: 18px;}
-    .FeatureArea .FeatureBox {height: auto;}
-    .FeatureArea .FeatureBox aside {width: 200px; height: 200px; max-width: 200px; margin: 0 auto;}
-    .FeatureArea .FeatureBox figure {width: 200px; height: 200px; max-width: 200px; margin: 0 auto;}
-    .FeatureArea [class*="col-"] {padding-left: 12px !important; padding-right: 12px !important; margin-bottom: 10px;}
     .Categories .CategoriesMenu p:after {right: 10px;font-size: 12px;}
 }
 
 @media (max-width: 600px) {
     .FeatureArea {
-        padding: 25px 12px 0;
+        padding: 25px 10px 0;
+        width: 100%;
+        overflow-x: hidden;
     }
-    .FeatureArea .FeatureBoxMain {margin-bottom: 22px;}
-    .FeatureArea .FeatureBox {height: auto;}
-    .FeatureArea .FeatureBox aside {width: 170px; height: 170px; max-width: 170px; margin: 0 auto;}
-    .FeatureArea .FeatureBox figure {width: 170px; height: 170px; max-width: 170px; margin: 0 auto;}
-    .FeatureArea [class*="col-"] {padding-left: 8px !important; padding-right: 8px !important; margin-bottom: 12px;}
-    .FeatureArea .FeatureBoxMain .FeatureBox h4 {font-size: 13px; margin-top: 8px;}
+    
+    /* FeatureArea 2x4 Grid - Extra Small Mobile */
+    .FeatureArea .row {
+        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-rows: repeat(4, 1fr) !important;
+        gap: 12px 8px !important;
+        padding: 5px 0 !important;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .FeatureArea .FeatureBox aside {
+        max-width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 1 !important;
+        border-radius: 12px !important;
+        margin: 0 auto 8px auto !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        position: relative !important;
+    }
+    
+    .FeatureArea .FeatureBox figure {
+        border-radius: 12px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+    }
+    
+    .FeatureArea .FeatureBox figure img {
+        border-radius: 12px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        display: block !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+    }
+    
+    .FeatureArea .FeatureBoxMain .FeatureBox h4 {
+        font-size: 12px !important;
+        margin: 0 auto !important;
+        padding: 3px !important;
+        line-height: 1.1 !important;
+    }
 }
 
 @media (max-width:576px){
@@ -310,9 +483,92 @@
     .CategoriesResponsive {display: block !important;}
     .CategoriesResponsive .CategoriesSearch {display: flex !important;}
     
+    /* Homepage Components Padding - 10px for very small screens */
+    .FeatureArea {
+        padding: 25px 10px 0;
+        width: 100%;
+        overflow-x: hidden;
+    }
+    .PrivateDining {padding: 50px 10px;}
+    .BirthdayDecorationArea {padding: 20px 10px;}
+    .ProductReviewsArea {padding: 50px 10px;}
+    .hero-section {padding: 0 10px;}
+    footer .FooterTop {padding: 25px 10px;}
+    .Hero-Section {padding: 25px 10px;}
+    .reviews-section {padding: 25px 10px;}
+    .about-section {padding: 25px 10px;}
+    .faq-section-enhanced {padding: 25px 10px;}
+    .service-section {padding: 25px 10px;}
+    .enjoy-life-section {padding: 25px 10px;}
+    
+    /* FeatureArea 2x4 Grid - Small Mobile */
+    .FeatureArea .row {
+        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-rows: repeat(4, 1fr) !important;
+        gap: 10px 8px !important;
+        padding: 5px 0 !important;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .FeatureArea .FeatureBox aside {
+        max-width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 1 !important;
+        border-radius: 10px !important;
+        margin: 0 auto 5px auto !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        position: relative !important;
+    }
+    
+    .FeatureArea .FeatureBox figure {
+        border-radius: 10px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+    }
+    
+    .FeatureArea .FeatureBox figure img {
+        border-radius: 10px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        display: block !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+    }
+    
+    .FeatureArea .FeatureBoxMain .FeatureBox h4 {
+        font-size: 11px !important;
+        margin: 0 auto !important;
+        padding: 2px !important;
+        line-height: 1.1 !important;
+        text-align: center !important;
+        right: 0 !important;
+        bottom: 0 !important;
+    }
+    
+    .FeatureArea .FeatureBoxMain .FeatureBox h4 {
+        font-size: 11px !important;
+        margin: 0 auto !important;
+        padding: 2px !important;
+        line-height: 1.1 !important;
+    }
+    
     .ProductDetailsArea .carousel-indicators [data-bs-target]{width: 18%;}
     footer .FooterTop .FooterLogo {padding-right: 0;}
-    footer .FooterTop {padding: 25px 0;}
     .FooterLinks {margin: 0 0 15px 0;}
     footer .FooterLinks h3 {margin: 0 0 10px 0;}
     .FilterArea {margin: 0 0 20px 0; display: none;}
@@ -340,12 +596,6 @@
     .PrivacyPolicyArea {padding: 50px 15px;}
     .TabCommonBox.TermsConditionsContent h2{font-size: 18px;}
     .VerticalTabs .TabCommonBox h3 {font-size: 18px;}
-    .FeatureArea .FeatureBoxMain {min-height: auto; margin-bottom: 15px;}
-    .FeatureArea .FeatureBox {height: auto;}
-    .FeatureArea .FeatureBox aside {min-width: auto; min-height: auto; width: 280px; height: 280px; max-width: 280px; margin: 0 auto;}
-    .FeatureArea .FeatureBox figure {width: 280px; height: 280px; max-width: 280px; margin: 0 auto;}
-    .FeatureArea [class*="col-"] {padding-left: 12px !important; padding-right: 12px !important; margin-bottom: 8px;}
-    .FeatureArea .FeatureBoxMain .FeatureBox h4 {font-size: 14px;}
     .CheckOutDetails .VenueAddress aside {flex-direction: column;}
     .LargeModal .modal-dialog {max-width: 92%;}
     .BirthdayDecorationArea .container-fluid .row .col-6 {padding: 5px;}
@@ -361,11 +611,6 @@
     .CustomizationsArea.Modal .row .col-6:nth-child(even) {padding-left: 5px;}
     .ModalArea h3 {font-size: 20px;}
     .ModalBox .modal-content {padding: 20px 10px;}
-    .FeatureArea .row .col-6 {padding-left: 5px;padding-right: 5px;}
-    .FeatureArea .FeatureBox aside {width: 150px; height: 150px; max-width: 150px; margin: 0 auto;}
-    .FeatureArea .FeatureBox figure {width: 150px; height: 150px; max-width: 150px; margin: 0 auto;}
-    .FeatureArea .FeatureBoxMain {margin-bottom: 25px;}
-    .FeatureArea [class*="col-"] {padding-left: 10px !important; padding-right: 10px !important; margin-bottom: 15px;}
     .newHeader .CustomSelect {height: 34px;}
     .newHeader .navbar-toggler {margin-right: 5px;}
     .newHeader .CustomSelect .LocationIcon {width: 14px;}
@@ -418,22 +663,136 @@
     .newHeader .CustomSelect {width: 115px;}
     /* .headerTwoBtn {margin-left:0;} */
     .navbar-toggler {padding: .25rem .5rem;font-size: 1rem;}
-    .FeatureArea .FeatureBox aside {width: 130px; height: 130px; max-width: 130px; margin: 0 auto;}
-    .FeatureArea .FeatureBox figure {width: 130px; height: 130px; max-width: 130px; margin: 0 auto;}
-    .FeatureArea .FeatureBoxMain {margin-bottom: 20px;}
-    .FeatureArea [class*="col-"] {padding-left: 8px !important; padding-right: 8px !important; margin-bottom: 12px;}
-    .FeatureArea .FeatureBoxMain .FeatureBox h4 {font-size: 12px; margin-top: 8px;}
+    
+    /* FeatureArea optimized for extra small screens */
+    .FeatureArea {
+        padding: 20px 8px 0;
+        width: 100%;
+        overflow-x: hidden;
+    }
+    
+    /* FeatureArea 2x4 Grid - Extra Small Mobile */
+    .FeatureArea .row {
+        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-rows: repeat(4, 1fr) !important;
+        gap: 8px 6px !important;
+        padding: 4px 0 !important;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .FeatureArea .FeatureBox aside {
+        max-width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 1 !important;
+        border-radius: 8px !important;
+        margin: 0 auto 4px auto !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        position: relative !important;
+    }
+    
+    .FeatureArea .FeatureBox figure {
+        border-radius: 8px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+    }
+    
+    .FeatureArea .FeatureBox figure img {
+        border-radius: 8px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        display: block !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+    }
+    
+    .FeatureArea .FeatureBoxMain .FeatureBox h4 {
+        font-size: 10px !important;
+        margin: 0 auto !important;
+        padding: 2px !important;
+        line-height: 1.1 !important;
+        text-align: center !important;
+    }
 
 
 }
 
 @media (max-width: 320px) {
+    /* FeatureArea optimized for very small screens */
     .FeatureArea {
-        padding: 20px 10px 0;
+        padding: 15px 5px 0;
+        width: 100%;
+        overflow-x: hidden;
     }
-    .FeatureArea .FeatureBox aside {width: 110px; height: 110px; max-width: 110px; margin: 0 auto;}
-    .FeatureArea .FeatureBox figure {width: 110px; height: 110px; max-width: 110px; margin: 0 auto;}
-    .FeatureArea .FeatureBoxMain {margin-bottom: 18px;}
-    .FeatureArea [class*="col-"] {padding-left: 5px !important; padding-right: 5px !important; margin-bottom: 10px;}
-    .FeatureArea .FeatureBoxMain .FeatureBox h4 {font-size: 11px; margin-top: 6px; line-height: 1.2;}
+    
+    /* FeatureArea 2x4 Grid - Very Small Mobile */
+    .FeatureArea .row {
+        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-rows: repeat(4, 1fr) !important;
+        gap: 6px 4px !important;
+        padding: 2px 0 !important;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .FeatureArea .FeatureBox aside {
+        max-width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 1 !important;
+        border-radius: 6px !important;
+        margin: 0 auto 3px auto !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        position: relative !important;
+    }
+    
+    .FeatureArea .FeatureBox figure {
+        border-radius: 6px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+    }
+    
+    .FeatureArea .FeatureBox figure img {
+        border-radius: 6px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        display: block !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+    }
+    
+    .FeatureArea .FeatureBoxMain .FeatureBox h4 {
+        font-size: 9px !important;
+        margin: 0 auto !important;
+        padding: 1px !important;
+        line-height: 1.1 !important;
+        text-align: center !important;
+    }
 }

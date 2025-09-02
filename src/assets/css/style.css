@@ -836,6 +836,14 @@ header .HeaderArea .HeaderRight .Login:hover {
     
      background-color: #fff;
     } */
+
+/* Hero-Section with 15px padding and centered */
+.Hero-Section {
+  padding: 20px 15px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
 .Hero-Section .HeroLeft {
   display: flex;
   flex-direction: column;
@@ -871,7 +879,7 @@ header .HeaderArea .HeaderRight .Login:hover {
 
 .PrivateDining {
   background-color: #fff;
-  padding: 50px 0;
+  padding: 50px 15px;
 }
 
 .section-title {
@@ -906,7 +914,7 @@ header .HeaderArea .HeaderRight .Login:hover {
 
 .BirthdayDecorationArea {
   background-color: #ffffff;
-  padding: 20px 0;
+  padding: 20px 15px;
 }
 
 /* Banner images in BirthdayDecorationArea */
@@ -943,90 +951,121 @@ header .HeaderArea .HeaderRight .Login:hover {
   font-weight: 400;
 }
 
+/* ===== MODERN REDESIGNED PRODUCT CARDS ===== */
 .PrivateDiningBox {
-  background-color: #ffffff;
+  background: #ffffff;
+  border: none;
   border-radius: 12px;
-  padding: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   height: auto;
-  transition: all 0.3s ease;
-  border: 1px solid #f0f0f0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 20px;
 }
 
 @media (max-width: 600px) {
   .PrivateDiningBox {
-    padding: 8px;
-    margin-bottom: 15px;
+    margin-bottom: 16px;
+    border-radius: 10px;
   }
 }
 
 .PrivateDiningBox:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
 
-/* Image styling - ensure it fits completely */
+/* Image styling - top section with proper aspect ratio */
+.PrivateDiningBox figure {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
 .PrivateDiningBox img {
   width: 100%;
-  height: auto;
-  border-radius: 8px;
-  object-fit: contain;
-  background-color: #f8f9fa;
-  margin-bottom: 8px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 0;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  transition: transform 0.3s ease;
+  display: block;
+  margin: 0;
 }
 
-/* Title styling */
+.PrivateDiningBox:hover img {
+  transform: scale(1.05);
+}
+
+/* Card content area - middle section */
+.PrivateDiningBox .card-content {
+  padding: 16px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-grow: 1;
+}
+
+/* Title styling - modern clean look */
 .PrivateDiningBox h6 {
-  color: #333;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 1.3;
-  margin: 0 0 6px 0;
+  color: #333333;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.2;
+  margin: 0;
   padding: 0;
-  min-height: auto;
+  font-family: system-ui, -apple-system, sans-serif;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 48px;
 }
 
-/* Location section */
+/* Location and price row */
 .PrivateDiningBox .rightcard {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.PrivateDiningBox .loc {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 6px;
+  margin: 0;
+  gap: 12px;
+}
+
+.PrivateDiningBox .loc {
+  margin: 0;
+  flex: 1;
 }
 
 .PrivateDiningBox .loc h1 {
-  color: #666;
-  font-size: 13px;
+  color: #707070;
+  font-size: 15px;
   font-weight: 400;
   margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
   text-transform: none;
+  letter-spacing: normal;
 }
 
-.PrivateDiningBox .star {
-  display: none; /* Hide star as per reference design */
-}
-
-/* Price and rating section */
+/* Price section - aligned right */
 .PrivateDiningBox .Info {
-  margin-bottom: 12px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .PrivateDiningBox .Info .text-right {
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   gap: 4px;
 }
 
@@ -1034,72 +1073,185 @@ header .HeaderArea .HeaderRight .Login:hover {
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .PrivateDiningBox .Info h5 {
-  color: #333;
+  color: #333333;
   font-weight: 700;
   font-size: 18px;
   margin: 0;
-  display: inline-block;
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
 .PrivateDiningBox .Info h5 .actualPrice {
   text-decoration: line-through;
-  color: #999;
+  color: #999999;
   font-size: 14px;
   font-weight: 400;
   margin-left: 6px;
-  display: inline;
 }
 
 .PrivateDiningBox .Info .priceArea span {
   background-color: #e8f5e8;
   color: #2d8a2f;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  padding: 2px 6px;
+  padding: 3px 6px;
   border-radius: 4px;
+  white-space: nowrap;
 }
 
+/* Hide rating for cleaner look */
 .PrivateDiningBox .Info p {
-  color: #666;
-  font-size: 14px;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  display: none;
 }
 
-.PrivateDiningBox .Info p i {
-  color: #ffa500;
-  font-size: 12px;
+.PrivateDiningBox .star {
+  display: none;
 }
 
-/* Button styling */
+/* Book Now Button - bottom section */
 .PrivateDiningBox .endbuttons {
-  margin-top: auto;
-  padding-top: 8px;
+  margin: 0;
+  padding: 0;
 }
 
 .PrivateDiningBox .endbuttons .Buttons {
-  background-color: #8b2694;
-  border: 1px solid #8b2694;
-  border-radius: 8px;
-  color: #fff;
+  background: #6A3C9E;
+  border: none;
+  border-radius: 0;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  color: #ffffff;
   font-size: 16px;
   font-weight: 600;
+  font-family: system-ui, -apple-system, sans-serif;
   padding: 12px 20px;
   width: 100%;
   margin: 0;
-  transition: all 0.3s ease;
   cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .PrivateDiningBox .endbuttons .Buttons:hover {
-  background-color: #7a2284;
-  transform: translateY(-1px);
+  background: #5a2d7f;
+  transform: none;
+}
+
+/* Heart/Favorite Icon */
+.PrivateDiningBox .favorite-heart {
+  position: absolute;
+  bottom: 70px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.PrivateDiningBox .favorite-heart:hover {
+  background: #ffffff;
+  transform: scale(1.1);
+}
+
+.PrivateDiningBox .favorite-heart i {
+  font-size: 18px;
+  color: #707070;
+  transition: color 0.3s ease;
+}
+
+.PrivateDiningBox .favorite-heart:hover i {
+  color: #e91e63;
+}
+
+.PrivateDiningBox .favorite-heart.favorited i {
+  color: #e91e63;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet adjustments */
+@media (max-width: 768px) {
+  .PrivateDiningBox img {
+    height: 200px;
+  }
+  
+  .PrivateDiningBox h6 {
+    font-size: 18px;
+    min-height: 44px;
+  }
+  
+  .PrivateDiningBox .loc h1 {
+    font-size: 14px;
+  }
+  
+  .PrivateDiningBox .Info h5 {
+    font-size: 16px;
+  }
+  
+  .PrivateDiningBox .endbuttons .Buttons {
+    font-size: 15px;
+  }
+  
+  .PrivateDiningBox .card-content {
+    padding: 14px 16px 16px 16px;
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+  .PrivateDiningBox img {
+    height: 180px;
+  }
+  
+  .PrivateDiningBox h6 {
+    font-size: 16px;
+    min-height: 40px;
+  }
+  
+  .PrivateDiningBox .loc h1 {
+    font-size: 13px;
+  }
+  
+  .PrivateDiningBox .Info h5 {
+    font-size: 15px;
+  }
+  
+  .PrivateDiningBox .endbuttons .Buttons {
+    font-size: 14px;
+    padding: 10px 16px;
+  }
+  
+  .PrivateDiningBox .card-content {
+    padding: 12px 14px 14px 14px;
+    gap: 10px;
+  }
+  
+  .PrivateDiningBox .favorite-heart {
+    width: 32px;
+    height: 32px;
+    bottom: 62px;
+    right: 16px;
+  }
+  
+  .PrivateDiningBox .favorite-heart i {
+    font-size: 16px;
+  }
+}
+
+.PrivateDiningBox .endbuttons .Buttons:hover {
+  background: #5a2d7f;
+  transform: none;
 }
 
 /* Responsive adjustments */
@@ -1342,7 +1494,7 @@ i.fa-star {
 }
 
 .ProductReviewsArea {
-  padding: 50px 0;
+  padding: 50px 15px;
 }
 
 .ProductReviewsArea h6 {
@@ -3112,82 +3264,128 @@ i.fa-star {
 } */
 
 .FeatureArea {
-  padding: 40px 30px 30px;
+  padding: 40px 15px 30px;
   overflow: hidden;
   /* background-image: linear-gradient(#fff,#e5097f7a,#fff); */
 }
 
-.FeatureArea .FeatureBox {
-  height: auto;
+/* Container for FeatureArea to prevent overflow */
+.FeatureArea .container-fluid {
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  padding: 0 !important;
 }
 
-.FeatureArea .FeatureBox figure {
-  margin: 0 auto;
-  height: 320px;
-  width: 320px;
-  max-width: 320px;
-  position: relative;
-  flex-shrink: 0;
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.FeatureArea .FeatureBox figure img {
-  margin: 0;
-  height: 100%;
-  border-radius: 20px;
-  width: 100%;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-  min-height: 100%;
-  min-width: 100%;
-}
-
+/* 4x2 Grid Layout for FeatureArea - Full width utilization */
 .FeatureArea .row {
   margin: 0 !important;
   width: 100% !important;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  grid-template-rows: repeat(2, 1fr) !important;
+  gap: 15px 10px !important;
+  justify-content: center !important;
+  align-items: start !important;
+  padding: 20px 0 !important;
+}
+
+/* Override Bootstrap column classes */
+.FeatureArea [class*="col-"] {
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: auto !important;
+  max-width: none !important;
+}
+
+.FeatureArea .FeatureBoxMain {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+}
+
+.FeatureArea .FeatureBox {
+  width: 100% !important;
+  height: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .FeatureArea .FeatureBox aside {
-  border-width: 2px;
-  border-style: solid;
-  padding: 0px;
-  border-radius: 20px;
-  width: 320px;
-  max-width: 320px;
-  height: 320px;
-  text-align: center;
-  overflow: hidden;
-  position: relative;
-  display: block;
-  margin: 0 auto;
+  border-width: 2px !important;
+  border-style: solid !important;
+  padding: 0px !important;
+  border-radius: 20px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1 !important;
+  text-align: center !important;
+  overflow: hidden !important;
+  position: relative !important;
+  display: block !important;
+  margin: 0 auto 15px auto !important;
+}
+
+/* Reset any default figure margins/padding */
+.FeatureArea .FeatureBox aside figure {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.FeatureArea .FeatureBox figure {
+  margin: 0 !important;
+  height: 100% !important;
+  width: 100% !important;
+  position: relative !important;
+  flex-shrink: 0 !important;
+  border-radius: 20px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+
+.FeatureArea .FeatureBox figure img {
+  margin: 0 !important;
+  height: 100% !important;
+  border-radius: 20px !important;
+  width: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  display: block !important;
+  min-height: 100% !important;
+  min-width: 100% !important;
+  padding: 0 !important;
 }
 
 .FeatureArea .FeatureBoxMain .FeatureBox h4 {
-  color: #0b0f0e;
-  font-weight: 700;
-  font-size: 16px;
-  text-align: center;
-  margin: 10px auto 12px auto;
-  position: relative;
-  background: transparent;
-  padding: 8px 4px;
-  border-radius: 0;
-  z-index: 100;
+  color: #0b0f0e !important;
+  font-weight: 700 !important;
+  font-size: 18px !important;
+  text-align: center !important;
+  margin: 0 auto !important;
+  position: relative !important;
+  background: transparent !important;
+  padding: 8px 4px !important;
+  border-radius: 0 !important;
+  z-index: 100 !important;
   display: block !important;
-  width: 100%;
-  max-width: 395px;
-  box-sizing: border-box;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
   visibility: visible !important;
   opacity: 1 !important;
-  line-height: 1.3;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.3 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 /* custom */
@@ -3205,17 +3403,6 @@ i.fa-star {
   max-height:250px;
   border-radius: 50%;
   width: 100%;
-}
-
-.FeatureArea .FeatureBoxMain {
-  min-height: auto;
-  margin-bottom: 20px;
-}
-
-.FeatureArea [class*="col-"] {
-  padding-left: 15px !important;
-  padding-right: 15px !important;
-  margin-bottom: 15px;
 }
 
 .FeatureArea .FeatureBox1 aside {
@@ -3243,45 +3430,38 @@ i.fa-star {
 }
 
 .FeatureArea .FeatureBox aside.Orange {
-  border-color: #ff2222;
-  background-color: #fff6f6;
-  border-radius: 13%;
+  border-color: #ff2222 !important;
+  background-color: #fff6f6 !important;
 }
 
 .FeatureArea .FeatureBox aside.DarkGreen {
-  border-color: #278327;
-  background-color: #fff6f6;
-  border-radius: 13%;
+  border-color: #278327 !important;
+  background-color: #fff6f6 !important;
 }
 
 .FeatureArea .FeatureBox aside.Pink {
-  border-color: #be37a9;
-  background-color: #fff6f6;
-  border-radius: 13%;
+  border-color: #be37a9 !important;
+  background-color: #fff6f6 !important;
 }
 
 .FeatureArea .FeatureBox aside.Yellow {
-  border-color: #ffbf00;
-  background-color: #fffbef;
-  border-radius: 13%;
+  border-color: #ffbf00 !important;
+  background-color: #fffbef !important;
 }
 
 .FeatureArea .FeatureBox aside.Green {
-  border-color: #45c100;
-  background-color: #f6fff1;
-  border-radius: 13%;
+  border-color: #45c100 !important;
+  background-color: #f6fff1 !important;
 }
 
 .FeatureArea .FeatureBox aside.Cyan {
-  border-color: #00c6ff;
-  background-color: #f4fbfd;
-  border-radius: 13%;
+  border-color: #00c6ff !important;
+  background-color: #f4fbfd !important;
 }
 
 .FeatureArea .FeatureBox aside.Blue {
-  border-color: #0055ff;
-  background-color: #f5f8fe;
-  border-radius: 13%;
+  border-color: #0055ff !important;
+  background-color: #f5f8fe !important;
 }
 
 /* .FeatureArea::-webkit-scrollbar-track{background:#E4E9EE;border-radius:0}
@@ -3457,6 +3637,11 @@ i.fa-star {
 .container-xl,
 .container-xxl {
   width: 95%;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
 }
 
 /* Sort Button Styles */
@@ -3662,7 +3847,7 @@ footer {
 
 footer .FooterTop {
   /* background-color: #f7f7f7; */
-  padding: 100px 0 50px;
+  padding: 100px 15px 50px;
 }
 
 footer .FooterTop .FooterLogo {
@@ -4475,6 +4660,7 @@ header nav ul li:hover .Sub_Categories_dropdown {
   width: 100%;
   height: clamp(320px, 60vh, 650px);
   overflow: hidden;
+  padding: 0 15px;
 }
 
 .hero-section::after {
@@ -6536,5 +6722,164 @@ ul.Icons li a img {
   .PrivateDiningBox .endbuttons .Buttons {
     font-size: 13px;
     padding: 8px 12px;
+  }
+}
+
+/* ===== HOMEPAGE SECTIONS WITH 15PX PADDING ===== */
+
+/* General Homepage Section Centering */
+.Hero-Section,
+.FeatureArea,
+.BirthdayDecorationArea,
+.ProductReviewsArea,
+.reviews-section,
+.about-section,
+.faq-section-enhanced,
+.service-section,
+.enjoy-life-section {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Reviews Section */
+.reviews-section {
+  padding: 50px 15px;
+  background-color: #f8f9fa;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/* About Section */
+.about-section {
+  padding: 50px 15px;
+  background-color: #fff;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/* FAQ Section Enhanced */
+.faq-section-enhanced {
+  padding: 50px 15px;
+  background-color: #f8f9fa;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/* Service Section */
+.service-section {
+  padding: 50px 15px;
+  background-color: #fff;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/* Enjoy Life Section */
+.enjoy-life-section {
+  padding: 50px 15px;
+  background-color: #f8f9fa;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/* Extra Large Screens - Reduced spacing for better proportion */
+@media (min-width: 1400px) {
+  .FeatureArea .row {
+    gap: 20px 15px !important;
+    padding: 25px 0 !important;
+  }
+  
+  .FeatureArea .FeatureBoxMain .FeatureBox h4 {
+    font-size: 18px !important;
+    padding: 8px 4px !important;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .FeatureArea .row {
+    gap: 18px 12px !important;
+    padding: 22px 0 !important;
+  }
+  
+  .FeatureArea .FeatureBoxMain .FeatureBox h4 {
+    font-size: 17px !important;
+    padding: 7px 4px !important;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1199px) {
+  .FeatureArea .row {
+    gap: 16px 10px !important;
+    padding: 20px 0 !important;
+  }
+  
+  .FeatureArea .FeatureBoxMain .FeatureBox h4 {
+    font-size: 16px !important;
+    padding: 6px 3px !important;
+  }
+}
+
+/* Large screen optimization for FeatureArea */
+@media (min-width: 1400px) {
+  .FeatureArea {
+    padding: 40px 60px 30px !important;
+  }
+  
+  .FeatureArea .row {
+    gap: 25px 20px !important;
+    padding: 30px 0 !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+  }
+  
+  .FeatureArea .FeatureBox aside {
+    max-width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 1 !important;
+  }
+  
+  .FeatureArea .FeatureBoxMain .FeatureBox h4 {
+    font-size: 19px !important;
+    margin: 12px auto 15px auto !important;
+    padding: 10px 5px !important;
+  }
+}
+
+@media (min-width: 1600px) {
+  .FeatureArea {
+    padding: 50px 80px 40px !important;
+  }
+  
+  .FeatureArea .row {
+    gap: 30px 25px !important;
+    padding: 35px 0 !important;
+    max-width: 1600px !important;
+    margin: 0 auto !important;
+  }
+  
+  .FeatureArea .FeatureBoxMain .FeatureBox h4 {
+    font-size: 20px !important;
+    margin: 15px auto 18px auto !important;
+    padding: 12px 6px !important;
+  }
+}
+
+@media (min-width: 1920px) {
+  .FeatureArea {
+    padding: 60px 120px 50px !important;
+  }
+  
+  .FeatureArea .row {
+    gap: 35px 30px !important;
+    padding: 40px 0 !important;
+    max-width: 1800px !important;
+    margin: 0 auto !important;
+  }
+  
+  .FeatureArea .FeatureBoxMain .FeatureBox h4 {
+    font-size: 21px !important;
+    margin: 18px auto 20px auto !important;
+    padding: 14px 7px !important;
   }
 }

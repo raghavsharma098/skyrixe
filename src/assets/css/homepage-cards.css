@@ -1,0 +1,219 @@
+/* ===== HOMEPAGE CARD CONTAINERS ===== */
+
+/* Birthday Section */
+.birthday-scroll-container {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 20px 0;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.birthday-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.birthday-item {
+  flex: 0 0 300px;
+  min-width: 300px;
+}
+
+/* Anniversary Section */
+.anniversary-scroll-container {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 20px 0;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.anniversary-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.anniversary-item {
+  flex: 0 0 300px;
+  min-width: 300px;
+}
+
+/* Kids Section */
+.kids-scroll-container {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 20px 0;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.kids-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.kids-item {
+  flex: 0 0 300px;
+  min-width: 300px;
+}
+
+/* Baby Shower Section */
+.baby-shower-scroll-container {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 20px 0;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.baby-shower-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.baby-shower-item {
+  flex: 0 0 300px;
+  min-width: 300px;
+}
+
+/* View All Cards */
+.view-all-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-all-card {
+  background: linear-gradient(135deg, #6A3C9E 0%, #8B5CF6 100%);
+  border-radius: 12px;
+  padding: 30px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 280px;
+}
+
+.view-all-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(106, 60, 158, 0.3);
+}
+
+.view-all-content h6 {
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.view-more-text {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.view-all-content i {
+  color: white;
+  font-size: 20px;
+  transition: transform 0.3s ease;
+}
+
+.view-all-card:hover i {
+  transform: translateX(4px);
+}
+
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
+
+/* Tablet */
+@media (max-width: 768px) {
+  .birthday-item,
+  .anniversary-item,
+  .kids-item,
+  .baby-shower-item {
+    flex: 0 0 280px;
+    min-width: 280px;
+  }
+  
+  .birthday-scroll-container,
+  .anniversary-scroll-container,
+  .kids-scroll-container,
+  .baby-shower-scroll-container {
+    gap: 16px;
+    padding: 16px 0;
+  }
+  
+  .view-all-card {
+    min-height: 260px;
+    padding: 24px 16px;
+  }
+  
+  .view-all-content h6 {
+    font-size: 16px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .birthday-item,
+  .anniversary-item,
+  .kids-item,
+  .baby-shower-item {
+    flex: 0 0 250px;
+    min-width: 250px;
+  }
+  
+  .birthday-scroll-container,
+  .anniversary-scroll-container,
+  .kids-scroll-container,
+  .baby-shower-scroll-container {
+    gap: 12px;
+    padding: 12px 0;
+  }
+  
+  .view-all-card {
+    min-height: 240px;
+    padding: 20px 12px;
+  }
+  
+  .view-all-content h6 {
+    font-size: 15px;
+  }
+  
+  .view-more-text {
+    font-size: 13px;
+  }
+}
+
+/* Grid Layout for larger screens when cards are in grid */
+@media (min-width: 1200px) {
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    padding: 20px 0;
+  }
+  
+  .cards-grid .birthday-item,
+  .cards-grid .anniversary-item,
+  .cards-grid .kids-item,
+  .cards-grid .baby-shower-item {
+    flex: none;
+    min-width: auto;
+  }
+}
+
+@media (min-width: 1400px) {
+  .cards-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 28px;
+  }
+}

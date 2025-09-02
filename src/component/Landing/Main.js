@@ -550,66 +550,60 @@ faqItems.forEach(item => {
                   getBirthdayList?.data?.map((item, i) => {
                     return (
                       <div key={i} className="birthday-item">
-                        <div className="PrivateDiningBox">
-                          <figure>
-                            <img
-                              src={item?.productimages?.at(0)}
-                              onClick={() => handleProduct(item)}
-                              style={{ cursor: 'pointer' }}
-                              alt={item?.productDetails?.productname}
-                            />
-                          </figure>
+                        <div className="product-card">
+                          <img
+                            src={item?.productimages?.at(0)}
+                            onClick={() => handleProduct(item)}
+                            style={{ cursor: 'pointer' }}
+                            alt={item?.productDetails?.productname}
+                          />
                           
-                          <h6>{item?.productDetails?.productname}</h6>
-                          
-                          <div className="rightcard">
-                            <div className="loc">
-                              <h1>At your location</h1>
-                            </div>
-                            
-                            <div className="Info">
-                              <div className="text-right">
-                                <div className="priceArea">
+                          <div className="card-body">
+                            <div className="card-info">
+                              <h3 className="card-title">{item?.productDetails?.productname}</h3>
+                              <div className="card-meta">
+                                <div className="rating-location">
+                                  <div className="card-rating">
+                                    <div className="stars">
+                                      <span className="star filled">★</span>
+                                      <span className="star filled">★</span>
+                                      <span className="star filled">★</span>
+                                      <span className="star filled">★</span>
+                                      <span className="star">★</span>
+                                    </div>
+                                    <span className="rating-text">(4.0)</span>
+                                  </div>
+                                  <p className="card-location">At your location</p>
+                                </div>
+                                <div className="price-section">
                                   {item?.priceDetails?.discountedPrice ? (
-                                    <h5>
-                                      ₹{item?.priceDetails?.discountedPrice}
-                                      <span className="actualPrice">
-                                        ₹{item?.priceDetails?.price}
-                                      </span>
-                                    </h5>
+                                    <>
+                                      <div className="price-row">
+                                        <span className="current-price">₹{item?.priceDetails?.discountedPrice}</span>
+                                        <span className="discount-tag">
+                                          {Math.round(
+                                            ((Number(item?.priceDetails?.price) -
+                                              Number(item?.priceDetails?.discountedPrice)) /
+                                              Number(item?.priceDetails?.price)) * 100
+                                          )}% off
+                                        </span>
+                                      </div>
+                                      <span className="original-price">₹{item?.priceDetails?.price}</span>
+                                    </>
                                   ) : (
-                                    <h5>₹{item?.priceDetails?.price}</h5>
-                                  )}
-                                  {item?.priceDetails?.discountedPrice && (
-                                    <span>
-                                      {Math.round(
-                                        ((Number(item?.priceDetails?.price) -
-                                          Number(item?.priceDetails?.discountedPrice)) /
-                                          Number(item?.priceDetails?.price)) * 100
-                                      )}% off
-                                    </span>
+                                    <span className="current-price">₹{item?.priceDetails?.price}</span>
                                   )}
                                 </div>
-                                <p>
-                                  4.8 <i className="fa-solid fa-star"></i> |{" "}
-                                  {i % 2 == 0 && i !== 0
-                                    ? `${i % 2}` + 5 + i - 1
-                                    : i == 0
-                                      ? `14${i % 2}`
-                                      : `${i % 2}` + 2 + i - 1}
-                                </p>
                               </div>
                             </div>
                           </div>
                           
-                          <div className="endbuttons">
-                            <button
-                              className="Buttons"
-                              onClick={() => handleProduct(item)}
-                            >
-                              Book Now
-                            </button>
-                          </div>
+                          <button
+                            className="card-action-button"
+                            onClick={() => handleProduct(item)}
+                          >
+                            BOOK NOW
+                          </button>
                         </div>
                       </div>
                     );
@@ -620,12 +614,22 @@ faqItems.forEach(item => {
                 
                 {/* View All Button inside the scroller */}
                 <div className="birthday-item view-all-item">
-                  <div className="view-all-card" onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}>
-                    <div className="view-all-content">
-                      <h6>View All Birthday Decorations</h6>
-                      <div className="view-more-text">Explore more options</div>
-                      <i className="fa-solid fa-arrow-right"></i>
+                  <div className="product-card view-all-card" onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}>
+                    <div className="view-all-image">
+                      <div className="celebration-icon">🎉</div>
                     </div>
+                    
+                    <div className="card-body">
+                      <div className="card-info">
+                        <h3 className="card-title">View All Birthday Decorations</h3>
+                        <p className="card-location">Explore more options</p>
+                      </div>
+                    </div>
+                    
+                    <button className="card-action-button view-all-button">
+                      EXPLORE MORE
+                      <i className="fa-solid fa-arrow-right"></i>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -706,66 +710,60 @@ faqItems.forEach(item => {
                   getAnniversaryList?.data?.map((item, i) => {
                     return (
                       <div key={i} className="anniversary-item">
-                        <div className="PrivateDiningBox">
-                          <figure>
-                            <img
-                              src={item?.productimages?.at(0)}
-                              onClick={() => handleProduct(item)}
-                              style={{ cursor: 'pointer' }}
-                              alt={item?.productDetails?.productname}
-                            />
-                          </figure>
+                        <div className="product-card">
+                          <img
+                            src={item?.productimages?.at(0)}
+                            onClick={() => handleProduct(item)}
+                            style={{ cursor: 'pointer' }}
+                            alt={item?.productDetails?.productname}
+                          />
                           
-                          <h6>{item?.productDetails?.productname}</h6>
-                          
-                          <div className="rightcard">
-                            <div className="loc">
-                              <h1>At your location</h1>
-                            </div>
-                            
-                            <div className="Info">
-                              <div className="text-right">
-                                <div className="priceArea">
+                          <div className="card-body">
+                            <div className="card-info">
+                              <h3 className="card-title">{item?.productDetails?.productname}</h3>
+                              <div className="card-meta">
+                                <div className="rating-location">
+                                  <div className="card-rating">
+                                    <div className="stars">
+                                      <span className="star filled">★</span>
+                                      <span className="star filled">★</span>
+                                      <span className="star filled">★</span>
+                                      <span className="star filled">★</span>
+                                      <span className="star">★</span>
+                                    </div>
+                                    <span className="rating-text">(4.0)</span>
+                                  </div>
+                                  <p className="card-location">At your location</p>
+                                </div>
+                                <div className="price-section">
                                   {item?.priceDetails?.discountedPrice ? (
-                                    <h5>
-                                      ₹{item?.priceDetails?.discountedPrice}
-                                      <span className="actualPrice">
-                                        ₹{item?.priceDetails?.price}
-                                      </span>
-                                    </h5>
+                                    <>
+                                      <div className="price-row">
+                                        <span className="current-price">₹{item?.priceDetails?.discountedPrice}</span>
+                                        <span className="discount-tag">
+                                          {Math.round(
+                                            ((Number(item?.priceDetails?.price) -
+                                              Number(item?.priceDetails?.discountedPrice)) /
+                                              Number(item?.priceDetails?.price)) * 100
+                                          )}% off
+                                        </span>
+                                      </div>
+                                      <span className="original-price">₹{item?.priceDetails?.price}</span>
+                                    </>
                                   ) : (
-                                    <h5>₹{item?.priceDetails?.price}</h5>
-                                  )}
-                                  {item?.priceDetails?.discountedPrice && (
-                                    <span>
-                                      {Math.round(
-                                        ((Number(item?.priceDetails?.price) -
-                                          Number(item?.priceDetails?.discountedPrice)) /
-                                          Number(item?.priceDetails?.price)) * 100
-                                      )}% off
-                                    </span>
+                                    <span className="current-price">₹{item?.priceDetails?.price}</span>
                                   )}
                                 </div>
-                                <p>
-                                  4.8 <i className="fa-solid fa-star"></i> |{" "}
-                                  {i % 2 == 0 && i !== 0
-                                    ? `${i % 2}` + 5 + i - 1
-                                    : i == 0
-                                      ? `14${i % 2}`
-                                      : `${i % 2}` + 2 + i - 1}
-                                </p>
                               </div>
                             </div>
                           </div>
                           
-                          <div className="endbuttons">
-                            <button
-                              className="Buttons"
-                              onClick={() => handleProduct(item)}
-                            >
-                              Book Now
-                            </button>
-                          </div>
+                          <button
+                            className="card-action-button"
+                            onClick={() => handleProduct(item)}
+                          >
+                            BOOK NOW
+                          </button>
                         </div>
                       </div>
                     );
@@ -776,12 +774,22 @@ faqItems.forEach(item => {
                 
                 {/* View All Button inside the scroller */}
                 <div className="anniversary-item view-all-item">
-                  <div className="view-all-card" onClick={() => handleCategory({ categoryName: "ANNIVERSARY" })}>
-                    <div className="view-all-content">
-                      <h6>View All Anniversary Decorations</h6>
-                      <div className="view-more-text">Explore more options</div>
-                      <i className="fa-solid fa-arrow-right"></i>
+                  <div className="product-card view-all-card" onClick={() => handleCategory({ categoryName: "ANNIVERSARY" })}>
+                    <div className="view-all-image">
+                      <div className="celebration-icon">💕</div>
                     </div>
+                    
+                    <div className="card-body">
+                      <div className="card-info">
+                        <h3 className="card-title">View All Anniversary Decorations</h3>
+                        <p className="card-location">Explore more options</p>
+                      </div>
+                    </div>
+                    
+                    <button className="card-action-button view-all-button">
+                      EXPLORE MORE
+                      <i className="fa-solid fa-arrow-right"></i>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -861,66 +869,60 @@ faqItems.forEach(item => {
                   getKidsList?.data?.map((item, i) => {
                     return (
                       <div key={i} className="kids-item">
-                        <div className="PrivateDiningBox">
-                          <figure>
-                            <img
-                              src={item?.productimages?.at(0)}
-                              onClick={() => handleProduct(item)}
-                              style={{ cursor: 'pointer' }}
-                              alt={item?.productDetails?.productname}
-                            />
-                          </figure>
+                        <div className="product-card">
+                          <img
+                            src={item?.productimages?.at(0)}
+                            onClick={() => handleProduct(item)}
+                            style={{ cursor: 'pointer' }}
+                            alt={item?.productDetails?.productname}
+                          />
                           
-                          <h6>{item?.productDetails?.productname}</h6>
-                          
-                          <div className="rightcard">
-                            <div className="loc">
-                              <h1>At your location</h1>
-                            </div>
-                            
-                            <div className="Info">
-                              <div className="text-right">
-                                <div className="priceArea">
+                          <div className="card-body">
+                            <div className="card-info">
+                              <h3 className="card-title">{item?.productDetails?.productname}</h3>
+                              <div className="card-meta">
+                                <div className="rating-location">
+                                  <div className="card-rating">
+                                    <div className="stars">
+                                      <span className="star filled">★</span>
+                                      <span className="star filled">★</span>
+                                      <span className="star filled">★</span>
+                                      <span className="star filled">★</span>
+                                      <span className="star">★</span>
+                                    </div>
+                                    <span className="rating-text">(4.0)</span>
+                                  </div>
+                                  <p className="card-location">At your location</p>
+                                </div>
+                                <div className="price-section">
                                   {item?.priceDetails?.discountedPrice ? (
-                                    <h5>
-                                      ₹{item?.priceDetails?.discountedPrice}
-                                      <span className="actualPrice">
-                                        ₹{item?.priceDetails?.price}
-                                      </span>
-                                    </h5>
+                                    <>
+                                      <div className="price-row">
+                                        <span className="current-price">₹{item?.priceDetails?.discountedPrice}</span>
+                                        <span className="discount-tag">
+                                          {Math.round(
+                                            ((Number(item?.priceDetails?.price) -
+                                              Number(item?.priceDetails?.discountedPrice)) /
+                                              Number(item?.priceDetails?.price)) * 100
+                                          )}% off
+                                        </span>
+                                      </div>
+                                      <span className="original-price">₹{item?.priceDetails?.price}</span>
+                                    </>
                                   ) : (
-                                    <h5>₹{item?.priceDetails?.price}</h5>
-                                  )}
-                                  {item?.priceDetails?.discountedPrice && (
-                                    <span>
-                                      {Math.round(
-                                        ((Number(item?.priceDetails?.price) -
-                                          Number(item?.priceDetails?.discountedPrice)) /
-                                          Number(item?.priceDetails?.price)) * 100
-                                      )}% off
-                                    </span>
+                                    <span className="current-price">₹{item?.priceDetails?.price}</span>
                                   )}
                                 </div>
-                                <p>
-                                  4.8 <i className="fa-solid fa-star"></i> |{" "}
-                                  {i % 2 == 0 && i !== 0
-                                    ? `${i % 2}` + 5 + i - 1
-                                    : i == 0
-                                      ? `14${i % 2}`
-                                      : `${i % 2}` + 2 + i - 1}
-                                </p>
                               </div>
                             </div>
                           </div>
                           
-                          <div className="endbuttons">
-                            <button
-                              className="Buttons"
-                              onClick={() => handleProduct(item)}
-                            >
-                              Book Now
-                            </button>
-                          </div>
+                          <button
+                            className="card-action-button"
+                            onClick={() => handleProduct(item)}
+                          >
+                            BOOK NOW
+                          </button>
                         </div>
                       </div>
                     );
@@ -931,12 +933,22 @@ faqItems.forEach(item => {
                 
                 {/* View All Button inside the scroller */}
                 <div className="kids-item view-all-item">
-                  <div className="view-all-card" onClick={() => handleCategory({ categoryName: "KID'S PARTY" })}>
-                    <div className="view-all-content">
-                      <h6>View All Kids Party Decorations</h6>
-                      <div className="view-more-text">Explore more options</div>
-                      <i className="fa-solid fa-arrow-right"></i>
+                  <div className="product-card view-all-card" onClick={() => handleCategory({ categoryName: "KID'S PARTY" })}>
+                    <div className="view-all-image">
+                      <div className="celebration-icon">🎈</div>
                     </div>
+                    
+                    <div className="card-body">
+                      <div className="card-info">
+                        <h3 className="card-title">View All Kids Party Decorations</h3>
+                        <p className="card-location">Explore more options</p>
+                      </div>
+                    </div>
+                    
+                    <button className="card-action-button view-all-button">
+                      EXPLORE MORE
+                      <i className="fa-solid fa-arrow-right"></i>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1016,66 +1028,60 @@ faqItems.forEach(item => {
                   getWeddingDecoList?.data?.map((item, i) => {
                     return (
                       <div key={i} className="baby-shower-item">
-                        <div className="PrivateDiningBox">
-                          <figure>
-                            <img
-                              src={item?.productimages?.at(0)}
-                              onClick={() => handleProduct(item)}
-                              style={{ cursor: 'pointer' }}
-                              alt={item?.productDetails?.productname}
-                            />
-                          </figure>
+                        <div className="product-card">
+                          <img
+                            src={item?.productimages?.at(0)}
+                            onClick={() => handleProduct(item)}
+                            style={{ cursor: 'pointer' }}
+                            alt={item?.productDetails?.productname}
+                          />
                           
-                          <h6>{item?.productDetails?.productname}</h6>
-                          
-                          <div className="rightcard">
-                            <div className="loc">
-                              <h1>At your location</h1>
-                            </div>
-                            
-                            <div className="Info">
-                              <div className="text-right">
-                                <div className="priceArea">
+                          <div className="card-body">
+                            <div className="card-info">
+                              <h3 className="card-title">{item?.productDetails?.productname}</h3>
+                              <div className="card-meta">
+                                <div className="rating-location">
+                                  <div className="card-rating">
+                                    <div className="stars">
+                                      <span className="star filled">★</span>
+                                      <span className="star filled">★</span>
+                                      <span className="star filled">★</span>
+                                      <span className="star filled">★</span>
+                                      <span className="star">★</span>
+                                    </div>
+                                    <span className="rating-text">(4.0)</span>
+                                  </div>
+                                  <p className="card-location">At your location</p>
+                                </div>
+                                <div className="price-section">
                                   {item?.priceDetails?.discountedPrice ? (
-                                    <h5>
-                                      ₹{item?.priceDetails?.discountedPrice}
-                                      <span className="actualPrice">
-                                        ₹{item?.priceDetails?.price}
-                                      </span>
-                                    </h5>
+                                    <>
+                                      <div className="price-row">
+                                        <span className="current-price">₹{item?.priceDetails?.discountedPrice}</span>
+                                        <span className="discount-tag">
+                                          {Math.round(
+                                            ((Number(item?.priceDetails?.price) -
+                                              Number(item?.priceDetails?.discountedPrice)) /
+                                              Number(item?.priceDetails?.price)) * 100
+                                          )}% off
+                                        </span>
+                                      </div>
+                                      <span className="original-price">₹{item?.priceDetails?.price}</span>
+                                    </>
                                   ) : (
-                                    <h5>₹{item?.priceDetails?.price}</h5>
-                                  )}
-                                  {item?.priceDetails?.discountedPrice && (
-                                    <span>
-                                      {Math.round(
-                                        ((Number(item?.priceDetails?.price) -
-                                          Number(item?.priceDetails?.discountedPrice)) /
-                                          Number(item?.priceDetails?.price)) * 100
-                                      )}% off
-                                    </span>
+                                    <span className="current-price">₹{item?.priceDetails?.price}</span>
                                   )}
                                 </div>
-                                <p>
-                                  4.8 <i className="fa-solid fa-star"></i> |{" "}
-                                  {i % 2 == 0 && i !== 0
-                                    ? `${i % 2}` + 5 + i - 1
-                                    : i == 0
-                                      ? `14${i % 2}`
-                                      : `${i % 2}` + 2 + i - 1}
-                                </p>
                               </div>
                             </div>
                           </div>
                           
-                          <div className="endbuttons">
-                            <button
-                              className="Buttons"
-                              onClick={() => handleProduct(item)}
-                            >
-                              Book Now
-                            </button>
-                          </div>
+                          <button
+                            className="card-action-button"
+                            onClick={() => handleProduct(item)}
+                          >
+                            BOOK NOW
+                          </button>
                         </div>
                       </div>
                     );
@@ -1086,12 +1092,22 @@ faqItems.forEach(item => {
                 
                 {/* View All Button inside the scroller */}
                 <div className="baby-shower-item view-all-item">
-                  <div className="view-all-card" onClick={() => handleCategory({ categoryName: "BABY SHOWER" })}>
-                    <div className="view-all-content">
-                      <h6>View All Baby Shower Decorations</h6>
-                      <div className="view-more-text">Explore more options</div>
-                      <i className="fa-solid fa-arrow-right"></i>
+                  <div className="product-card view-all-card" onClick={() => handleCategory({ categoryName: "BABY SHOWER" })}>
+                    <div className="view-all-image">
+                      <div className="celebration-icon">👶</div>
                     </div>
+                    
+                    <div className="card-body">
+                      <div className="card-info">
+                        <h3 className="card-title">View All Baby Shower Decorations</h3>
+                        <p className="card-location">Explore more options</p>
+                      </div>
+                    </div>
+                    
+                    <button className="card-action-button view-all-button">
+                      EXPLORE MORE
+                      <i className="fa-solid fa-arrow-right"></i>
+                    </button>
                   </div>
                 </div>
               </div>
