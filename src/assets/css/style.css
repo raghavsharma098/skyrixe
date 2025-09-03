@@ -324,7 +324,7 @@ header .HeaderArea {
 }
 
 /* Header container padding */
-header .navbar .container-fluid {
+header .navbar  {
   padding-left: 20px;
   padding-right: 20px;
 }
@@ -915,7 +915,7 @@ header .HeaderArea .HeaderRight .Login:hover {
 
 .BirthdayDecorationArea {
   background-color: #ffffff;
-  padding: 20px 15px;
+  padding: 20px 0;
 }
 
 /* Banner images in BirthdayDecorationArea */
@@ -1163,7 +1163,7 @@ header .HeaderArea .HeaderRight .Login:hover {
   content: "\f164";
   font-family: "Font Awesome 6 Free";
   font-weight: 900;
-  color: #e91e63;
+  color: #e62753;
   font-size: 14px;
 }
 
@@ -1282,7 +1282,7 @@ header .HeaderArea .HeaderRight .Login:hover {
     content: "\f164";
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
-    color: #e91e63;
+    color: #e62753;
   }
 }
 
@@ -1345,7 +1345,7 @@ header .HeaderArea .HeaderRight .Login:hover {
     content: "\f164";
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
-    color: #e91e63;
+    color: #e62753;
   }
 }
 
@@ -1411,7 +1411,7 @@ header .HeaderArea .HeaderRight .Login:hover {
     content: "\f164";
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
-    color: #e91e63;
+    color: #e62753;
   }
 }
 
@@ -1477,7 +1477,7 @@ header .HeaderArea .HeaderRight .Login:hover {
     content: "\f164";
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
-    color: #e91e63;
+    color: #e62753;
   }
 }
 
@@ -3858,7 +3858,6 @@ i.fa-star {
 }
 
 .container,
-.container-fluid,
 .container-lg,
 .container-md,
 .container-sm,
@@ -3867,11 +3866,12 @@ i.fa-star {
   width: 95%;
   padding-left: 15px;
   padding-right: 15px;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 100%;
+  
 }
 
+.container-fluid {
+  max-width: 100%;
+}
 /* Sort Button Styles */
 .sort-btn {
   position: fixed !important;
@@ -6592,7 +6592,7 @@ ul.Icons li a img {
     padding: 20px 15px;
   }
   
-  header .navbar .container-fluid {
+  header .navbar {
     padding-left: 15px;
     padding-right: 15px;
   }
@@ -6782,7 +6782,7 @@ ul.Icons li a img {
     padding: 15px 10px;
   }
   
-  header .navbar .container-fluid {
+  header .navbar  {
     padding-left: 10px;
     padding-right: 10px;
   }

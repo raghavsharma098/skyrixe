@@ -2,6 +2,7 @@
 @import url("assets/css/responsive.css");
 @import url("assets/css/homepage-cards.css");
 @import url("assets/css/product-cards.css");
+@import url("assets/css/homepage-original-cards.css");
 
 .cards {
   display: flex;
@@ -720,15 +721,18 @@
   position: relative;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 30px;
 }
 
 /* Baby Shower section specific styling to match testimonials spacing */
-.BirthdayDecorationArea .scroll-container-wrapper {
+.BirthdayDecorationArea  {
+  
+  padding: 0 30px;
+}
+
+.scroll-container-wrapper {
   position: relative;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 30px;
 }
 
 .baby-shower-nav-btn {
@@ -948,9 +952,6 @@
 
 /* Responsive Design for Testimonials */
 @media (max-width: 768px) {
-  .testimonials-container {
-    padding: 0 15px;
-  }
   
   .testimonial-card {
     min-width: 280px;
@@ -1420,9 +1421,6 @@
 
 /* Large Tablets and Small Desktops */
 @media (max-width: 1024px) {
-  .testimonials-container {
-    padding: 0 15px;
-  }
   
   .testimonial-card {
     min-width: 350px;
@@ -1453,9 +1451,6 @@
     font-size: 15px;
   }
   
-  .testimonials-container {
-    padding: 0 25px;
-  }
   
   .testimonial-card {
     min-width: 300px;
@@ -1516,7 +1511,7 @@
 /* Small Tablets and Large Phones */
 @media (max-width: 640px) {
   .reviews-section {
-    padding: 50px 10px;
+    padding: 30px 10px;
   }
   
   .reviews-header h1 {
@@ -1527,9 +1522,6 @@
     font-size: 14px;
   }
   
-  .testimonials-container {
-    padding: 0 20px;
-  }
   
   .testimonial-card {
     min-width: 280px;
@@ -1582,7 +1574,7 @@
 /* Mobile Phones */
 @media (max-width: 480px) {
   .reviews-section {
-    padding: 40px 8px;
+    padding: 30px 8px;
   }
   
   .reviews-header {
@@ -1598,9 +1590,6 @@
     font-size: 13px;
   }
   
-  .testimonials-container {
-    padding: 0 15px;
-  }
   
   .testimonial-card {
     min-width: 260px;
@@ -1687,7 +1676,7 @@
 /* Very Small Phones */
 @media (max-width: 360px) {
   .reviews-section {
-    padding: 35px 5px;
+    padding: 30px 5px;
   }
   
   .reviews-header h1 {

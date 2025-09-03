@@ -1,17 +1,115 @@
+/* ===== GLOBAL BOOTSTRAP CONTAINER PADDING REMOVAL ===== */
+/* Remove Bootstrap's default container padding for all screen sizes */
+.container,
+.container-fluid,
+.container-sm,
+.container-md,
+.container-lg,
+.container-xl,
+.container-xxl {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* ===== HOMEPAGE-SPECIFIC MARGIN FIXES ONLY ===== */
+/* Target only homepage sections to prevent orange margins */
+.BirthdayDecorationArea,
+.FeatureArea,
+.Hero-Section,
+.ProductReviewsArea,
+.reviews-section,
+.about-section,
+.faq-section-enhanced,
+.service-section,
+.enjoy-life-section,
+.PrivateDining {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    background-color: #fff !important;
+}
+
+/* Homepage-specific Bootstrap row fixes */
+.BirthdayDecorationArea .row,
+.FeatureArea .row,
+.Hero-Section .row,
+.ProductReviewsArea .row,
+.reviews-section .row,
+.about-section .row,
+.faq-section-enhanced .row,
+.service-section .row,
+.enjoy-life-section .row,
+.PrivateDining .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+}
+
+/* Override Bootstrap's responsive container padding */
+@media (min-width: 576px) {
+    .container-sm, .container, .container-fluid {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .container-md, .container-sm, .container, .container-fluid {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .container-lg, .container-md, .container-sm, .container, .container-fluid {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container-xl, .container-lg, .container-md, .container-sm, .container, .container-fluid {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+
+@media (min-width: 1400px) {
+    .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container, .container-fluid {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+
+/* ===== GLOBAL OUTER PADDING - 30px for all sections ===== */
+.FeatureArea,
+.PrivateDining,
+.BirthdayDecorationArea,
+.ProductReviewsArea,
+.reviews-section,
+.Hero-Section,
+.about-section,
+.faq-section-enhanced,
+.service-section,
+.enjoy-life-section {
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+}
+
 @media (max-width:992px){
-    /* Ensure consistent 15px padding on tablet */
-    .FeatureArea {padding: 50px 15px 0;}
-    .PrivateDining {padding: 50px 15px;}
-    .BirthdayDecorationArea {padding: 20px 15px;}
-    .ProductReviewsArea {padding: 50px 15px;}
-    footer .FooterTop {padding: 50px 15px;}
-    .hero-section {padding: 0 15px;}
-    .Hero-Section {padding: 50px 15px;}
-    .reviews-section {padding: 50px 15px;}
-    .about-section {padding: 50px 15px;}
-    .faq-section-enhanced {padding: 50px 15px;}
-    .service-section {padding: 50px 15px;}
-    .enjoy-life-section {padding: 50px 15px;}
+    /* Ensure consistent 30px padding on tablet and below */
+    .FeatureArea {padding: 50px 30px 0;}
+    .PrivateDining {padding: 50px 30px;}
+    .BirthdayDecorationArea {padding: 20px 30px;}
+    .ProductReviewsArea {padding: 50px 30px;}
+    footer .FooterTop {padding: 50px 30px;}
+    .hero-section {padding: 0 30px;}
+    .Hero-Section {padding: 50px 30px;}
+    .reviews-section {padding: 50px 30px;}
+    .about-section {padding: 50px 30px;}
+    .faq-section-enhanced {padding: 50px 30px;}
+    .service-section {padding: 50px 30px;}
+    .enjoy-life-section {padding: 50px 30px;}
     
     /* FeatureArea 4x2 Grid - Tablet */
     .FeatureArea .row {
@@ -333,23 +431,23 @@
     .custom-arrow.next {right: -20px;}
     }
 @media (max-width:768px){
-    /* Ensure consistent padding and no overflow on mobile */
+    /* Ensure consistent padding and no overflow on mobile - 25px */
     .FeatureArea {
-        padding: 25px 12px 0;
+        padding: 25px 25px 0;
         width: 100%;
         overflow-x: hidden;
     }
-    .PrivateDining {padding: 50px 12px;}
-    .BirthdayDecorationArea {padding: 20px 12px;}
-    .ProductReviewsArea {padding: 50px 12px;}
-    footer .FooterTop {padding: 50px 12px;}
-    .hero-section {padding: 0 12px;}
-    .Hero-Section {padding: 30px 12px;}
-    .reviews-section {padding: 30px 12px;}
-    .about-section {padding: 30px 12px;}
-    .faq-section-enhanced {padding: 30px 12px;}
-    .service-section {padding: 30px 12px;}
-    .enjoy-life-section {padding: 30px 12px;}
+    .PrivateDining {padding: 50px 25px;}
+    .BirthdayDecorationArea {padding: 20px 25px;}
+    .ProductReviewsArea {padding: 50px 25px;}
+    footer .FooterTop {padding: 50px 25px;}
+    .hero-section {padding: 0 25px;}
+    .Hero-Section {padding: 30px 25px;}
+    .reviews-section {padding: 30px 25px;}
+    .about-section {padding: 30px 25px;}
+    .faq-section-enhanced {padding: 30px 25px;}
+    .service-section {padding: 30px 25px;}
+    .enjoy-life-section {padding: 30px 25px;}
     
     /* FeatureArea 2x4 Grid - Mobile (2 columns, 4 rows) */
     .FeatureArea .row {
@@ -445,7 +543,7 @@
 
 @media (max-width: 600px) {
     .FeatureArea {
-        padding: 25px 10px 0;
+        padding: 25px 20px 0;
         width: 100%;
         overflow-x: hidden;
     }
@@ -512,23 +610,23 @@
     .CategoriesResponsive {display: block !important;}
     .CategoriesResponsive .CategoriesSearch {display: flex !important;}
     
-    /* Homepage Components Padding - 10px for very small screens */
+    /* Homepage Components Padding - 15px for very small screens */
     .FeatureArea {
-        padding: 25px 10px 0;
+        padding: 25px 15px 0;
         width: 100%;
         overflow-x: hidden;
     }
-    .PrivateDining {padding: 50px 10px;}
-    .BirthdayDecorationArea {padding: 20px 10px;}
-    .ProductReviewsArea {padding: 50px 10px;}
-    .hero-section {padding: 0 10px;}
-    footer .FooterTop {padding: 25px 10px;}
-    .Hero-Section {padding: 25px 10px;}
-    .reviews-section {padding: 25px 10px;}
-    .about-section {padding: 25px 10px;}
-    .faq-section-enhanced {padding: 25px 10px;}
-    .service-section {padding: 25px 10px;}
-    .enjoy-life-section {padding: 25px 10px;}
+    .PrivateDining {padding: 50px 15px;}
+    .BirthdayDecorationArea {padding: 20px 15px;}
+    .ProductReviewsArea {padding: 50px 15px;}
+    .hero-section {padding: 0 15px;}
+    footer .FooterTop {padding: 25px 15px;}
+    .Hero-Section {padding: 25px 15px;}
+    .reviews-section {padding: 25px 15px;}
+    .about-section {padding: 25px 15px;}
+    .faq-section-enhanced {padding: 25px 15px;}
+    .service-section {padding: 25px 15px;}
+    .enjoy-life-section {padding: 25px 15px;}
     
     /* FeatureArea 2x4 Grid - Small Mobile */
     .FeatureArea .row {
@@ -702,9 +800,9 @@
     /* .headerTwoBtn {margin-left:0;} */
     .navbar-toggler {padding: .25rem .5rem;font-size: 1rem;}
     
-    /* FeatureArea optimized for extra small screens */
+    /* FeatureArea optimized for extra small screens - 12px padding */
     .FeatureArea {
-        padding: 20px 8px 0;
+        padding: 20px 12px 0;
         width: 100%;
         overflow-x: hidden;
     }
@@ -770,9 +868,9 @@
 }
 
 @media (max-width: 320px) {
-    /* FeatureArea optimized for very small screens */
+    /* FeatureArea optimized for very small screens - 10px padding */
     .FeatureArea {
-        padding: 15px 5px 0;
+        padding: 15px 10px 0;
         width: 100%;
         overflow-x: hidden;
     }

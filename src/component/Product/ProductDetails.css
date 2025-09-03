@@ -2045,10 +2045,13 @@
   margin: 1em 0;
 }
 
-.similar-products-section .container-fluid {
+.similar-products-section {
   width: 95%;
   margin: 0 auto;
   padding: 0 15px;
+}
+.container-fluid {
+   margin: 0 auto;
 }
 
 .section-header {
@@ -2386,10 +2389,14 @@
   margin-top: 1rem;
 }
 
-.recently-viewed-section .container-fluid {
+.recently-viewed-section {
   width: 95%;
   margin: 0 auto;
   padding: 0 15px;
+}
+
+.container-fluid {
+  margin: 0 auto;
 }
 
 .recently-viewed-section .section-header {

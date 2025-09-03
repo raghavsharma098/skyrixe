@@ -534,13 +534,13 @@ const Main = () => {
               <div
                 ref={scrollContainerRef}
                 onScroll={handleScroll}
-                className="birthday-scroll-container"
+                className="homepage-birthday-scroll-container"
               >
                 {getBirthdayList?.data?.length > 0 ? (
                   getBirthdayList?.data?.map((item, i) => {
                     return (
-                      <div key={i} className="birthday-item">
-                        <div className="product-card">
+                      <div key={i} className="homepage-birthday-item">
+                        <div className="homepage-product-card">
                           <img
                             src={item?.productimages?.at(0)}
                             onClick={() => handleProduct(item)}
@@ -548,29 +548,29 @@ const Main = () => {
                             alt={item?.productDetails?.productname}
                           />
                           
-                          <div className="card-body">
-                            <div className="card-info">
-                              <h3 className="card-title">{item?.productDetails?.productname}</h3>
-                              <div className="card-meta">
-                                <div className="rating-location">
-                                  <div className="card-rating">
-                                    <div className="stars">
-                                      <span className="star filled">★</span>
-                                      <span className="star filled">★</span>
-                                      <span className="star filled">★</span>
-                                      <span className="star filled">★</span>
-                                      <span className="star">★</span>
+                          <div className="homepage-card-body">
+                            <div className="homepage-card-info">
+                              <p className="homepage-card-location">At your location</p>
+                              <h3 className="homepage-card-title">{item?.productDetails?.productname}</h3>
+                              <div className="homepage-card-meta">
+                                <div className="homepage-rating-location">
+                                  <div className="homepage-card-rating">
+                                    <div className="homepage-stars">
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star">★</span>
                                     </div>
-                                    <span className="rating-text">(4.0)</span>
+                                    <span className="homepage-rating-text">(4.0)</span>
                                   </div>
-                                  <p className="card-location">At your location</p>
                                 </div>
-                                <div className="price-section">
+                                <div className="homepage-price-section">
                                   {item?.priceDetails?.discountedPrice ? (
                                     <>
-                                      <div className="price-row">
-                                        <span className="current-price">₹{item?.priceDetails?.discountedPrice}</span>
-                                        <span className="discount-tag">
+                                      <div className="homepage-price-row">
+                                        <span className="homepage-current-price">₹{item?.priceDetails?.discountedPrice}</span>
+                                        <span className="homepage-discount-tag">
                                           {Math.round(
                                             ((Number(item?.priceDetails?.price) -
                                               Number(item?.priceDetails?.discountedPrice)) /
@@ -578,10 +578,10 @@ const Main = () => {
                                           )}% off
                                         </span>
                                       </div>
-                                      <span className="original-price">₹{item?.priceDetails?.price}</span>
+                                      <span className="homepage-original-price">₹{item?.priceDetails?.price}</span>
                                     </>
                                   ) : (
-                                    <span className="current-price">₹{item?.priceDetails?.price}</span>
+                                    <span className="homepage-current-price">₹{item?.priceDetails?.price}</span>
                                   )}
                                 </div>
                               </div>
@@ -589,7 +589,7 @@ const Main = () => {
                           </div>
                           
                           <button
-                            className="card-action-button"
+                            className="homepage-card-action-button"
                             onClick={() => handleProduct(item)}
                           >
                             BOOK NOW
@@ -603,20 +603,20 @@ const Main = () => {
                 )}
                 
                 {/* View All Button inside the scroller */}
-                <div className="birthday-item view-all-item">
-                  <div className="product-card view-all-card" onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}>
+                <div className="homepage-birthday-item view-all-item">
+                  <div className="homepage-product-card view-all-card" onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}>
                     <div className="view-all-image">
                       <div className="celebration-icon">🎉</div>
                     </div>
                     
-                    <div className="card-body">
-                      <div className="card-info">
-                        <h3 className="card-title">View All Birthday Decorations</h3>
-                        <p className="card-location">Explore more options</p>
+                    <div className="homepage-card-body">
+                      <div className="homepage-card-info">
+                        <h3 className="homepage-card-title">View All Birthday Decorations</h3>
+                        <p className="homepage-card-location">Explore more options</p>
                       </div>
                     </div>
                     
-                    <button className="card-action-button view-all-button">
+                    <button className="homepage-view-all-button">
                       EXPLORE MORE
                       <i className="fa-solid fa-arrow-right"></i>
                     </button>
@@ -694,13 +694,13 @@ const Main = () => {
               {/* Scrollable Content */}
               <div
                 ref={anniversaryScrollRef}
-                className="anniversary-scroll-container"
+                className="homepage-anniversary-scroll-container"
               >
                 {getAnniversaryList?.data?.length > 0 ? (
                   getAnniversaryList?.data?.map((item, i) => {
                     return (
-                      <div key={i} className="anniversary-item">
-                        <div className="product-card">
+                      <div key={i} className="homepage-anniversary-item">
+                        <div className="homepage-product-card">
                           <img
                             src={item?.productimages?.at(0)}
                             onClick={() => handleProduct(item)}
@@ -708,29 +708,29 @@ const Main = () => {
                             alt={item?.productDetails?.productname}
                           />
                           
-                          <div className="card-body">
-                            <div className="card-info">
-                              <h3 className="card-title">{item?.productDetails?.productname}</h3>
-                              <div className="card-meta">
-                                <div className="rating-location">
-                                  <div className="card-rating">
-                                    <div className="stars">
-                                      <span className="star filled">★</span>
-                                      <span className="star filled">★</span>
-                                      <span className="star filled">★</span>
-                                      <span className="star filled">★</span>
-                                      <span className="star">★</span>
+                          <div className="homepage-card-body">
+                            <div className="homepage-card-info">
+                              <p className="homepage-card-location">At your location</p>
+                              <h3 className="homepage-card-title">{item?.productDetails?.productname}</h3>
+                              <div className="homepage-card-meta">
+                                <div className="homepage-rating-location">
+                                  <div className="homepage-card-rating">
+                                    <div className="homepage-stars">
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star">★</span>
                                     </div>
-                                    <span className="rating-text">(4.0)</span>
+                                    <span className="homepage-rating-text">(4.0)</span>
                                   </div>
-                                  <p className="card-location">At your location</p>
                                 </div>
-                                <div className="price-section">
+                                <div className="homepage-price-section">
                                   {item?.priceDetails?.discountedPrice ? (
                                     <>
-                                      <div className="price-row">
-                                        <span className="current-price">₹{item?.priceDetails?.discountedPrice}</span>
-                                        <span className="discount-tag">
+                                      <div className="homepage-price-row">
+                                        <span className="homepage-current-price">₹{item?.priceDetails?.discountedPrice}</span>
+                                        <span className="homepage-discount-tag">
                                           {Math.round(
                                             ((Number(item?.priceDetails?.price) -
                                               Number(item?.priceDetails?.discountedPrice)) /
@@ -738,10 +738,10 @@ const Main = () => {
                                           )}% off
                                         </span>
                                       </div>
-                                      <span className="original-price">₹{item?.priceDetails?.price}</span>
+                                      <span className="homepage-original-price">₹{item?.priceDetails?.price}</span>
                                     </>
                                   ) : (
-                                    <span className="current-price">₹{item?.priceDetails?.price}</span>
+                                    <span className="homepage-current-price">₹{item?.priceDetails?.price}</span>
                                   )}
                                 </div>
                               </div>
@@ -749,7 +749,7 @@ const Main = () => {
                           </div>
                           
                           <button
-                            className="card-action-button"
+                            className="homepage-card-action-button"
                             onClick={() => handleProduct(item)}
                           >
                             BOOK NOW
@@ -763,20 +763,20 @@ const Main = () => {
                 )}
                 
                 {/* View All Button inside the scroller */}
-                <div className="anniversary-item view-all-item">
-                  <div className="product-card view-all-card" onClick={() => handleCategory({ categoryName: "ANNIVERSARY" })}>
+                <div className="homepage-anniversary-item view-all-item">
+                  <div className="homepage-product-card view-all-card" onClick={() => handleCategory({ categoryName: "ANNIVERSARY" })}>
                     <div className="view-all-image">
                       <div className="celebration-icon">💕</div>
                     </div>
                     
-                    <div className="card-body">
-                      <div className="card-info">
-                        <h3 className="card-title">View All Anniversary Decorations</h3>
-                        <p className="card-location">Explore more options</p>
+                    <div className="homepage-card-body">
+                      <div className="homepage-card-info">
+                        <h3 className="homepage-card-title">View All Anniversary Decorations</h3>
+                        <p className="homepage-card-location">Explore more options</p>
                       </div>
                     </div>
                     
-                    <button className="card-action-button view-all-button">
+                    <button className="homepage-view-all-button">
                       EXPLORE MORE
                       <i className="fa-solid fa-arrow-right"></i>
                     </button>
@@ -853,13 +853,13 @@ const Main = () => {
               {/* Scrollable Content */}
               <div
                 ref={kidsScrollRef}
-                className="kids-scroll-container"
+                className="homepage-kids-scroll-container"
               >
                 {getKidsList?.data?.length > 0 ? (
                   getKidsList?.data?.map((item, i) => {
                     return (
-                      <div key={i} className="kids-item">
-                        <div className="product-card">
+                      <div key={i} className="homepage-kids-item">
+                        <div className="homepage-product-card">
                           <img
                             src={item?.productimages?.at(0)}
                             onClick={() => handleProduct(item)}
@@ -867,29 +867,29 @@ const Main = () => {
                             alt={item?.productDetails?.productname}
                           />
                           
-                          <div className="card-body">
-                            <div className="card-info">
-                              <h3 className="card-title">{item?.productDetails?.productname}</h3>
-                              <div className="card-meta">
-                                <div className="rating-location">
-                                  <div className="card-rating">
-                                    <div className="stars">
-                                      <span className="star filled">★</span>
-                                      <span className="star filled">★</span>
-                                      <span className="star filled">★</span>
-                                      <span className="star filled">★</span>
-                                      <span className="star">★</span>
+                          <div className="homepage-card-body">
+                            <div className="homepage-card-info">
+                              <p className="homepage-card-location">At your location</p>
+                              <h3 className="homepage-card-title">{item?.productDetails?.productname}</h3>
+                              <div className="homepage-card-meta">
+                                <div className="homepage-rating-location">
+                                  <div className="homepage-card-rating">
+                                    <div className="homepage-stars">
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star">★</span>
                                     </div>
-                                    <span className="rating-text">(4.0)</span>
+                                    <span className="homepage-rating-text">(4.0)</span>
                                   </div>
-                                  <p className="card-location">At your location</p>
                                 </div>
-                                <div className="price-section">
+                                <div className="homepage-price-section">
                                   {item?.priceDetails?.discountedPrice ? (
                                     <>
-                                      <div className="price-row">
-                                        <span className="current-price">₹{item?.priceDetails?.discountedPrice}</span>
-                                        <span className="discount-tag">
+                                      <div className="homepage-price-row">
+                                        <span className="homepage-current-price">₹{item?.priceDetails?.discountedPrice}</span>
+                                        <span className="homepage-discount-tag">
                                           {Math.round(
                                             ((Number(item?.priceDetails?.price) -
                                               Number(item?.priceDetails?.discountedPrice)) /
@@ -897,10 +897,10 @@ const Main = () => {
                                           )}% off
                                         </span>
                                       </div>
-                                      <span className="original-price">₹{item?.priceDetails?.price}</span>
+                                      <span className="homepage-original-price">₹{item?.priceDetails?.price}</span>
                                     </>
                                   ) : (
-                                    <span className="current-price">₹{item?.priceDetails?.price}</span>
+                                    <span className="homepage-current-price">₹{item?.priceDetails?.price}</span>
                                   )}
                                 </div>
                               </div>
@@ -908,7 +908,7 @@ const Main = () => {
                           </div>
                           
                           <button
-                            className="card-action-button"
+                            className="homepage-card-action-button"
                             onClick={() => handleProduct(item)}
                           >
                             BOOK NOW
@@ -922,20 +922,20 @@ const Main = () => {
                 )}
                 
                 {/* View All Button inside the scroller */}
-                <div className="kids-item view-all-item">
-                  <div className="product-card view-all-card" onClick={() => handleCategory({ categoryName: "KID'S PARTY" })}>
+                <div className="homepage-kids-item view-all-item">
+                  <div className="homepage-product-card view-all-card" onClick={() => handleCategory({ categoryName: "KID'S PARTY" })}>
                     <div className="view-all-image">
                       <div className="celebration-icon">🎈</div>
                     </div>
                     
-                    <div className="card-body">
-                      <div className="card-info">
-                        <h3 className="card-title">View All Kids Party Decorations</h3>
-                        <p className="card-location">Explore more options</p>
+                    <div className="homepage-card-body">
+                      <div className="homepage-card-info">
+                        <h3 className="homepage-card-title">View All Kids Party Decorations</h3>
+                        <p className="homepage-card-location">Explore more options</p>
                       </div>
                     </div>
                     
-                    <button className="card-action-button view-all-button">
+                    <button className="homepage-view-all-button">
                       EXPLORE MORE
                       <i className="fa-solid fa-arrow-right"></i>
                     </button>
@@ -967,7 +967,7 @@ const Main = () => {
         </div>
 
         <div className="BirthdayDecorationArea AnniDecImage">
-          <div className="container">
+          <div className="container" style={{ padding: "0", margin: "0 auto", width: "100%" }}>
             <div className="section-title">
               <h2>Baby Shower</h2>
               <p>
@@ -985,13 +985,13 @@ const Main = () => {
               {/* Scrollable Content */}
               <div
                 ref={babyShowerScrollRef}
-                className="testimonials-slider baby-shower-scroll-container"
+                className="testimonials-slider homepage-baby-shower-scroll-container"
               >
                 {getWeddingDecoList?.data?.length > 0 ? (
                   getWeddingDecoList?.data?.map((item, i) => {
                     return (
-                      <div key={i} className="baby-shower-item">
-                        <div className="product-card">
+                      <div key={i} className="homepage-baby-shower-item">
+                        <div className="homepage-product-card">
                           <img
                             src={item?.productimages?.at(0)}
                             onClick={() => handleProduct(item)}
@@ -999,29 +999,29 @@ const Main = () => {
                             alt={item?.productDetails?.productname}
                           />
                           
-                          <div className="card-body">
-                            <div className="card-info">
-                              <h3 className="card-title">{item?.productDetails?.productname}</h3>
-                              <div className="card-meta">
-                                <div className="rating-location">
-                                  <div className="card-rating">
-                                    <div className="stars">
-                                      <span className="star filled">★</span>
-                                      <span className="star filled">★</span>
-                                      <span className="star filled">★</span>
-                                      <span className="star filled">★</span>
-                                      <span className="star">★</span>
+                          <div className="homepage-card-body">
+                            <div className="homepage-card-info">
+                              <p className="homepage-card-location">At your location</p>
+                              <h3 className="homepage-card-title">{item?.productDetails?.productname}</h3>
+                              <div className="homepage-card-meta">
+                                <div className="homepage-rating-location">
+                                  <div className="homepage-card-rating">
+                                    <div className="homepage-stars">
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star">★</span>
                                     </div>
-                                    <span className="rating-text">(4.0)</span>
+                                    <span className="homepage-rating-text">(4.0)</span>
                                   </div>
-                                  <p className="card-location">At your location</p>
                                 </div>
-                                <div className="price-section">
+                                <div className="homepage-price-section">
                                   {item?.priceDetails?.discountedPrice ? (
                                     <>
-                                      <div className="price-row">
-                                        <span className="current-price">₹{item?.priceDetails?.discountedPrice}</span>
-                                        <span className="discount-tag">
+                                      <div className="homepage-price-row">
+                                        <span className="homepage-current-price">₹{item?.priceDetails?.discountedPrice}</span>
+                                        <span className="homepage-discount-tag">
                                           {Math.round(
                                             ((Number(item?.priceDetails?.price) -
                                               Number(item?.priceDetails?.discountedPrice)) /
@@ -1029,10 +1029,10 @@ const Main = () => {
                                           )}% off
                                         </span>
                                       </div>
-                                      <span className="original-price">₹{item?.priceDetails?.price}</span>
+                                      <span className="homepage-original-price">₹{item?.priceDetails?.price}</span>
                                     </>
                                   ) : (
-                                    <span className="current-price">₹{item?.priceDetails?.price}</span>
+                                    <span className="homepage-current-price">₹{item?.priceDetails?.price}</span>
                                   )}
                                 </div>
                               </div>
@@ -1040,7 +1040,7 @@ const Main = () => {
                           </div>
                           
                           <button
-                            className="card-action-button"
+                            className="homepage-card-action-button"
                             onClick={() => handleProduct(item)}
                           >
                             BOOK NOW
@@ -1054,20 +1054,20 @@ const Main = () => {
                 )}
                 
                 {/* View All Button inside the scroller */}
-                <div className="baby-shower-item view-all-item">
-                  <div className="product-card view-all-card" onClick={() => handleCategory({ categoryName: "BABY SHOWER" })}>
+                <div className="homepage-baby-shower-item view-all-item">
+                  <div className="homepage-product-card view-all-card" onClick={() => handleCategory({ categoryName: "BABY SHOWER" })}>
                     <div className="view-all-image">
                       <div className="celebration-icon">👶</div>
                     </div>
                     
-                    <div className="card-body">
-                      <div className="card-info">
-                        <h3 className="card-title">View All Baby Shower Decorations</h3>
-                        <p className="card-location">Explore more options</p>
+                    <div className="homepage-card-body">
+                      <div className="homepage-card-info">
+                        <h3 className="homepage-card-title">View All Baby Shower Decorations</h3>
+                        <p className="homepage-card-location">Explore more options</p>
                       </div>
                     </div>
                     
-                    <button className="card-action-button view-all-button">
+                    <button className="homepage-view-all-button">
                       EXPLORE MORE
                       <i className="fa-solid fa-arrow-right"></i>
                     </button>
@@ -1096,7 +1096,7 @@ const Main = () => {
 
         {/* ===== CUSTOMER REVIEWS SECTION ===== */}
         <div className="reviews-section">
-          <div className="container">
+          <div className="container" style={{ padding: "0", margin: "0 auto" }}>
             <div className="reviews-header">
               <h1>What Customers Say</h1>
               <p>Genuine feedback from our delighted customers who trusted us with their special moments</p>
@@ -1288,7 +1288,7 @@ const Main = () => {
 
         {/* ===== FAQ SECTION ===== */}
         <div className="faq-section-enhanced">
-          <div className="container">
+          <div className="container" style={{ padding: "0", margin: "0 auto" }}>
             <div className="section-title">
               <h2>Frequently Asked Questions</h2>
               <p>Everything you need to know about our decoration services</p>
