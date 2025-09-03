@@ -5,9 +5,7 @@
 .homepage-birthday-scroll-container,
 .homepage-anniversary-scroll-container,
 .homepage-kids-scroll-container,
-.homepage-baby-shower-scroll-container,
-.homepage-wedding-scroll-container,
-.homepage-moment-scroll-container {
+.homepage-baby-shower-scroll-container {
   display: flex !important;
   gap: 20px !important;
   overflow-x: auto !important;
@@ -21,9 +19,7 @@
 .homepage-birthday-scroll-container::-webkit-scrollbar,
 .homepage-anniversary-scroll-container::-webkit-scrollbar,
 .homepage-kids-scroll-container::-webkit-scrollbar,
-.homepage-baby-shower-scroll-container::-webkit-scrollbar,
-.homepage-wedding-scroll-container::-webkit-scrollbar,
-.homepage-moment-scroll-container::-webkit-scrollbar {
+.homepage-baby-shower-scroll-container::-webkit-scrollbar {
   display: none !important;
 }
 
@@ -31,22 +27,9 @@
 .homepage-birthday-item,
 .homepage-anniversary-item,
 .homepage-kids-item,
-.homepage-baby-shower-item,
-.homepage-wedding-item,
-.homepage-moment-item {
+.homepage-baby-shower-item {
   flex: 0 0 300px !important;
   min-width: 300px !important;
-  max-width: 300px !important;
-  height: auto !important;
-}
-
-/* Ensure all homepage product cards have consistent dimensions */
-.homepage-baby-shower-item .homepage-product-card,
-.homepage-wedding-item .homepage-product-card,
-.homepage-moment-item .homepage-product-card {
-  width: 100% !important;
-  min-height: 400px !important;
-  max-height: none !important;
 }
 
 /* Homepage specific product cards - restore original layout */
@@ -73,15 +56,6 @@
   height: 200px; /* Square aspect ratio for desktop */
   object-fit: cover;
   border-radius: 12px 12px 0 0;
-}
-
-/* Ensure consistent image dimensions across all card types */
-.homepage-baby-shower-item .homepage-product-card img,
-.homepage-wedding-item .homepage-product-card img,
-.homepage-moment-item .homepage-product-card img {
-  width: 100% !important;
-  height: 200px !important;
-  object-fit: cover !important;
 }
 
 /* Homepage card body - restore original structure */
@@ -214,7 +188,7 @@
 /* ===== ENHANCED PINK BOOK NOW BUTTON ===== */
 .homepage-card-action-button {
   width: 46% !important; /* Reduced width to 46% as requested */
-  background: linear-gradient(135deg, #FF69B4 0%, #E1306C 50%, #C2185B 100%) !important; /* Enhanced pink gradient */
+  background: linear-gradient(135deg, #FF69B4 0%, #FF1493 30%, #E1306C 70%, #C2185B 100%) !important; /* Enhanced vibrant pink gradient for Wedding Entry and Enjoy Every Moment sections */
   color: white !important;
   border: none !important;
   padding: 8px 12px !important; /* Reduced padding for smaller button */
@@ -321,35 +295,18 @@
   transform: translateY(-50%) scale(1.1);
 }
 
-/* ===== RESPONSIVE HOMEPAGE CARDS ===== */
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
 @media (max-width: 768px) {
   .homepage-birthday-item,
   .homepage-anniversary-item,
   .homepage-kids-item,
-  .homepage-baby-shower-item,
-  .homepage-wedding-item,
-  .homepage-moment-item {
+  .homepage-baby-shower-item {
     flex: 0 0 280px !important;
     min-width: 280px !important;
-    max-width: 280px !important;
-  }
-  
-  /* Ensure consistent card dimensions on tablet */
-  .homepage-baby-shower-item .homepage-product-card,
-  .homepage-wedding-item .homepage-product-card,
-  .homepage-moment-item .homepage-product-card {
-    min-height: 380px !important;
   }
   
   .homepage-product-card img {
     height: 200px; /* Square aspect ratio for tablet */
-  }
-  
-  /* Ensure consistent tablet image dimensions */
-  .homepage-baby-shower-item .homepage-product-card img,
-  .homepage-wedding-item .homepage-product-card img,
-  .homepage-moment-item .homepage-product-card img {
-    height: 200px !important;
   }
   
   .homepage-card-title {
@@ -365,28 +322,16 @@
   .homepage-birthday-item,
   .homepage-anniversary-item,
   .homepage-kids-item,
-  .homepage-baby-shower-item,
-  .homepage-wedding-item,
-  .homepage-moment-item {
+  .homepage-baby-shower-item {
     flex: 0 0 200px !important;
     min-width: 200px !important;
-    max-width: 200px !important;
-  }
-  
-  /* Ensure consistent card dimensions on mobile */
-  .homepage-baby-shower-item .homepage-product-card,
-  .homepage-wedding-item .homepage-product-card,
-  .homepage-moment-item .homepage-product-card {
-    min-height: 340px !important;
   }
   
   /* Reduce gap for mobile to fit 1.5 cards properly */
   .homepage-birthday-scroll-container,
   .homepage-anniversary-scroll-container,
   .homepage-kids-scroll-container,
-  .homepage-baby-shower-scroll-container,
-  .homepage-wedding-scroll-container,
-  .homepage-moment-scroll-container {
+  .homepage-baby-shower-scroll-container {
     gap: 15px !important;
     width: 315px !important; /* 200px (1 card) + 15px (gap) + 100px (0.5 card) = 315px */
     max-width: calc(100vw - 40px) !important; /* Ensure it doesn't overflow screen */
@@ -395,13 +340,6 @@
   
   .homepage-product-card img {
     height: 200px; /* Square aspect ratio for mobile */
-  }
-  
-  /* Ensure consistent mobile image dimensions */
-  .homepage-baby-shower-item .homepage-product-card img,
-  .homepage-wedding-item .homepage-product-card img,
-  .homepage-moment-item .homepage-product-card img {
-    height: 200px !important;
   }
   
   .homepage-card-body {

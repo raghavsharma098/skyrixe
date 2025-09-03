@@ -70,7 +70,7 @@ body {
 }
 
 .highlight-text {
-  color: #b8a32c;
+  color: #E1306C;
 }
 
 .section-subtitle {
@@ -260,7 +260,7 @@ body {
 }
 
 .service-card-button {
-  background: #ffa439;
+  background: linear-gradient(135deg, #FF69B4 0%, #FF1493 30%, #E1306C 70%, #C2185B 100%) !important; /* Pink gradient instead of yellow */
   color: white;
   font-weight: bold;
   padding: 12px 16px;
@@ -273,9 +273,9 @@ body {
 }
 
 .service-card-button:hover {
-  background: #d97706;
+  background: linear-gradient(135deg, #E1306C 0%, #C2185B 50%, #AD1457 100%) !important; /* Darker pink gradient on hover */
   transform: scale(1.02);
-  box-shadow: 0 4px 12px rgba(255, 164, 57, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.4) !important; /* Pink shadow instead of yellow */
 }
 
 .service-card-button:active {
