@@ -185,32 +185,34 @@
   border-radius: 4px;
 }
 
-/* ===== ORIGINAL PINK BOOK NOW BUTTON ===== */
+/* ===== ENHANCED PINK BOOK NOW BUTTON ===== */
 .homepage-card-action-button {
-  width: 100%;
-  background: linear-gradient(135deg, #E91E63 0%, #F06292 100%) !important;
+  width: 46% !important; /* Reduced width to 46% as requested */
+  background: linear-gradient(135deg, #FF69B4 0%, #E1306C 50%, #C2185B 100%) !important; /* Enhanced pink gradient */
   color: white !important;
   border: none !important;
-  padding: 12px 16px !important;
+  padding: 8px 12px !important; /* Reduced padding for smaller button */
+  padding-left: 10px !important; /* 10px padding from left as requested */
   border-radius: 8px !important;
-  font-size: 14px !important;
+  font-size: 12px !important; /* Slightly smaller font */
   font-weight: 700 !important;
   cursor: pointer !important;
   transition: all 0.3s ease !important;
   text-transform: uppercase !important;
   letter-spacing: 0.5px !important;
-  margin-top: 8px !important;
+  margin: 8px 0 !important; /* Align to left instead of center */
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 6px !important;
   order: 4;
+  height: 36px !important; /* Fixed height for consistency */
 }
 
 .homepage-card-action-button:hover {
-  background: linear-gradient(135deg, #C2185B 0%, #E91E63 100%) !important;
+  background: linear-gradient(135deg, #E1306C 0%, #C2185B 50%, #AD1457 100%) !important; /* Darker pink gradient on hover */
   transform: translateY(-2px) !important;
-  box-shadow: 0 4px 12px rgba(233, 30, 99, 0.4) !important;
+  box-shadow: 0 6px 15px rgba(255, 105, 180, 0.4) !important; /* Hot pink shadow */
 }
 
 .homepage-card-action-button:active {

@@ -40,18 +40,130 @@ const Main = () => {
   const scrollContainerRef = useRef(null);
   const [reviews, setReviews] = useState([]);
 
-  // For reviews slider navigation
+  // Enhanced Review Carousel Functionality
+  const [showPrevBtn, setShowPrevBtn] = useState(false);
+  const [showNextBtn, setShowNextBtn] = useState(true);
+
+  useEffect(() => {
+    const initializeCarousel = () => {
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const reviewContainer = document.getElementById('reviewContainer');
+
+      if (!reviewContainer || !prevBtn || !nextBtn) return;
+
+      const cardWidth = 320; // 300px card + 20px gap
+
+      // Scroll Left Function
+      const scrollLeft = () => {
+        reviewContainer.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+      };
+
+      // Scroll Right Function  
+      const scrollRight = () => {
+        reviewContainer.scrollBy({ left: cardWidth, behavior: 'smooth' });
+      };
+
+      // Update Arrow Visibility
+      const updateArrowVisibility = () => {
+        const scrollLeft = reviewContainer.scrollLeft;
+        const maxScroll = reviewContainer.scrollWidth - reviewContainer.clientWidth;
+        
+        // Show/hide previous button
+        if (scrollLeft <= 0) {
+          prevBtn.style.display = 'none';
+          setShowPrevBtn(false);
+        } else {
+          prevBtn.style.display = 'flex';
+          setShowPrevBtn(true);
+        }
+        
+        // Show/hide next button (with small tolerance for rounding)
+        if (scrollLeft >= maxScroll - 1) {
+          nextBtn.style.display = 'none';
+          setShowNextBtn(false);
+        } else {
+          nextBtn.style.display = 'flex';
+          setShowNextBtn(true);
+        }
+      };
+
+      // Event Listeners
+      prevBtn.addEventListener('click', scrollLeft);
+      nextBtn.addEventListener('click', scrollRight);
+      reviewContainer.addEventListener('scroll', updateArrowVisibility);
+
+      // Initial check
+      updateArrowVisibility();
+
+      // Cleanup function
+      return () => {
+        prevBtn.removeEventListener('click', scrollLeft);
+        nextBtn.removeEventListener('click', scrollRight);
+        reviewContainer.removeEventListener('scroll', updateArrowVisibility);
+      };
+    };
+
+    // Initialize after component mounts
+    const cleanup = initializeCarousel();
+    
+    return cleanup;
+  }, []);
+
+  // For reviews slider navigation with enhanced functionality
   const reviewsScrollRef = useRef(null);
+  const [showReviewsPrevBtn, setShowReviewsPrevBtn] = useState(false);
+  const [showReviewsNextBtn, setShowReviewsNextBtn] = useState(true);
+
+  // Update arrow visibility based on scroll position
+  const updateReviewsArrowVisibility = () => {
+    if (reviewsScrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = reviewsScrollRef.current;
+      setShowReviewsPrevBtn(scrollLeft > 0);
+      setShowReviewsNextBtn(scrollLeft < scrollWidth - clientWidth - 1);
+    }
+  };
+
+  // Enhanced scroll functions with responsive card-width precision
+  const getCardWidth = () => {
+    // Check screen width to determine card size
+    if (window.innerWidth <= 480) {
+      return 260; // Small screen card width
+    }
+    return 320; // Default card width
+  };
+
   const handleReviewsScrollLeft = () => {
     if (reviewsScrollRef.current) {
-      reviewsScrollRef.current.scrollBy({ left: -400, behavior: 'smooth' });
+      const cardWidth = getCardWidth();
+      reviewsScrollRef.current.scrollBy({ left: -cardWidth, behavior: 'smooth' });
     }
   };
+
   const handleReviewsScrollRight = () => {
     if (reviewsScrollRef.current) {
-      reviewsScrollRef.current.scrollBy({ left: 400, behavior: 'smooth' });
+      const cardWidth = getCardWidth();
+      reviewsScrollRef.current.scrollBy({ left: cardWidth, behavior: 'smooth' });
     }
   };
+
+  // Add scroll event listener for reviews section
+  useEffect(() => {
+    const reviewsContainer = reviewsScrollRef.current;
+    if (reviewsContainer) {
+      const handleScroll = () => {
+        updateReviewsArrowVisibility();
+      };
+
+      reviewsContainer.addEventListener('scroll', handleScroll);
+      // Initial check
+      updateReviewsArrowVisibility();
+
+      return () => {
+        reviewsContainer.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, []);
 
   // For FAQ toggle
   const [activeFaq, setActiveFaq] = useState(-1);
@@ -100,57 +212,48 @@ const Main = () => {
   const anniversaryScrollRef = useRef(null);
   const kidsScrollRef = useRef(null);
   const babyShowerScrollRef = useRef(null);
+  const birthdayScrollRef = useRef(null);
 
-  const handleAnniversaryScrollLeft = () => {
-    if (anniversaryScrollRef.current) {
-      const container = anniversaryScrollRef.current;
-      const scrollAmount = container.offsetWidth * 0.8;
-      container.scrollBy({
-        left: -scrollAmount,
-        behavior: 'smooth'
-      });
+  // Enhanced Baby Shower carousel functionality state
+  const [showBabyShowerPrevBtn, setShowBabyShowerPrevBtn] = useState(false);
+  const [showBabyShowerNextBtn, setShowBabyShowerNextBtn] = useState(true);
+
+  // Enhanced Kids Party carousel functionality state
+  const [showKidsPrevBtn, setShowKidsPrevBtn] = useState(false);
+  const [showKidsNextBtn, setShowKidsNextBtn] = useState(true);
+
+  // Enhanced Anniversary carousel functionality state
+  const [showAnniversaryPrevBtn, setShowAnniversaryPrevBtn] = useState(false);
+  const [showAnniversaryNextBtn, setShowAnniversaryNextBtn] = useState(true);
+
+  // Enhanced Birthday carousel functionality state
+  const [showBirthdayPrevBtn, setShowBirthdayPrevBtn] = useState(false);
+  const [showBirthdayNextBtn, setShowBirthdayNextBtn] = useState(true);
+
+  // Update arrow visibility for Baby Shower section
+  const updateBabyShowerArrowVisibility = () => {
+    if (babyShowerScrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = babyShowerScrollRef.current;
+      setShowBabyShowerPrevBtn(scrollLeft > 0);
+      setShowBabyShowerNextBtn(scrollLeft < scrollWidth - clientWidth - 1);
     }
   };
 
-  const handleAnniversaryScrollRight = () => {
-    if (anniversaryScrollRef.current) {
-      const container = anniversaryScrollRef.current;
-      const scrollAmount = container.offsetWidth * 0.8;
-      container.scrollBy({
-        left: scrollAmount,
-        behavior: 'smooth'
-      });
+  // Get card width for Baby Shower section
+  const getBabyShowerCardWidth = () => {
+    if (window.innerWidth <= 480) {
+      return 260; // Small screen card width
+    } else if (window.innerWidth <= 768) {
+      return 300; // Medium screen card width
     }
-  };
-
-  const handleKidsScrollLeft = () => {
-    if (kidsScrollRef.current) {
-      const container = kidsScrollRef.current;
-      const scrollAmount = container.offsetWidth * 0.8;
-      container.scrollBy({
-        left: -scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  const handleKidsScrollRight = () => {
-    if (kidsScrollRef.current) {
-      const container = kidsScrollRef.current;
-      const scrollAmount = container.offsetWidth * 0.8;
-      container.scrollBy({
-        left: scrollAmount,
-        behavior: 'smooth'
-      });
-    }
+    return 320; // Default card width
   };
 
   const handleBabyShowerScrollLeft = () => {
     if (babyShowerScrollRef.current) {
-      const container = babyShowerScrollRef.current;
-      const scrollAmount = container.offsetWidth * 0.8;
-      container.scrollBy({
-        left: -scrollAmount,
+      const cardWidth = getBabyShowerCardWidth();
+      babyShowerScrollRef.current.scrollBy({
+        left: -cardWidth,
         behavior: 'smooth'
       });
     }
@@ -158,14 +261,215 @@ const Main = () => {
 
   const handleBabyShowerScrollRight = () => {
     if (babyShowerScrollRef.current) {
-      const container = babyShowerScrollRef.current;
-      const scrollAmount = container.offsetWidth * 0.8;
-      container.scrollBy({
-        left: scrollAmount,
+      const cardWidth = getBabyShowerCardWidth();
+      babyShowerScrollRef.current.scrollBy({
+        left: cardWidth,
         behavior: 'smooth'
       });
     }
   };
+
+  // Add scroll event listener for Baby Shower section
+  useEffect(() => {
+    const babyShowerContainer = babyShowerScrollRef.current;
+    if (babyShowerContainer) {
+      const handleScroll = () => {
+        updateBabyShowerArrowVisibility();
+      };
+
+      babyShowerContainer.addEventListener('scroll', handleScroll);
+      // Initial check
+      updateBabyShowerArrowVisibility();
+
+      return () => {
+        babyShowerContainer.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, []);
+
+  // Update arrow visibility for Kids Party section
+  const updateKidsArrowVisibility = () => {
+    if (kidsScrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = kidsScrollRef.current;
+      setShowKidsPrevBtn(scrollLeft > 0);
+      setShowKidsNextBtn(scrollLeft < scrollWidth - clientWidth - 1);
+    }
+  };
+
+  // Get card width for Kids Party section
+  const getKidsCardWidth = () => {
+    if (window.innerWidth <= 480) {
+      return 260; // Small screen card width
+    } else if (window.innerWidth <= 768) {
+      return 300; // Medium screen card width
+    }
+    return 320; // Default card width
+  };
+
+  const handleKidsScrollLeft = () => {
+    if (kidsScrollRef.current) {
+      const cardWidth = getKidsCardWidth();
+      kidsScrollRef.current.scrollBy({
+        left: -cardWidth,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleKidsScrollRight = () => {
+    if (kidsScrollRef.current) {
+      const cardWidth = getKidsCardWidth();
+      kidsScrollRef.current.scrollBy({
+        left: cardWidth,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Add scroll event listener for Kids Party section
+  useEffect(() => {
+    const kidsContainer = kidsScrollRef.current;
+    if (kidsContainer) {
+      const handleScroll = () => {
+        updateKidsArrowVisibility();
+      };
+
+      kidsContainer.addEventListener('scroll', handleScroll);
+      // Initial check
+      updateKidsArrowVisibility();
+
+      return () => {
+        kidsContainer.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, []);
+
+  // Update arrow visibility for Anniversary section
+  const updateAnniversaryArrowVisibility = () => {
+    if (anniversaryScrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = anniversaryScrollRef.current;
+      setShowAnniversaryPrevBtn(scrollLeft > 0);
+      setShowAnniversaryNextBtn(scrollLeft < scrollWidth - clientWidth - 1);
+    }
+  };
+
+  // Get card width for Anniversary section
+  const getAnniversaryCardWidth = () => {
+    if (window.innerWidth <= 480) {
+      return 260; // Small screen card width
+    } else if (window.innerWidth <= 768) {
+      return 300; // Medium screen card width
+    }
+    return 320; // Default card width
+  };
+
+  const handleAnniversaryScrollLeft = () => {
+    if (anniversaryScrollRef.current) {
+      const cardWidth = getAnniversaryCardWidth();
+      anniversaryScrollRef.current.scrollBy({
+        left: -cardWidth,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleAnniversaryScrollRight = () => {
+    if (anniversaryScrollRef.current) {
+      const cardWidth = getAnniversaryCardWidth();
+      anniversaryScrollRef.current.scrollBy({
+        left: cardWidth,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Add scroll event listener for Anniversary section
+  useEffect(() => {
+    const anniversaryContainer = anniversaryScrollRef.current;
+    if (anniversaryContainer) {
+      const handleScroll = () => {
+        updateAnniversaryArrowVisibility();
+      };
+
+      anniversaryContainer.addEventListener('scroll', handleScroll);
+      // Initial check
+      updateAnniversaryArrowVisibility();
+
+      return () => {
+        anniversaryContainer.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, []);
+
+  // Update arrow visibility for Birthday section
+  const updateBirthdayArrowVisibility = () => {
+    if (birthdayScrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = birthdayScrollRef.current;
+      setShowBirthdayPrevBtn(scrollLeft > 0);
+      setShowBirthdayNextBtn(scrollLeft < scrollWidth - clientWidth - 1);
+    }
+  };
+
+  // Get card width for Birthday section
+  const getBirthdayCardWidth = () => {
+    if (window.innerWidth <= 480) {
+      return 260; // Small screen card width
+    } else if (window.innerWidth <= 768) {
+      return 300; // Medium screen card width
+    }
+    return 320; // Default card width
+  };
+
+  const handleBirthdayScrollLeft = () => {
+    if (birthdayScrollRef.current) {
+      const cardWidth = getBirthdayCardWidth();
+      birthdayScrollRef.current.scrollBy({
+        left: -cardWidth,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleBirthdayScrollRight = () => {
+    if (birthdayScrollRef.current) {
+      const cardWidth = getBirthdayCardWidth();
+      birthdayScrollRef.current.scrollBy({
+        left: cardWidth,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Add scroll event listener for Birthday section
+  useEffect(() => {
+    const birthdayContainer = birthdayScrollRef.current;
+    if (birthdayContainer) {
+      const handleScroll = () => {
+        updateBirthdayArrowVisibility();
+      };
+
+      birthdayContainer.addEventListener('scroll', handleScroll);
+      // Initial check
+      updateBirthdayArrowVisibility();
+
+      return () => {
+        birthdayContainer.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, []);
+
+  // Check arrow visibility when data loads
+  useEffect(() => {
+    // Small delay to ensure DOM is updated after data loads
+    const timer = setTimeout(() => {
+      updateBabyShowerArrowVisibility();
+      updateKidsArrowVisibility();
+      updateAnniversaryArrowVisibility();
+      updateBirthdayArrowVisibility();
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [getWeddingDecoList, getKidsList, getAnniversaryList, getBirthdayList]);
 
   const selectCity = window.localStorage.getItem("LennyCity");
   // const userDetail = JSON.parse(window.localStorage.getItem("LennyUserDetail"));
@@ -499,41 +803,15 @@ const Main = () => {
 
             <div className="scroll-container-wrapper">
               {/* Left Arrow */}
-              <div
-                className="custom-arrow prev birthday-scroll-arrow"
-                onClick={handleScrollLeft}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 1)';
-                  e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-                  e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
-                }}
-              >
-                <i className="fa-solid fa-angle-left"></i>
-              </div>
-
-              {/* Right Arrow */}
-              <div
-                className="custom-arrow next birthday-scroll-arrow"
-                onClick={handleScrollRight}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 1)';
-                  e.target.style.transform = 'translateY(-50%) scale(1.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-                  e.target.style.transform = 'translateY(-50%) scale(1)';
-                }}
-              >
-                <i className="fa-solid fa-angle-right"></i>
-              </div>
+              {showBirthdayPrevBtn && (
+                <button className="testimonial-nav-btn prev birthday-nav-btn" onClick={handleBirthdayScrollLeft}>
+                  <i className="fa-solid fa-chevron-left"></i>
+                </button>
+              )}
 
               {/* Scrollable Content */}
               <div
-                ref={scrollContainerRef}
-                onScroll={handleScroll}
+                ref={birthdayScrollRef}
                 className="homepage-birthday-scroll-container"
               >
                 {getBirthdayList?.data?.length > 0 ? (
@@ -623,6 +901,13 @@ const Main = () => {
                   </div>
                 </div>
               </div>
+              
+              {/* Right Arrow */}
+              {showBirthdayNextBtn && (
+                <button className="testimonial-nav-btn next birthday-nav-btn" onClick={handleBirthdayScrollRight}>
+                  <i className="fa-solid fa-chevron-right"></i>
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -660,36 +945,11 @@ const Main = () => {
 
             <div className="scroll-container-wrapper">
               {/* Left Arrow */}
-              <div
-                className="custom-arrow prev anniversary-scroll-arrow"
-                onClick={handleAnniversaryScrollLeft}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 1)';
-                  e.target.style.transform = 'translateY(-50%) scale(1.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-                  e.target.style.transform = 'translateY(-50%) scale(1)';
-                }}
-              >
-                <i className="fa-solid fa-angle-left"></i>
-              </div>
-
-              {/* Right Arrow */}
-              <div
-                className="custom-arrow next anniversary-scroll-arrow"
-                onClick={handleAnniversaryScrollRight}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 1)';
-                  e.target.style.transform = 'translateY(-50%) scale(1.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-                  e.target.style.transform = 'translateY(-50%) scale(1)';
-                }}
-              >
-                <i className="fa-solid fa-angle-right"></i>
-              </div>
+              {showAnniversaryPrevBtn && (
+                <button className="testimonial-nav-btn prev anniversary-nav-btn" onClick={handleAnniversaryScrollLeft}>
+                  <i className="fa-solid fa-chevron-left"></i>
+                </button>
+              )}
 
               {/* Scrollable Content */}
               <div
@@ -783,6 +1043,13 @@ const Main = () => {
                   </div>
                 </div>
               </div>
+              
+              {/* Right Arrow */}
+              {showAnniversaryNextBtn && (
+                <button className="testimonial-nav-btn next anniversary-nav-btn" onClick={handleAnniversaryScrollRight}>
+                  <i className="fa-solid fa-chevron-right"></i>
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -819,36 +1086,11 @@ const Main = () => {
 
             <div className="scroll-container-wrapper">
               {/* Left Arrow */}
-              <div
-                className="custom-arrow prev kids-scroll-arrow"
-                onClick={handleKidsScrollLeft}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 1)';
-                  e.target.style.transform = 'translateY(-50%) scale(1.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-                  e.target.style.transform = 'translateY(-50%) scale(1)';
-                }}
-              >
-                <i className="fa-solid fa-angle-left"></i>
-              </div>
-
-              {/* Right Arrow */}
-              <div
-                className="custom-arrow next kids-scroll-arrow"
-                onClick={handleKidsScrollRight}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 1)';
-                  e.target.style.transform = 'translateY(-50%) scale(1.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-                  e.target.style.transform = 'translateY(-50%) scale(1)';
-                }}
-              >
-                <i className="fa-solid fa-angle-right"></i>
-              </div>
+              {showKidsPrevBtn && (
+                <button className="testimonial-nav-btn prev kids-nav-btn" onClick={handleKidsScrollLeft}>
+                  <i className="fa-solid fa-chevron-left"></i>
+                </button>
+              )}
 
               {/* Scrollable Content */}
               <div
@@ -942,6 +1184,13 @@ const Main = () => {
                   </div>
                 </div>
               </div>
+              
+              {/* Right Arrow */}
+              {showKidsNextBtn && (
+                <button className="testimonial-nav-btn next kids-nav-btn" onClick={handleKidsScrollRight}>
+                  <i className="fa-solid fa-chevron-right"></i>
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -978,9 +1227,11 @@ const Main = () => {
 
             <div className="scroll-container-wrapper">
               {/* Left Arrow */}
-              <button className="testimonial-nav-btn prev baby-shower-nav-btn" onClick={handleBabyShowerScrollLeft}>
-                <i className="fa-solid fa-chevron-left"></i>
-              </button>
+              {showBabyShowerPrevBtn && (
+                <button className="testimonial-nav-btn prev baby-shower-nav-btn" onClick={handleBabyShowerScrollLeft}>
+                  <i className="fa-solid fa-chevron-left"></i>
+                </button>
+              )}
 
               {/* Scrollable Content */}
               <div
@@ -1076,9 +1327,11 @@ const Main = () => {
               </div>
               
               {/* Right Arrow */}
-              <button className="testimonial-nav-btn next baby-shower-nav-btn" onClick={handleBabyShowerScrollRight}>
-                <i className="fa-solid fa-chevron-right"></i>
-              </button>
+              {showBabyShowerNextBtn && (
+                <button className="testimonial-nav-btn next baby-shower-nav-btn" onClick={handleBabyShowerScrollRight}>
+                  <i className="fa-solid fa-chevron-right"></i>
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -1103,9 +1356,11 @@ const Main = () => {
             </div>
             {latestReviews.length === 0 ? (
               <div className="testimonials-container">
-                <button className="testimonial-nav-btn prev" onClick={handleReviewsScrollLeft}>
-                  <i className="fa-solid fa-chevron-left"></i>
-                </button>
+                {showReviewsPrevBtn && (
+                  <button className="testimonial-nav-btn prev" onClick={handleReviewsScrollLeft}>
+                    <i className="fa-solid fa-chevron-left"></i>
+                  </button>
+                )}
                 <div className="testimonials-slider" ref={reviewsScrollRef}>
                   {/* Sample reviews with better names and product images */}
                   {[
@@ -1185,15 +1440,19 @@ const Main = () => {
                     </div>
                   ))}
                 </div>
-                <button className="testimonial-nav-btn next" onClick={handleReviewsScrollRight}>
-                  <i className="fa-solid fa-chevron-right"></i>
-                </button>
+                {showReviewsNextBtn && (
+                  <button className="testimonial-nav-btn next" onClick={handleReviewsScrollRight}>
+                    <i className="fa-solid fa-chevron-right"></i>
+                  </button>
+                )}
               </div>
             ) : (
               <div className="testimonials-container">
-                <button className="testimonial-nav-btn prev" onClick={handleReviewsScrollLeft}>
-                  <i className="fa-solid fa-chevron-left"></i>
-                </button>
+                {showReviewsPrevBtn && (
+                  <button className="testimonial-nav-btn prev" onClick={handleReviewsScrollLeft}>
+                    <i className="fa-solid fa-chevron-left"></i>
+                  </button>
+                )}
                 <div className="testimonials-slider" ref={reviewsScrollRef}>
                   {latestReviews.map((review, index) => (
                     <div key={index} className="testimonial-card">
@@ -1231,9 +1490,11 @@ const Main = () => {
                     </div>
                   ))}
                 </div>
-                <button className="testimonial-nav-btn next" onClick={handleReviewsScrollRight}>
-                  <i className="fa-solid fa-chevron-right"></i>
-                </button>
+                {showReviewsNextBtn && (
+                  <button className="testimonial-nav-btn next" onClick={handleReviewsScrollRight}>
+                    <i className="fa-solid fa-chevron-right"></i>
+                  </button>
+                )}
               </div>
             )}
           </div>
