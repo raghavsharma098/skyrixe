@@ -9,6 +9,7 @@ import "react-tooltip/dist/react-tooltip.css";
 import { Modal } from "react-bootstrap";
 import { BeatLoader } from "react-spinners";
 import "react-range-slider-input/dist/style.css";
+import "./Product.css"; // Product page specific styles
 
 
 const CustomPrevArrow = ({ onClick }) => (
@@ -298,7 +299,7 @@ const Product = () => {
 
   return (
     <>
-      <div className="Main">
+      <div className="Main products-page-container">
         <div className="BirthdayDecorationArea p-0">
           <img
             src={
@@ -427,7 +428,7 @@ const Product = () => {
                     sortedProducts?.map((item, i) => {
                       return (
                         <div
-                          className="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12"
+                          className="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6"
                           key={i}
                         >
                           <div className="PrivateDiningBox">
@@ -458,16 +459,6 @@ const Product = () => {
                                       <h5>₹{item?.priceDetails?.discountedPrice}</h5>
                                     ) : (
                                       <h5>₹{item?.priceDetails?.price}</h5>
-                                    )}
-                                    {/* Discount badge */}
-                                    {item?.priceDetails?.discountedPrice && (
-                                      <span>
-                                        {Math.round(
-                                          ((Number(item?.priceDetails?.price) -
-                                            Number(item?.priceDetails?.discountedPrice)) /
-                                            Number(item?.priceDetails?.price)) * 100
-                                        )}% off
-                                      </span>
                                     )}
                                   </div>
                                   {/* Crossed price below main price */}

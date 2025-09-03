@@ -1,0 +1,201 @@
+/* Product Page Specific Styles - Does not affect backend functionality */
+
+/* Main container for products page - Add side spacing and centering */
+.products-page-container {
+  padding: 0;
+}
+
+/* Container adjustments - Side spacing for all screens */
+.products-page-container .container-fluid {
+  padding-left: 20px;
+  padding-right: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Product cards container */
+.products-page-container .FeatureBoxMain {
+  margin: 5px;
+  padding: 0;
+  height: 100%;
+}
+
+/* Individual product card */
+.products-page-container .FeatureBox1 {
+  margin: 0;
+  padding: 8px;
+  height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.products-page-container .FeatureBox1:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Product card image container - Restore styling with minimal padding */
+.products-page-container .PrivateDiningBox {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 8px;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.products-page-container .PrivateDiningBox:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+.products-page-container .PrivateDiningBox figure {
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%; /* This creates a perfect square responsive to container width */
+  margin: 0 0 8px 0;
+  overflow: hidden;
+  border-radius: 8px;
+  position: relative;
+  background: #f8f9fa;
+}
+
+.products-page-container .PrivateDiningBox figure img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.3s ease;
+}
+
+.products-page-container .PrivateDiningBox figure:hover img {
+  transform: scale(1.05);
+}
+
+/* Product listing area */
+.products-page-container .FeatureBox2 {
+  margin: 5px;
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Product item styling */
+.products-page-container .item {
+  padding: 2px;
+  margin: 0;
+}
+
+/* Slider container spacing */
+.products-page-container .slick-slide {
+  padding: 0 3px;
+}
+
+.products-page-container .slick-list {
+  margin: 0 -3px;
+}
+
+/* Grid columns spacing - Proper spacing for card layout */
+.products-page-container .col-xl-4,
+.products-page-container .col-lg-4,
+.products-page-container .col-md-4,
+.products-page-container .col-sm-6,
+.products-page-container .col-6 {
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-bottom: 16px;
+}
+
+/* Product cards container - No margins */
+.products-page-container .FeatureBoxMain {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Individual product card - Add back styling */
+.products-page-container .FeatureBox1 {
+  margin: 0;
+  padding: 8px;
+  height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
+}
+
+.products-page-container .FeatureBox1:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+/* Remove padding from col-12 for all screen sizes */
+.products-page-container .col-12 {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Tablet responsive design */
+@media (max-width: 992px) {
+  .products-page-container .container-fluid {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  
+  .products-page-container .col-xl-3,
+  .products-page-container .col-lg-3,
+  .products-page-container .col-md-4,
+  .products-page-container .col-sm-6,
+  .products-page-container .col-6 {
+    padding-left: 6px;
+    padding-right: 6px;
+    margin-bottom: 12px;
+  }
+}
+
+/* Mobile to tablet responsive design */
+@media (max-width: 768px) {
+  .products-page-container .container-fluid {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  
+  .products-page-container .col-xl-3,
+  .products-page-container .col-lg-3,
+  .products-page-container .col-md-4,
+  .products-page-container .col-sm-6,
+  .products-page-container .col-6 {
+    padding-left: 4px;
+    padding-right: 4px;
+    margin-bottom: 10px;
+  }
+  
+  .products-page-container .FeatureBox1 {
+    padding: 6px;
+  }
+}
+
+/* Small mobile screens */
+@media (max-width: 576px) {
+  .products-page-container .container-fluid {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  
+  .products-page-container .col-6 {
+    padding-left: 3px;
+    padding-right: 3px;
+    margin-bottom: 8px;
+  }
+  
+  .products-page-container .FeatureBox1 {
+    padding: 4px;
+  }
+}

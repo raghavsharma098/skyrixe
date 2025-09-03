@@ -98,6 +98,7 @@ const ProductDetails = () => {
   const navigate = useNavigate();
   const item = location?.state;
   const [qty, setQty] = useState(1);
+  const [isGalleryFixed, setIsGalleryFixed] = useState(false);
   const userDetail = JSON.parse(window.localStorage.getItem("LennyUserDetail"));
   const LennyPincode = JSON.parse(window.localStorage.getItem("LennyPincode"));
   const [productDetailsClone, setProductDetailsClone] = useState("");
@@ -1115,6 +1116,53 @@ const ProductDetails = () => {
     );
   }, [rating]);
 
+  // Fixed Gallery Effect - Simplified and Working
+  useEffect(() => {
+    const handleScroll = () => {
+      // Skip on mobile devices
+      if (window.innerWidth <= 768) {
+        setIsGalleryFixed(false);
+        return;
+      }
+
+      const gallery = document.querySelector('.product-gallery-wrapper');
+      const similarProducts = document.querySelector('.similar-products-section');
+      
+      if (gallery && similarProducts) {
+        const galleryRect = gallery.getBoundingClientRect();
+        const similarRect = similarProducts.getBoundingClientRect();
+        
+        // Start fixing when user scrolls past 150px
+        const shouldFix = window.scrollY > 150;
+        
+        // Stop fixing when similar products section comes into view
+        const shouldStop = similarRect.top <= window.innerHeight * 0.8;
+        
+        const newFixedState = shouldFix && !shouldStop;
+        
+        // Store position only when becoming fixed
+        if (newFixedState && !isGalleryFixed) {
+          const galleryLeft = galleryRect.left;
+          const galleryWidth = galleryRect.width;
+          
+          gallery.style.setProperty('--fixed-left', `${galleryLeft}px`);
+          gallery.style.setProperty('--fixed-width', `${galleryWidth}px`);
+        }
+        
+        setIsGalleryFixed(newFixedState);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Initial check
+    setTimeout(handleScroll, 100);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []); // Empty dependency array to avoid recreating
+
   useEffect(() => {
     const container = document.querySelector('.recommended-products-grid');
     if (container) {
@@ -1330,33 +1378,20 @@ const ProductDetails = () => {
           ) : (
             <div className="ProductDetailsArea enhanced">
               <div className="row">
-                {/* Breadcrumbs */}
-                <div className="col-12">
-                  <nav className="BreadCumbs enhanced" aria-label="breadcrumb">
-                    <ol className="breadcrumb">
-                      <li className="breadcrumb-item">
-                        <a
-                          onClick={() => navigate("/")}
-                          className="breadcrumb-link"
-                        >
-                          <i className="fa-solid fa-home"></i> Home
-                        </a>
-                      </li>
-                      <li className="breadcrumb-item">
-                        <a className="breadcrumb-link">
-                          {getProductDetails?.data?.product?.productDetails?.productcategory}
-                        </a>
-                      </li>
-                      <li className="breadcrumb-item active" aria-current="page">
-                        {getProductDetails?.data?.product?.productDetails?.productname}
-                      </li>
-                    </ol>
-                  </nav>
-                </div>
-
                 {/* Product Gallery */}
                 <div className="col-lg-6 col-12">
-                  <div className="product-gallery-wrapper">
+                  {/* Placeholder to maintain layout when gallery is fixed */}
+                  {isGalleryFixed && (
+                    <div 
+                      className="gallery-placeholder" 
+                      style={{
+                        height: 'var(--fixed-height, 600px)',
+                        width: 'var(--fixed-width, 520px)',
+                        margin: '0 auto'
+                      }}
+                    ></div>
+                  )}
+                  <div className={`product-gallery-wrapper ${isGalleryFixed ? 'gallery-fixed' : ''}`}>
                     <div className="main-image-container">
                       {/* Discount Badge on Image */}
                       {getProductDetails?.data?.product?.priceDetails?.discountedPrice && (
@@ -1448,29 +1483,33 @@ const ProductDetails = () => {
 
                 {/* Product Information */}
                 <div className="col-lg-6 col-12">
-                  <div className="product-info">
-                    <nav className="product-info-breadcrumb">
+                  <div className="product-hero-section">
+                    <nav className="product-hero-breadcrumb">
                       <span className="breadcrumb-link" onClick={() => navigate("/")}>Home</span>
                       <span className="breadcrumb-separator">&gt;</span>
                       <span className="breadcrumb-current">
                         {getProductDetails?.data?.product?.productDetails?.productname}
                       </span>
                     </nav>
-                    <h2 className="product-info-title">
+                    <h1 className="product-hero-title">
                       {getProductDetails?.data?.product?.productDetails?.productname}
-                    </h2>
-                    <p className="product-info-subtitle">
-                      {getProductDetails?.data?.product?.productDetails?.productname}
+                    </h1>
+                    <p className="product-hero-subtitle">
+                      {getProductDetails?.data?.product?.productDetails?.productDescription || 
+                       `${getProductDetails?.data?.product?.productDetails?.productcategory} Decoration!`}
                     </p>
-                    <div className="product-info-rating">
-                      <span className="product-info-stars">
+                    <div className="product-hero-rating">
+                      <div className="rating-stars">
                         {Array.from({ length: 5 }).map((_, i) => (
-                          <i key={i} className={`fa-solid fa-star${i < Math.round(getRatingReviewList?.data?.overallRating || 0) ? ' filled' : ''}`}></i>
+                          <i 
+                            key={i} 
+                            className={`fa-solid fa-star ${i < Math.round(getRatingReviewList?.data?.overallRating || 0) ? 'filled' : ''}`}
+                          ></i>
                         ))}
-                      </span>
-                      <span className="product-info-reviews">
+                      </div>
+                      <span className="rating-text">
                         {getRatingReviewList?.data?.totalReviews || 0} Reviews
-                        <i className="fa-solid fa-chevron-right" style={{ marginLeft: '5px' }}></i>
+                        <i className="fa-solid fa-chevron-right"></i>
                       </span>
                     </div>
                   </div>
