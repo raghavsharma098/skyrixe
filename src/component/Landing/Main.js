@@ -54,9 +54,9 @@ const Main = () => {
   };
 
   // For FAQ toggle
-  const [activeFaq, setActiveFaq] = useState(null);
+  const [activeFaq, setActiveFaq] = useState(-1);
   const handleFaqToggle = (idx) => {
-    setActiveFaq(activeFaq === idx ? null : idx);
+    setActiveFaq(activeFaq === idx ? -1 : idx);
   };
 
   const { latestReviews = [], loading, error } = useSelector(
@@ -166,16 +166,6 @@ const Main = () => {
       });
     }
   };
-
-const faqItems = document.querySelectorAll('.faq-item');
-faqItems.forEach(item => {
-  const questionBtn = item.querySelector('.faq-question');
-  const icon = item.querySelector('.faq-icon');
-  questionBtn.onclick = () => {
-    const isActive = item.classList.toggle('active');
-    icon.textContent = isActive ? '-' : '+';
-  };
-});
 
   const selectCity = window.localStorage.getItem("LennyCity");
   // const userDetail = JSON.parse(window.localStorage.getItem("LennyUserDetail"));
@@ -977,7 +967,7 @@ faqItems.forEach(item => {
         </div>
 
         <div className="BirthdayDecorationArea AnniDecImage">
-          <div className="container-fluid">
+          <div className="container">
             <div className="section-title">
               <h2>Baby Shower</h2>
               <p>
@@ -988,41 +978,14 @@ faqItems.forEach(item => {
 
             <div className="scroll-container-wrapper">
               {/* Left Arrow */}
-              <div
-                className="custom-arrow prev baby-shower-scroll-arrow"
-                onClick={handleBabyShowerScrollLeft}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 1)';
-                  e.target.style.transform = 'translateY(-50%) scale(1.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-                  e.target.style.transform = 'translateY(-50%) scale(1)';
-                }}
-              >
-                <i className="fa-solid fa-angle-left"></i>
-              </div>
-
-              {/* Right Arrow */}
-              <div
-                className="custom-arrow next baby-shower-scroll-arrow"
-                onClick={handleBabyShowerScrollRight}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 1)';
-                  e.target.style.transform = 'translateY(-50%) scale(1.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-                  e.target.style.transform = 'translateY(-50%) scale(1)';
-                }}
-              >
-                <i className="fa-solid fa-angle-right"></i>
-              </div>
+              <button className="testimonial-nav-btn prev baby-shower-nav-btn" onClick={handleBabyShowerScrollLeft}>
+                <i className="fa-solid fa-chevron-left"></i>
+              </button>
 
               {/* Scrollable Content */}
               <div
                 ref={babyShowerScrollRef}
-                className="baby-shower-scroll-container"
+                className="testimonials-slider baby-shower-scroll-container"
               >
                 {getWeddingDecoList?.data?.length > 0 ? (
                   getWeddingDecoList?.data?.map((item, i) => {
@@ -1111,6 +1074,11 @@ faqItems.forEach(item => {
                   </div>
                 </div>
               </div>
+              
+              {/* Right Arrow */}
+              <button className="testimonial-nav-btn next baby-shower-nav-btn" onClick={handleBabyShowerScrollRight}>
+                <i className="fa-solid fa-chevron-right"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -1119,6 +1087,7 @@ faqItems.forEach(item => {
         </div>
         <article>
           <img
+            className="stats-image animated"
             style={{ margin: "10px 0" }}
             src={require("../../assets/images/stats 2.png")}
           />
@@ -1138,14 +1107,48 @@ faqItems.forEach(item => {
                   <i className="fa-solid fa-chevron-left"></i>
                 </button>
                 <div className="testimonials-slider" ref={reviewsScrollRef}>
-                  {/* Sample reviews with better names */}
+                  {/* Sample reviews with better names and product images */}
                   {[
-                    { name: "Priya Sharma", rating: 5, comment: "Absolutely amazing birthday decoration! The team was professional and the setup was beyond our expectations.", productName: "Birthday Decoration Premium", userImage: "https://images.unsplash.com/photo-1494790108755-2616b612b739?w=150&h=150&fit=crop&crop=face" },
-                    { name: "Rahul Patel", rating: 4, comment: "Great service for our anniversary celebration. The balloon arrangements were beautiful and exactly what we wanted.", productName: "Anniversary Special", userImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" },
-                    { name: "Sneha Verma", rating: 5, comment: "Perfect decoration for our baby shower! Every detail was taken care of and the colors were just perfect.", productName: "Baby Shower Deluxe", userImage: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" },
-                    { name: "Arjun Singh", rating: 4, comment: "Excellent work on our wedding decoration. The team was punctual and very creative with their designs.", productName: "Wedding Decoration", userImage: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face" },
-                    { name: "Kavya Reddy", rating: 5, comment: "Outstanding birthday surprise setup! My daughter was absolutely delighted. Highly recommend their services.", productName: "Kids Birthday Special", userImage: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face" },
-                    { name: "Vikram Joshi", rating: 5, comment: "Fantastic decoration for our office party. Professional team and beautiful execution. Will definitely use again!", productName: "Corporate Event", userImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face" }
+                    { 
+                      name: "Priya Sharma", 
+                      rating: 5, 
+                      comment: "Absolutely amazing birthday decoration! The team was professional and the setup was beyond our expectations.", 
+                      productName: "Glitzy Silver and Black Birthday Decor", 
+                      userImage: "https://images.unsplash.com/photo-1494790108755-2616b612b739?w=150&h=150&fit=crop&crop=face",
+                      productImage: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=80&h=80&fit=crop"
+                    },
+                    { 
+                      name: "Rahul Patel", 
+                      rating: 4, 
+                      comment: "Great service for our anniversary celebration. The balloon arrangements were beautiful and exactly what we wanted.", 
+                      productName: "Dreamy Ring Candlelight Dinner", 
+                      userImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+                      productImage: "https://images.unsplash.com/photo-1518135714426-c18f5ffb6f4d?w=80&h=80&fit=crop"
+                    },
+                    { 
+                      name: "Sneha Verma", 
+                      rating: 5, 
+                      comment: "Perfect decoration for our baby shower! Every detail was taken care of and the colors were just perfect.", 
+                      productName: "Safari Adventure Birthday Package", 
+                      userImage: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+                      productImage: "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=80&h=80&fit=crop"
+                    },
+                    { 
+                      name: "Arjun Singh", 
+                      rating: 4, 
+                      comment: "Excellent work on our wedding decoration. The team was punctual and very creative with their designs.", 
+                      productName: "Caricature Artist For Kids Birthday Party", 
+                      userImage: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
+                      productImage: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=80&h=80&fit=crop"
+                    },
+                    { 
+                      name: "Kavya Reddy", 
+                      rating: 5, 
+                      comment: "Outstanding birthday surprise setup! My daughter was absolutely delighted. Highly recommend their services.", 
+                      productName: "Expert Makeup for Kids Birthday", 
+                      userImage: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
+                      productImage: "https://images.unsplash.com/photo-1514613818067-e207c3441db3?w=80&h=80&fit=crop"
+                    }
                   ].map((review, index) => (
                     <div key={index} className="testimonial-card">
                       <div className="testimonial-header">
@@ -1155,29 +1158,28 @@ faqItems.forEach(item => {
                           </div>
                           <div className="customer-details">
                             <h3>{review.name}</h3>
-                            <div className="rating-stars">
-                              {[...Array(5)].map((_, i) => (
-                                <i 
-                                  key={i} 
-                                  className={`fa-solid fa-star ${i < review.rating ? 'filled' : ''}`}
-                                ></i>
-                              ))}
-                              <span className="rating-text">({review.rating}/5)</span>
-                            </div>
+                            <div className="verified-purchase">Verified Purchase</div>
                           </div>
-                        </div>
-                        <div className="verified-badge">
-                          <i className="fa-solid fa-badge-check"></i>
-                          <span>Verified</span>
                         </div>
                       </div>
                       <div className="testimonial-content">
-                        <p>"{review.comment}"</p>
+                        <p>{review.comment}</p>
                       </div>
                       <div className="product-info">
-                        <div className="product-tag">
-                          <i className="fa-solid fa-gift"></i>
-                          <span>{review.productName}</span>
+                        <div className="product-image">
+                          <img src={review.productImage} alt={review.productName} />
+                        </div>
+                        <div className="product-details">
+                          <div className="product-name">{review.productName}</div>
+                          <div className="product-rating">
+                            {[...Array(5)].map((_, i) => (
+                              <i 
+                                key={i} 
+                                className={`fa-solid fa-star ${i < review.rating ? 'filled' : ''}`}
+                              ></i>
+                            ))}
+                            <span className="product-rating-text">{review.rating}.0</span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1202,29 +1204,28 @@ faqItems.forEach(item => {
                           </div>
                           <div className="customer-details">
                             <h3>{review.name}</h3>
-                            <div className="rating-stars">
-                              {[...Array(5)].map((_, i) => (
-                                <i 
-                                  key={i} 
-                                  className={`fa-solid fa-star ${i < review.rating ? 'filled' : ''}`}
-                                ></i>
-                              ))}
-                              <span className="rating-text">({review.rating}/5)</span>
-                            </div>
+                            <div className="verified-purchase">Verified Purchase</div>
                           </div>
-                        </div>
-                        <div className="verified-badge">
-                          <i className="fa-solid fa-badge-check"></i>
-                          <span>Verified</span>
                         </div>
                       </div>
                       <div className="testimonial-content">
-                        <p>"{review.comment}"</p>
+                        <p>{review.comment}</p>
                       </div>
                       <div className="product-info">
-                        <div className="product-tag">
-                          <i className="fa-solid fa-gift"></i>
-                          <span>{review.productName}</span>
+                        <div className="product-image">
+                          <img src={review.productImage || "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=80&h=80&fit=crop"} alt={review.productName} />
+                        </div>
+                        <div className="product-details">
+                          <div className="product-name">{review.productName}</div>
+                          <div className="product-rating">
+                            {[...Array(5)].map((_, i) => (
+                              <i 
+                                key={i} 
+                                className={`fa-solid fa-star ${i < review.rating ? 'filled' : ''}`}
+                              ></i>
+                            ))}
+                            <span className="product-rating-text">{review.rating}.0</span>
+                          </div>
                         </div>
                       </div>
                     </div>

@@ -52,6 +52,30 @@
     }
     
     /* Other tablet responsive rules */
+    footer .FooterTop {padding: 50px 0;}
+    footer .FooterTop .col-md-6:first-child {
+        margin: 0 auto;
+        float: none;
+        text-align: center;
+    }
+    footer .FooterTop .FooterLogo {
+        text-align: center; 
+        padding-right: 0; 
+        margin-bottom: 30px;
+        display: block;
+        width: 100%;
+    }
+    footer .FooterTop .FooterLogo a {
+        display: block;
+        text-align: center;
+        margin: 0 auto 25px auto;
+    }
+    footer .FooterTop .FooterLogo p {
+        text-align: center;
+        margin: 0 auto;
+        max-width: 300px;
+    }
+    .FeatureArea {padding: 50px 0 0;}
     .PrivateDining .section-title h2,
     .FeatureArea .section-title h2,
     .BirthdayDecorationArea .section-title h2{font-size: 24px;}
@@ -398,7 +422,12 @@
         padding: 10px 40px 10px 15px;
     }
     
-    .footer-icons {flex-direction: column;}
+    .footer-icons {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
     .ProductReviewsArea .ReviewBox {flex-direction: column;}
     .ProductReviewsArea .ReviewBox aside:first-child {width: 100%;margin: 0 0 10px 0;}
     .ProductReviewsArea .ReviewBox aside:last-child {width: 100%;}
@@ -568,7 +597,16 @@
     }
     
     .ProductDetailsArea .carousel-indicators [data-bs-target]{width: 18%;}
-    footer .FooterTop .FooterLogo {padding-right: 0;}
+    footer .FooterTop .FooterLogo {
+        padding-right: 0; 
+        text-align: center; 
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    footer .FooterTop {padding: 25px 0;}
     .FooterLinks {margin: 0 0 15px 0;}
     footer .FooterLinks h3 {margin: 0 0 10px 0;}
     .FilterArea {margin: 0 0 20px 0; display: none;}
