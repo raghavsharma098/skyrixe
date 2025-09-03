@@ -953,375 +953,602 @@ header .HeaderArea .HeaderRight .Login:hover {
 }
 
 /* ===== MODERN REDESIGNED PRODUCT CARDS ===== */
-.PrivateDiningBox {
-  background: #ffffff;
-  border: none;
-  border-radius: 12px;
-  padding: 0;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  height: auto;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-  position: relative;
-  margin-bottom: 20px;
+
+/* Reduce Bootstrap grid gap for product cards */
+.row.gy-5 {
+  --bs-gutter-y: 1rem !important;
 }
 
-@media (max-width: 600px) {
-  .PrivateDiningBox {
-    margin-bottom: 16px;
-    border-radius: 10px;
+@media (min-width: 768px) and (max-width: 991px) {
+  .row.gy-5 {
+    --bs-gutter-y: 1.2rem !important;
+  }
+  
+  /* Remove any extra padding/margin from column containers */
+  .row.gy-5 > [class*="col-"] {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
   }
 }
 
-.PrivateDiningBox:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+@media (min-width: 992px) and (max-width: 1199px) {
+  .row.gy-5 {
+    --bs-gutter-y: 1.5rem !important;
+  }
 }
 
-/* Image styling - top section with proper aspect ratio */
+@media (min-width: 1200px) {
+  .row.gy-5 {
+    --bs-gutter-y: 2rem !important;
+  }
+}
+
+.PrivateDiningBox {
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 0 !important;
+  padding: 8px;
+  height: fit-content;
+}
+
+.PrivateDiningBox:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+/* Image styling - flexible height based on screen size */
 .PrivateDiningBox figure {
-  margin: 0;
+  margin: 0 0 8px 0;
   padding: 0;
   width: 100%;
   position: relative;
   overflow: hidden;
+  flex-shrink: 0;
+  border-radius: 8px;
+  aspect-ratio: 4/3;
 }
 
 .PrivateDiningBox img {
   width: 100%;
-  height: 220px;
+  height: 100%;
   object-fit: cover;
-  border-radius: 0;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  transition: transform 0.3s ease;
   display: block;
-  margin: 0;
-}
-
-.PrivateDiningBox:hover img {
-  transform: scale(1.05);
-}
-
-/* Card content area - middle section */
-.PrivateDiningBox .card-content {
-  padding: 16px 20px 20px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  flex-grow: 1;
-}
-
-/* Title styling - modern clean look */
-.PrivateDiningBox h6 {
-  color: #333333;
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 1.2;
+  border: none;
   margin: 0;
   padding: 0;
-  font-family: system-ui, -apple-system, sans-serif;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-height: 48px;
+  border-radius: 8px;
 }
 
-/* Location and price row */
-.PrivateDiningBox .rightcard {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0;
-  gap: 12px;
-}
-
+/* Location section - first after image, full width single row */
 .PrivateDiningBox .loc {
-  margin: 0;
-  flex: 1;
+  margin: 0 0 8px 0;
+  order: 1;
+  width: 100%;
 }
 
 .PrivateDiningBox .loc h1 {
-  color: #707070;
-  font-size: 15px;
-  font-weight: 400;
+  color: #666666;
+  font-size: 13px;
+  font-weight: 500;
   margin: 0;
   font-family: system-ui, -apple-system, sans-serif;
   text-transform: none;
   letter-spacing: normal;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Price section - aligned right */
+/* Title styling - second after location */
+.PrivateDiningBox h6 {
+  color: #1a1a1a;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.4;
+  margin: 0 0 12px 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  order: 2;
+}
+
+/* Main content row - price on left, reviews on right */
+.PrivateDiningBox .rightcard {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+  flex-shrink: 0;
+  order: 3;
+  width: 100%;
+}
+
+/* Price section - left side with main price, crossed price below, and discount badge */
 .PrivateDiningBox .Info {
   margin: 0;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex: 1;
+  width: 100%;
 }
 
 .PrivateDiningBox .Info .text-right {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 4px;
+  justify-content: flex-start;
+  flex: 1;
 }
 
 .PrivateDiningBox .Info .priceArea {
   display: flex;
   align-items: center;
-  gap: 8px;
-  justify-content: flex-end;
+  gap: 6px;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
 }
 
+/* Main price styling */
 .PrivateDiningBox .Info h5 {
-  color: #333333;
+  color: #1a1a1a;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 16px;
   margin: 0;
   font-family: system-ui, -apple-system, sans-serif;
+  line-height: 1;
 }
 
+/* Crossed/cut price - below main price */
 .PrivateDiningBox .Info h5 .actualPrice {
+  display: none; /* Hide the inline crossed price */
+}
+
+/* Separate crossed price element */
+.PrivateDiningBox .Info .crossed-price {
   text-decoration: line-through;
   color: #999999;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
-  margin-left: 6px;
+  margin: 2px 0 0 0;
+  line-height: 1;
 }
 
+/* Discount badge - next to main price */
 .PrivateDiningBox .Info .priceArea span {
-  background-color: #e8f5e8;
-  color: #2d8a2f;
-  font-size: 11px;
+  background: #e91e63;
+  color: #ffffff;
+  font-size: 9px;
   font-weight: 600;
   padding: 3px 6px;
   border-radius: 4px;
   white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(233, 30, 99, 0.3);
 }
 
-/* Hide rating for cleaner look */
+/* Reviews section - right side with thumbs up icon and rating only */
 .PrivateDiningBox .Info p {
-  display: none;
+  display: flex !important;
+  align-items: center;
+  gap: 4px;
+  color: #666666;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  flex-shrink: 0;
+  justify-self: flex-end;
+}
+
+.PrivateDiningBox .Info p::before {
+  content: "\f164";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  color: #e91e63;
+  font-size: 14px;
 }
 
 .PrivateDiningBox .star {
-  display: none;
+  display: none !important;
 }
 
-/* Book Now Button - bottom section */
+/* Hide rating and buttons completely */
 .PrivateDiningBox .endbuttons {
-  margin: 0;
-  padding: 0;
+  display: none !important;
 }
 
 .PrivateDiningBox .endbuttons .Buttons {
-  background: #6A3C9E;
-  border: none;
-  border-radius: 0;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: 600;
-  font-family: system-ui, -apple-system, sans-serif;
-  padding: 12px 20px;
-  width: 100%;
-  margin: 0;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  display: none !important;
 }
 
-.PrivateDiningBox .endbuttons .Buttons:hover {
-  background: #5a2d7f;
-  transform: none;
-}
-
-/* Heart/Favorite Icon */
+/* Hide heart/favorite icon */
 .PrivateDiningBox .favorite-heart {
-  position: absolute;
-  bottom: 70px;
-  right: 20px;
-  width: 36px;
-  height: 36px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  z-index: 10;
-}
-
-.PrivateDiningBox .favorite-heart:hover {
-  background: #ffffff;
-  transform: scale(1.1);
-}
-
-.PrivateDiningBox .favorite-heart i {
-  font-size: 18px;
-  color: #707070;
-  transition: color 0.3s ease;
-}
-
-.PrivateDiningBox .favorite-heart:hover i {
-  color: #e91e63;
+  display: none !important;
 }
 
 .PrivateDiningBox .favorite-heart.favorited i {
   color: #e91e63;
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
+/* ===== PRODUCT GRID RESPONSIVE LAYOUT ===== */
 
-/* Tablet adjustments */
-@media (max-width: 768px) {
-  .PrivateDiningBox img {
-    height: 200px;
+/* Override Bootstrap gy-5 to reduce excessive spacing */
+.row.gy-5 {
+  --bs-gutter-y: 12px !important;
+}
+
+/* Base style for mobile and small tablets - 2 cards per row (up to 767px) */
+.row.gy-5 .col-xl-3.col-lg-4.col-md-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+/* Tablet to Laptop (768px+) - 3 cards per row */
+@media (min-width: 768px) {
+  .row.gy-5 .col-xl-3.col-lg-4.col-md-6 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+  }
+}
+
+/* Laptop and Bigger Screens (1200px+) - 4 cards per row */
+@media (min-width: 1200px) {
+  .row.gy-5 .col-xl-3.col-lg-4.col-md-6 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+}
+
+/* ===== RESPONSIVE DESIGN FOR CARDS ===== */
+
+/* Mobile and Small Tablets (up to 767px) - 2 cards per row */
+@media (max-width: 767px) {
+  .PrivateDiningBox {
+    margin-bottom: 0 !important;
+    padding: 6px;
+    border-radius: 10px;
   }
   
-  .PrivateDiningBox h6 {
-    font-size: 18px;
-    min-height: 44px;
+  .PrivateDiningBox figure {
+    margin-bottom: 6px;
+    aspect-ratio: 4/3;
+  }
+  
+  .PrivateDiningBox .loc {
+    margin-bottom: 5px;
   }
   
   .PrivateDiningBox .loc h1 {
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  
+  .PrivateDiningBox h6 {
+    font-size: 13px;
+    line-height: 1.3;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    margin-bottom: 8px;
+  }
+  
+  .PrivateDiningBox .rightcard {
+    gap: 6px;
+  }
+  
+  .PrivateDiningBox .Info .priceArea {
+    gap: 4px;
+    flex-wrap: nowrap;
+  }
+  
+  .PrivateDiningBox .Info h5 {
     font-size: 14px;
+  }
+  
+  .PrivateDiningBox .Info .crossed-price {
+    font-size: 10px;
+  }
+  
+  .PrivateDiningBox .Info .priceArea span {
+    font-size: 8px;
+    padding: 2px 4px;
+  }
+  
+  .PrivateDiningBox .Info p {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  .PrivateDiningBox .Info p::before {
+    font-size: 12px;
+    content: "\f164";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    color: #e91e63;
+  }
+}
+
+/* Very Small Mobile Screens (up to 480px) - Tighter spacing */
+@media (max-width: 480px) {
+  .PrivateDiningBox {
+    padding: 5px;
+    border-radius: 8px;
+  }
+  
+  .PrivateDiningBox figure {
+    margin-bottom: 5px;
+    aspect-ratio: 4/3;
+  }
+  
+  .PrivateDiningBox .loc {
+    margin-bottom: 4px;
+  }
+  
+  .PrivateDiningBox .loc h1 {
+    font-size: 10px;
+    white-space: nowrap;
+  }
+  
+  .PrivateDiningBox h6 {
+    font-size: 12px;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  
+  .PrivateDiningBox .rightcard {
+    gap: 4px;
+  }
+  
+  .PrivateDiningBox .Info .priceArea {
+    gap: 3px;
+    flex-wrap: nowrap;
+  }
+  
+  .PrivateDiningBox .Info h5 {
+    font-size: 13px;
+  }
+  
+  .PrivateDiningBox .Info .crossed-price {
+    font-size: 9px;
+  }
+  
+  .PrivateDiningBox .Info .priceArea span {
+    font-size: 7px;
+    padding: 2px 3px;
+  }
+  
+  .PrivateDiningBox .Info p {
+    font-size: 13px;
+    font-weight: 600;
+  }
+  
+  .PrivateDiningBox .Info p::before {
+    font-size: 11px;
+    content: "\f164";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    color: #e91e63;
+  }
+}
+
+/* Tablets (768px - 1199px) - 3 cards per row */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .PrivateDiningBox {
+    margin-bottom: 0 !important;
+    padding: 8px;
+    border-radius: 11px;
+  }
+  
+  .PrivateDiningBox figure {
+    margin-bottom: 8px;
+    aspect-ratio: 4/3;
+  }
+  
+  .PrivateDiningBox .loc {
+    margin-bottom: 6px;
+  }
+  
+  .PrivateDiningBox .loc h1 {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  
+  .PrivateDiningBox h6 {
+    font-size: 14px;
+    line-height: 1.4;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    margin-bottom: 10px;
+  }
+  
+  .PrivateDiningBox .rightcard {
+    gap: 8px;
+  }
+  
+  .PrivateDiningBox .Info .priceArea {
+    gap: 5px;
+    flex-wrap: nowrap;
+  }
+  
+  .PrivateDiningBox .Info h5 {
+    font-size: 15px;
+  }
+  
+  .PrivateDiningBox .Info .crossed-price {
+    font-size: 11px;
+  }
+  
+  .PrivateDiningBox .Info .priceArea span {
+    font-size: 8px;
+    padding: 2px 5px;
+  }
+  
+  .PrivateDiningBox .Info p {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  
+  .PrivateDiningBox .Info p::before {
+    font-size: 13px;
+    content: "\f164";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    color: #e91e63;
+  }
+}
+
+/* Laptops and Larger (1200px+) - 4 cards per row */
+@media (min-width: 1200px) {
+  .PrivateDiningBox {
+    margin-bottom: 0 !important;
+    padding: 10px;
+    border-radius: 12px;
+  }
+  
+  .PrivateDiningBox figure {
+    margin-bottom: 8px;
+    aspect-ratio: 4/3;
+  }
+  
+  .PrivateDiningBox .loc {
+    margin-bottom: 6px;
+  }
+  
+  .PrivateDiningBox .loc h1 {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  
+  .PrivateDiningBox h6 {
+    font-size: 15px;
+    line-height: 1.4;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    margin-bottom: 10px;
+  }
+  
+  .PrivateDiningBox .rightcard {
+    gap: 10px;
+  }
+  
+  .PrivateDiningBox .Info .priceArea {
+    gap: 6px;
+    flex-wrap: nowrap;
   }
   
   .PrivateDiningBox .Info h5 {
     font-size: 16px;
   }
   
-  .PrivateDiningBox .endbuttons .Buttons {
-    font-size: 15px;
+  .PrivateDiningBox .Info .crossed-price {
+    font-size: 12px;
   }
   
-  .PrivateDiningBox .card-content {
-    padding: 14px 16px 16px 16px;
+  .PrivateDiningBox .Info .priceArea span {
+    font-size: 9px;
+    padding: 3px 6px;
+  }
+  
+  .PrivateDiningBox .Info p {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  
+  .PrivateDiningBox .Info p::before {
+    font-size: 14px;
+    content: "\f164";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    color: #e91e63;
   }
 }
 
-/* Mobile adjustments */
-@media (max-width: 480px) {
-  .PrivateDiningBox img {
-    height: 180px;
+/* Extra Large screens (1400px+) - Better spacing and sizing */
+@media (min-width: 1400px) {
+  .PrivateDiningBox {
+    padding: 12px;
+    border-radius: 14px;
   }
   
-  .PrivateDiningBox h6 {
-    font-size: 16px;
-    min-height: 40px;
+  .PrivateDiningBox figure {
+    margin-bottom: 10px;
+    aspect-ratio: 4/3;
+  }
+  
+  .PrivateDiningBox .loc {
+    margin-bottom: 8px;
   }
   
   .PrivateDiningBox .loc h1 {
     font-size: 13px;
+    white-space: nowrap;
+  }
+  
+  .PrivateDiningBox h6 {
+    font-size: 16px;
+    line-height: 1.4;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    margin-bottom: 12px;
+  }
+  
+  .PrivateDiningBox .rightcard {
+    gap: 12px;
+  }
+  
+  .PrivateDiningBox .Info .priceArea {
+    gap: 6px;
+    flex-wrap: nowrap;
   }
   
   .PrivateDiningBox .Info h5 {
+    font-size: 17px;
+  }
+  
+  .PrivateDiningBox .Info .crossed-price {
+    font-size: 13px;
+  }
+  
+  .PrivateDiningBox .Info .priceArea span {
+    font-size: 9px;
+    padding: 3px 6px;
+  }
+  
+  .PrivateDiningBox .Info p {
+    font-size: 17px;
+    font-weight: 600;
+  }
+  
+  .PrivateDiningBox .Info p::before {
     font-size: 15px;
-  }
-  
-  .PrivateDiningBox .endbuttons .Buttons {
-    font-size: 14px;
-    padding: 10px 16px;
-  }
-  
-  .PrivateDiningBox .card-content {
-    padding: 12px 14px 14px 14px;
-    gap: 10px;
-  }
-  
-  .PrivateDiningBox .favorite-heart {
-    width: 32px;
-    height: 32px;
-    bottom: 62px;
-    right: 16px;
-  }
-  
-  .PrivateDiningBox .favorite-heart i {
-    font-size: 16px;
+    content: "\f164";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    color: #e91e63;
   }
 }
 
 .PrivateDiningBox .endbuttons .Buttons:hover {
   background: #5a2d7f;
   transform: none;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .PrivateDiningBox h6 {
-    font-size: 15px;
-  }
-  
-  .PrivateDiningBox .loc h1 {
-    font-size: 12px;
-  }
-  
-  .PrivateDiningBox .Info h5 {
-    font-size: 16px;
-  }
-  
-  .PrivateDiningBox .Info p {
-    font-size: 13px;
-  }
-  
-  .PrivateDiningBox .endbuttons .Buttons {
-    font-size: 15px;
-    padding: 10px 16px;
-  }
-}
-
-@media (max-width: 480px) {
-  .PrivateDiningBox h6 {
-    font-size: 14px;
-    -webkit-line-clamp: 3;
-  }
-  
-  .PrivateDiningBox .loc h1 {
-    font-size: 11px;
-  }
-  
-  .PrivateDiningBox .Info h5 {
-    font-size: 15px;
-  }
-  
-  .PrivateDiningBox .Info h5 .actualPrice {
-    font-size: 13px;
-  }
-  
-  .PrivateDiningBox .Info p {
-    font-size: 12px;
-  }
-  
-  .PrivateDiningBox .endbuttons .Buttons {
-    font-size: 14px;
-    padding: 10px 14px;
-  }
-  
-  /* Ensure cards have enough height on very small screens */
-  .birthday-item,
-  .anniversary-item,
-  .kids-item,
-  .baby-shower-item {
-    min-height: 85vw;
-  }
-  
-  /* Adjust scroll container heights for very small screens */
-  .birthday-scroll-container,
-  .anniversary-scroll-container,
-  .kids-scroll-container,
-  .baby-shower-scroll-container {
-    min-height: 90vw;
-    padding: 15px 8px;
-  }
 }
 
 .PrivateDining .section-title {

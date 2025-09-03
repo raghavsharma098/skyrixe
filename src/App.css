@@ -2174,7 +2174,7 @@
 
 @media (max-width: 600px) {
   .PrivateDiningBox figure {
-    height: 80vw;
+    height: auto;
     border-radius: 10px;
   }
 }
@@ -2237,7 +2237,7 @@
   color: grey;
   font-size: 15px;
   font-weight: bold;
-  width: 8vw;
+  width: auto;
   margin-left: 5px;
 }
 

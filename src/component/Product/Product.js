@@ -440,26 +440,26 @@ const Product = () => {
                               />
                             </figure>
                             
+                            {/* Location first - single row */}
+                            <div className="loc">
+                              <h1>At your location</h1>
+                            </div>
+                            
+                            {/* Title second */}
                             <h6>{item?.productDetails?.productname}</h6>
                             
+                            {/* Main content row - price left, reviews right */}
                             <div className="rightcard">
-                              <div className="loc">
-                                <h1>At your location</h1>
-                              </div>
-                              
                               <div className="Info">
                                 <div className="text-right">
                                   <div className="priceArea">
+                                    {/* Main price */}
                                     {item?.priceDetails?.discountedPrice ? (
-                                      <h5>
-                                        ₹{item?.priceDetails?.discountedPrice}
-                                        <span className="actualPrice">
-                                          ₹{item?.priceDetails?.price}
-                                        </span>
-                                      </h5>
+                                      <h5>₹{item?.priceDetails?.discountedPrice}</h5>
                                     ) : (
                                       <h5>₹{item?.priceDetails?.price}</h5>
                                     )}
+                                    {/* Discount badge */}
                                     {item?.priceDetails?.discountedPrice && (
                                       <span>
                                         {Math.round(
@@ -470,25 +470,19 @@ const Product = () => {
                                       </span>
                                     )}
                                   </div>
-                                  <p>
-                                    4.8 <i className="fa-solid fa-star"></i> |{" "}
-                                    {i % 2 == 0 && i !== 0
-                                      ? `${i % 2}` + 5 + i - 1
-                                      : i == 0
-                                        ? `14${i % 2}`
-                                        : `${i % 2}` + 2 + i - 1}
-                                  </p>
+                                  {/* Crossed price below main price */}
+                                  {item?.priceDetails?.discountedPrice && (
+                                    <div className="crossed-price">
+                                      ₹{item?.priceDetails?.price}
+                                    </div>
+                                  )}
                                 </div>
+                                
+                                {/* Reviews section - inside Info div */}
+                                <p>
+                                  {(Math.random() * (4.9 - 4.0) + 4.0).toFixed(1)}
+                                </p>
                               </div>
-                            </div>
-                            
-                            <div className="endbuttons">
-                              <button
-                                className="Buttons"
-                                onClick={() => handleProduct(item)}
-                              >
-                                Book Now
-                              </button>
                             </div>
                           </div>
                         </div>
