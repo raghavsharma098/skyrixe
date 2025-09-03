@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "../../assets/css/homepage-original-cards.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Carousel } from "bootstrap";
 import { Tooltip } from "react-tooltip";
@@ -126,23 +127,35 @@ const Main = () => {
 
   // Enhanced scroll functions with responsive card-width precision
   const getCardWidth = () => {
-    // Check screen width to determine card size
+    // Check screen width to determine card size for product sections
     if (window.innerWidth <= 480) {
-      return 260; // Small screen card width
+      return 270; // 250px card + 20px gap for mobile
+    } else if (window.innerWidth <= 768) {
+      return 300; // 280px card + 20px gap for tablet
     }
-    return 320; // Default card width
+    return 320; // 300px card + 20px gap for desktop
+  };
+
+  const getTestimonialCardWidth = () => {
+    // Check screen width to determine scroll distance for testimonial section
+    if (window.innerWidth <= 360) {
+      return 215; // 200px card + 15px gap to show 1.5 cards effect
+    } else if (window.innerWidth <= 768) {
+      return 215; // 200px card + 15px gap to show 1.5 cards effect
+    }
+    return 320; // Default testimonial card width + gap for desktop
   };
 
   const handleReviewsScrollLeft = () => {
     if (reviewsScrollRef.current) {
-      const cardWidth = getCardWidth();
+      const cardWidth = getTestimonialCardWidth();
       reviewsScrollRef.current.scrollBy({ left: -cardWidth, behavior: 'smooth' });
     }
   };
 
   const handleReviewsScrollRight = () => {
     if (reviewsScrollRef.current) {
-      const cardWidth = getCardWidth();
+      const cardWidth = getTestimonialCardWidth();
       reviewsScrollRef.current.scrollBy({ left: cardWidth, behavior: 'smooth' });
     }
   };
@@ -239,14 +252,12 @@ const Main = () => {
     }
   };
 
-  // Get card width for Baby Shower section
+  // Get scroll distance for Baby Shower section (modified for 1.5 card view on mobile)
   const getBabyShowerCardWidth = () => {
-    if (window.innerWidth <= 480) {
-      return 260; // Small screen card width
-    } else if (window.innerWidth <= 768) {
-      return 300; // Medium screen card width
+    if (window.innerWidth <= 768) {
+      return 215; // 200px card + 15px gap to show 1.5 cards effect
     }
-    return 320; // Default card width
+    return 320; // 300px card + 20px gap for desktop
   };
 
   const handleBabyShowerScrollLeft = () => {
@@ -287,6 +298,125 @@ const Main = () => {
     }
   }, []);
 
+  // Enhanced Wedding carousel functionality
+  const weddingScrollRef = useRef(null);
+  const [showWeddingPrevBtn, setShowWeddingPrevBtn] = useState(false);
+  const [showWeddingNextBtn, setShowWeddingNextBtn] = useState(true);
+
+  // Update arrow visibility for Wedding section
+  const updateWeddingArrowVisibility = () => {
+    if (weddingScrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = weddingScrollRef.current;
+      setShowWeddingPrevBtn(scrollLeft > 0);
+      setShowWeddingNextBtn(scrollLeft < scrollWidth - clientWidth - 1);
+    }
+  };
+
+  // Get scroll distance for Wedding section (modified for 1.5 card view on mobile)
+  const getWeddingCardWidth = () => {
+    if (window.innerWidth <= 768) {
+      return 215; // 200px card + 15px gap to show 1.5 cards effect
+    }
+    return 320; // 300px card + 20px gap for desktop
+  };
+
+  const handleWeddingScrollLeft = () => {
+    if (weddingScrollRef.current) {
+      const cardWidth = getWeddingCardWidth();
+      weddingScrollRef.current.scrollBy({
+        left: -cardWidth,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleWeddingScrollRight = () => {
+    if (weddingScrollRef.current) {
+      const cardWidth = getWeddingCardWidth();
+      weddingScrollRef.current.scrollBy({
+        left: cardWidth,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Add scroll event listener for Wedding section
+  useEffect(() => {
+    const weddingContainer = weddingScrollRef.current;
+    if (weddingContainer) {
+      const handleScroll = () => {
+        updateWeddingArrowVisibility();
+      };
+
+      weddingContainer.addEventListener('scroll', handleScroll);
+      updateWeddingArrowVisibility(); // Initial check
+
+      return () => {
+        weddingContainer.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, []);
+
+  // Enhanced Moment carousel functionality
+  const momentScrollRef = useRef(null);
+  const [showMomentPrevBtn, setShowMomentPrevBtn] = useState(false);
+  const [showMomentNextBtn, setShowMomentNextBtn] = useState(true);
+
+  // Update arrow visibility for Moment section
+  const updateMomentArrowVisibility = () => {
+    if (momentScrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = momentScrollRef.current;
+      setShowMomentPrevBtn(scrollLeft > 0);
+      setShowMomentNextBtn(scrollLeft < scrollWidth - clientWidth - 1);
+    }
+  };
+
+  // Get scroll distance for Moment section (modified for 1.5 card view on mobile)
+  // Get scroll distance for Moment section (modified for 1.5 card view on mobile)
+  const getMomentCardWidth = () => {
+    if (window.innerWidth <= 768) {
+      return 215; // 200px card + 15px gap to show 1.5 cards effect
+    }
+    return 320; // 300px card + 20px gap for desktop
+  };
+
+  const handleMomentScrollLeft = () => {
+    if (momentScrollRef.current) {
+      const cardWidth = getMomentCardWidth();
+      momentScrollRef.current.scrollBy({
+        left: -cardWidth,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleMomentScrollRight = () => {
+    if (momentScrollRef.current) {
+      const cardWidth = getMomentCardWidth();
+      momentScrollRef.current.scrollBy({
+        left: cardWidth,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Add scroll event listener for Moment section
+  useEffect(() => {
+    const momentContainer = momentScrollRef.current;
+    if (momentContainer) {
+      const handleScroll = () => {
+        updateMomentArrowVisibility();
+      };
+
+      momentContainer.addEventListener('scroll', handleScroll);
+      updateMomentArrowVisibility(); // Initial check
+
+      return () => {
+        momentContainer.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, []);
+
   // Update arrow visibility for Kids Party section
   const updateKidsArrowVisibility = () => {
     if (kidsScrollRef.current) {
@@ -296,14 +426,12 @@ const Main = () => {
     }
   };
 
-  // Get card width for Kids Party section
+  // Get scroll distance for Kids Party section (modified for 1.5 card view on mobile)
   const getKidsCardWidth = () => {
-    if (window.innerWidth <= 480) {
-      return 260; // Small screen card width
-    } else if (window.innerWidth <= 768) {
-      return 300; // Medium screen card width
+    if (window.innerWidth <= 768) {
+      return 215; // 200px card + 15px gap to show 1.5 cards effect
     }
-    return 320; // Default card width
+    return 320; // 300px card + 20px gap for desktop
   };
 
   const handleKidsScrollLeft = () => {
@@ -353,14 +481,12 @@ const Main = () => {
     }
   };
 
-  // Get card width for Anniversary section
+  // Get scroll distance for Anniversary section (modified for 1.5 card view on mobile)
   const getAnniversaryCardWidth = () => {
-    if (window.innerWidth <= 480) {
-      return 260; // Small screen card width
-    } else if (window.innerWidth <= 768) {
-      return 300; // Medium screen card width
+    if (window.innerWidth <= 768) {
+      return 215; // 200px card + 15px gap to show 1.5 cards effect
     }
-    return 320; // Default card width
+    return 320; // 300px card + 20px gap for desktop
   };
 
   const handleAnniversaryScrollLeft = () => {
@@ -410,14 +536,12 @@ const Main = () => {
     }
   };
 
-  // Get card width for Birthday section
+  // Get scroll distance for Birthday section (modified for 1.5 card view on mobile)
   const getBirthdayCardWidth = () => {
-    if (window.innerWidth <= 480) {
-      return 260; // Small screen card width
-    } else if (window.innerWidth <= 768) {
-      return 300; // Medium screen card width
+    if (window.innerWidth <= 768) {
+      return 215; // 200px card + 15px gap to show 1.5 cards effect
     }
-    return 320; // Default card width
+    return 320; // 300px card + 20px gap for desktop
   };
 
   const handleBirthdayScrollLeft = () => {
@@ -463,6 +587,8 @@ const Main = () => {
     // Small delay to ensure DOM is updated after data loads
     const timer = setTimeout(() => {
       updateBabyShowerArrowVisibility();
+      updateWeddingArrowVisibility();
+      updateMomentArrowVisibility();
       updateKidsArrowVisibility();
       updateAnniversaryArrowVisibility();
       updateBirthdayArrowVisibility();
@@ -1335,6 +1461,251 @@ const Main = () => {
             </div>
           </div>
         </div>
+
+        {/* ===== WEDDING ENTRY SECTION ===== */}
+        <div className="BirthdayDecorationArea AnniDecImage">
+          <div className="container" style={{ padding: "0", margin: "0 auto", width: "100%" }}>
+            <div className="section-title">
+              <h2>Wedding Entry</h2>
+              <p>
+                Create Magical Wedding Moments with Stunning Decorations
+                Perfect for Your Special Day!
+              </p>
+            </div>
+
+            <div className="scroll-container-wrapper">
+              {/* Left Arrow */}
+              {showWeddingPrevBtn && (
+                <button className="testimonial-nav-btn prev wedding-nav-btn" onClick={handleWeddingScrollLeft}>
+                  <i className="fa-solid fa-chevron-left"></i>
+                </button>
+              )}
+
+              {/* Scrollable Content */}
+              <div
+                ref={weddingScrollRef}
+                className="testimonials-slider homepage-wedding-scroll-container"
+              >
+                {getWeddingDecoList?.data?.length > 0 ? (
+                  getWeddingDecoList?.data?.map((item, i) => {
+                    return (
+                      <div key={i} className="homepage-wedding-item">
+                        <div className="homepage-product-card">
+                          <img
+                            src={item?.productimages?.at(0)}
+                            onClick={() => handleProduct(item)}
+                            style={{ cursor: 'pointer' }}
+                            alt={item?.productDetails?.productname}
+                          />
+                          
+                          <div className="homepage-card-body">
+                            <div className="homepage-card-info">
+                              <p className="homepage-card-location">At your location</p>
+                              <h3 className="homepage-card-title">{item?.productDetails?.productname}</h3>
+                              <div className="homepage-card-meta">
+                                <div className="homepage-rating-location">
+                                  <div className="homepage-card-rating">
+                                    <div className="homepage-stars">
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star">★</span>
+                                    </div>
+                                    <span className="homepage-rating-text">(4.0)</span>
+                                  </div>
+                                </div>
+                                <div className="homepage-price-section">
+                                  {item?.priceDetails?.discountedPrice ? (
+                                    <>
+                                      <div className="homepage-price-row">
+                                        <span className="homepage-current-price">₹{item?.priceDetails?.discountedPrice}</span>
+                                        <span className="homepage-discount-tag">
+                                          {Math.round(
+                                            ((Number(item?.priceDetails?.price) -
+                                              Number(item?.priceDetails?.discountedPrice)) /
+                                              Number(item?.priceDetails?.price)) * 100
+                                          )}% off
+                                        </span>
+                                      </div>
+                                      <span className="homepage-original-price">₹{item?.priceDetails?.price}</span>
+                                    </>
+                                  ) : (
+                                    <span className="homepage-current-price">₹{item?.priceDetails?.price}</span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <button
+                            className="homepage-card-action-button"
+                            onClick={() => handleProduct(item)}
+                          >
+                            BOOK NOW
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <p>No item Available</p>
+                )}
+
+                {/* View All Button inside the scroller */}
+                <div className="homepage-wedding-item view-all-item">
+                  <div className="homepage-product-card view-all-card" onClick={() => handleCategory({ categoryName: "WEDDING DECORATION" })}>
+                    <div className="view-all-image">
+                      <div className="celebration-icon">💒</div>
+                    </div>
+                    
+                    <div className="homepage-card-body">
+                      <div className="homepage-card-info">
+                        <h3 className="homepage-card-title">View All Wedding Decorations</h3>
+                        <p className="homepage-card-location">Explore more options</p>
+                      </div>
+                    </div>
+                    
+                    <button className="homepage-view-all-button">
+                      EXPLORE MORE
+                      <i className="fa-solid fa-arrow-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Right Arrow */}
+              {showWeddingNextBtn && (
+                <button className="testimonial-nav-btn next wedding-nav-btn" onClick={handleWeddingScrollRight}>
+                  <i className="fa-solid fa-chevron-right"></i>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* ===== ENJOY EVERY MOMENT OF LIFE SECTION ===== */}
+        <div className="BirthdayDecorationArea AnniDecImage">
+          <div className="container" style={{ padding: "0", margin: "0 auto", width: "100%" }}>
+            <div className="section-title">
+              <h2>Enjoy Every Moment of Life</h2>
+              <p>
+                Celebrate Life's Beautiful Moments with Our Premium 
+                Decoration Services for Every Occasion!
+              </p>
+            </div>
+
+            <div className="scroll-container-wrapper">
+              {/* Left Arrow */}
+              {showMomentPrevBtn && (
+                <button className="testimonial-nav-btn prev moment-nav-btn" onClick={handleMomentScrollLeft}>
+                  <i className="fa-solid fa-chevron-left"></i>
+                </button>
+              )}
+
+              {/* Scrollable Content */}
+              <div
+                ref={momentScrollRef}
+                className="testimonials-slider homepage-moment-scroll-container"
+              >
+                {getWeddingDecoList?.data?.length > 0 ? (
+                  getWeddingDecoList?.data?.map((item, i) => {
+                    return (
+                      <div key={i} className="homepage-moment-item">
+                        <div className="homepage-product-card">
+                          <img
+                            src={item?.productimages?.at(0)}
+                            onClick={() => handleProduct(item)}
+                            style={{ cursor: 'pointer' }}
+                            alt={item?.productDetails?.productname}
+                          />
+                          
+                          <div className="homepage-card-body">
+                            <div className="homepage-card-info">
+                              <p className="homepage-card-location">At your location</p>
+                              <h3 className="homepage-card-title">{item?.productDetails?.productname}</h3>
+                              <div className="homepage-card-meta">
+                                <div className="homepage-rating-location">
+                                  <div className="homepage-card-rating">
+                                    <div className="homepage-stars">
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star filled">★</span>
+                                      <span className="homepage-star">★</span>
+                                    </div>
+                                    <span className="homepage-rating-text">(4.0)</span>
+                                  </div>
+                                </div>
+                                <div className="homepage-price-section">
+                                  {item?.priceDetails?.discountedPrice ? (
+                                    <>
+                                      <div className="homepage-price-row">
+                                        <span className="homepage-current-price">₹{item?.priceDetails?.discountedPrice}</span>
+                                        <span className="homepage-discount-tag">
+                                          {Math.round(
+                                            ((Number(item?.priceDetails?.price) -
+                                              Number(item?.priceDetails?.discountedPrice)) /
+                                              Number(item?.priceDetails?.price)) * 100
+                                          )}% off
+                                        </span>
+                                      </div>
+                                      <span className="homepage-original-price">₹{item?.priceDetails?.price}</span>
+                                    </>
+                                  ) : (
+                                    <span className="homepage-current-price">₹{item?.priceDetails?.price}</span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <button
+                            className="homepage-card-action-button"
+                            onClick={() => handleProduct(item)}
+                          >
+                            BOOK NOW
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <p>No item Available</p>
+                )}
+
+                {/* View All Button inside the scroller */}
+                <div className="homepage-moment-item view-all-item">
+                  <div className="homepage-product-card view-all-card" onClick={() => handleCategory({ categoryName: "BIRTHDAY DECORATION" })}>
+                    <div className="view-all-image">
+                      <div className="celebration-icon">🎊</div>
+                    </div>
+                    
+                    <div className="homepage-card-body">
+                      <div className="homepage-card-info">
+                        <h3 className="homepage-card-title">View All Life Moment Decorations</h3>
+                        <p className="homepage-card-location">Explore more options</p>
+                      </div>
+                    </div>
+                    
+                    <button className="homepage-view-all-button">
+                      EXPLORE MORE
+                      <i className="fa-solid fa-arrow-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Right Arrow */}
+              {showMomentNextBtn && (
+                <button className="testimonial-nav-btn next moment-nav-btn" onClick={handleMomentScrollRight}>
+                  <i className="fa-solid fa-chevron-right"></i>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
         <div className="BirthdayDecorationArea">
           <img src={require("../../assets/images/Photos 1.png")} />
         </div>

@@ -383,7 +383,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+  background: none; /* Removed background */
   position: relative;
   flex-shrink: 0;
 }

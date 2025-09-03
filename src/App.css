@@ -971,6 +971,7 @@
   max-width: 1400px;
   margin: 0 auto;
   overflow: visible;
+  z-index: 1; /* Lower z-index to stay below header */
 }
 
 /* Baby Shower section specific styling to match testimonials spacing */
@@ -1002,6 +1003,8 @@
   position: relative;
   max-width: 1400px;
   margin: 0 auto;
+  overflow: visible; /* Ensure arrows are visible but contained */
+  z-index: 1; /* Lower z-index to stay below header */
 }
 
 /* ===== HOMEPAGE SCROLL CONTAINERS ===== */
@@ -1073,7 +1076,7 @@
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
   border: 1px solid #e5e7eb !important;
-  z-index: 1000 !important;
+  z-index: 10 !important; /* Reduced from 1000 to 10 to prevent header overlap */
   align-items: center !important;
   justify-content: center !important;
   visibility: visible !important;
@@ -1116,7 +1119,7 @@
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
   border: 1px solid #e5e7eb !important;
-  z-index: 1000 !important;
+  z-index: 10 !important; /* Reduced from 1000 to 10 to prevent header overlap */
   align-items: center !important;
   justify-content: center !important;
   visibility: visible !important;
@@ -1159,7 +1162,7 @@
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
   border: 1px solid #e5e7eb !important;
-  z-index: 1000 !important;
+  z-index: 10 !important; /* Reduced from 1000 to 10 to prevent header overlap */
   align-items: center !important;
   justify-content: center !important;
   visibility: visible !important;
@@ -1202,7 +1205,7 @@
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
   border: 1px solid #e5e7eb !important;
-  z-index: 1000 !important;
+  z-index: 10 !important; /* Reduced from 1000 to 10 to prevent header overlap */
   align-items: center !important;
   justify-content: center !important;
   visibility: visible !important;
@@ -1368,6 +1371,7 @@
   left: 0;
   right: 24px;
   width: calc(100% - 0px);
+  background: none; /* Remove any background */
 }
 
 .product-image {
@@ -1416,15 +1420,31 @@
 /* Responsive Design for Testimonials */
 @media (max-width: 768px) {
   
+  .reviews-section {
+    padding: 40px 10px 20px 10px !important; /* Reduce side padding on mobile */
+  }
+  
+  .testimonials-container {
+    width: 315px !important; /* Match testimonials-slider width */
+    max-width: calc(100vw - 40px) !important;
+    margin: 0 auto !important;
+    padding: 0 !important; /* Remove any padding that might interfere */
+  }
+  
   .testimonial-card {
-    min-width: 280px;
-    max-width: 280px;
+    min-width: 200px !important;
+    max-width: 200px !important;
     min-height: 360px;
     padding: 20px;
+    flex-shrink: 0 !important;
   }
   
   .testimonials-slider {
-    gap: 15px;
+    gap: 15px !important;
+    width: 315px !important; /* 200px (1 card) + 15px (gap) + 100px (0.5 card) = 315px */
+    max-width: calc(100vw - 40px) !important;
+    margin: 0 auto !important;
+    padding: 20px 0 !important;
   }
   
   .testimonial-nav-btn {
@@ -1443,11 +1463,31 @@
 }
 
 @media (max-width: 480px) {
+  .reviews-section {
+    padding: 40px 10px 20px 10px !important; /* Reduce side padding on mobile */
+  }
+  
+  .testimonials-container {
+    width: 315px !important; /* Match testimonials-slider width */
+    max-width: calc(100vw - 40px) !important;
+    margin: 0 auto !important;
+    padding: 0 !important; /* Remove any padding that might interfere */
+  }
+  
   .testimonial-card {
-    min-width: 260px;
-    max-width: 260px;
+    min-width: 200px !important;
+    max-width: 200px !important;
     min-height: 340px;
     padding: 18px;
+    flex-shrink: 0 !important;
+  }
+  
+  .testimonials-slider {
+    gap: 15px !important;
+    width: 315px !important; /* 200px (1 card) + 15px (gap) + 100px (0.5 card) = 315px */
+    max-width: calc(100vw - 40px) !important;
+    margin: 0 auto !important;
+    padding: 20px 0 !important;
   }
   
   .customer-avatar {
@@ -1486,7 +1526,7 @@
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
   border: 1px solid #e5e7eb !important;
-  z-index: 1000 !important;
+  z-index: 10 !important; /* Reduced from 1000 to 10 to prevent header overlap */
   align-items: center !important;
   justify-content: center !important;
   visibility: visible !important;
@@ -1847,7 +1887,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0px 0px;
+  padding: 0px 0px 0px 20px; /* Added 20px left padding */
   cursor: pointer;
   border: none;
   background: transparent;
@@ -1865,7 +1905,7 @@
   color: #1e293b;
   margin: 0;
   flex: 1;
-  padding: 6px 20px 6px 15px;
+  padding: 6px 20px 6px 30px; /* Added 15px more left padding (15px + 15px = 30px) */
   line-height: 1.2;
   text-align: justify;
   display: flex;
@@ -1996,6 +2036,7 @@
     width: 45px;
     height: 45px;
     font-size: 1.1rem;
+    z-index: 10 !important; /* Ensure mobile arrows also don't overlap header */
   }
   
   .testimonial-nav-btn.prev {
@@ -2161,6 +2202,7 @@
     width: 40px;
     height: 40px;
     font-size: 1rem;
+    z-index: 10 !important; /* Ensure small mobile arrows also don't overlap header */
   }
   
   .testimonial-nav-btn.prev {
@@ -2267,7 +2309,7 @@
   
   .faq-question h3 {
     font-size: 1.05rem;
-    padding: 5px 15px 5px 12px;
+    padding: 3px 8px 3px 10px !important; /* Added 15px more left padding (15px + 15px = 30px) */
     line-height: 1.2;
   }
   
@@ -2400,7 +2442,7 @@
   .faq-question h3 {
     font-size: 0.95rem;
     line-height: 1.2;
-    padding: 3px 10px 3px 8px;
+    padding: 3px 10px 3px 23px; /* Added 15px more left padding (8px + 15px = 23px) */
   }
   
   .faq-toggle {
