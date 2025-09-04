@@ -277,7 +277,7 @@ const Header = () => {
             </div>
             <form class="headerTwoBtn d-block d-lg-none">
               <div className="d-flex">
-                <div className="citySelectorBtn" style={{ display: 'flex', alignItems: 'center' }}>
+                <div className="citySelectorBtn">
                   <button
                     className="cityButton"
                     onClick={() => setShowCitySelector(true)}
@@ -305,26 +305,6 @@ const Header = () => {
                         selectCity?.slice(1)
                         : "Select City"}
                     </span>
-                  </button>
-                  <button
-                    className="loginButton"
-                    type="button"
-                    style={{
-                      marginLeft: '40px',
-                      padding: '5px 20px',
-                      borderRadius: '6px',
-                      border: '1px solid #e5097f',
-                      backgroundColor: '#e5097f',
-                      color: '#fff',
-                      fontWeight: '500',
-                      fontSize: '14px',
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                      whiteSpace: 'nowrap',
-                    }}
-                    onClick={() => navigate('/login')}
-                  >
-                    Login
                   </button>
                 </div>
               </div>
@@ -772,29 +752,15 @@ const Header = () => {
                           : "Select City"}
                       </span>
                     </button>
-                    <button
-                      className="loginButton"
-                      type="button"
-                      style={{
-                        marginLeft: '10px',
-                        padding: '10px 20px',
-                        borderRadius: '8px',
-                        border: '1px solid #e5097f',
-                        backgroundColor: '#e5097f',
-                        color: '#fff',
-                        fontWeight: '500',
-                        fontSize: '14px',
-                        cursor: 'pointer',
-                        transition: 'all 0.3s ease',
-                      }}
-                      onClick={() => navigate('/login')}
-                    >
-                      Login
-                    </button>
                   </div>
 
                   {userDetail && getOrderSummaryDetail ? (
                     <div className="Icons Avater">
+                      <a className="UserIcon subAvater">
+                        <img
+                          src={require("../../assets/images/shopping-cart.png")}
+                        />
+                      </a>
                       <div className="cartArea">
                         <h5>Complete Your Booking</h5>
                         <div className="row">
@@ -875,6 +841,41 @@ const Header = () => {
                         />
                       </Link>
                     </li>
+                    {!userDetail && (
+                      <li>
+                        <button 
+                          className="loginBtn"
+                          onClick={() => updateState({ ...iState, signUpModal: true })}
+                          style={{
+                            background: 'linear-gradient(135deg, #ff6b6b, #ff8e8e)',
+                            border: 'none',
+                            borderRadius: '8px',
+                            color: 'white',
+                            padding: '8px 16px',
+                            fontSize: '14px',
+                            fontWeight: '600',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            height: '44px',
+                            minWidth: '70px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: '0 2px 8px rgba(255, 107, 107, 0.3)',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.target.style.transform = 'translateY(-2px)';
+                            e.target.style.boxShadow = '0 4px 12px rgba(255, 107, 107, 0.4)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.target.style.transform = 'translateY(0)';
+                            e.target.style.boxShadow = '0 2px 8px rgba(255, 107, 107, 0.3)';
+                          }}
+                        >
+                          Login
+                        </button>
+                      </li>
+                    )}
                     <li>
                       {userDetail && (
                         <Link to="/profile" className="UserIcon">
@@ -900,6 +901,34 @@ const Header = () => {
                 <i class="fa-solid fa-arrow-right-to-bracket"></i>
               </a> */}
               <ul className="Icons responsiveLogin ">
+                <li>
+                  {!userDetail && (
+                    <button 
+                      className="loginBtn mobile-login-btn"
+                      onClick={() => updateState({ ...iState, signUpModal: true })}
+                      style={{
+                        background: 'linear-gradient(135deg, #ff6b6b, #ff8e8e)',
+                        border: 'none',
+                        borderRadius: '6px',
+                        color: 'white',
+                        padding: '6px 12px',
+                        fontSize: '12px',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                        height: '36px',
+                        minWidth: '60px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        boxShadow: '0 2px 6px rgba(255, 107, 107, 0.3)',
+                        marginRight: '8px',
+                      }}
+                    >
+                      Login
+                    </button>
+                  )}
+                </li>
                 <li>
                   {userDetail && (
                     <Link to="/profile" className="UserIcon">
