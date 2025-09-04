@@ -3176,3 +3176,187 @@
     gap: 1px;
   }
 }
+
+/* Kids Party Banner Animation Styles */
+.kids-party-banner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin: 12px auto 6px auto;
+  padding: 0 20px;
+  min-height: 300px; /* Increased height for falling animation */
+  overflow: visible; /* Changed to visible to allow overlap */
+  position: relative;
+  z-index: 10; /* Ensure images appear above previous section */
+  background: none !important;
+  background-color: transparent !important;
+  width: 100%; /* Ensure full width */
+  max-width: 1200px; /* Limit max width for better centering */
+}
+
+/* Override any parent background for the banner area specifically */
+.BirthdayDecorationArea .kids-party-banner-container {
+  background: none !important;
+  background-color: transparent !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center; /* Ensure content is centered */
+}
+
+/* Additional override for container-fluid within banner area */
+.BirthdayDecorationArea .kids-party-banner-container,
+.BirthdayDecorationArea .kids-party-banner-container .container-fluid,
+.BirthdayDecorationArea .animated-banner-image {
+  background: none !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+.animated-banner-image {
+  flex: 1;
+  max-width: 600px;
+  overflow: visible;
+  position: relative;
+  display: flex; /* Add flex display */
+  justify-content: center; /* Center the image */
+  align-items: center; /* Center vertically */
+  
+  /* Completely transparent background - no styling */
+  background: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  isolation: isolate;
+  
+  /* Reduced height for less overlap, removed negative margin */
+  height: 100px; /* Keep reduced height */
+  margin-bottom: 0; /* Remove negative margin to prevent heading overlap */
+}
+
+.kids-banner-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: none !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  
+  /* Initial hidden state - positioned above viewport */
+  transform: scale(0.3) translateY(-120vh);
+  opacity: 0;
+  transition: all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  /* Complete background removal */
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  
+  /* Remove mix-blend-mode that might cause background issues */
+  mix-blend-mode: normal !important;
+  filter: none !important;
+  
+  /* Ensure complete transparency */
+  isolation: auto;
+}
+
+/* Reverse/flip only the second animated image */
+.animated-banner-image:nth-child(2) .kids-banner-img {
+  transform: scale(0.3) translateY(-120vh) scaleX(-1); /* Removed overlap positioning */
+}
+
+.animated-banner-image:nth-child(2) .kids-banner-img.animate-zoom-in {
+  animation: zoomInAndFallReversed 2.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Animation when visible */
+.kids-banner-img.animate-zoom-in {
+  animation: zoomInAndFall 2.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Combined zoom-in and falling animation */
+@keyframes zoomInAndFall {
+  /* Phase 1: Zoom-in while falling (0% - 50%) */
+  0% {
+    transform: scale(0.3) translateY(-120vh) translateZ(0);
+    opacity: 0;
+  }
+  25% {
+    transform: scale(0.6) translateY(-60vh) translateZ(0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1) translateY(0) translateZ(0); /* Land in normal position */
+    opacity: 1;
+  }
+  
+  /* Phase 2: Subtle bounce and settle (50% - 100%) */
+  65% {
+    transform: scale(1.05) translateY(-20px) translateZ(0); /* Bounce up slightly */
+    opacity: 1;
+  }
+  80% {
+    transform: scale(0.98) translateY(10px) translateZ(0); /* Settle down */
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0) translateZ(0); /* Final normal position */
+    opacity: 1;
+  }
+}
+
+/* Reversed animation for the second image */
+@keyframes zoomInAndFallReversed {
+  /* Phase 1: Zoom-in while falling (0% - 50%) */
+  0% {
+    transform: scale(0.3) translateY(-120vh) scaleX(-1) translateZ(0);
+    opacity: 0;
+  }
+  25% {
+    transform: scale(0.6) translateY(-60vh) scaleX(-1) translateZ(0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1) translateY(0) scaleX(-1) translateZ(0); /* Land in normal position */
+    opacity: 1;
+  }
+  
+  /* Phase 2: Subtle bounce and settle (50% - 100%) */
+  65% {
+    transform: scale(1.05) translateY(-20px) scaleX(-1) translateZ(0); /* Bounce up slightly */
+    opacity: 1;
+  }
+  80% {
+    transform: scale(0.98) translateY(10px) scaleX(-1) translateZ(0); /* Settle down */
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0) scaleX(-1) translateZ(0); /* Final normal position */
+    opacity: 1;
+  }
+}
+
+/* Responsive design for banner */
+@media (max-width: 768px) {
+  .kids-party-banner-container {
+    flex-direction: column;
+    gap: 20px;
+    margin: 30px 0;
+  }
+  
+  .animated-banner-image {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .kids-party-banner-container {
+    padding: 0 15px;
+    margin: 25px 0;
+    gap: 15px;
+  }
+  
+  .animated-banner-image {
+    max-width: 100%;
+  }
+}

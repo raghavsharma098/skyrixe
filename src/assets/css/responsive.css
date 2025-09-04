@@ -29,6 +29,16 @@
     background-color: #fff !important;
 }
 
+/* Specific override for banner area - remove background */
+.BirthdayDecorationArea .kids-party-banner-container,
+.BirthdayDecorationArea .kids-party-banner-container *,
+.BirthdayDecorationArea .animated-banner-image,
+.BirthdayDecorationArea .animated-banner-image * {
+    background: none !important;
+    background-color: transparent !important;
+    background-image: none !important;
+}
+
 /* Homepage-specific Bootstrap row fixes */
 .BirthdayDecorationArea .row,
 .FeatureArea .row,
@@ -190,10 +200,8 @@
     .newHeader .container-fluid {width: 100%;}
     .newHeader .navbar-toggler {padding: 0;border: 0;font-size: 20px;color: #000;margin-top: -4px;margin-right: 10px;}
     
-    /* Hamburger Menu Visibility Rules */
-    .navbar-toggler {
-        display: block !important;
-    }
+    /* Hamburger Menu Visibility Rules - Only for mobile, not tablets */
+    /* This rule is overridden by tablet-specific media query */
     
     /* Mobile Navigation Styles */
     .mobile-navigation {
@@ -411,13 +419,11 @@
         pointer-events: none;
     }
     
-    /* Make sure hamburger and mobile navigation are visible */
-    .navbar-toggler {
-        display: block !important;
-    }
+    /* Navigation styles will be handled by specific media queries below */
     .custom-arrow.prev {left: -15px;z-index: 99;}
     .custom-arrow.next {right: -20px;}
     }
+
 @media (max-width:768px){
     /* Ensure consistent padding and no overflow on mobile - 25px */
     .FeatureArea {
@@ -436,6 +442,45 @@
     .faq-section-enhanced {padding: 30px 25px;}
     .service-section {padding: 30px 25px;}
     .enjoy-life-section {padding: 30px 25px;}
+    
+    /* City selector button margin adjustment */
+    .citySelectorBtn .cityButton {
+        margin-right: -27px;
+    }
+    
+    /* Mobile navigation styles - show hamburger, hide normal navbar */
+    .navbar-toggler {
+        display: block !important;
+    }
+    
+    .CategoriesResponsive2 {
+        display: none !important;
+    }
+    
+    .CategoriesResponsive {
+        display: block !important;
+        left: 10px;
+        right: 10px;
+        width: 100%;
+        margin: 0;
+        top: 55px;
+    }
+    
+    /* Reset navbar collapse for mobile */
+    .newHeader .collapse.navbar-collapse {
+        display: block;
+        position: absolute;
+        left: -100%;
+        top: 52px;
+        height: 100vh;
+        background-color: #fff;
+        transition: all 0.5s;
+        width: 100%;
+    }
+    
+    .newHeader .collapse.navbar-collapse.Left {
+        left: 0 !important;
+    }
     
     /* FeatureArea 2x4 Grid - Mobile (2 columns, 4 rows) */
     .FeatureArea .row {

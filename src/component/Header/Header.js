@@ -549,6 +549,23 @@ const Header = () => {
                     </button>
                   </div>
                   
+                  {/* Pink Banner with User Info */}
+                  <div className="mobile-user-banner">
+                    <div className="mobile-user-info">
+                      <div className="mobile-user-icon">
+                        <i className="fa-solid fa-user"></i>
+                      </div>
+                      <span className="mobile-user-greeting">Hi, Guest</span>
+                    </div>
+                  </div>
+                  
+                  {/* Navigation Links */}
+                  <div className="mobile-nav-links">
+                    <Link to="/profile" className="mobile-nav-link">MY ACCOUNT</Link>
+                    <Link to="/upcoming-bookings" className="mobile-nav-link">TRACK ORDER</Link>
+                    <Link to="/help" className="mobile-nav-link">HELP CENTER</Link>
+                  </div>
+                  
                   {/* Mobile Categories */}
                   <div className="mobile-categories">
                     {categoryArr?.map((category_name, index) => {
@@ -682,8 +699,8 @@ const Header = () => {
 
               {/* Mobile Overlay */}
               {openSidebar && <div className="mobile-overlay d-lg-none" onClick={() => updateState({ ...iState, openSidebar: false, expandedCategory: null })}></div>}
-              {/* Help Center */}
-              <div className="help">
+              {/* Help Center - Hidden on mobile, visible on tablet and larger */}
+              <div className="help d-none d-md-block">
                 <HelpCenter />
               </div>
               {/* City selection */}
@@ -823,19 +840,10 @@ const Header = () => {
                       </Link>
                     </li>
                     <li>
-                      {userDetail ? (
+                      {userDetail && (
                         <Link to="/profile" className="UserIcon">
                           <img src={require("../../assets/images/user.png")} />
                         </Link>
-                      ) : (
-                        <a
-                          onClick={() =>
-                            updateState({ ...iState, signUpModal: true })
-                          }
-                          class="Login loginBtn"
-                        >
-                          Login
-                        </a>
                       )}
                     </li>
                   </ul>
@@ -857,19 +865,10 @@ const Header = () => {
               </a> */}
               <ul className="Icons responsiveLogin ">
                 <li>
-                  {userDetail ? (
+                  {userDetail && (
                     <Link to="/profile" className="UserIcon">
                       <img src={require("../../assets/images/user.png")} />
                     </Link>
-                  ) : (
-                    <a
-                      onClick={() =>
-                        updateState({ ...iState, signUpModal: true })
-                      }
-                      class="Login loginBtn ml-0 ms-0"
-                    >
-                      Login
-                    </a>
                   )}
                 </li>
               </ul>

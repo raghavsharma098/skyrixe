@@ -477,6 +477,37 @@ const Main = () => {
     return () => clearTimeout(timer);
   }, [getWeddingDecoList, getKidsList, getAnniversaryList, getBirthdayList]);
 
+  // Simple scroll animation for banner images
+  useEffect(() => {
+    const handleScroll = () => {
+      const bannerImages = document.querySelectorAll('.kids-banner-img');
+      
+      bannerImages.forEach((img) => {
+        const rect = img.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        // Check if image is in viewport
+        if (rect.top < windowHeight && rect.bottom > 0) {
+          // Add animation classes
+          img.classList.add('animate-visible');
+        } else {
+          // Remove animation classes when out of view
+          img.classList.remove('animate-visible');
+        }
+      });
+    };
+
+    // Add scroll listener
+    window.addEventListener('scroll', handleScroll);
+    
+    // Initial check
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []); // Empty dependency array to run once after component mounts
+
   const selectCity = window.localStorage.getItem("LennyCity");
   // const userDetail = JSON.parse(window.localStorage.getItem("LennyUserDetail"));
 
@@ -522,6 +553,39 @@ const Main = () => {
         ride: "carousel", // Ensure autoplay starts
       });
     }
+  }, []);
+
+  // Banner animation scroll detection
+  useEffect(() => {
+    const handleScroll = () => {
+      const bannerContainer = document.querySelector('.kids-party-banner-container');
+      if (bannerContainer) {
+        const rect = bannerContainer.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        // Check if banner is in viewport (at least 30% visible)
+        if (rect.top <= windowHeight * 0.7 && rect.bottom >= windowHeight * 0.3) {
+          const bannerImages = bannerContainer.querySelectorAll('.kids-banner-img');
+          bannerImages.forEach((img, index) => {
+            // Add staggered delay - second image starts 0.3 seconds later
+            setTimeout(() => {
+              img.classList.add('animate-zoom-in');
+            }, index * 300);
+          });
+        }
+      }
+    };
+
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll);
+    
+    // Check on mount in case already in view
+    handleScroll();
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   console.log({ getBirthdayList });
@@ -1070,6 +1134,24 @@ const Main = () => {
 
         <div className="BirthdayDecorationArea BirthDecImage">
           <div className="container-fluid">
+            {/* Animated Banner Images */}
+            <div className="kids-party-banner-container">
+              <div className="animated-banner-image">
+                <img 
+                  src={require("../../assets/images/840x400_Banner-2_Desktop_01_20241029_125154.avif")} 
+                  alt="Kids Party Banner" 
+                  className="kids-banner-img"
+                />
+              </div>
+              <div className="animated-banner-image">
+                <img 
+                  src={require("../../assets/images/840x400_Banner-2_Desktop_01_20241029_125154.avif")} 
+                  alt="Kids Party Banner" 
+                  className="kids-banner-img"
+                />
+              </div>
+            </div>
+
             <div className="section-title">
               <h2>Kid's Party</h2>
               <p>

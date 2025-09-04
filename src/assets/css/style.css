@@ -432,6 +432,20 @@ header .HeaderArea .HeaderSearch span {
   justify-content: center;
 }
 
+/* Mobile-only: Align city button to the right */
+@media (max-width: 991px) {
+  .headerTwoBtn {
+    justify-content: flex-end !important;
+  }
+  .headerTwoBtn .d-flex {
+    justify-content: flex-end !important;
+    width: 100% !important;
+  }
+  .headerTwoBtn .citySelectorBtn {
+    margin-left: auto !important;
+  }
+}
+
 /* Ensure all navigation elements have consistent appearance */
 .nav-button-consistent {
   height: 44px;
@@ -630,6 +644,146 @@ header .HeaderArea .HeaderRight ul.Icons li a:hover {
   .mobile-navigation {
     display: none !important;
   }
+}
+
+/* Mobile Navigation Styling */
+.mobile-navigation {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 300px;
+  height: 100vh;
+  background: white;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  transition: left 0.3s ease;
+  z-index: 9999;
+  overflow-y: auto;
+}
+
+.mobile-navigation.active {
+  left: 0;
+}
+
+.mobile-nav-content {
+  padding: 0;
+}
+
+.mobile-nav-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px 20px;
+  margin-bottom: 0;
+}
+
+.mobile-close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #303943;
+  cursor: pointer;
+}
+
+/* Pink Purple Banner Section */
+.mobile-user-banner {
+  background: linear-gradient(135deg, #FF69B4 0%, #9C27B0 50%, #673AB7 100%);
+  width: 100%;
+  margin: 60px 0 20px 0;
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+}
+
+.mobile-user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.mobile-user-icon {
+  width: 45px;
+  height: 45px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
+}
+
+.mobile-user-icon i {
+  color: white;
+  font-size: 20px;
+}
+
+.mobile-user-greeting {
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  overflow: visible;
+}
+
+/* Navigation Links */
+.mobile-nav-links {
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 1px solid #e4e9ee;
+  margin-bottom: 10px;
+  background: #f8f9fa;
+}
+
+.mobile-nav-link {
+  color: #303943;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  text-align: center;
+  min-width: 80px;
+}
+
+.mobile-nav-link:hover {
+  color: #E1306C;
+  background: rgba(225, 48, 108, 0.1);
+  text-decoration: none;
+}
+
+.help-center-link {
+  display: flex;
+  align-items: center;
+}
+
+.mobile-categories {
+  padding: 0 20px;
+  margin-bottom: 20px;
+  margin-top: 5px;
+}
+
+@media (max-width: 992px) {
+  .mobile-categories {
+    padding-top: 0 !important;
+  }
+}
+
+.mobile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
 }
 
 /* Show hamburger button only on mobile and tablet screens */

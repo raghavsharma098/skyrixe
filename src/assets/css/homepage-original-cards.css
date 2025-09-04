@@ -8,7 +8,7 @@
 .homepage-baby-shower-scroll-container {
   display: flex !important;
   gap: 20px !important;
-  overflow-x: auto !important;
+  overflow-x: hidden !important;
   padding: 20px 0 !important;
   scroll-behavior: smooth !important;
   scrollbar-width: none !important;

@@ -131,6 +131,14 @@ body {
   gap: 24px;
   padding: 16px 48px;
   scroll-behavior: smooth;
+  /* Hide scrollbar for all browsers */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+/* Hide scrollbar for WebKit browsers (Chrome, Safari, Edge) */
+.horizontal-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 
@@ -284,13 +292,6 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  /* Hide heading and subtitle for Enjoy Life section on all mobile/tablet screens */
-  .service-section.enjoy-life-section .section-title-service,
-  .service-section.enjoy-life-section .section-subtitle {
-    display: none !important;
-    visibility: hidden !important;
-  }
-
   /* Hide service card titles on mobile/tablet only when hovered */
   .service-card:hover .service-card-title {
     display: none !important;
@@ -316,15 +317,6 @@ body {
   
   .section-title-service {
     font-size: 2.5rem;
-  }
-  
-  /* Hide heading for Enjoy Life section on smaller screens */
-  .enjoy-life-section .section-title-service {
-    display: none !important;
-  }
-  
-  .enjoy-life-section .section-subtitle {
-    display: none !important;
   }
   
   .section-subtitle {
@@ -368,15 +360,6 @@ body {
     font-size: 1.75rem;
   }
   
-  /* Hide heading for Enjoy Life section on mobile */
-  .enjoy-life-section .section-title-service {
-    display: none !important;
-  }
-  
-  .enjoy-life-section .section-subtitle {
-    display: none !important;
-  }
-
   /* Hide service card titles on mobile only when hovered */
   .service-card:hover .service-card-title {
     display: none !important;

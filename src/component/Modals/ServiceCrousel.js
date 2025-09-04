@@ -6,7 +6,7 @@ const EventServicesApp = () => {
 
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsMobile(window.innerWidth <= 768);
+      setIsMobile(window.innerWidth <= 1024); // Changed from 768 to 1024 to include tablet screens
     };
 
     checkScreenSize();
@@ -237,27 +237,22 @@ const EventServicesApp = () => {
   const ServiceSection = ({ section, index }) => {
     const scrollRef = useRef(null);
     const isEnjoyLifeSection = section.sectionTitle === "Enjoy Every Moment of Life";
-    const shouldHideHeading = isEnjoyLifeSection && isMobile;
     
     return (
       <div className={`service-section ${isEnjoyLifeSection ? "enjoy-life-section" : ""}`}>
-        {!shouldHideHeading && (
-          <>
-            <h1 className="section-title-service">
-              <span>
-                {section.sectionTitle.split(' ').map((word, wordIndex) => {
-                  const isHighlighted = ['Life', 'Balloons', 'Artist', 'Entry'].includes(word);
-                  return (
-                    <span key={wordIndex} className={isHighlighted ? 'highlight-text' : ''}>
-                      {word}{wordIndex < section.sectionTitle.split(' ').length - 1 ? ' ' : ''}
-                    </span>
-                  );
-                })}
-              </span>
-            </h1>
-            <p className="section-subtitle">{section.subtitle}</p>
-          </>
-        )}
+        <h1 className="section-title-service">
+          <span>
+            {section.sectionTitle.split(' ').map((word, wordIndex) => {
+              const isHighlighted = ['Life', 'Balloons', 'Artist', 'Entry'].includes(word);
+              return (
+                <span key={wordIndex} className={isHighlighted ? 'highlight-text' : ''}>
+                  {word}{wordIndex < section.sectionTitle.split(' ').length - 1 ? ' ' : ''}
+                </span>
+              );
+            })}
+          </span>
+        </h1>
+        <p className="section-subtitle">{section.subtitle}</p>
         
         <div className="scroll-container">
           {/* Left Arrow */}
