@@ -2068,31 +2068,42 @@ const ProductDetails = () => {
             <h2 className="section-title">
               Similar Products
             </h2>
-            <a href="/" className="view-more-link">View More</a>
           </div>
 
-          <div className="similar-products-grid">
+          <div className="row gy-5">
             {getProductDetails?.data?.similarProducts?.length > 0
               ? getProductDetails?.data?.similarProducts?.map((item, i) => {
                 const productId = item?.productDetails?.id || item?.productDetails?._id || i;
                 const isFavourite = isProductInWishlist(item._id || item.productDetails?.id);
                 return (
-                  <div className="product-card" key={productId}>
-                    <div className="product-image-wrapper">
-                      <img
-                        onClick={() => handleProduct(item)}
-                        src={item?.productimages?.at(0)}
-                        alt={item?.productDetails?.productname}
-                        className="product-image"
-                      />
+                  <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6" key={productId}>
+                    <div className="PrivateDiningBox">
+                      <figure>
+                        <img
+                          onClick={() => handleProduct(item)}
+                          src={item?.productimages?.at(0)}
+                          style={{ cursor: 'pointer' }}
+                          alt={item?.productDetails?.productname}
+                        />
+                      </figure>
+                      
                       {/* Favourite button */}
                       <button
                         className="product-favorite"
                         onClick={() => handleFavouriteToggle(item)}
                         aria-label={isFavourite ? "Unfavourite" : "Favourite"}
-                        style={{ background: "none", border: "none", cursor: "pointer", position: "absolute", top: "15px", right: "15px", zIndex: 2 }}
+                        style={{ 
+                          background: "none", 
+                          border: "none", 
+                          cursor: "pointer", 
+                          position: "absolute", 
+                          top: "15px", 
+                          right: "15px", 
+                          zIndex: 2 
+                        }}
                       >
-                        <i className={isFavourite ? "fa-solid fa-heart" : "fa-regular fa-heart"} style={{ color: isFavourite ? "#e5097f" : "#b1b1b1", fontSize: "1.5rem" }}></i>
+                        <i className={isFavourite ? "fa-solid fa-heart" : "fa-regular fa-heart"} 
+                           style={{ color: isFavourite ? "#e5097f" : "#b1b1b1", fontSize: "1.5rem" }}></i>
                       </button>
 
                       {item?.priceDetails?.discountedPrice && (
@@ -2105,48 +2116,40 @@ const ProductDetails = () => {
                           )}% OFF
                         </div>
                       )}
-                      <div className="product-overlay">
-                        <button
-                          className="quick-view-btn"
-                          onClick={() => handleProduct(item)}
-                        >
-                          <i className="fa-solid fa-eye"></i>
-                          Quick View
-                        </button>
-                      </div>
-                    </div>
-                    <div className="product-info">
-                      <h3 className="product-name">
-                        {item?.productDetails?.productname}
-                      </h3>
-                      <div className="product-pricing">
-                        {item?.priceDetails?.discountedPrice ? (
-                          <div className="price-container">
-                            <span className="current-price">
-                              ₹{item?.priceDetails?.discountedPrice}
-                            </span>
-                            <span className="original-price">
-                              ₹{item?.priceDetails?.price}
-                            </span>
-                          </div>
-                        ) : (
-                          <span className="current-price">
-                            ₹{item?.priceDetails?.price}
-                          </span>
-                        )}
-                      </div>
+                      
+                      {/* Location first - single row */}
                       <div className="loc">
-                        <h1> At your location</h1>
+                        <h1>At your location</h1>
                       </div>
-                      <div className="product-rating">
-                        <div className="stars">
-                          {Array.from({ length: 5 }).map((_, index) => (
-                            <i key={index} className="fa-solid fa-star"></i>
-                          ))}
+                      
+                      {/* Title second */}
+                      <h6>{item?.productDetails?.productname}</h6>
+                      
+                      {/* Main content row - price left, reviews right */}
+                      <div className="rightcard">
+                        <div className="Info">
+                          <div className="text-right">
+                            <div className="priceArea">
+                              {/* Main price */}
+                              {item?.priceDetails?.discountedPrice ? (
+                                <h5>₹{item?.priceDetails?.discountedPrice}</h5>
+                              ) : (
+                                <h5>₹{item?.priceDetails?.price}</h5>
+                              )}
+                            </div>
+                            {/* Crossed price below main price */}
+                            {item?.priceDetails?.discountedPrice && (
+                              <div className="crossed-price">
+                                ₹{item?.priceDetails?.price}
+                              </div>
+                            )}
+                          </div>
+                          
+                          {/* Reviews section - inside Info div */}
+                          <p>
+                            {(Math.random() * (4.9 - 4.0) + 4.0).toFixed(1)}
+                          </p>
                         </div>
-                        <span className="rating-count">
-                          4.{Math.floor(Math.random() * 9) + 1} ({10 + i * 3 + Math.floor(Math.random() * 50)})
-                        </span>
                       </div>
                     </div>
                   </div>
@@ -2171,102 +2174,97 @@ const ProductDetails = () => {
             </h2>
           </div>
 
-          <div className="recently-viewed-grid">
+          <div className="row gy-5">
             {recentlyViewedProducts?.length > 0 ? (
-              recentlyViewedProducts?.slice(0, 8)?.map((item, i) => (
-                <div className="recently-viewed-card" key={item._id || i}>
-                  <div className="recently-viewed-image-wrapper">
-                    <img
-                      onClick={() => handleProduct(item)}
-                      src={item?.productimages?.at(0)}
-                      alt={item?.productDetails?.productname}
-                      className="recently-viewed-image"
-                    />
+              recentlyViewedProducts?.slice(0, 8)?.map((item, i) => {
+                const isFavourite = isProductInWishlist(item._id || item.productDetails?.id);
+                return (
+                  <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6" key={item._id || i}>
+                    <div className="PrivateDiningBox">
+                      <figure>
+                        <img
+                          onClick={() => handleProduct(item)}
+                          src={item?.productimages?.at(0)}
+                          style={{ cursor: 'pointer' }}
+                          alt={item?.productDetails?.productname}
+                        />
+                      </figure>
 
-                    {/* Favorite Button */}
-                    <button
-                      className="recently-viewed-favorite"
-                      onClick={() => handleFavouriteToggle(item)}
-                    >
-                      <i className={isProductInWishlist(item._id || item.productDetails?.id) ? "fa-solid fa-heart" : "fa-regular fa-heart"}></i>
-                    </button>
-
-                    {/* Discount Badge */}
-                    {item?.priceDetails?.discountedPrice && (
-                      <div className="discount-badge">
-                        {Math.round(
-                          ((Number(item?.priceDetails?.price) -
-                            Number(item?.priceDetails?.discountedPrice)) /
-                            Number(item?.priceDetails?.price)) *
-                          100
-                        )}% OFF
-                      </div>
-                    )}
-
-
-                    {/* Hover Overlay */}
-                    <div className="recently-viewed-overlay">
+                      {/* Favorite Button */}
                       <button
-                        className="recently-viewed-quick-btn"
-                        onClick={() => handleProduct(item)}
+                        className="product-favorite"
+                        onClick={() => handleFavouriteToggle(item)}
+                        aria-label={isFavourite ? "Unfavourite" : "Favourite"}
+                        style={{ 
+                          background: "none", 
+                          border: "none", 
+                          cursor: "pointer", 
+                          position: "absolute", 
+                          top: "15px", 
+                          right: "15px", 
+                          zIndex: 2 
+                        }}
                       >
-                        <i className="fa-solid fa-eye"></i>
-                        Quick View
+                        <i className={isFavourite ? "fa-solid fa-heart" : "fa-regular fa-heart"} 
+                           style={{ color: isFavourite ? "#e5097f" : "#b1b1b1", fontSize: "1.5rem" }}></i>
                       </button>
-                    </div>
-                  </div>
 
-                  <div className="recently-viewed-info">
-                    <h3 className="recently-viewed-name">
-                      {item?.productDetails?.productname}
-                    </h3>
-
-                    <div className="recently-viewed-pricing">
-                      {item?.priceDetails?.discountedPrice ? (
-                        <div className="price-container">
-                          <span className="recently-viewed-price">
-                            ₹{item?.priceDetails?.discountedPrice}
-                          </span>
-                          <span className="recently-viewed-original-price">
-                            ₹{item?.priceDetails?.price}
-                          </span>
+                      {/* Discount Badge */}
+                      {item?.priceDetails?.discountedPrice && (
+                        <div className="discount-badge">
+                          {Math.round(
+                            ((Number(item?.priceDetails?.price) -
+                              Number(item?.priceDetails?.discountedPrice)) /
+                              Number(item?.priceDetails?.price)) *
+                            100
+                          )}% OFF
                         </div>
-                      ) : (
-                        <span className="recently-viewed-price">
-                          ₹{item?.priceDetails?.price}
-                        </span>
                       )}
-                    </div>
-                    <div className="loc">
-                      <h1> At your location</h1>
-                    </div>
-
-                    <div className="recently-viewed-rating">
-                      <div className="recently-viewed-stars">
-                        {Array.from({ length: 5 }).map((_, index) => (
-                          <i key={index} className="fa-solid fa-star"></i>
-                        ))}
+                      
+                      {/* Location first - single row */}
+                      <div className="loc">
+                        <h1>At your location</h1>
                       </div>
-                      <span className="recently-viewed-rating-text">
-                        {(4.0 + (i * 0.2)).toFixed(1)}
-                      </span>
-                    </div>
-
-                    {/* Add "Viewed on" timestamp */}
-                    <div className="recently-viewed-timestamp">
-                      <i className="fa-solid fa-clock"></i>
-                      <span>Recently viewed</span>
+                      
+                      {/* Title second */}
+                      <h6>{item?.productDetails?.productname}</h6>
+                      
+                      {/* Main content row - price left, reviews right */}
+                      <div className="rightcard">
+                        <div className="Info">
+                          <div className="text-right">
+                            <div className="priceArea">
+                              {/* Main price */}
+                              {item?.priceDetails?.discountedPrice ? (
+                                <h5>₹{item?.priceDetails?.discountedPrice}</h5>
+                              ) : (
+                                <h5>₹{item?.priceDetails?.price}</h5>
+                              )}
+                            </div>
+                            {/* Crossed price below main price */}
+                            {item?.priceDetails?.discountedPrice && (
+                              <div className="crossed-price">
+                                ₹{item?.priceDetails?.price}
+                              </div>
+                            )}
+                          </div>
+                          
+                          {/* Reviews section - inside Info div */}
+                          <p>
+                            {(4.0 + (i * 0.2)).toFixed(1)}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             ) : (
               <div className="no-recently-viewed">
                 <i className="fa-solid fa-clock-rotate-left"></i>
                 <div className="no-recently-viewed-content">
                   <h4>No recently viewed items</h4>
                   <p>Products you view will appear here</p>
-
                 </div>
               </div>
             )}

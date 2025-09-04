@@ -865,7 +865,7 @@
 
 .booking-summary-book-btn {
   width: 100%;
-  background: #6c2eb6;
+  background: #e5097f;
   color: #fff;
   border: none;
   padding: 1rem 0;
@@ -881,7 +881,7 @@
 }
 
 .booking-summary-book-btn:hover {
-  background: #4b1c7a;
+  background: #e5097f;
 }
 
 .booking-summary-arrow {
@@ -987,12 +987,12 @@
 }
 
 .recommended-tab.active {
-  color: #6f42c1;
-  border-bottom-color: #6f42c1;
+  color: #e5097f;
+  border-bottom-color: #e5097f;
 }
 
 .recommended-tab:hover {
-  color: #6f42c1;
+  color: #e5097f;
 }
 
 /* Filter Tags */
@@ -1016,14 +1016,14 @@
 }
 
 .filter-tag.active {
-  background: #6f42c1;
-  border-color: #6f42c1;
+  background: #e5097f;
+  border-color: #e5097f;
   color: white;
 }
 
 .filter-tag:hover {
   background: #e9ecef;
-  border-color: #6f42c1;
+  border-color: #e5097f;
 }
 
 /* Products Grid */
@@ -1114,7 +1114,7 @@
 }
 
 .recommended-product-link span {
-  color: #6f42c1;
+  color: #e5097f;
   font-size: 0.8rem;
   font-weight: 500;
   cursor: pointer;
@@ -1177,7 +1177,7 @@
 }
 
 .recommended-product-toggle input:checked+.toggle-slider {
-  background-color: #6f42c1;
+  background-color: #e5097f;
 }
 
 .recommended-product-toggle input:checked+.toggle-slider:before {
@@ -1203,8 +1203,8 @@
 }
 
 .recommended-nav-arrow:hover {
-  border-color: #6f42c1;
-  color: #6f42c1;
+  border-color: #e5097f;
+  color: #e5097f;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -2197,10 +2197,20 @@
 }
 
 .faq-question {
-  font-weight: 600;
+  background: none;
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 1.05em;
+  padding: 16px 20px 0 !important;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 500;
   color: #303943;
   margin-bottom: 0.5rem;
-  font-size: 1rem;
   line-height: 1.4;
 }
 
@@ -2350,7 +2360,7 @@
 .section-header .section-title {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #8B5CF6;
+  color: #e5097f;
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
@@ -2375,9 +2385,11 @@
 .similar-products-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.2rem;
-  padding: 0;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
+
+
 
 
 .product-card {
@@ -2695,7 +2707,7 @@
 .recently-viewed-title {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #8B5CF6;
+  color: #e5097f;
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
@@ -3405,7 +3417,7 @@
 
 .bottom-booking-tab.active {
   color: #333;
-  border-bottom-color: #8B5CF6;
+  border-bottom-color: #e5097f;
   font-weight: 600;
 }
 
@@ -3450,7 +3462,7 @@
 }
 
 .bottom-booking-button {
-  background: #8B5CF6;
+  background: #e5097f;
   color: white;
   border: none;
   padding: 12px 24px;
