@@ -105,7 +105,7 @@ const AddAddress = ({ naviState, navupdateState, userDetail }) => {
       },
     };
     dispatch(personalInfoEditApi(payload)).then((res) => {
-      toast?.success(res?.payload?.data?.message);
+      toast?.success(res?.payload?.message);
       navupdateState({ ...naviState, addressModal: false });
       dispatch(addressListing({ userId: userDetail?._id }));
     });
@@ -133,7 +133,7 @@ const AddAddress = ({ naviState, navupdateState, userDetail }) => {
         .then((res) => {
           console.log({ res });
           if (res?.payload?.status == 200) {
-            toast?.success(res?.payload?.data?.message);
+            toast?.success(res?.payload?.message);
             navupdateState({ ...naviState, addressModal: false });
             if (editMode === false) {
               dispatch(addressListing({ userId: userDetail?._id }));
@@ -141,7 +141,7 @@ const AddAddress = ({ naviState, navupdateState, userDetail }) => {
             }
             if (editMode !== false) {
               window.localStorage.setItem("LoginTimer",false);
-              updateState({ ...initialState, congratsModal: true,allDetails: res?.payload?.data?.data});
+              updateState({ ...initialState, congratsModal: true,allDetails: res?.payload?.data});
             }
           }
         })

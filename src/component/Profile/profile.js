@@ -182,10 +182,10 @@ const Profile = () => {
         userId: userDetail?._id,
       };
       dispatch(personalInfoUpdateSlice(payload)).then((res) => {
-        toast?.success(res?.payload?.data?.message);
+        toast?.success(res?.payload?.message);
         window.localStorage?.setItem(
           "LennyUserDetail",
-          JSON?.stringify(res?.payload?.data?.data)
+          JSON?.stringify(res?.payload?.data)
         );
         updateState({ ...iState, profileEditModal: false });
       });
@@ -293,7 +293,7 @@ const Profile = () => {
       addressId: addressDetail?._id,
     };
     dispatch(addressDelete(data)).then((res) => {
-      toast?.success(res?.payload?.data?.message);
+      toast?.success(res?.payload?.message);
       updateState({ ...iState, deleteModal: false, addressDetail: "" });
       dispatch(addressListing({ userId: userDetail?._id }));
     });

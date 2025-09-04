@@ -6,15 +6,16 @@ import { credAndUrl } from "../../../config/config";
 
 export const loginApiSlice = createAsyncThunk(
     "loginApi/loginApiSlice",
-    async (payload) => {
+    async (payload, { rejectWithValue }) => {
         try {
             const response = await axios.post(
                 `${credAndUrl?.BASE_URL}customer/checking-phone`,
                 payload
             );
-            return response;
+            return response?.data;
         } catch (e) {
-            console.log('Error', e)
+            console.log('Error', e);
+            return rejectWithValue(e?.response?.data || { status: 500, message: 'Something went wrong' });
         }
     }
 );
@@ -23,16 +24,16 @@ export const loginApiSlice = createAsyncThunk(
 
 export const otpVerificationApiSlice = createAsyncThunk(
     "auth/otpVerificationApiSlice",
-    async (payload) => {
+    async (payload, { rejectWithValue }) => {
         try {
             const response = await axios.post(
                 `${credAndUrl?.BASE_URL}customer/verifyOtp-phone`,
                 payload
             );
-            return response;
+            return response?.data;
         } catch (e) {
-            console.log('Error', e)
-            return e;
+            console.log('Error', e);
+            return rejectWithValue(e?.response?.data || { status: 500, message: 'Something went wrong' });
         }
     }
 );
@@ -44,9 +45,10 @@ export const personalInfoUpdateSlice = createAsyncThunk(
             const response = await axios.patch(
                 `${credAndUrl?.BASE_URL}customer/userupdation/${payload?.userId}`,payload?.data
             );
-            return response;
+            return response?.data;
         } catch (e) {
             console.log('Error', e)
+            return e?.response?.data;
         }
     }
 );
@@ -66,9 +68,10 @@ export const personalInfoApiSlice = createAsyncThunk(
                     }
                 }
             );
-            return response;
+            return response?.data;
         } catch (e) {
             console.log('Error', e)
+            return e?.response?.data;
         }
     }
 );
@@ -80,9 +83,10 @@ export const personalInfoEditApi = createAsyncThunk(
             const response = await axios.put(
                 `${credAndUrl?.BASE_URL}customer/updateaddress/${payload?.userId}/${payload?.addressId}`,payload?.data
             );
-            return response;
+            return response?.data;
         } catch (e) {
             console.log('Error', e)
+            return e?.response?.data;
         }
     }
 );
@@ -95,9 +99,10 @@ export const personalAddrApiSlice = createAsyncThunk(
             const response = await axios.post(
                 `${credAndUrl?.BASE_URL}customer/customermultipleaddress/${payload?.userId}`,payload?.data,
             );
-            return response;
+            return response?.data;
         } catch (e) {
             console.log('Error', e)
+            return e?.response?.data;
         }
     }
 );
@@ -109,10 +114,10 @@ export const addressDelete = createAsyncThunk(
             const response = await axios.delete(
                 `${credAndUrl?.BASE_URL}customer/deleteparticluaraddress/${payload?.userId}/${payload?.addressId}`,
             );
-            return response;
+            return response?.data;
         } catch (e) {
-            
             console.log('Error', e)
+            return e?.response?.data;
         }
     }
 );

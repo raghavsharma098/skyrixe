@@ -26,6 +26,11 @@ const OtpVerification = ({
   const { signUpModal } = editModal;
   const { otpModal, phone, otp, init, check } = states;
   const [createAccountModal, setCreateAccountModal] = useState(false);
+  
+  // Debug createAccountModal state changes
+  useEffect(() => {
+    console.log("CreateAccount modal state changed:", createAccountModal);
+  }, [createAccountModal]);
   const { getUserDetailState } = useSelector((state) => state.productList);
 
   // const init = 10;
@@ -102,34 +107,64 @@ const OtpVerification = ({
     dispatch(otpVerificationApiSlice({ phone, otp: Number(str) }))
       .then((res) => {
         console.log({ res }, "res yaha");
-        if (res?.payload?.response?.data?.status == 400) {
-          toast.error(res?.payload?.response?.data?.message);
-        } else if (res?.payload?.data?.status == 200) {
-          updateSignState({ ...states, otpModal: false });
-          if (!res?.payload?.data?.message?.endsWith("Login successful.")) {
-            setCreateAccountModal(true);
-            window.localStorage.setItem("LoginTimer", false);
+        console.log("Payload:", res?.payload);
+        console.log("Status:", res?.payload?.status);
+        console.log("Message:", res?.payload?.message);
+        console.log("Action type:", res?.type);
+        
+        // Check if action was fulfilled or rejected
+        if (res?.type?.endsWith('/fulfilled')) {
+          if (res?.payload?.status == 400) {
+            toast.error(res?.payload?.message);
+          } else if (res?.payload?.status == 200) {
+            updateSignState({ ...states, otpModal: false });
+            if (!res?.payload?.message?.endsWith("Login successful.")) {
+              console.log("Setting createAccountModal to true - user needs to complete profile");
+              setCreateAccountModal(true);
+              // Close the main signup modal as well
+              editUpdate({ ...editModal, signUpModal: false });
+              // Set user detail for the create account modal
+              updateState({ ...iState, userDetail: res?.payload?.data });
+              // Store user data in localStorage so header shows profile instead of login
+              window.localStorage?.setItem(
+                "LennyUserDetail",
+                JSON?.stringify(res?.payload?.data)
+              );
+              window.localStorage.setItem("LoginTimer", false);
+              // Update Redux state to indicate user is logged in
+              dispatch(userDetailState(true));
+            } else {
+              console.log("User already exists - completing login");
+              window.localStorage?.setItem(
+                "LennyUserDetail",
+                JSON?.stringify(res?.payload?.data)
+              );
+              window.localStorage.setItem("LoginTimer", false);
+              dispatch(userDetailState(true));
+              setCookie(
+                "LennyCheck",
+                check,
+                { path: "/" },
+                { expires: new Date("9999-12-31") }
+              );
+              setCookie(
+                "LennyPhone_number",
+                phone,
+                { path: "/" },
+                { expires: new Date("9999-12-31") }
+              );
+            }
+            updateState({ ...iState, userDetail: res?.payload?.data });
           } else {
-            window.localStorage?.setItem(
-              "LennyUserDetail",
-              JSON?.stringify(res?.payload?.data?.data)
-            );
-            window.localStorage.setItem("LoginTimer", false);
-            dispatch(userDetailState(true));
-            setCookie(
-              "LennyCheck",
-              check,
-              { path: "/" },
-              { expires: new Date("9999-12-31") }
-            );
-            setCookie(
-              "LennyPhone_number",
-              phone,
-              { path: "/" },
-              { expires: new Date("9999-12-31") }
-            );
+            console.log("Unexpected status:", res?.payload?.status);
+            toast.error("OTP verification failed. Please try again.");
           }
-          updateState({ ...iState, userDetail: res?.payload?.data });
+        } else if (res?.type?.endsWith('/rejected')) {
+          console.log("API call was rejected:", res?.payload);
+          toast.error(res?.payload?.message || "OTP verification failed. Please try again.");
+        } else {
+          console.log("Unexpected action type:", res?.type);
+          toast.error("OTP verification failed. Please try again.");
         }
       })
       .catch((err) => {
@@ -149,10 +184,10 @@ const OtpVerification = ({
         if (res?.payload?.status == 200) {
           updateSignState({
             ...states,
-            otp: res?.payload?.data?.otp,
+            otp: res?.payload?.otp,
             init: 59,
           });
-          toast.success(`${res?.payload?.data?.message}`);
+          toast.success(`${res?.payload?.message}`);
         }
       })
       .catch((err) => {
