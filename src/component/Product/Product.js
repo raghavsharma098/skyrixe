@@ -52,6 +52,8 @@ const Product = () => {
   const dispatch = useDispatch();
   const [iState, updateState] = useState(initialState);
   const [sortedProducts, setSortedProducts] = useState([]);
+  const [currentCarouselIndex, setCurrentCarouselIndex] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const {
     city,
     filter_city,
@@ -131,6 +133,32 @@ const Product = () => {
   const handleCategory = (item, subCat) => {
     navigate("/products", { state: { item, subCat, selectCity } });
     window.scrollTo({ top: 150, behavior: "smooth" });
+  };
+
+  // Carousel Navigation Functions
+  const handleNextCard = () => {
+    const totalCards = getCategoryProductList?.subcategory?.length || 0;
+    let maxVisibleCards;
+    
+    if (windowWidth <= 480) {
+      maxVisibleCards = 1; // Extra small mobile: show 1 centered
+    } else if (windowWidth <= 768) {
+      maxVisibleCards = 1; // Mobile: show 1 centered with peek
+    } else if (windowWidth <= 1024) {
+      maxVisibleCards = 3; // Tablet: show 3 full + part of 4th
+    } else {
+      maxVisibleCards = 5; // Desktop: show 5 full + part of 6th
+    }
+    
+    if (currentCarouselIndex < totalCards - 1) {
+      setCurrentCarouselIndex(prev => prev + 1);
+    }
+  };
+
+  const handlePrevCard = () => {
+    if (currentCarouselIndex > 0) {
+      setCurrentCarouselIndex(prev => prev - 1);
+    }
   };
 
   const handleSortModal = () => {
@@ -297,6 +325,17 @@ const Product = () => {
     setSortedProducts(sortedData);
   }, [getCategoryProductList, sortBy]);
 
+  // Window resize effect for responsive carousel
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+      setCurrentCarouselIndex(0); // Reset carousel position on resize
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <>
       <div className="Main products-page-container">
@@ -324,89 +363,70 @@ const Product = () => {
           />
         </div>
         <div className="FeatureArea carouselPadding">
-          {getCategoryProductList?.subcategory?.length <= 3 ? (
-            <div
-              className="container-fluid"
-              style={{
-                width: "96%",
-                display: "flex",
-                justifyContent: "space-evenly",
-              }}
-            >
-              {getCategoryProductList?.subcategory?.map((item, i) => {
-                return (
-                  <div key={i}>
-                    <div className="item">
-                      <div className="FeatureBoxMain">
-                        <div className="FeatureBox1" style={{ height: "auto" }}>
-                          <figure
-                            onClick={() =>
-                              handleCategory(
-                                { categoryName: state?.item?.categoryName },
-                                item?.subcategoryName
-                              )
-                            }
-                            style={{ cursor: "pointer" }}
-                          >
-                            <img src={item?.subcategoryImage} />
-                          </figure>
+          <div className="modern-carousel-section">
+            <div className="container-fluid">
+              <div className="modern-carousel-wrapper">
+                {/* Previous Arrow */}
+                {currentCarouselIndex > 0 && (
+                  <button 
+                    className="modern-carousel-nav modern-nav-prev" 
+                    onClick={handlePrevCard}
+                  >
+                    <i className="fa-solid fa-chevron-left"></i>
+                  </button>
+                )}
 
-                          <h4
-                            data-tooltip-content={item?.subcategoryName}
-                          >
-                            {item?.subcategoryName}
-                          </h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            getCategoryProductList && (
-              <div
-                className="container-fluid"
-                style={{
-                  width: "96%",
-                }}
-              >
-                <Slider {...settings}>
-                  {getCategoryProductList?.subcategory?.length > 0
-                    ? getCategoryProductList?.subcategory?.map((item, i) => {
+                {/* Carousel Container */}
+                <div className="modern-carousel-container">
+                  <div 
+                    className="modern-carousel-track"
+                    style={{
+                      transform: `translateX(-${currentCarouselIndex * (windowWidth <= 480 ? 65 : windowWidth <= 768 ? 70 : windowWidth <= 1024 ? 30 : 18)}%)`,
+                    }}
+                  >
+                    {getCategoryProductList?.subcategory?.map((item, i) => {
+                      // Determine if this item should be highlighted (centered)
+                      const isActive = i === currentCarouselIndex;
+                      
                       return (
-                        <div className="item" key={i}>
-                          <div className="FeatureBoxMain">
-                            <div className="FeatureBox1">
-                              <figure
-                                onClick={() =>
-                                  handleCategory(
-                                    {
-                                      categoryName: state?.item?.categoryName,
-                                    },
-                                    item?.subcategoryName
-                                  )
-                                }
-                                style={{ cursor: "pointer" }}
-                              >
-                                <img src={item?.subcategoryImage} />
-                              </figure>
-
-                              <h4
-                                data-tooltip-content={item?.subcategoryName}
-                              >
-                                {item?.subcategoryName}
-                              </h4>
-                            </div>
+                        <div 
+                          key={i} 
+                          className={`modern-carousel-item ${isActive ? 'active' : ''}`}
+                          onClick={() =>
+                            handleCategory(
+                              { categoryName: state?.item?.categoryName },
+                              item?.subcategoryName
+                            )
+                          }
+                        >
+                          <div className="modern-item-image">
+                            <img src={item?.subcategoryImage} alt={item?.subcategoryName} />
+                          </div>
+                          <div className="modern-item-text">
+                            <h4>{item?.subcategoryName}</h4>
                           </div>
                         </div>
                       );
-                    })
-                    : ""}
-                </Slider>
+                    })}
+                  </div>
+                </div>
+
+                {/* Next Arrow */}
+                {(() => {
+                  const totalCards = getCategoryProductList?.subcategory?.length || 0;
+                  
+                  return currentCarouselIndex < totalCards - 1;
+                })() && (
+                  <button 
+                    className="modern-carousel-nav modern-nav-next" 
+                    onClick={handleNextCard}
+                  >
+                    <i className="fa-solid fa-chevron-right"></i>
+                  </button>
+                )}
               </div>
-            )
-          )}
+            </div>
+          </div>
         </div>
         <div className="PrivateDining">
           <div className="container-fluid">

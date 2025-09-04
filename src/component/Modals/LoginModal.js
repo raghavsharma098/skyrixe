@@ -201,8 +201,8 @@ const LoginModal = ({
 
       console.log('OTP verification response:', response);
 
-      if (response?.payload?.response?.data?.status === 400) {
-        const errorMessage = response?.payload?.response?.data?.message || "Invalid OTP. Please try again.";
+      if (response?.payload?.status === 400) {
+        const errorMessage = response?.payload?.message || "Invalid OTP. Please try again.";
         toast.error(errorMessage);
         setErrors({ otp: errorMessage });
 
@@ -211,16 +211,16 @@ const LoginModal = ({
         const firstInput = document.querySelector(`input[name="otp-0"]`);
         if (firstInput) firstInput.focus();
 
-      } else if (response?.payload?.data?.status === 200) {
+      } else if (response?.payload?.status === 200) {
         // Check if user needs to create account
-        if (!response?.payload?.data?.message?.endsWith("Login successful.")) {
+        if (!response?.payload?.message?.endsWith("Login successful.")) {
           // New user - show create account modal
-          setUserDetail(response?.payload?.data);
+          setUserDetail(response?.payload);
           setCreateAccountModal(true);
           resetLoginState();
         } else {
           // Existing user - complete login
-          const userData = response?.payload?.data?.data;
+          const userData = response?.payload?.data;
 
           // Store user data
           window.localStorage.setItem("LennyUserDetail", JSON.stringify(userData));

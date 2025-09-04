@@ -121,7 +121,7 @@ const CreateAccount = ({
           if (res?.payload?.status == 200) {
             setCreateAccountModal(false);
             window.localStorage.setItem("LoginTimer",false);
-            updateState({ ...initialState, addressModal: true,registerDetails:res?.payload?.data?.data });
+            updateState({ ...initialState, addressModal: true,registerDetails:res?.payload?.data });
           }
         })
         .catch((err) => {

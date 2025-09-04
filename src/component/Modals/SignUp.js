@@ -248,11 +248,11 @@ const handleEmailLogin = async ({ email, password }) => {
           if (res?.payload?.status === 200) {
             updateSignState({
               ...states,
-              otp: res.payload.data.otp,
+              otp: res.payload.otp,
               otpModal: true,
               init: 59,
             });
-            toast.success(`${res?.payload?.data?.message}`);
+            toast.success(`${res?.payload?.message}`);
             updateState({ ...iState, signUpModal: false }); // hide modal
           }
         })
