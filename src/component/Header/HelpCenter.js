@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,6 +12,13 @@ const HelpCenter = () => {
     phone: "",
     enquiry: "",
   });
+
+  // Allow other components to open this modal via a global event
+  useEffect(() => {
+    const openHandler = () => setShowHelpModal(true);
+    window.addEventListener("openHelpCenter", openHandler);
+    return () => window.removeEventListener("openHelpCenter", openHandler);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

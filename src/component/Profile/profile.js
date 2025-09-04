@@ -415,7 +415,7 @@ const Profile = () => {
       <section className="CheckOutDetails" style={{ paddingBottom: 250 }}>
         <div className="container-fluid">
           <div className="row">
-            <TabContainer defaultActiveKey={type}>
+            <TabContainer activeKey={type}>
               <div className="col-lg-4 col-md-5">
                 <div className="PersonalDetailsBox">
                   <Nav>

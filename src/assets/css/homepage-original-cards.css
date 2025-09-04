@@ -265,14 +265,14 @@
   top: 50%;
   transform: translateY(-50%);
   background: rgba(255, 255, 255, 0.9);
-  border: none;
-  width: 40px;
-  height: 40px;
+  border: 1px solid #ddd;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   cursor: pointer;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 14px;
   color: #333;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
@@ -315,6 +315,60 @@
   
   .homepage-current-price {
     font-size: 16px;
+  }
+  
+  /* Add pink circle to arrow buttons on mobile */
+  .scroll-container-wrapper .custom-arrow,
+  .scroll-container-wrapper .testimonial-nav-btn,
+  .scroll-container-wrapper .anniversary-nav-btn,
+  .scroll-container-wrapper .kids-nav-btn,
+  .scroll-container-wrapper .baby-shower-nav-btn,
+  .scroll-container-wrapper .birthday-scroll-arrow,
+  .scroll-container-wrapper .anniversary-scroll-arrow,
+  .scroll-container-wrapper .kids-scroll-arrow,
+  .scroll-container-wrapper .baby-shower-scroll-arrow,
+  .owl-carousel .owl-nav button.owl-prev,
+  .owl-carousel .owl-nav button.owl-next,
+  .slick-slider .slick-prev,
+  .slick-slider .slick-next {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    background: #e91e63 !important;
+    border: 2px solid #e91e63 !important;
+    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3) !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  /* Position arrow buttons inside screen on mobile */
+  .scroll-container-wrapper .custom-arrow.prev,
+  .scroll-container-wrapper .testimonial-nav-btn.prev,
+  .scroll-container-wrapper .anniversary-nav-btn.prev,
+  .scroll-container-wrapper .kids-nav-btn.prev,
+  .scroll-container-wrapper .baby-shower-nav-btn.prev,
+  .scroll-container-wrapper .birthday-scroll-arrow.prev,
+  .scroll-container-wrapper .anniversary-scroll-arrow.prev,
+  .scroll-container-wrapper .kids-scroll-arrow.prev,
+  .scroll-container-wrapper .baby-shower-scroll-arrow.prev,
+  .owl-carousel .owl-nav button.owl-prev,
+  .slick-slider .slick-prev {
+    left: 15px !important;
+  }
+  
+  .scroll-container-wrapper .custom-arrow.next,
+  .scroll-container-wrapper .testimonial-nav-btn.next,
+  .scroll-container-wrapper .anniversary-nav-btn.next,
+  .scroll-container-wrapper .kids-nav-btn.next,
+  .scroll-container-wrapper .baby-shower-nav-btn.next,
+  .scroll-container-wrapper .birthday-scroll-arrow.next,
+  .scroll-container-wrapper .anniversary-scroll-arrow.next,
+  .scroll-container-wrapper .kids-scroll-arrow.next,
+  .scroll-container-wrapper .baby-shower-scroll-arrow.next,
+  .owl-carousel .owl-nav button.owl-next,
+  .slick-slider .slick-next {
+    right: 15px !important;
   }
 }
 
@@ -359,6 +413,22 @@
     padding: 10px 18px !important;
     font-size: 13px !important;
     white-space: nowrap !important;
+  }
+  
+  /* Remove circle from arrow buttons on small mobile */
+  .scroll-container-wrapper .custom-arrow,
+  .scroll-container-wrapper .testimonial-nav-btn,
+  .scroll-container-wrapper .anniversary-nav-btn,
+  .scroll-container-wrapper .kids-nav-btn,
+  .scroll-container-wrapper .baby-shower-nav-btn,
+  .scroll-container-wrapper .birthday-scroll-arrow,
+  .scroll-container-wrapper .anniversary-scroll-arrow,
+  .scroll-container-wrapper .kids-scroll-arrow,
+  .scroll-container-wrapper .baby-shower-scroll-arrow {
+    border-radius: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
   }
 }
 

@@ -47,33 +47,41 @@ const initialState = {
   sortBy: "recommended"
 };
 
-const Product = () => {
+const Product = ({ categoryName }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [iState, updateState] = useState(initialState);
-  const [sortedProducts, setSortedProducts] = useState([]);
-  const [currentCarouselIndex, setCurrentCarouselIndex] = useState(0);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const {
     city,
+    pincode,
     filter_city,
     minPrice,
     maxPrice,
-    set_maxPrice,
+    filter_minPrice,
+    filter_maxPrice,
+    showAll,
     set_minPrice,
+    set_maxPrice,
+    set_filter_minPrice,
+    set_filter_maxPrice,
+    cityApply,
     isLoc_open,
     isPrice_open,
+    isBestfilter_open,
     sameDay,
     discount,
     showSortModal,
     sortBy
   } = iState;
   const [value, setValue] = useState([minPrice, maxPrice]);
+  const [sortedProducts, setSortedProducts] = useState([]);
+  const [currentCarouselIndex, setCurrentCarouselIndex] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const state = location?.state;
   const selectCity = window.localStorage.getItem("LennyCity");
   const { loader, getCategoryProductList } = useSelector(
     (state) => state.productList
   );
-  const state = location?.state;
   const navigate = useNavigate();
 
   const handleProduct = (item) => {
@@ -248,16 +256,18 @@ const Product = () => {
   };
 
   useEffect(() => {
-    if (state || selectCity) {
+    // Use categoryName prop if provided, otherwise use navigation state
+    const category = categoryName || state?.item?.categoryName;
+    if (category || selectCity) {
       updateState({ ...iState, city: selectCity, filter_city: selectCity });
       const data = {
-        category: state?.item?.categoryName,
+        category: category,
         subcategory: state?.subCat,
         city: selectCity,
       };
       dispatch(categoryProductList(data));
     }
-  }, [state, selectCity, window.localStorage]);
+  }, [categoryName, state, selectCity, window.localStorage]);
 
   useEffect(() => {
     const data = {

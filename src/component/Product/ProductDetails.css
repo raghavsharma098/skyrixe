@@ -692,22 +692,6 @@
   align-items: center;
   gap: 8px;
 }
-/* 
-.selected-recommended-items h4::before {
-  content: "✓";
-  background: #28a745;
-  color: white;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: bold;
-} */
-
-/* Selected Items List */
 .selected-items-list {
   display: flex;
   flex-direction: column;
@@ -1203,8 +1187,8 @@
 }
 
 .recommended-nav-arrow:hover {
-  border-color: #e5097f;
-  color: #e5097f;
+  border-color: #333;
+  color: #333;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 

@@ -35,7 +35,7 @@ const initialState = {
 const Header = () => {
   const [showCitySelector, setShowCitySelector] = useState(false);
   const [iState, updateState] = useState(initialState);
-  let categoryArr = ["BIRTHDAY", "ANNIVERSARY", "BABY SHOWER", "THEME DECOR'S FOR BOYS", "THEME DECOR'S FOR GIRLS"];
+  let categoryArr = ["BIRTHDAY", "ANNIVERSARY", "BABY SHOWER", "THEME DECOR'S FOR BOYS", "THEME DECOR'S FOR GIRLS", "DIWALI DECORATION"];
   const dispatch = useDispatch();
   const pathDetail = useLocation();
 
@@ -240,7 +240,7 @@ const Header = () => {
   console.log({ LoginTimer });
   return (
     <>
-      <header className="newHeader">
+      <header className={`newHeader ${userDetail ? "logged-in" : ""}`}>
         <nav class="navbar navbar-expand-lg navbar-light">
           <div class="container-fluid">
             <div className="logoArea">
@@ -272,12 +272,12 @@ const Header = () => {
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
               >
-                <img src={require("../../assets/images/Header_Logo.png")} />
+                <img src={require("../../assets/images/Header_Logo.png")} style={{width: '180px', height: 'auto'}} />
               </a>
             </div>
             <form class="headerTwoBtn d-block d-lg-none">
               <div className="d-flex">
-                <div className="citySelectorBtn">
+                <div className="citySelectorBtn" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <button
                     className="cityButton"
                     onClick={() => setShowCitySelector(true)}
@@ -563,9 +563,29 @@ const Header = () => {
                   
                   {/* Navigation Links */}
                   <div className="mobile-nav-links">
-                    <Link to="/profile" className="mobile-nav-link">MY ACCOUNT</Link>
-                    <Link to="/upcoming-bookings" className="mobile-nav-link">TRACK ORDER</Link>
-                    <Link to="/help" className="mobile-nav-link">HELP CENTER</Link>
+                    <Link
+                      to="/profile"
+                      className="mobile-nav-link"
+                      onClick={() => updateState({ ...iState, openSidebar: false, expandedCategory: null })}
+                    >
+                      MY ACCOUNT
+                    </Link>
+                    <Link
+                      to="/upcoming-bookings"
+                      className="mobile-nav-link"
+                      onClick={() => updateState({ ...iState, openSidebar: false, expandedCategory: null })}
+                    >
+                      TRACK ORDER
+                    </Link>
+                    <a
+                      className="mobile-nav-link"
+                      onClick={() => {
+                        updateState({ ...iState, openSidebar: false, expandedCategory: null });
+                        window.dispatchEvent(new Event("openHelpCenter"));
+                      }}
+                    >
+                      HELP CENTER
+                    </a>
                   </div>
                   
                   {/* Mobile Categories */}
@@ -580,17 +600,28 @@ const Header = () => {
                             ? "#ff3f6c"
                             : index == 3
                               ? "#0db7af"
-                              : "#e91e63";
+                              : index == 4
+                                ? "#e91e63"
+                                : "#ff6b35"; // Orange color for Diwali
 
                       return (
                         <div key={index} className="mobile-category-item">
                           <div 
                             className="mobile-category-header"
-                            onClick={() => toggleMobileCategory(category_name)}
+                            onClick={() => {
+                              if (category_name === "DIWALI DECORATION") {
+                                handleCategory({categoryName: "DIWALI DECORATION"}, "Diwali Decoration");
+                                updateState({ ...iState, openSidebar: false, expandedCategory: null });
+                              } else {
+                                toggleMobileCategory(category_name);
+                              }
+                            }}
                             style={{ borderLeftColor: categoryColor }}
                           >
                             <span className="category-name">{category_name}</span>
-                            <i className={`fa-solid ${isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+                            {category_name !== "DIWALI DECORATION" && (
+                              <i className={`fa-solid ${isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+                            )}
                           </div>
                           
                           {isExpanded && (
@@ -754,8 +785,60 @@ const Header = () => {
                     </button>
                   </div>
 
+                  {userDetail && (
+                    <button
+                      className="cartButton"
+                      onClick={() => navigate('/cart')}
+                      type="button"
+                      style={{
+                        marginLeft: '15px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '10px 15px',
+                        border: '1px solid #e5097f',
+                        borderRadius: '8px',
+                        backgroundColor: '#e5097f',
+                        color: '#fff',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                        position: 'relative',
+                        height: '44px',
+                        minWidth: '44px'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.backgroundColor = '#c7087a';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.backgroundColor = '#e5097f';
+                      }}
+                    >
+                      <MdAddShoppingCart style={{ fontSize: '18px' }} />
+                      {getOrderSummaryDetail?.data && (
+                        <span style={{
+                          position: 'absolute',
+                          top: '-8px',
+                          right: '-8px',
+                          backgroundColor: '#ff4444',
+                          color: 'white',
+                          borderRadius: '50%',
+                          width: '20px',
+                          height: '20px',
+                          fontSize: '12px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontWeight: 'bold'
+                        }}>
+                          1
+                        </span>
+                      )}
+                    </button>
+                  )}
+                </div>
+
                   {userDetail && getOrderSummaryDetail ? (
-                    <div className="Icons Avater">
+                    <div className="Icons Avater d-lg-none">
                       <a className="UserIcon subAvater">
                         <img
                           src={require("../../assets/images/shopping-cart.png")}
@@ -806,41 +889,6 @@ const Header = () => {
                   )}
 
                   <ul className="Icons">
-                    <li>
-                      <Link
-                        to="/upcoming-bookings"
-                        className="cart-icon-link"
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          padding: '8px',
-                          border: '1px solid #e4e9ee',
-                          borderRadius: '8px',
-                          backgroundColor: 'transparent',
-                          textDecoration: 'none',
-                          transition: 'all 0.3s ease',
-                          height: '44px',
-                          minWidth: '44px',
-                        }}
-                        onMouseEnter={(e) => {
-                          e.target.style.backgroundColor = 'rgba(48, 57, 67, 0.05)';
-                          e.target.style.borderColor = '#303943';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.backgroundColor = 'transparent';
-                          e.target.style.borderColor = '#e4e9ee';
-                        }}
-                      >
-                        <MdAddShoppingCart
-                          style={{ 
-                            fontSize: '20px', 
-                            color: '#303943',
-                            transition: 'color 0.3s ease'
-                          }}
-                        />
-                      </Link>
-                    </li>
                     {!userDetail && (
                       <li>
                         <button 
@@ -889,7 +937,7 @@ const Header = () => {
                   {/* <button class="loginBtn" type="submit">
                       Login
                       </button> */}
-                </div>
+                
               </form>
             </div>
 

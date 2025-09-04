@@ -1,3 +1,27 @@
+/* Hide cart button on laptop/desktop */
+@media (min-width: 992px) {
+  .cart-icon-link { display: none !important; }
+}
+@media (max-width: 425px) {
+  .newHeader .navbar .navbar-brand {
+    width: 129px !important;
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 375px) {
+  .newHeader .navbar .navbar-brand {
+    width: 122px !important;
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 320px) {
+  .newHeader .navbar .navbar-brand {
+    width: 115px !important;
+    margin-right: 0;
+  }
+}
 @charset "utf-8";
 /* CSS Document */
 
@@ -446,7 +470,8 @@ header .HeaderArea .HeaderSearch span {
     width: 100% !important;
   }
   .headerTwoBtn .citySelectorBtn {
-    margin-left: auto !important;
+
+    margin-right: 1px !important;
   }
 }
 
@@ -3649,6 +3674,22 @@ i.fa-star {
     transform: translate(0px, 66px)!important;
 } */
 
+/* Global .show style override */
+.show {
+  color: #aa1295;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0px 0px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  border: 0;
+}
+
 .FeatureArea {
   padding: 40px 15px 30px;
   overflow: hidden;
@@ -4841,10 +4882,11 @@ header nav {
 .Categories {
   display: flex;
   align-items: center;
-  background-color: #f7f6f6;
+  background-color: transparent;
   padding: 0 0;
-  border-radius: 6px;
-  border: 1px solid #ddd;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
 }
 
 .Categories_hover .CategoriesMenu:hover .Categories_dropdown {
@@ -5411,6 +5453,15 @@ header nav ul li:hover .Sub_Categories_dropdown {
   padding: 0;
 }
 
+/* Increase hit-area for hamburger and add spacing from logo on all sizes */
+.newHeader .navbar-toggler,
+#navbarToggle,
+#navbarToggleClose {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-right: 12px;
+}
+
 .newHeader .loginBtn {
   color: #fff;
   background-color: #303943;
@@ -5420,6 +5471,37 @@ header nav ul li:hover .Sub_Categories_dropdown {
   margin: 0 0 0 10px;
   font-size: 15px;
   font-weight: 500;
+}
+
+/* When logged in, push city selector to far right with 15px gutter */
+/* Mobile: align city button to right when logged in */
+@media (max-width: 991.98px) {
+  .newHeader .navbar .container-fluid { flex-wrap: nowrap; }
+  .newHeader.logged-in .headerTwoBtn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  /* Ensure mobile city selector sits on the same row as the logo */
+  .newHeader .headerTwoBtn { margin-left: auto; align-self: center; margin: 0; padding: 0; display: inline-flex; flex: 0 1 auto; white-space: nowrap; }
+  .newHeader .logoArea { flex: 0 1 auto; min-width: 0; }
+  .newHeader .logoArea .navbar-brand { width: 170px !important; }
+  .newHeader .logoArea .navbar-brand img { width: 170px !important; height: auto; }
+  .newHeader .headerTwoBtn .citySelectorBtn { margin-left: auto; }
+  .newHeader .headerTwoBtn .cityButton { height: 34px; padding: 4px 8px; max-width: 125px; font-size: 12px; }
+  .newHeader.logged-in .headerTwoBtn .d-flex.align-items-center {
+    margin-left: auto;
+  }
+  .newHeader.logged-in .headerTwoBtn .Icons {
+    order: 1;
+  }
+  .newHeader.logged-in .headerTwoBtn .citySelectorBtn {
+    order: 2;
+    margin-left: auto;
+  }
+  .newHeader.logged-in .headerTwoBtn .cityButton {
+    margin-right: 15px;
+  }
 }
 
 
@@ -5588,9 +5670,10 @@ ul.Icons li a img {
 }
 
 .logoArea .navbar-brand {
-  width: 100px;
+  width: 160px;
   display: inline-block;
 }
+.logoArea .navbar-brand img { width: 100%; height: auto; }
 
 .CategoriesResponsive,
 .CategoriesResponsive2 {
@@ -6046,8 +6129,8 @@ ul.Icons li a img {
   z-index: 10;
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6071,7 +6154,7 @@ ul.Icons li a img {
 }
 
 .custom-arrow i {
-  font-size: 18px;
+  font-size: 14px;
   color: #333;
 }
 
@@ -6523,7 +6606,7 @@ ul.Icons li a img {
 }
 
 .gradient-btn {
-  background: linear-gradient(90deg, #ff4d6d, #ff6a3d);
+  background: linear-gradient(90deg, #ff7ab6, #ff2ea6);
   color: #fff;
   font-weight: 600;
   border: none;
@@ -6534,7 +6617,7 @@ ul.Icons li a img {
 
 .gradient-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+  box-shadow: 0 4px 15px rgba(255, 46, 166, 0.4);
 }
 
 .help-modal .modal-body {
@@ -7373,6 +7456,13 @@ ul.Icons li a img {
   .PrivateDiningBox .endbuttons .Buttons {
     font-size: 13px;
     padding: 8px 12px;
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 576px) {
+  .enjoy-life-section {
+    padding: 0px 15px !important;
   }
 }
 

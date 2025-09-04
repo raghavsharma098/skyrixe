@@ -420,8 +420,93 @@
     }
     
     /* Navigation styles will be handled by specific media queries below */
-    .custom-arrow.prev {left: -15px;z-index: 99;}
-    .custom-arrow.next {right: -20px;}
+    .custom-arrow.prev {left: 10px;z-index: 99;}
+    .custom-arrow.next {right: 10px;}
+    
+    /* Mobile-specific arrow styles for decoration sections - add pink circle */
+    .custom-arrow {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 50% !important;
+        background-color: #e91e63 !important;
+        border: 2px solid #e91e63 !important;
+        box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3) !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    .custom-arrow.prev {
+        left: 15px;
+    }
+    
+    .custom-arrow.next {
+        right: 15px;
+    }
+    
+    .custom-arrow i {
+        font-size: 16px;
+        color: white !important;
+    }
+    
+    /* Add pink circle to other arrow button types on mobile */
+    .kids-nav-btn,
+    .anniversary-nav-btn,
+    .birthday-nav-btn,
+    .baby-shower-nav-btn,
+    .testimonial-nav-btn,
+    .modern-carousel-nav,
+    .owl-carousel .owl-nav button.owl-prev,
+    .owl-carousel .owl-nav button.owl-next,
+    .slick-slider .slick-prev,
+    .slick-slider .slick-next {
+        width: 40px !important;
+        height: 40px !important;
+        border-radius: 50% !important;
+        background: #e91e63 !important;
+        border: 2px solid #e91e63 !important;
+        box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3) !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    /* Position arrow buttons inside screen on mobile */
+    .kids-nav-btn.prev,
+    .anniversary-nav-btn.prev,
+    .birthday-nav-btn.prev,
+    .baby-shower-nav-btn.prev,
+    .testimonial-nav-btn.prev,
+    .modern-carousel-nav.modern-nav-prev,
+    .owl-carousel .owl-nav button.owl-prev,
+    .slick-slider .slick-prev {
+        left: 15px !important;
+    }
+    
+    .kids-nav-btn.next,
+    .anniversary-nav-btn.next,
+    .birthday-nav-btn.next,
+    .baby-shower-nav-btn.next,
+    .testimonial-nav-btn.next,
+    .modern-carousel-nav.modern-nav-next,
+    .owl-carousel .owl-nav button.owl-next,
+    .slick-slider .slick-next {
+        right: 15px !important;
+    }
+    
+    /* Icon sizes and colors for pink circles */
+    .kids-nav-btn i,
+    .anniversary-nav-btn i,
+    .birthday-nav-btn i,
+    .baby-shower-nav-btn i,
+    .testimonial-nav-btn i,
+    .modern-carousel-nav i,
+    .owl-carousel .owl-nav button i,
+    .slick-slider button i {
+        font-size: 16px !important;
+        color: white !important;
+    }
     }
 
 @media (max-width:768px){
@@ -784,8 +869,85 @@
     .newHeader .navbar-toggler {margin-right: 5px;}
     .newHeader .CustomSelect .LocationIcon {width: 14px;}
     .newHeader .CustomSelect .LocationIcon {left: 5px;}
-    .custom-arrow.next {right: -20px;}
-    .custom-arrow.prev {left: -15px;z-index: 99;}
+    .custom-arrow.next {right: 15px;}
+    .custom-arrow.prev {left: 15px;z-index: 99;}
+    
+    /* Smaller arrow buttons for mobile - add pink circle */
+    .custom-arrow {
+        width: 40px !important;
+        height: 40px !important;
+        line-height: 40px !important;
+        border-radius: 50% !important;
+        background-color: #e91e63 !important;
+        border: 2px solid #e91e63 !important;
+        box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3) !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    .custom-arrow i {
+        font-size: 16px !important;
+        color: white !important;
+    }
+    
+    /* Add pink circle to other arrow button types on mobile */
+    .kids-nav-btn,
+    .anniversary-nav-btn,
+    .birthday-nav-btn,
+    .baby-shower-nav-btn,
+    .testimonial-nav-btn,
+    .modern-carousel-nav,
+    .owl-carousel .owl-nav button.owl-prev,
+    .owl-carousel .owl-nav button.owl-next,
+    .slick-slider .slick-prev,
+    .slick-slider .slick-next {
+        width: 40px !important;
+        height: 40px !important;
+        border-radius: 50% !important;
+        background: #e91e63 !important;
+        border: 2px solid #e91e63 !important;
+        box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3) !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    /* Position arrow buttons inside screen on mobile */
+    .kids-nav-btn.prev,
+    .anniversary-nav-btn.prev,
+    .birthday-nav-btn.prev,
+    .baby-shower-nav-btn.prev,
+    .testimonial-nav-btn.prev,
+    .modern-carousel-nav.modern-nav-prev,
+    .owl-carousel .owl-nav button.owl-prev,
+    .slick-slider .slick-prev {
+        left: 15px !important;
+    }
+    
+    .kids-nav-btn.next,
+    .anniversary-nav-btn.next,
+    .birthday-nav-btn.next,
+    .baby-shower-nav-btn.next,
+    .testimonial-nav-btn.next,
+    .modern-carousel-nav.modern-nav-next,
+    .owl-carousel .owl-nav button.owl-next,
+    .slick-slider .slick-next {
+        right: 15px !important;
+    }
+    
+    /* Icon sizes and colors for pink circles */
+    .kids-nav-btn i,
+    .anniversary-nav-btn i,
+    .birthday-nav-btn i,
+    .baby-shower-nav-btn i,
+    .testimonial-nav-btn i,
+    .modern-carousel-nav i,
+    .owl-carousel .owl-nav button i,
+    .slick-slider button i {
+        font-size: 16px !important;
+        color: white !important;
+    }
     
     .PrivateDining .col-6 {padding-left: 5px;padding-right: 5px;}
     .FilterArea2 {display: block;}

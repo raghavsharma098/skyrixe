@@ -748,7 +748,7 @@ const Main = () => {
         <div className="FeatureArea">
           <div className="container-fluid" style={{ width: "100%", padding: "0", margin: "0" }}>
             <div className="section-title">
-              <h2>Celebrations We Create</h2>
+              <h2 style={{ color: "#ff2ea6" }}>Celebrations We Create</h2>
             </div>
             {/* <Slider {...settings}>
               {getCategoryList?.data?.length > 0
