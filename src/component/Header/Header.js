@@ -555,7 +555,9 @@ const Header = () => {
                       <div className="mobile-user-icon">
                         <i className="fa-solid fa-user"></i>
                       </div>
-                      <span className="mobile-user-greeting">Hi, Guest</span>
+                      <span className="mobile-user-greeting">
+                        Hi, {userDetail?.personalInfo?.name || userDetail?.customerId || "Guest"}
+                      </span>
                     </div>
                   </div>
                   
