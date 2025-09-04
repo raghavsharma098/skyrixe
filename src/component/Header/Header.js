@@ -277,7 +277,7 @@ const Header = () => {
             </div>
             <form class="headerTwoBtn d-block d-lg-none">
               <div className="d-flex">
-                <div className="citySelectorBtn">
+                <div className="citySelectorBtn" style={{ display: 'flex', alignItems: 'center' }}>
                   <button
                     className="cityButton"
                     onClick={() => setShowCitySelector(true)}
@@ -305,6 +305,26 @@ const Header = () => {
                         selectCity?.slice(1)
                         : "Select City"}
                     </span>
+                  </button>
+                  <button
+                    className="loginButton"
+                    type="button"
+                    style={{
+                      marginLeft: '40px',
+                      padding: '5px 20px',
+                      borderRadius: '6px',
+                      border: '1px solid #e5097f',
+                      backgroundColor: '#e5097f',
+                      color: '#fff',
+                      fontWeight: '500',
+                      fontSize: '14px',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      whiteSpace: 'nowrap',
+                    }}
+                    onClick={() => navigate('/login')}
+                  >
+                    Login
                   </button>
                 </div>
               </div>
@@ -751,6 +771,25 @@ const Header = () => {
                           selectCity?.slice(1)
                           : "Select City"}
                       </span>
+                    </button>
+                    <button
+                      className="loginButton"
+                      type="button"
+                      style={{
+                        marginLeft: '10px',
+                        padding: '10px 20px',
+                        borderRadius: '8px',
+                        border: '1px solid #e5097f',
+                        backgroundColor: '#e5097f',
+                        color: '#fff',
+                        fontWeight: '500',
+                        fontSize: '14px',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                      }}
+                      onClick={() => navigate('/login')}
+                    >
+                      Login
                     </button>
                   </div>
 
