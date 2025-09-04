@@ -841,6 +841,41 @@ const Header = () => {
                         />
                       </Link>
                     </li>
+                    {!userDetail && (
+                      <li>
+                        <button 
+                          className="loginBtn"
+                          onClick={() => updateState({ ...iState, signUpModal: true })}
+                          style={{
+                            background: 'linear-gradient(135deg, #ff6b6b, #ff8e8e)',
+                            border: 'none',
+                            borderRadius: '8px',
+                            color: 'white',
+                            padding: '8px 16px',
+                            fontSize: '14px',
+                            fontWeight: '600',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            height: '44px',
+                            minWidth: '70px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: '0 2px 8px rgba(255, 107, 107, 0.3)',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.target.style.transform = 'translateY(-2px)';
+                            e.target.style.boxShadow = '0 4px 12px rgba(255, 107, 107, 0.4)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.target.style.transform = 'translateY(0)';
+                            e.target.style.boxShadow = '0 2px 8px rgba(255, 107, 107, 0.3)';
+                          }}
+                        >
+                          Login
+                        </button>
+                      </li>
+                    )}
                     <li>
                       {userDetail && (
                         <Link to="/profile" className="UserIcon">
@@ -866,6 +901,34 @@ const Header = () => {
                 <i class="fa-solid fa-arrow-right-to-bracket"></i>
               </a> */}
               <ul className="Icons responsiveLogin ">
+                <li>
+                  {!userDetail && (
+                    <button 
+                      className="loginBtn mobile-login-btn"
+                      onClick={() => updateState({ ...iState, signUpModal: true })}
+                      style={{
+                        background: 'linear-gradient(135deg, #ff6b6b, #ff8e8e)',
+                        border: 'none',
+                        borderRadius: '6px',
+                        color: 'white',
+                        padding: '6px 12px',
+                        fontSize: '12px',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                        height: '36px',
+                        minWidth: '60px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        boxShadow: '0 2px 6px rgba(255, 107, 107, 0.3)',
+                        marginRight: '8px',
+                      }}
+                    >
+                      Login
+                    </button>
+                  )}
+                </li>
                 <li>
                   {userDetail && (
                     <Link to="/profile" className="UserIcon">

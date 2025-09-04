@@ -982,21 +982,21 @@
 /* Baby Shower Section Title Styling */
 .BirthdayDecorationArea .section-title {
   text-align: center;
-  margin-bottom: 15px; /* Reduced margin to decrease gap between heading and cards */
-  margin-top: 25px; /* Added top margin for more spacing from above content */
+  margin-bottom: 8px; /* Reduced margin for tighter spacing */
+  margin-top: 8px; /* Reduced top margin */
 }
 
 .BirthdayDecorationArea .section-title h2 {
   color: #FF69B4 !important; /* Hot pink color for Baby Shower heading */
   font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 5px; /* Reduced margin */
 }
 
 .BirthdayDecorationArea .section-title p {
   color: #333333 !important; /* Dark grey color for subheading */
   font-size: 1.1rem;
-  margin-bottom: 10px; /* Reduced spacing between subheading and cards */
+  margin-bottom: 5px; /* Reduced spacing between subheading and cards */
 }
 
 .scroll-container-wrapper {
@@ -4046,10 +4046,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 30px;
-  margin: 12px auto 6px auto;
-  padding: 0 20px;
-  min-height: 300px; /* Increased height for falling animation */
+  gap: 15px; /* Reduced from 20px */
+  margin: 5px auto 2px auto; /* Reduced from 8px/4px */
+  padding: 0 10px; /* Reduced from 15px */
+  min-height: 150px; /* Reduced from 200px */
   overflow: visible; /* Changed to visible to allow overlap */
   position: relative;
   z-index: 10; /* Ensure images appear above previous section */
@@ -4079,7 +4079,7 @@
 
 .animated-banner-image {
   flex: 1;
-  max-width: 600px;
+  max-width: 700px; /* Increased from 600px to make images larger */
   overflow: visible;
   position: relative;
   display: flex; /* Add flex display */
@@ -4093,9 +4093,10 @@
   border: none !important;
   isolation: isolate;
   
-  /* Reduced height for less overlap, removed negative margin */
-  height: 100px; /* Keep reduced height */
+  /* Reduced height for minimal white space */
+  height: auto; /* Let content determine height */
   margin-bottom: 0; /* Remove negative margin to prevent heading overlap */
+  padding: 0; /* Remove any padding */
 }
 
 .kids-banner-img {
@@ -4106,8 +4107,8 @@
   background-color: transparent !important;
   background-image: none !important;
   
-  /* Initial hidden state - positioned above viewport */
-  transform: scale(0.3) translateY(-120vh);
+  /* Initial state - at normal position, just small and invisible */
+  transform: scale(0.3);
   opacity: 0;
   transition: all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   
@@ -4126,76 +4127,92 @@
 
 /* Reverse/flip only the second animated image */
 .animated-banner-image:nth-child(2) .kids-banner-img {
-  transform: scale(0.3) translateY(-120vh) scaleX(-1); /* Removed overlap positioning */
+  transform: scale(0.3) scaleX(-1); /* Start at normal position, just flipped and small */
 }
 
 .animated-banner-image:nth-child(2) .kids-banner-img.animate-zoom-in {
-  animation: zoomInAndFallReversed 2.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: zoomInAndBounceReversed 2.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 /* Animation when visible */
 .kids-banner-img.animate-zoom-in {
-  animation: zoomInAndFall 2.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: zoomInAndBounce 2.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
-/* Combined zoom-in and falling animation */
-@keyframes zoomInAndFall {
-  /* Phase 1: Zoom-in while falling (0% - 50%) */
+/* Zoom-in and bouncing animation in place */
+@keyframes zoomInAndBounce {
+  /* Phase 1: Zoom-in and appear (0% - 30%) */
   0% {
-    transform: scale(0.3) translateY(-120vh) translateZ(0);
+    transform: scale(0.3) translateZ(0);
     opacity: 0;
   }
-  25% {
-    transform: scale(0.6) translateY(-60vh) translateZ(0);
-    opacity: 0.3;
-  }
-  50% {
-    transform: scale(1) translateY(0) translateZ(0); /* Land in normal position */
+  30% {
+    transform: scale(1.1) translateZ(0); /* Slightly overshoot */
     opacity: 1;
   }
   
-  /* Phase 2: Subtle bounce and settle (50% - 100%) */
-  65% {
-    transform: scale(1.05) translateY(-20px) translateZ(0); /* Bounce up slightly */
+  /* Phase 2: Multiple bounces (30% - 100%) */
+  45% {
+    transform: scale(0.9) translateY(-30px) translateZ(0); /* First bounce up */
     opacity: 1;
   }
-  80% {
-    transform: scale(0.98) translateY(10px) translateZ(0); /* Settle down */
+  60% {
+    transform: scale(1.05) translateY(15px) translateZ(0); /* Bounce down */
+    opacity: 1;
+  }
+  75% {
+    transform: scale(0.95) translateY(-15px) translateZ(0); /* Second bounce up */
+    opacity: 1;
+  }
+  85% {
+    transform: scale(1.02) translateY(8px) translateZ(0); /* Small bounce down */
+    opacity: 1;
+  }
+  95% {
+    transform: scale(0.98) translateY(-5px) translateZ(0); /* Final small bounce */
     opacity: 1;
   }
   100% {
-    transform: scale(1) translateY(0) translateZ(0); /* Final normal position */
+    transform: scale(1) translateY(0) translateZ(0); /* Final settled position */
     opacity: 1;
   }
 }
 
-/* Reversed animation for the second image */
-@keyframes zoomInAndFallReversed {
-  /* Phase 1: Zoom-in while falling (0% - 50%) */
+/* Reversed bouncing animation for the second image */
+@keyframes zoomInAndBounceReversed {
+  /* Phase 1: Zoom-in and appear (0% - 30%) */
   0% {
-    transform: scale(0.3) translateY(-120vh) scaleX(-1) translateZ(0);
+    transform: scale(0.3) scaleX(-1) translateZ(0);
     opacity: 0;
   }
-  25% {
-    transform: scale(0.6) translateY(-60vh) scaleX(-1) translateZ(0);
-    opacity: 0.3;
-  }
-  50% {
-    transform: scale(1) translateY(0) scaleX(-1) translateZ(0); /* Land in normal position */
+  30% {
+    transform: scale(1.1) scaleX(-1) translateZ(0); /* Slightly overshoot */
     opacity: 1;
   }
   
-  /* Phase 2: Subtle bounce and settle (50% - 100%) */
-  65% {
-    transform: scale(1.05) translateY(-20px) scaleX(-1) translateZ(0); /* Bounce up slightly */
+  /* Phase 2: Multiple bounces (30% - 100%) */
+  45% {
+    transform: scale(0.9) scaleX(-1) translateY(-30px) translateZ(0); /* First bounce up */
     opacity: 1;
   }
-  80% {
-    transform: scale(0.98) translateY(10px) scaleX(-1) translateZ(0); /* Settle down */
+  60% {
+    transform: scale(1.05) scaleX(-1) translateY(15px) translateZ(0); /* Bounce down */
+    opacity: 1;
+  }
+  75% {
+    transform: scale(0.95) scaleX(-1) translateY(-15px) translateZ(0); /* Second bounce up */
+    opacity: 1;
+  }
+  85% {
+    transform: scale(1.02) scaleX(-1) translateY(8px) translateZ(0); /* Small bounce down */
+    opacity: 1;
+  }
+  95% {
+    transform: scale(0.98) scaleX(-1) translateY(-5px) translateZ(0); /* Final small bounce */
     opacity: 1;
   }
   100% {
-    transform: scale(1) translateY(0) scaleX(-1) translateZ(0); /* Final normal position */
+    transform: scale(1) scaleX(-1) translateY(0) translateZ(0); /* Final settled position */
     opacity: 1;
   }
 }
@@ -4203,24 +4220,90 @@
 /* Responsive design for banner */
 @media (max-width: 768px) {
   .kids-party-banner-container {
-    flex-direction: column;
-    gap: 20px;
-    margin: 30px 0;
+    flex-direction: row; /* Keep side by side instead of column */
+    gap: 8px; /* Reduced from 10px */
+    margin: 3px auto 1px auto; /* Reduced margins */
+    padding: 0 5px; /* Reduced padding */
+    min-height: 120px; /* Reduced height */
   }
   
   .animated-banner-image {
-    max-width: 100%;
+    max-width: 52%; /* Increased from 48% to make images larger */
+    flex: 1; /* Allow flexible sizing */
   }
 }
 
 @media (max-width: 480px) {
   .kids-party-banner-container {
-    padding: 0 15px;
-    margin: 25px 0;
-    gap: 15px;
+    padding: 0 3px; /* Reduced padding for very small screens */
+    margin: 2px auto 1px auto; /* Reduced margins */
+    gap: 5px; /* Reduced gap */
+    flex-direction: row; /* Ensure side by side */
+    min-height: 100px; /* Reduced height */
   }
   
   .animated-banner-image {
-    max-width: 100%;
+    max-width: 52%; /* Increased from 49% to make images larger */
+    flex: 1; /* Allow flexible sizing */
+  }
+  
+  .kids-banner-img {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 320px) {
+  .kids-party-banner-container {
+    padding: 0 2px; /* Minimal padding */
+    gap: 3px; /* Very small gap */
+    margin: 1px auto 0 auto; /* Minimal margins */
+    min-height: 80px; /* Reduced height */
+  }
+  
+  .animated-banner-image {
+    max-width: 52%; /* Increased from 49% to make images larger */
+    min-width: 90px; /* Reduced minimum width */
+  }
+  
+  .kids-banner-img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* Mobile responsive styles for section title */
+@media (max-width: 768px) {
+  .BirthdayDecorationArea .section-title {
+    margin-bottom: 5px;
+    margin-top: 5px;
+  }
+  
+  .BirthdayDecorationArea .section-title h2 {
+    font-size: 2rem;
+    margin-bottom: 3px;
+  }
+  
+  .BirthdayDecorationArea .section-title p {
+    font-size: 1rem;
+    margin-bottom: 3px;
+  }
+}
+
+@media (max-width: 480px) {
+  .BirthdayDecorationArea .section-title {
+    margin-bottom: 3px;
+    margin-top: 3px;
+  }
+  
+  .BirthdayDecorationArea .section-title h2 {
+    font-size: 1.8rem;
+    margin-bottom: 2px;
+  }
+  
+  .BirthdayDecorationArea .section-title p {
+    font-size: 0.9rem;
+    margin-bottom: 2px;
   }
 }
