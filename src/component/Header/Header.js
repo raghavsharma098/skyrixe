@@ -845,6 +845,7 @@ const Header = () => {
                       <li>
                         <button 
                           className="loginBtn"
+                           type="button"
                           onClick={() => updateState({ ...iState, signUpModal: true })}
                           style={{
                             background: 'linear-gradient(135deg, #ff6b6b, #ff8e8e)',
