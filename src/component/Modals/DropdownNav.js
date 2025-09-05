@@ -147,30 +147,32 @@ const NavigationDropdown = () => {
         }
     };
 
+    // Track if mouse is over dropdown
+    const [dropdownHover, setDropdownHover] = useState(false);
     const toggleMenu = (menu) => {
         if (menu && menu !== activeMenu) {
-            // Calculate dropdown position based on menu item
             const menuElement = menuRefs.current[menu];
             const containerElement = containerRef.current;
-            
             if (menuElement && containerElement) {
                 const menuRect = menuElement.getBoundingClientRect();
                 const containerRect = containerElement.getBoundingClientRect();
-                
-                // Calculate optimal left position
                 const menuCenter = menuRect.left + menuRect.width / 2 - containerRect.left;
                 const dropdownWidth = getDropdownWidth(menu);
                 let leftPosition = menuCenter - dropdownWidth / 2;
-                
-                // Ensure dropdown doesn't overflow container
                 const maxLeft = containerRect.width - dropdownWidth;
                 leftPosition = Math.max(0, Math.min(leftPosition, maxLeft));
-                
                 setDropdownPosition({ left: leftPosition });
             }
         }
         setActiveMenu(activeMenu === menu ? null : menu);
     };
+
+    // Close dropdown on scroll
+    useEffect(() => {
+        const handleScroll = () => setActiveMenu(null);
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     // Helper function to determine dropdown width based on content
     const getDropdownWidth = (menu) => {
@@ -209,7 +211,7 @@ const NavigationDropdown = () => {
                         className="dropdown-nav-item"
                         ref={(el) => (menuRefs.current[menu] = el)}
                         onMouseEnter={() => toggleMenu(menu)}
-                        onMouseLeave={() => toggleMenu(null)}
+                        onMouseLeave={() => { if (!dropdownHover) toggleMenu(null); }}
                     >
                         <button className="dropdown-nav-button">
                             {menu} <span className="chevron">▼</span>
@@ -221,6 +223,8 @@ const NavigationDropdown = () => {
                                 left: activeMenu === menu ? `${dropdownPosition.left}px` : '0',
                                 width: activeMenu === menu ? `${getDropdownWidth(menu)}px` : 'auto'
                             }}
+                            onMouseEnter={() => setDropdownHover(true)}
+                            onMouseLeave={() => { setDropdownHover(false); toggleMenu(null); }}
                         >
                             <div className={`dropdown-nav-dropdown-content ${
                                 menu === "THEME DECOR'S FOR BOYS" ? "boys-theme" : 
