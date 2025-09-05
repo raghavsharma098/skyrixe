@@ -1004,7 +1004,7 @@
   max-width: 1400px;
   margin: 0 auto;
   overflow: visible; /* Ensure arrows are visible but contained */
-  z-index: 1; /* Lower z-index to stay below header */
+  z-index: 65; /* Increased z-index to ensure scroll containers appear above banner */
 }
 
 /* ===== HOMEPAGE SCROLL CONTAINERS ===== */
@@ -1020,6 +1020,8 @@
   padding: 20px 0;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* Internet Explorer 10+ */
+  position: relative;
+  z-index: 70; /* Added z-index to ensure scroll containers appear above banner */
 }
 
 .homepage-kids-scroll-container::-webkit-scrollbar,
@@ -4050,7 +4052,7 @@
   min-height: 150px; /* Reduced from 200px */
   overflow: visible; /* Changed to visible to allow overlap */
   position: relative;
-  z-index: 10; /* Ensure images appear above previous section */
+  z-index: 50; /* Increased from 10 to ensure images appear above everything */
   background: none !important;
   background-color: transparent !important;
   width: 100%; /* Ensure full width */
@@ -4080,6 +4082,7 @@
   max-width: 700px; /* Increased from 600px to make images larger */
   overflow: visible;
   position: relative;
+  z-index: 55; /* Added high z-index to ensure cards appear above banner */
   display: flex; /* Add flex display */
   justify-content: center; /* Center the image */
   align-items: center; /* Center vertically */

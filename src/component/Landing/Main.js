@@ -596,7 +596,11 @@ const Main = () => {
     <>
       <div className="Hero-Section">
         <div className="cards">
-          <div className="card1">
+          <div
+            className="card1"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}
+          >
             {/* <img src="https://cheetah.cherishx.com/website_layout/ganpati_menu_icon_desk.jpg?format=avif" alt="" /> */}
              <img src={require("../../assets/images/on.png")} />
             <p>Birthday</p>
@@ -604,7 +608,7 @@ const Main = () => {
           <div
             className="card1"
             style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "KIDS BIRTHDAY" })}
+            onClick={() => handleCategory({ categoryName: "BALLOON BOUQUET" })}
           >
             {/* <img
               src="https://cheetah.cherishx.com/website_layout/1755324921__original_layout_55.jpg?format=avif"
@@ -623,7 +627,7 @@ const Main = () => {
           <div
             className="card1"
             style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}
+            onClick={() => handleCategory({ categoryName: "PREMIUM DECOR'S" })}
           >
             {/* <img
               src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_03_20241018_123157.jpg?format=avif"
@@ -634,7 +638,11 @@ const Main = () => {
               Premium <br /> Decoration
             </p>
           </div>
-          <div className="card1">
+          <div
+            className="card1"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleCategory({ categoryName: "THEME DECOR'S" })}
+          >
             {/* <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_03_20240930_132612.jpg?format=avif" alt="" /> */}
              <img src={require("../../assets/images/forthcard.png")} />
             <p> Theme <br /> decoration</p>
@@ -642,7 +650,7 @@ const Main = () => {
           <div
             className="card1"
             style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "ANNIVERSARY" })}
+            onClick={() => handleCategory({ categoryName: "KID'S PARTY" })}
           >
             {/* <img
               src="https://cheetah.cherishx.com/website_layout/1755170285__original_layout_55.jpg?format=avif"
@@ -657,7 +665,7 @@ const Main = () => {
           <div
             className="card1"
             style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "BABY SHOWER" })}
+            onClick={() => handleCategory({ categoryName: "ROOM & HALL DECOR'S" })}
           >
             {/* <img
               src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_01_20241018_123157.jpg?format=avif"
@@ -672,7 +680,7 @@ const Main = () => {
           <div
             className="card1"
             style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "BABY SHOWER" })}
+            onClick={() => handleCategory({ categoryName: "ANNIVERSARY" })}
           >
             {/* <img
               src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_01_20241018_123157.jpg?format=avif"
@@ -683,27 +691,35 @@ const Main = () => {
               Anniversary
             </p>
           </div>
-          <div className="card1">
-            {/* <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_02_20241018_123157.jpg?format=avif" alt="" /> */}
-             <img src={require("../../assets/images/eightcard.png")} />
-            
-            <p> Premium <br /> decoration</p>
-          </div>
-          <div className="card1">
-            {/* <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_08_20240930_132612.jpg?format=avif" alt="" /> */}
-             <img className="imgmat"src={require("../../assets/images/ninthcard.png")} />
-            <p> Balloon <br /> bouquet</p>
-          </div>
-
-          {/* NEW 10th CARD - Same Day Decorations */}
           <div
             className="card1"
             style={{ cursor: "pointer" }}
             onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}
           >
-            <img src={require("../../assets/images/td.png")} />
+            {/* <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_02_20241018_123157.jpg?format=avif" alt="" /> */}
+             <img src={require("../../assets/images/td.png")} />
+            
+            <p> Same Day <br /> Decorations</p>
+          </div>
+          <div
+            className="card1"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleCategory({ categoryName: "BALLOON BOUQUET" })}
+          >
+            {/* <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_08_20240930_132612.jpg?format=avif" alt="" /> */}
+             <img className="imgmat"src={require("../../assets/images/ninthcard.png")} />
+            <p> Balloon <br /> bouquet</p>
+          </div>
+
+          {/* NEW 10th CARD - Premium decoration */}
+          <div
+            className="card1"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleCategory({ categoryName: "PREMIUM DECOR'S" })}
+          >
+            <img src={require("../../assets/images/eightcard.png")} />
             <p>
-              Same Day <br /> Decorations
+              Premium <br /> decoration
             </p>
           </div>
 

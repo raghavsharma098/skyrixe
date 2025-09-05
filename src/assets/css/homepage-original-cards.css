@@ -44,6 +44,7 @@
   height: 100%;
   border: 1px solid #f0f0f0;
   position: relative;
+  z-index: 60; /* Added high z-index to ensure cards appear above banner */
 }
 
 .homepage-product-card:hover {
