@@ -73,14 +73,14 @@ const HelpCenter = ({ triggerClass, triggerText }) => {
           minWidth: "120px",
           cursor: "pointer",
           transition: "all 0.3s ease",
+          border: "none",
+          boxShadow: "none",
         }}
         onMouseEnter={(e) => {
           e.target.style.backgroundColor = 'rgba(48, 57, 67, 0.05)';
-          e.target.style.borderColor = '#303943';
         }}
         onMouseLeave={(e) => {
           e.target.style.backgroundColor = 'transparent';
-          e.target.style.borderColor = '#e4e9ee';
         }}
       >
   <span>Help Center</span>

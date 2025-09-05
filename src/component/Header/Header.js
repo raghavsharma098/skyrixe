@@ -51,6 +51,186 @@ const Header = () => {
     return JSON.parse(window.localStorage.getItem("LennyUserDetail")) || null;
   });
 
+  // Cart Management State with localStorage persistence
+  const [cartState, setCartState] = useState(() => {
+    const savedCart = localStorage.getItem('lennyCart');
+    return savedCart ? JSON.parse(savedCart) : {
+      items: [],
+      total: 0,
+      isVisible: false
+    };
+  });
+
+  // Cart hover state - like dropdown nav
+  const [isCartVisible, setIsCartVisible] = useState(false);
+
+  // Handle cart hover - like dropdown nav pattern  
+  const handleCartMouseEnter = () => {
+    // Only show popup if there are items in cart OR a valid existing order
+    const hasCartItems = cartState.items.length > 0;
+    const hasValidOrder = getOrderSummaryDetail?.data && getOrderSummaryDetail.data.productName;
+    if (hasCartItems || hasValidOrder) {
+      setIsCartVisible(true);
+    }
+  };
+
+  const handleCartMouseLeave = () => {
+    setIsCartVisible(false);
+  };
+
+  // Helper function to format date with ordinal suffix
+  const formatDate = (date) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = new Date(date).toLocaleDateString('en-US', options);
+    const day = new Date(date).getDate();
+    
+    // Add ordinal suffix
+    const getOrdinalSuffix = (num) => {
+      const j = num % 10, k = num % 100;
+      if (j === 1 && k !== 11) return "st";
+      if (j === 2 && k !== 12) return "nd";
+      if (j === 3 && k !== 13) return "rd";
+      return "th";
+    };
+    
+    return formattedDate.replace(day, day + getOrdinalSuffix(day));
+  };
+
+  // Add to cart function
+  const addToCart = (product) => {
+    setCartState(prevCart => {
+      const existingItemIndex = prevCart.items.findIndex(item => item.id === product.id);
+      let newItems;
+      let isNewItem = false;
+      
+      if (existingItemIndex > -1) {
+        // Update existing item quantity
+        newItems = prevCart.items.map((item, index) => 
+          index === existingItemIndex 
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      } else {
+        // Add new item
+        newItems = [...prevCart.items, { 
+          ...product, 
+          quantity: 1, 
+          addedDate: new Date(),
+          selectedDate: product.selectedDate || new Date()
+        }];
+        isNewItem = true;
+      }
+      
+      const newTotal = newItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      
+      // Show success toast
+      if (isNewItem) {
+        toast.success(`${product.name} added to cart!`);
+      } else {
+        toast.success(`${product.name} quantity updated in cart!`);
+      }
+      
+      return {
+        ...prevCart,
+        items: newItems,
+        total: newTotal
+      };
+    });
+  };
+
+  // Remove from cart function
+  const removeFromCart = (productId) => {
+    setCartState(prevCart => {
+      const itemToRemove = prevCart.items.find(item => item.id === productId);
+      const newItems = prevCart.items.filter(item => item.id !== productId);
+      const newTotal = newItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      // Show success toast
+      if (itemToRemove) {
+        toast.success(`${itemToRemove.name} removed from cart!`);
+      }
+      // Hide popup if cart becomes empty
+      if (newItems.length === 0) {
+        setIsCartVisible(false);
+      }
+      return {
+        ...prevCart,
+        items: newItems,
+        total: newTotal
+      };
+    });
+  };
+
+  // Clear cart function
+  const clearCart = () => {
+    const clearedCart = {
+      items: [],
+      total: 0,
+      isVisible: false
+    };
+    setCartState(clearedCart);
+    localStorage.removeItem('lennyCart');
+    setIsCartVisible(false);
+    toast.success("Cart cleared successfully!");
+  };
+
+  // Proceed to checkout function
+  const proceedToCheckout = () => {
+    if (cartState.items.length > 0) {
+      // Navigate to checkout page with cart data
+      navigate('/checkout-1', { 
+        state: { 
+          cartItems: cartState.items, 
+          total: cartState.total,
+          userId: userDetail?._id 
+        } 
+      });
+      toast.success("Proceeding to checkout...");
+    } else {
+      toast.warning("Your cart is empty. Please add items before checkout.");
+    }
+  };
+
+  // Make functions available globally for onclick handlers
+  useEffect(() => {
+    window.addToCart = addToCart;
+    window.removeFromCart = removeFromCart;
+    window.clearCart = clearCart;
+    window.proceedToCheckout = proceedToCheckout;
+    
+    return () => {
+      // Cleanup global functions
+      delete window.addToCart;
+      delete window.removeFromCart;
+      delete window.clearCart;
+      delete window.proceedToCheckout;
+    };
+  }, []);
+
+  // Update cart UI whenever cart state changes
+  useEffect(() => {
+    updateCartDisplay();
+    console.log('Cart state updated:', cartState);
+    
+    // Hide popup if cart becomes empty and no existing order
+    if (cartState.items.length === 0 && (!getOrderSummaryDetail?.data || !getOrderSummaryDetail.data.productName)) {
+      setIsCartVisible(false);
+    }
+    
+    // Save cart state to localStorage (excluding isVisible)
+    const cartToSave = {
+      items: cartState.items,
+      total: cartState.total,
+      isVisible: false // Don't persist the visibility state
+    };
+    localStorage.setItem('lennyCart', JSON.stringify(cartToSave));
+  }, [cartState, getOrderSummaryDetail]);
+
+  // Function to update cart display
+  const updateCartDisplay = () => {
+    // This will be handled by React state and conditional rendering
+    // No DOM manipulation needed since we're using React
+  };
+
   const handleCategory = (item, subCat) => {
     setDisableHover(true);
     updateState({ ...iState, openSidebar: false, expandedCategory: null });
@@ -76,6 +256,7 @@ const Header = () => {
         if (res?.payload?.status === 200) {
           toast?.success(res?.payload?.message);
           dispatch(orderSummary({ userId: userDetail?._id }));
+          setIsCartVisible(false);
           navigate("/");
           window.scrollTo({ top: 150, behavior: "smooth" });
         } else {
@@ -606,7 +787,7 @@ const Header = () => {
                           {isExpanded && (
                             <div className="mobile-category-content">
                               {category_name === "BIRTHDAY" && (
-                                <div className="mobile-subcategories">
+                                <div className="mobile-subcategories" style={{overflowX: 'auto', whiteSpace: 'nowrap', WebkitOverflowScrolling: 'touch', display: 'block', paddingBottom: 8}}>
                                   <div className="subcategory-group">
                                     <a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Birthday Decoration")}>Birthday Decoration</a>
                                     <a onClick={() => handleCategory({categoryName: "BIRTHDAY"}, "Simple Birthday Decoration")}>Simple Birthday Decoration</a>
@@ -624,7 +805,7 @@ const Header = () => {
                               )}
                               
                               {category_name === "ANNIVERSARY" && (
-                                <div className="mobile-subcategories">
+                                <div className="mobile-subcategories" style={{overflowX: 'auto', whiteSpace: 'nowrap', WebkitOverflowScrolling: 'touch', display: 'block', paddingBottom: 8}}>
                                   <div className="subcategory-group">
                                     <a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Anniversary Decoration")}>Anniversary Decoration</a>
                                     <a onClick={() => handleCategory({categoryName: "ANNIVERSARY"}, "Bride To Be")}>Bride To Be</a>
@@ -641,7 +822,7 @@ const Header = () => {
                               )}
                               
                               {category_name === "BABY SHOWER" && (
-                                <div className="mobile-subcategories">
+                                <div className="mobile-subcategories" style={{overflowX: 'auto', whiteSpace: 'nowrap', WebkitOverflowScrolling: 'touch', display: 'block', paddingBottom: 8}}>
                                   <div className="subcategory-group">
                                     <a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Baby Shower Decoration")}>Baby Shower Decoration</a>
                                     <a onClick={() => handleCategory({categoryName: "BABY SHOWER"}, "Oh Baby")}>Oh Baby</a>
@@ -660,7 +841,7 @@ const Header = () => {
                               )}
                               
                               {category_name === "THEME DECOR'S FOR BOYS" && (
-                                <div className="mobile-subcategories">
+                                <div className="mobile-subcategories" style={{overflowX: 'auto', whiteSpace: 'nowrap', WebkitOverflowScrolling: 'touch', display: 'block', paddingBottom: 8}}>
                                   <div className="subcategory-group">
                                     <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Boss Baby")}>Boss Baby</a>
                                     <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR BOYS"}, "Jungle Theme")}>Jungle Theme</a>
@@ -686,7 +867,7 @@ const Header = () => {
                               )}
                               
                               {category_name === "THEME DECOR'S FOR GIRLS" && (
-                                <div className="mobile-subcategories">
+                                <div className="mobile-subcategories" style={{overflowX: 'auto', whiteSpace: 'nowrap', WebkitOverflowScrolling: 'touch', display: 'block', paddingBottom: 8}}>
                                   <div className="subcategory-group">
                                     <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Minnie Mouse")}>Minnie Mouse</a>
                                     <a onClick={() => handleCategory({categoryName: "THEME DECOR'S FOR GIRLS"}, "Barbie Theme")}>Barbie Theme</a>
@@ -764,93 +945,84 @@ const Header = () => {
                     </button>
                   </div>
 
-                  {userDetail && getOrderSummaryDetail ? (
-                    <div className="Icons Avater">
-                      <a className="UserIcon subAvater">
-                        <img
-                          src={require("../../assets/images/shopping-cart.png")}
-                        />
-                      </a>
-                      <div className="cartArea">
-                        <h5>Complete Your Booking</h5>
-                        <div className="row">
-                          <div className="col-6">
+                  {userDetail ? (
+                    <>
+                      {(cartState.items.length > 0 || (getOrderSummaryDetail?.data && getOrderSummaryDetail.data.productName)) && (
+                        <div 
+                          className="Icons Avater cart-container"
+                          onMouseEnter={handleCartMouseEnter}
+                          onMouseLeave={handleCartMouseLeave}
+                        >
+                          <a className="UserIcon subAvater">
                             <img
-                              src={getOrderSummaryDetail?.data?.productImage}
+                              src={require("../../assets/images/shopping-cart.png")}
                             />
-                          </div>
-                          <div className="col-6">
-                            <div className="ProdectDec">
-                              <h6>
-                                {getOrderSummaryDetail?.data?.productName}
-                              </h6>
-                              <p>
-                                For Date: { }
-                                {getOrderSummaryDetail?.data?.dateAdded}
-                              </p>
-
-                              <div className="Links">
-                                <a
-                                  style={{ marginRight: "25px" }}
-                                  onClick={handleDeleteProduct}
-                                >
-                                  Cancel
-                                </a>
-                                <a
-                                  onClick={() =>
-                                    navigate("/checkout-1", {
-                                      state: { userId: userDetail?._id },
-                                    })
-                                  }
-                                >
-                                  Checkout
-                                </a>
-                              </div>
+                            {cartState.items.length > 0 ? (
+                              <span className="cart-indicator"></span>
+                            ) : null}
+                          </a>
+                          {isCartVisible && (
+                            <div className={`cartArea active`}>
+                              <h5>Complete Your Booking</h5>
+                              {/* Show existing order summary if available */}
+                              {getOrderSummaryDetail?.data && 
+                                getOrderSummaryDetail.data.productName && 
+                                getOrderSummaryDetail.data.productImage && (
+                                  <div className="existing-order">
+                                    <div className="row">
+                                      <div className="col-6">
+                                        <img
+                                          src={getOrderSummaryDetail?.data?.productImage}
+                                        />
+                                      </div>
+                                      <div className="col-6">
+                                        <div className="ProdectDec">
+                                          <h6>
+                                            {getOrderSummaryDetail?.data?.productName}
+                                          </h6>
+                                          <p>
+                                            For Date: {getOrderSummaryDetail?.data?.dateAdded}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="Links">
+                                      <a
+                                        onClick={handleDeleteProduct}
+                                      >
+                                        Cancel
+                                      </a>
+                                      <a
+                                        onClick={() =>
+                                          navigate("/checkout-1", {
+                                            state: { userId: userDetail?._id },
+                                          })
+                                        }
+                                      >
+                                        Checkout
+                                      </a>
+                                    </div>
+                                  </div>
+                                )}
+                              {/* Show empty message if no order or cart items */}
+                              {(!getOrderSummaryDetail?.data || !getOrderSummaryDetail.data.productName) && cartState.items.length === 0 && (
+                                <div className="empty-cart">
+                                  <p>Your cart is empty</p>
+                                  <p style={{fontSize: '12px', color: '#999', marginTop: '8px'}}>
+                                    Add items from our product pages to see them here
+                                  </p>
+                                </div>
+                              )}
                             </div>
-                          </div>
+                          )}
                         </div>
-                      </div>
-                    </div>
+                      )}
+                    </>
                   ) : (
                     ""
                   )}
 
                   <ul className="Icons">
-                    <li>
-                      <Link
-                        to="/upcoming-bookings"
-                        className="cart-icon-link"
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          padding: '8px',
-                          border: '1px solid #e4e9ee',
-                          borderRadius: '8px',
-                          backgroundColor: 'transparent',
-                          textDecoration: 'none',
-                          transition: 'all 0.3s ease',
-                          height: '44px',
-                          minWidth: '44px',
-                        }}
-                        onMouseEnter={(e) => {
-                          e.target.style.backgroundColor = 'rgba(48, 57, 67, 0.05)';
-                          e.target.style.borderColor = '#303943';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.backgroundColor = 'transparent';
-                          e.target.style.borderColor = '#e4e9ee';
-                        }}
-                      >
-                        <MdAddShoppingCart
-                          style={{ 
-                            fontSize: '20px', 
-                            color: '#303943',
-                            transition: 'color 0.3s ease'
-                          }}
-                        />
-                      </Link>
-                    </li>
                     {!userDetail && (
                       <li>
                         <button 

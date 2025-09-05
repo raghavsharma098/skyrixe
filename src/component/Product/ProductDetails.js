@@ -563,6 +563,46 @@ const ProductDetails = () => {
         }
       })
   };
+
+  // Function to handle adding item to cart when Book Now is clicked
+  const handleAddToCartAndBook = () => {
+    // Check if user is logged in
+    if (!userDetail) {
+      toast.error("Please login to add items to cart");
+      return;
+    }
+
+    // Validate required fields
+    if (!pincode || !dateAdded) {
+      toast.error("Please select a pincode and date before adding to cart");
+      return;
+    }
+
+    // Create cart item data
+    const cartItem = {
+      id: item?._id || `product-${Date.now()}`,
+      name: getProductDetails?.data?.product?.productDetails?.productname,
+      price: getProductDetails?.data?.product?.priceDetails?.discountedPrice || 
+             getProductDetails?.data?.product?.priceDetails?.price,
+      image: getProductDetails?.data?.product?.productimages?.at(0),
+      category: item?.categoryName || "Event Decoration",
+      subcategory: item?.subcategoryName || "Decoration",
+      selectedDate: dateAdded,
+      selectedSlot: slots,
+      quantity: 1,
+      customizations: customization,
+      pincode: pincode
+    };
+
+    // Add to cart using the global function
+    if (window.addToCart) {
+      window.addToCart(cartItem);
+    }
+
+    // Then open the booking flow
+    setShowBookingFlow(true);
+  };
+
   const handleNext = () => {
     let formIsValid = handleValidation();
     if (formIsValid) {
@@ -1435,7 +1475,7 @@ const ProductDetails = () => {
 
             <button
               className="bottom-booking-button"
-              onClick={onBookNowClick}
+              onClick={handleAddToCartAndBook}
             >
               Book Now
             </button>
@@ -1657,7 +1697,7 @@ const ProductDetails = () => {
                       {/* MAIN BOOK NOW BUTTON */}
                       <button
                         className="booking-summary-book-btn"
-                        onClick={() => setShowBookingFlow(true)}
+                        onClick={handleAddToCartAndBook}
                         disabled={(pincode && pincode != LennyPincode?.find((item) => item == pincode))}
                       >
                         BOOK NOW <span className="booking-summary-arrow"><i className="fa-solid fa-arrow-right"></i></span>
@@ -2621,7 +2661,7 @@ const ProductDetails = () => {
       <FixedBottomBookingBar
         productPrice={getProductDetails?.data?.product?.priceDetails?.price}
         discountedPrice={getProductDetails?.data?.product?.priceDetails?.discountedPrice}
-        onBookNowClick={() => setShowBookingFlow(true)}
+        onBookNowClick={handleAddToCartAndBook}
         activeTab="Overview"
         selectedRecommendedItems={selectedRecommendedItems}
       />
