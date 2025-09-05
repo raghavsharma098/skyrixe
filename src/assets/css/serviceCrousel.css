@@ -118,10 +118,12 @@ body {
 
 .scroll-arrow-left {
   left: -15px;
+  z-index: 1;
 }
 
 .scroll-arrow-right {
   right: -15px;
+  z-index: 1;
 }
 
 /* Horizontal Scroll */
