@@ -1032,6 +1032,7 @@
   position: relative;
   /* Ensure buttons can extend outside */
   overflow: visible;
+  margin-bottom: 20px;
   /* Add padding to provide space for buttons */
 }
 
