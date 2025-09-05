@@ -818,6 +818,25 @@
     
     .PrivateDining .col-6 {padding-left: 5px;padding-right: 5px;}
     .FilterArea2 {display: block;}
+
+    /* Make modal dialog wider on small screens so the white OTP box uses more width */
+    @media (max-width: 480px) {
+        .ModalBox .modal-dialog {
+            max-width: 100% !important;
+            margin: 8px auto !important;
+        }
+
+        .ModalBox .modal-content {
+            padding: 18px 12px !important;
+        }
+
+        .ModalBox .ModalArea {
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 6px !important;
+            box-sizing: border-box !important;
+        }
+    }
     .ProductDetailsArea {padding-top: 25px;}
     .CheckOutDetails .ProfileDetailsBox ul li {width: 50%;}
     .CheckOutDetails .CustomProduct article figcaption h2 {font-size: 14px;width: 70%;}
@@ -877,6 +896,25 @@
         padding: 4px 0 !important;
         width: 100%;
         max-width: 100%;
+    }
+    
+    /* Reduce CustomProduct sizing for tablets and phones */
+    .CheckOutDetails .CustomProduct {
+        padding: 20px 14px !important;
+    }
+    .CheckOutDetails .CustomProduct figure {
+        width: 70px !important;
+        height: 80px !important;
+        padding: 8px !important;
+    }
+    .CheckOutDetails .CustomProduct article figcaption h2 {font-size: 16px !important; width: 70% !important;}
+    .CheckOutDetails .CustomProduct article figcaption p {font-size: 14px !important;}
+
+    @media (max-width: 420px) {
+        .CheckOutDetails .CustomProduct { padding: 14px 12px !important; }
+        .CheckOutDetails .CustomProduct figure { width: 72px !important; height: 72px !important; padding: 6px !important; }
+        .CheckOutDetails .CustomProduct article figcaption h2 { font-size: 14px !important; }
+        .CheckOutDetails .CustomProduct article figcaption p { font-size: 13px !important; }
     }
     
     .FeatureArea .FeatureBox aside {
@@ -985,12 +1023,348 @@
         right: 0 !important;
         bottom: 0 !important;
     }
+
+/* Adjust city selector button positioning on small screens */
+@media (max-width: 768px) {
+    .citySelectorBtn .cityButton {
+    margin-right: -143px !important;
+    }
+}
+
+/* Very small screens override */
+@media (max-width: 320px) {
+    .citySelectorBtn .cityButton {
+        margin-right: -87px !important;
+    }
+}
     
     .FeatureArea .FeatureBoxMain .FeatureBox h4 {
         font-size: 9px !important;
         margin: 0 auto !important;
-        padding: 1px !important;
+        padding: 0px !important;
         line-height: 1.1 !important;
         text-align: center !important;
+    }
+}
+
+/* Left-align OTP input boxes on small mobile screens */
+@media (max-width: 480px) {
+    .FormArea form .form-group .OTPBox {
+        justify-content: flex-start !important;
+        gap: 1px !important;
+        padding-left: 3px !important;
+    }
+
+    .FormArea form .form-group .OTPBox .form-control {
+        width: 56px !important;
+        height: 56px !important;
+    }
+}
+
+/* Ensure BookingBox spacing remains consistent across responsive layouts */
+.CheckOutDetails .BookingBox {
+    margin-left: 15px !important;
+    margin-top: 63px !important;
+    padding: 30px 20px 30px !important;
+}
+
+/* Responsive override for CheckOutArea heading spacing */
+.CheckOutArea h4 {
+    margin: 0 0px 10px 24px !important;
+}
+
+.CheckOutArea p {
+    margin-left: 25px !important;
+}
+
+/* Responsive rules for VenueAddress inside CheckOutDetails */
+@media (max-width: 1024px) {
+    .CheckOutDetails .VenueAddress {
+        margin-left: 12px !important;
+        margin-right: 12px !important;
+        padding: 26px 16px !important;
+    }
+    .CheckOutDetails .VenueAddress .add {
+        right: 20px !important;
+        top: 20px !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .CheckOutDetails .VenueAddress {
+        margin-left: 8px !important;
+        margin-right: 8px !important;
+        padding: 20px 12px !important;
+    }
+    .CheckOutDetails .VenueAddress .add {
+        right: 14px !important;
+        top: 14px !important;
+        font-size: 16px !important;
+    }
+    .CheckOutDetails .VenueAddress aside {
+        padding-left: 28px !important;
+    }
+}
+
+/* Enforce CheckOutArea background gradient and consistent padding on all screen sizes */
+.CheckOutArea {
+    background: linear-gradient(135deg, #fff0f4 0%, #ffd6e3 50%, #ffbccf 100%) !important;
+    padding: 50px 0px 50px !important;
+}
+
+/* Small tweak for very small devices to prevent overflow inside checkout */
+@media (max-width: 420px) {
+    .CheckOutArea {
+        padding: 30px 10px 40px !important;
+    }
+    .CheckOutArea h4, .CheckOutArea p {
+        margin-left: 12px !important;
+    }
+}
+
+/* Ensure these checkout elements align with BookingBox margins/width on all screens */
+.CheckOutDetails .VenueAddress.customChange,
+.CheckOutDetails .productBox,
+.CheckOutDetails .CustomerProduct,
+.CheckOutDetails .ProductSummary {
+    margin-left: 15px !important;
+    margin-right: 0 !important;
+    max-width: calc(100% - 30px) !important;
+    box-sizing: border-box !important;
+}
+
+@media (max-width: 1024px) {
+    .CheckOutDetails .VenueAddress.customChange,
+    .CheckOutDetails .productBox,
+    .CheckOutDetails .CustomerProduct,
+    .CheckOutDetails .ProductSummary {
+        margin-left: 12px !important;
+        margin-right: 12px !important;
+        max-width: calc(100% - 24px) !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .CheckOutDetails .VenueAddress.customChange,
+    .CheckOutDetails .productBox,
+    .CheckOutDetails .CustomerProduct,
+    .CheckOutDetails .ProductSummary {
+        margin-left: 8px !important;
+        margin-right: 8px !important;
+        max-width: calc(100% - 16px) !important;
+    }
+}
+
+/* ===== TEMPORARY FORCE OVERRIDE - visible immediately ===== */
+/* Use minimal duration: remove after confirming in browser */
+html body .CheckOutDetails .BookingBox,
+html body .CheckOutDetails .VenueAddress,
+html body .CheckOutDetails .VenueAddress.customChange,
+html body .CheckOutDetails .productBox,
+html body .CheckOutDetails .CustomerProduct,
+html body .CheckOutDetails .ProductSummary {
+    margin-left: 15px !important;
+    margin-right: 0 !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    max-width: calc(100% - 30px) !important;
+    width: auto !important;
+    box-sizing: border-box !important;
+    transform: translateX(15px) !important;
+}
+
+@media (max-width: 1024px) {
+    html body .CheckOutDetails .BookingBox,
+    html body .CheckOutDetails .VenueAddress,
+    html body .CheckOutDetails .VenueAddress.customChange,
+    html body .CheckOutDetails .productBox,
+    html body .CheckOutDetails .CustomerProduct,
+    html body .CheckOutDetails .ProductSummary {
+        margin-left: 12px !important;
+        margin-right: 12px !important;
+        max-width: calc(100% - 24px) !important;
+    transform: translateX(15px) !important;
+    }
+}
+
+@media (max-width: 420px) {
+    html body .CheckOutDetails .BookingBox,
+    html body .CheckOutDetails .VenueAddress,
+    html body .CheckOutDetails .VenueAddress.customChange,
+    html body .CheckOutDetails .productBox,
+    html body .CheckOutDetails .CustomerProduct,
+    html body .CheckOutDetails .ProductSummary {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        max-width: 95% !important;
+        width: auto !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        box-sizing: border-box !important;
+    transform: translateX(15px) !important;
+    }
+}
+
+/* Shift .CommonGrey 15px to the right on small screens */
+@media (max-width: 420px) {
+    html body .CommonGrey,
+    .CommonGrey {
+        transform: translateX(15px) !important;
+        -webkit-transform: translateX(15px) !important;
+    }
+}
+
+/* Center CommonGreyBox on small screens while keeping padding */
+@media (max-width: 420px) {
+    .CommonGreyBox {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        max-width: 95% !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        box-sizing: border-box !important;
+    }
+}
+
+/* Checkout page typography: headings -> pink, body/light text -> darker grey */
+.CheckOutArea h1,
+.CheckOutArea h2,
+.CheckOutArea h3,
+.CheckOutArea h4,
+.CheckOutArea h5,
+.CheckOutDetails h1,
+.CheckOutDetails h2,
+.CheckOutDetails h3,
+.CheckOutDetails h4,
+.CheckOutDetails h5,
+.CheckOutDetails .BookingBox h4,
+.CheckOutDetails .ProductBox h4,
+.CheckOutDetails .VenueAddress h4,
+.CheckOutDetails .VenueAddress h5,
+.CheckOutDetails .ProductSummary h3,
+.CheckOutDetails .CustomProduct h4 {
+    color: #e62753 !important; /* pink for bold headings */
+}
+
+.CheckOutArea p,
+.CheckOutDetails p,
+.CheckOutDetails .BookingBox p,
+.CheckOutDetails .VenueAddress p,
+.CheckOutDetails .ProductBox article figcaption p,
+.CheckOutDetails .ProductSummary table tbody tr td,
+.CheckOutDetails .ProductSummary table tfoot tr td {
+    color: #4a4a4a !important; /* darker grey for body text */
+}
+
+/* Light pink gradient for checkout-related boxes */
+html body .CheckOutDetails .BookingBox,
+html body .CheckOutDetails .VenueAddress,
+html body .CheckOutDetails .VenueAddress.customChange,
+html body .CheckOutDetails .productBox,
+html body .CheckOutDetails .CustomerProduct,
+html body .CheckOutDetails .ProductSummary,
+.CommonGreyBox,
+.ProductBox,
+.CustomProduct {
+    background: linear-gradient(135deg, #fff0f4 0%, #ffd6e3 50%, #ffbccf 100%) !important;
+}
+
+/* Make ProductBox visually match BookingBox size and left offset */
+.CheckOutDetails .ProductBox {
+    margin-left: 15px !important;
+    margin-right: 0 !important;
+    max-width: calc(100% - 30px) !important;
+    width: auto !important;
+    box-sizing: border-box !important;
+    transform: translateX(11px) !important;
+}
+
+@media (max-width: 1024px) {
+    .CheckOutDetails .ProductBox {
+        margin-left: 12px !important;
+        margin-right: 12px !important;
+        max-width: calc(100% - 24px) !important;
+    transform: translateX(5px) !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .CheckOutDetails .ProductBox {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        max-width: 95% !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    transform: translateX(5px) !important;
+    }
+}
+
+
+/* end temporary override */
+
+/* Ensure row children don't shrink and remain full-width (uses bootstrap gutter variables) */
+.row > * {
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+    padding-right: calc(var(--bs-gutter-x) * 1);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+    margin-top: var(--bs-gutter-y);
+}
+
+/* Mobile-only: shift ProductBox 15px to the right */
+@media (max-width: 420px) {
+    .ProductBox,
+    .CheckOutDetails .ProductBox {
+        transform: translateX(15px) !important;
+        -webkit-transform: translateX(15px) !important;
+    }
+}
+
+/* Mobile-only: shift CustomProduct 15px to the right */
+@media (max-width: 420px) {
+    .CustomProduct,
+    .CheckOutDetails .CustomProduct {
+        transform: translateX(15px) !important;
+        -webkit-transform: translateX(15px) !important;
+    }
+}
+
+/* Desktop: place ProductBox to the right of BookingBox without overlap */
+@media (min-width: 992px) {
+    /* Turn the left column into a two-column grid: main content + narrow sidebar */
+    .CheckOutDetails .container-fluid .row > .col-lg-8 {
+        display: grid;
+        grid-template-columns: 1fr 360px; /* adjust 360px to change sidebar width */
+        column-gap: 20px;
+        align-items: start;
+    }
+
+    /* Ensure BookingBox occupies the main column and doesn't span the sidebar */
+    .CheckOutDetails .container-fluid .row > .col-lg-8 > .BookingBox {
+        grid-column: 1 / 2;
+        margin-left: 0; /* left margin managed by container padding rules */
+        margin-top: 0; /* keep aligned to top of grid cell */
+    }
+
+    /* Place ProductBox into the right sidebar column */
+    .CheckOutDetails .container-fluid .row > .col-lg-8 > .ProductBox {
+        grid-column: 2 / 3;
+        margin: 63px 0 20px 0; /* match previous visual vertical spacing */
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Make sure other left-column sections remain in the first column
+       (they will naturally flow into column 1 unless explicitly placed) */
+    .CheckOutDetails .container-fluid .row > .col-lg-8 > .VenueAddress,
+    .CheckOutDetails .container-fluid .row > .col-lg-8 > .CustomProduct,
+    .CheckOutDetails .container-fluid .row > .col-lg-8 > .RecommendedBox {
+        grid-column: 1 / 2;
+    }
+
+    /* Small visual tuning: reduce BookingBox max-width slightly so it doesn't feel cramped */
+    .CheckOutDetails .container-fluid .row > .col-lg-8 > .BookingBox {
+        max-width: 100%;
     }
 }

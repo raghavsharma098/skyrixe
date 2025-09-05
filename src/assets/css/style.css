@@ -824,31 +824,13 @@ header .HeaderArea .HeaderRight ul.Icons li .cart-icon-link {
   transition: all 0.3s ease !important;
 }
 
-/* Correct selector for shopping cart in headerTwoBtn */
-.headerTwoBtn ul.Icons li .cart-icon-link {
-  margin: 0 15px !important;
-  padding: 8px !important;
-  border: 1px solid #e4e9ee !important;
-  border-radius: 8px !important;
-  background-color: transparent !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-width: 44px !important;
-  height: 44px !important;
-  text-decoration: none !important;
-  transition: all 0.3s ease !important;
-}
 
 header .HeaderArea .HeaderRight ul.Icons li .cart-icon-link:hover {
   background-color: rgba(48, 57, 67, 0.05) !important;
   border-color: #303943 !important;
 }
 
-.headerTwoBtn ul.Icons li .cart-icon-link:hover {
-  background-color: rgba(48, 57, 67, 0.05) !important;
-  border-color: #303943 !important;
-}
+/* Removed cart-icon-link styles for .headerTwoBtn across all screen sizes */
 
 /* Ensure login button in headerTwoBtn has consistent sizing */
 .headerTwoBtn .Login,
@@ -2547,20 +2529,21 @@ i.fa-star {
 }
 
 .CheckOutArea {
-  background-color: #f2f8ff;
-  padding: 75px 0 100px;
+  background: linear-gradient(135deg, #fff0f4 0%, #ffd6e3 50%, #ffbccf 100%);
+  padding: 50px 0px 50px;
 }
 
 .CheckOutArea h4 {
   color: #0b0f0e;
   font-weight: 600;
   font-size: 20px;
-  margin: 0 0 10px 0;
+  margin: 0 0px 10px 24px;
 }
 
 .CheckOutArea p {
   color: #818b9c;
   font-size: 15px;
+  margin-left: 25px;
 }
 
 .CheckOutDetails {
@@ -2573,6 +2556,8 @@ i.fa-star {
   padding: 30px 20px 30px;
   margin: 0 0 20px 0;
   background-color: #fff;
+  margin-left: 15px;
+  margin-top: 63px;
 }
 
 .CheckOutDetails .BookingBox h4 {
@@ -2580,6 +2565,19 @@ i.fa-star {
   font-weight: 600;
   font-size: 20px;
   margin: 0 0 15px 0;
+}
+
+/* Make certain checkout blocks match BookingBox spacing/width */
+.CheckOutDetails .VenueAddress.customChange,
+.CheckOutDetails .productBox,
+.CheckOutDetails .CustomerProduct,
+.CheckOutDetails .ProductSummary,
+.CheckOutDetails .VenueAddress {
+  /* match BookingBox visual spacing */
+  margin-left: 15px;
+  margin-right: 0;
+  max-width: calc(100% - 30px);
+  box-sizing: border-box;
 }
 
 .CheckOutDetails .BookingBox h5 {
@@ -2621,7 +2619,7 @@ i.fa-star {
   border: 1px solid #e4e9ee;
   border-radius: 12px;
   padding: 30px 20px 30px;
-  margin: 0 0 20px 0;
+  margin: 0px 0px 20px 16px;
 }
 
 .CheckOutDetails .VenueAddress h4 {
@@ -2975,7 +2973,7 @@ i.fa-star {
 
 .CommonGreyBox {
   background-color: #f7f7f7;
-  margin: 20px 0 0 0;
+  margin: 0px 0 0 28px;
   padding: 25px 0 20px 0;
   display: flex;
   flex-direction: column;

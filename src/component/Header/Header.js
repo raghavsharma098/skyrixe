@@ -816,41 +816,6 @@ const Header = () => {
                   )}
 
                   <ul className="Icons">
-                    <li>
-                      <Link
-                        to="/upcoming-bookings"
-                        className="cart-icon-link"
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          padding: '8px',
-                          border: '1px solid #e4e9ee',
-                          borderRadius: '8px',
-                          backgroundColor: 'transparent',
-                          textDecoration: 'none',
-                          transition: 'all 0.3s ease',
-                          height: '44px',
-                          minWidth: '44px',
-                        }}
-                        onMouseEnter={(e) => {
-                          e.target.style.backgroundColor = 'rgba(48, 57, 67, 0.05)';
-                          e.target.style.borderColor = '#303943';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.backgroundColor = 'transparent';
-                          e.target.style.borderColor = '#e4e9ee';
-                        }}
-                      >
-                        <MdAddShoppingCart
-                          style={{ 
-                            fontSize: '20px', 
-                            color: '#303943',
-                            transition: 'color 0.3s ease'
-                          }}
-                        />
-                      </Link>
-                    </li>
                     {!userDetail && (
                       <li>
                         <button 
