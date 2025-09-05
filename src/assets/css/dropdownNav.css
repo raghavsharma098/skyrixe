@@ -54,7 +54,7 @@ body {
   left: 0 !important;
   right: 0 !important;
   width: 100% !important;
-  max-width: 100vw !important;
+  max-width: 100% !important;
   background: #fff;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   border: none;
@@ -314,7 +314,7 @@ body {
 @media (min-width: 1400px) {
   .dropdown-nav-dropdown {
     width: 100% !important;
-    max-width: 100vw !important;
+    max-width: 100% !important;
   }
   
   .dropdown-nav-dropdown-content {
@@ -331,8 +331,8 @@ body {
 
 @media (max-width: 1200px) {
   .dropdown-nav-dropdown {
-    width: 100% !important;
-    max-width: 100vw !important;
+  width: 100% !important;
+  max-width: 100% !important;
   }
   
   .dropdown-nav-dropdown-content {
@@ -350,7 +350,7 @@ body {
 @media (max-width: 1000px) {
   .dropdown-nav-dropdown {
     width: 100% !important;
-    max-width: 100vw !important;
+    max-width: 100% !important;
   }
   
   .dropdown-nav-dropdown-content {

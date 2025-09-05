@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../assets/css/style.css" ;
 
-const HelpCenter = () => {
+const HelpCenter = ({ triggerClass, triggerText }) => {
   const [showHelpModal, setShowHelpModal] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -33,19 +33,37 @@ const HelpCenter = () => {
     setShowHelpModal(false);
   };
 
+  const openModal = () => setShowHelpModal(true);
+
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setShowHelpModal(true)}
-        className="help-center-btn"
+      {triggerClass ? (
+        <a
+          href="#"
+          className={triggerClass}
+          onClick={(e) => {
+            e.preventDefault();
+            openModal();
+          }}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") openModal();
+          }}
+        >
+          {triggerText || "HELP CENTER"}
+        </a>
+      ) : (
+        <button
+          type="button"
+          onClick={openModal}
+          className="help-center-btn"
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: "8px",
-          padding: "10px 15px",
-          border: "1px solid #e4e9ee",
+          gap: "0px",
+    padding: "10px 15px",
           borderRadius: "8px",
           backgroundColor: "transparent",
           color: "#333",
@@ -65,13 +83,10 @@ const HelpCenter = () => {
           e.target.style.borderColor = '#e4e9ee';
         }}
       >
-        <i
-          className="fa-solid fa-headset"
-          style={{ fontSize: "16px", color: "#303943" }}
-        ></i>
-        <span>Help Center</span>
-      </button>
-      <Modal
+  <span>Help Center</span>
+  </button>
+  )}
+  <Modal
         show={showHelpModal}
         onHide={() => setShowHelpModal(false)}
         centered

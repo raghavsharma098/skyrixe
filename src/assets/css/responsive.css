@@ -37,6 +37,7 @@
     background: none !important;
     background-color: transparent !important;
     background-image: none !important;
+    z-index: 1 !important;
 }
 
 /* Homepage-specific Bootstrap row fixes */
@@ -97,6 +98,34 @@
 
 @media (max-width:992px){
     /* Ensure consistent 30px padding on tablet and below */
+
+/* Tablet and mobile specific tweaks for hamburger icon and navbar logo */
+@media (max-width: 992px) {
+    .fa-bars-staggered:before,
+    .fa-reorder:before,
+    .fa-stream:before {
+        content: "\f550";
+        margin-left: 10px;
+    }
+
+    /* Navbar logo adjustments on tablet and mobile to add left spacing */
+    .newHeader .navbar-brand img {
+        border: 0;
+        outline: none;
+        max-width: 100%;
+        margin-left: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* More explicit rules for the smallest screens */
+    .newHeader .navbar-brand img {
+        border: 0;
+        outline: none;
+        max-width: 100%;
+        margin-left: 10px;
+    }
+}
     .FeatureArea {padding: 50px 30px 0;}
     .BirthdayDecorationArea {padding: 20px 30px;}
     .ProductReviewsArea {padding: 50px 30px;}

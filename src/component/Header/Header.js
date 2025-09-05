@@ -562,10 +562,20 @@ const Header = () => {
                   </div>
                   
                   {/* Navigation Links */}
-                  <div className="mobile-nav-links">
+                  <div
+                    className="mobile-nav-links"
+                    onClick={(e) => {
+                      // Close mobile sidebar when any link or nav item inside is clicked
+                      const clicked = e.target.closest && e.target.closest('a, .mobile-nav-link');
+                      if (clicked) {
+                        updateState({ ...iState, openSidebar: false, expandedCategory: null });
+                      }
+                    }}
+                  >
                     <Link to="/profile" className="mobile-nav-link">MY ACCOUNT</Link>
                     <Link to="/upcoming-bookings" className="mobile-nav-link">TRACK ORDER</Link>
-                    <Link to="/help" className="mobile-nav-link">HELP CENTER</Link>
+                    {/* Use HelpCenter component here so mobile opens the help modal instead of navigating to /help */}
+                    <HelpCenter triggerClass="mobile-nav-link" triggerText="HELP CENTER" />
                   </div>
                   
                   {/* Mobile Categories */}
