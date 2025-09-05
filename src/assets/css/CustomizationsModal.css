@@ -204,17 +204,27 @@
   box-shadow: 0 2px 8px rgba(123, 31, 162, 0.1);
 }
 
+/* Default desktop layout - CardImageContainer wraps image and actions */
+.CustomizationsModal .CardImageContainer {
+  display: contents; /* This makes it transparent for desktop layout */
+}
+
 .CustomizationsModal .CardImage {
   width: 100%;
-  height: 80px;
+  height: 0;
+  padding-bottom: 100%; /* This creates a perfect square */
   margin-bottom: 8px;
   border-radius: 6px;
   overflow: hidden;
   background: #f5f5f5;
   flex-shrink: 0;
+  position: relative;
 }
 
 .CustomizationsModal .CardImage img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -462,9 +472,281 @@
   }
 }
 
+/* Responsive Layout Fix for Small Screens - Remove Horizontal Scroll */
+@media (max-width: 767px) {
+  .CustomizationsModal .CustomizationsGrid,
+  .CustomizationsModal .OthersGrid {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-x: hidden;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .CustomizationsModal .CustomizationCard {
+    flex-basis: 45%;
+    width: 45%;
+    min-width: 150px;
+    max-width: 200px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px;
+  }
+  
+  /* Left side - Image and toggle button */
+  .CustomizationsModal .CardImageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60px;
+    flex-shrink: 0;
+  }
+  
+  .CustomizationsModal .CardImage {
+    width: 60px;
+    height: 60px; /* Force exact square dimensions */
+    padding-bottom: 0; /* Remove padding-bottom for small screens */
+    margin-bottom: 8px;
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #f5f5f5;
+  }
+  
+  /* Ensure image fills completely with no gaps */
+  .CustomizationsModal .CardImage img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Covers entire container, slight cropping is fine */
+  }
+  
+  /* Move toggle button below image */
+  .CustomizationsModal .CardActions {
+    margin-top: 6px; /* Add spacing from image */
+    justify-content: center;
+    width: 60px; /* Match image width for perfect centering */
+  }
+  
+  .CustomizationsModal .ToggleLabel {
+    width: 34px;
+    height: 18px;
+  }
+  
+  .CustomizationsModal .ToggleSlider {
+    width: 14px;
+    height: 14px;
+    top: 2px;
+    left: 2px;
+  }
+  
+  .CustomizationsModal .ToggleSwitch input:checked + .ToggleLabel .ToggleSlider {
+    transform: translateX(16px);
+  }
+  
+  /* Right side - Text content with proper spacing */
+  .CustomizationsModal .CardContent {
+    flex: 1;
+    margin-bottom: 0;
+    padding-left: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  .CustomizationsModal .CardTitle {
+    font-size: 11px;
+    line-height: 1.2;
+    margin-bottom: 4px;
+    word-wrap: break-word;
+  }
+  
+  .CustomizationsModal .CardPrice {
+    font-size: 12px;
+    margin-top: auto;
+    font-weight: 700;
+  }
+  
+  /* Quantity controls if needed */
+  .CustomizationsModal .QuantityControls {
+    margin-top: 4px;
+    gap: 4px;
+  }
+  
+  .CustomizationsModal .QuantityBtn {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+  }
+  
+  .CustomizationsModal .Quantity {
+    font-size: 10px;
+    min-width: 14px;
+  }
+}
+
 @media (max-width: 576px) {
   .CustomizationsModal .CustomizationsGrid,
   .CustomizationsModal .OthersGrid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Small Mobile Screens - Enhanced layout for very small screens */
+@media (max-width: 480px) {
+  .CustomizationsModal .modal-dialog {
+    width: 95vw;
+    margin: 10px auto;
+  }
+  
+  .CustomizationsModal .ModalArea {
+    height: 85vh;
+    max-height: none;
+    padding: 8px;
+  }
+  
+  .CustomizationsModal .ModalHeader {
+    margin: 8px;
+    padding: 8px 12px;
+  }
+  
+  .CustomizationsModal .ModalHeader h3 {
+    font-size: 16px;
+  }
+  
+  .CustomizationsModal .BackBtn {
+    font-size: 12px;
+  }
+  
+  .CustomizationsModal .CloseModal {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+  
+  .CustomizationsModal .CustomizationTabs {
+    margin: 8px;
+    gap: 8px;
+  }
+  
+  .CustomizationsModal .TabBtn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
+  .CustomizationsModal .ScrollableContent {
+    padding: 8px;
+    margin: 8px 0;
+  }
+  
+  /* For very small screens, switch to single column */
+  .CustomizationsModal .CustomizationsGrid,
+  .CustomizationsModal .OthersGrid {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .CustomizationsModal .CustomizationCard {
+    flex-basis: auto;
+    width: 100%;
+    max-width: none;
+    min-height: auto;
+    padding: 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  /* Horizontal card layout for very small screens */
+  .CustomizationsModal .CardImage {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+  
+  .CustomizationsModal .CardContent {
+    flex: 1;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 80px;
+  }
+  
+  .CustomizationsModal .CardTitle {
+    font-size: 14px;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  
+  .CustomizationsModal .CardPrice {
+    font-size: 14px;
+    margin-top: auto;
+  }
+  
+  .CustomizationsModal .CardActions {
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: 0;
+  }
+  
+  .CustomizationsModal .ToggleLabel {
+    margin-top: 15px;
+    width: 36px;
+    height: 18px;
+  }
+  
+  .CustomizationsModal .ToggleSlider {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .CustomizationsModal .ToggleSwitch input:checked + .ToggleLabel .ToggleSlider {
+    transform: translateX(18px);
+  }
+  
+  .CustomizationsModal .QuantityControls {
+    margin-top: 6px;
+    gap: 6px;
+  }
+  
+  .CustomizationsModal .QuantityBtn {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+  }
+  
+  .CustomizationsModal .Quantity {
+    font-size: 12px;
+    min-width: 16px;
+  }
+  
+  .CustomizationsModal .ModalFooter {
+    margin: 0 8px 8px 8px;
+    padding: 10px 12px;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+  
+  .CustomizationsModal .TotalLabel {
+    font-size: 11px;
+  }
+  
+  .CustomizationsModal .TotalAmount {
+    font-size: 18px;
+  }
+  
+  .CustomizationsModal .BookNowBtn {
+    padding: 10px 20px;
+    font-size: 12px;
+    width: 100%;
+    justify-content: center;
   }
 }

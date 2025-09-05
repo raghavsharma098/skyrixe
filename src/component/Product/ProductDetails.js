@@ -176,36 +176,57 @@ const ProductDetails = () => {
     });
   };
 
-  // Function to handle scrolling in recommended section
-  const handleRecommendedScroll = (direction) => {
-    const container = document.querySelector('.recommended-products-grid');
+  // Function to handle carousel scrolling
+  const handleCarouselScroll = (direction) => {
+    const container = document.querySelector('.card-container');
     if (!container) return;
 
-    const cardWidth = 280; // Approximate width of each card including margin
-    const scrollAmount = cardWidth * 2; // Scroll 2 cards at a time
+    // Calculate single card width including gap - dynamically get the actual card width
+    const firstCard = container.querySelector('.recommended-product-card');
+    if (!firstCard) return;
+    
+    const cardWidth = firstCard.offsetWidth;
+    const cardStyle = window.getComputedStyle(container);
+    const gap = parseInt(cardStyle.gap) || 16;
+    const scrollAmount = cardWidth + gap;
+
+    const currentTransform = container.style.transform;
+    const currentTranslateX = currentTransform ? parseInt(currentTransform.match(/-?\d+/)?.[0] || 0) : 0;
+
+    let newTranslateX;
 
     if (direction === 'left') {
-      const newPosition = Math.max(0, recommendedScrollPosition - scrollAmount);
-      container.scrollTo({
-        left: newPosition,
-        behavior: 'smooth'
-      });
-      updateState({
-        ...iState,
-        recommendedScrollPosition: newPosition
-      });
-    } else if (direction === 'right') {
-      const maxScroll = container.scrollWidth - container.clientWidth;
-      const newPosition = Math.min(maxScroll, recommendedScrollPosition + scrollAmount);
-      container.scrollTo({
-        left: newPosition,
-        behavior: 'smooth'
-      });
-      updateState({
-        ...iState,
-        recommendedScrollPosition: newPosition
-      });
+      // Scroll left (show previous cards)
+      newTranslateX = Math.min(0, currentTranslateX + scrollAmount);
+    } else {
+      // Scroll right (show next cards)
+      const containerWidth = container.parentElement.offsetWidth;
+      const totalWidth = container.scrollWidth;
+      const maxTranslateX = -(totalWidth - containerWidth);
+      newTranslateX = Math.max(maxTranslateX, currentTranslateX - scrollAmount);
     }
+
+    container.style.transform = `translateX(${newTranslateX}px)`;
+
+    // Update button states
+    const leftBtn = document.getElementById('scroll-left-btn');
+    const rightBtn = document.getElementById('scroll-right-btn');
+    
+    if (leftBtn) {
+      leftBtn.disabled = newTranslateX >= 0;
+    }
+    
+    if (rightBtn) {
+      const containerWidth = container.parentElement.offsetWidth;
+      const totalWidth = container.scrollWidth;
+      const maxTranslateX = -(totalWidth - containerWidth);
+      rightBtn.disabled = newTranslateX <= maxTranslateX + 10; // Add small buffer
+    }
+  };
+
+  // Function to handle scrolling in recommended section (kept for backward compatibility)
+  const handleRecommendedScroll = (direction) => {
+    handleCarouselScroll(direction);
   };
 
   // Function to update scroll position and button states
@@ -1264,6 +1285,63 @@ const ProductDetails = () => {
     }
   }, [getProductDetails]);
 
+  // Carousel initialization useEffect
+  useEffect(() => {
+    const leftBtn = document.getElementById('scroll-left-btn');
+    const rightBtn = document.getElementById('scroll-right-btn');
+    
+    const handleLeftClick = () => handleCarouselScroll('left');
+    const handleRightClick = () => handleCarouselScroll('right');
+    
+    if (leftBtn && rightBtn) {
+      leftBtn.addEventListener('click', handleLeftClick);
+      rightBtn.addEventListener('click', handleRightClick);
+      
+      // Initial button state
+      leftBtn.disabled = true; // Start at the beginning
+      
+      // Calculate if right button should be disabled
+      const container = document.querySelector('.card-container');
+      if (container) {
+        // Wait for DOM to be fully rendered
+        setTimeout(() => {
+          const containerWidth = container.parentElement?.offsetWidth || 0;
+          const totalWidth = container.scrollWidth;
+          rightBtn.disabled = totalWidth <= containerWidth + 10; // Add small buffer
+        }, 100);
+      }
+    }
+    
+    // Handle window resize to recalculate button states
+    const handleResize = () => {
+      const container = document.querySelector('.card-container');
+      const leftBtn = document.getElementById('scroll-left-btn');
+      const rightBtn = document.getElementById('scroll-right-btn');
+      
+      if (container && leftBtn && rightBtn) {
+        // Reset transform on resize
+        container.style.transform = 'translateX(0px)';
+        leftBtn.disabled = true;
+        
+        setTimeout(() => {
+          const containerWidth = container.parentElement?.offsetWidth || 0;
+          const totalWidth = container.scrollWidth;
+          rightBtn.disabled = totalWidth <= containerWidth + 10;
+        }, 100);
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      if (leftBtn && rightBtn) {
+        leftBtn.removeEventListener('click', handleLeftClick);
+        rightBtn.removeEventListener('click', handleRightClick);
+      }
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [getProductDetails?.data?.product?.productcustomizeDetails]);
+
   // Add this useEffect after the existing ones
   useEffect(() => {
     if (selectedRecommendedItems.length > 0) {
@@ -1670,8 +1748,19 @@ const ProductDetails = () => {
                     </div>
 
                     <div className="recommended-products-container">
-                      <div className="recommended-products-grid">
-                        {(filteredRecommendedProducts.length > 0 ? filteredRecommendedProducts : getProductDetails?.data?.product?.productcustomizeDetails)?.slice(0, 8)?.map((item, i) => (
+                      {/* Navigation Buttons - moved outside carousel-viewport */}
+                      <button id="scroll-left-btn" className="carousel-nav-btn carousel-nav-left">
+                        <i className="fa-solid fa-chevron-left"></i>
+                      </button>
+                      <button id="scroll-right-btn" className="carousel-nav-btn carousel-nav-right">
+                        <i className="fa-solid fa-chevron-right"></i>
+                      </button>
+                      
+                      {/* Carousel Viewport */}
+                      <div className="carousel-viewport">
+                        {/* Card Container */}
+                        <div className="recommended-products-grid card-container">
+                          {(filteredRecommendedProducts.length > 0 ? filteredRecommendedProducts : getProductDetails?.data?.product?.productcustomizeDetails)?.slice(0, 8)?.map((item, i) => (
                           <div className="recommended-product-card" key={i}>
                             <div className="recommended-product-image">
                               <img
@@ -1771,23 +1860,8 @@ const ProductDetails = () => {
                             </div>
                           ))
                         )}
+                        </div>
                       </div>
-
-                      {/* Navigation arrows remain the same */}
-                      <button
-                        className={`recommended-nav-arrow recommended-nav-prev ${recommendedScrollPosition <= 0 ? 'disabled' : ''}`}
-                        onClick={() => handleRecommendedScroll('left')}
-                        disabled={recommendedScrollPosition <= 0}
-                      >
-                        <i className="fa-solid fa-chevron-left"></i>
-                      </button>
-                      <button
-                        className={`recommended-nav-arrow recommended-nav-next ${recommendedScrollPosition >= maxScrollPosition ? 'disabled' : ''}`}
-                        onClick={() => handleRecommendedScroll('right')}
-                        disabled={recommendedScrollPosition >= maxScrollPosition}
-                      >
-                        <i className="fa-solid fa-chevron-right"></i>
-                      </button>
                     </div>
 
                     {/* INCLUSIONS SECTION */}

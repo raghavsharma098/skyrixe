@@ -3,9 +3,10 @@ import { Modal } from "react-bootstrap";
 import "../../assets/css/TimeSlotModal.css";
 
 const timeSlots = [
-  { id: 1, time: "12:00 PM to 03:00 PM", available: true },
-  { id: 2, time: "03:00 PM to 06:00 PM", available: true },
-  { id: 3, time: "06:00 PM to 09:00 PM", available: true },
+  { id: 1, time: "8:00 AM to 11:00 AM", available: true, hasOffer: true, offerText: "10%" },
+  { id: 2, time: "10:00 AM to 2:00 PM", available: true },
+  { id: 3, time: "2:00 PM to 6:00 PM", available: true },
+  { id: 4, time: "6:00 PM to 10:00 PM", available: true },
 ];
 
 const TimeSlotModal = ({ show, onHide, onTimeSelect, onBack, selectedDate }) => {
@@ -65,7 +66,15 @@ const TimeSlotModal = ({ show, onHide, onTimeSelect, onBack, selectedDate }) => 
               onClick={() => handleSlotSelect(slot)}
             >
               <div className="SlotContent">
-                <span className="SlotTime">{slot.time}</span>
+                <span className="SlotTime">
+                  {slot.time}
+                  {slot.hasOffer && (
+                    <span className="OfferIndicator">
+                      <span className="LightningIcon">⚡</span>
+                      <span className="OfferText">{slot.offerText}</span>
+                    </span>
+                  )}
+                </span>
                 <div className="RadioButton">
                   <input
                     type="radio"

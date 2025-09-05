@@ -180,3 +180,24 @@
     padding: 16px 20px;
   }
 }
+
+/* Offer Indicator Styling */
+.TimeSlotModal .OfferIndicator {
+  margin-left: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #ff9800;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.TimeSlotModal .LightningIcon {
+  font-size: 16px;
+  color: #ff9800;
+}
+
+.TimeSlotModal .OfferText {
+  color: #ff9800;
+  font-weight: 600;
+}

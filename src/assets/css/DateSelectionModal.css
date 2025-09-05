@@ -4,6 +4,11 @@
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
 }
 
+/* Override Bootstrap modal padding */
+.DateSelectionModal.modal.show {
+  padding-left: 0 !important;
+}
+
 .DateSelectionModal .ModalArea {
   padding: 24px;
   background: white;
@@ -194,5 +199,72 @@
   .DateSelectionModal .CalendarDay {
     min-height: 40px;
     font-size: 14px;
+  }
+}
+
+/* Small Mobile Screens - Below 425px */
+@media (max-width: 424px) {
+  .DateSelectionModal .ModalArea {
+    width: 95vw;
+    padding: 16px;
+    margin: 8px;
+  }
+  
+  .DateSelectionModal .ModalHeader h3 {
+    font-size: 16px;
+  }
+  
+  .DateSelectionModal .CloseModal {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+  
+  .DateSelectionModal .CalendarHeader {
+    margin-bottom: 16px;
+    padding: 0 4px;
+  }
+  
+  .DateSelectionModal .MonthYear {
+    font-size: 14px;
+  }
+  
+  .DateSelectionModal .MonthNavBtn {
+    font-size: 14px;
+    padding: 4px;
+    width: 28px;
+    height: 28px;
+  }
+  
+  .DateSelectionModal .WeekDays {
+    gap: 0;
+    margin-bottom: 4px;
+  }
+  
+  .DateSelectionModal .WeekDay {
+    padding: 6px 2px;
+    font-size: 11px;
+  }
+  
+  .DateSelectionModal .CalendarGrid {
+    gap: 2px;
+  }
+  
+  .DateSelectionModal .CalendarDay {
+    min-height: 32px;
+    font-size: 12px;
+    border-radius: 4px;
+    padding: 2px;
+  }
+  
+  .DateSelectionModal .WhatsAppHelp {
+    padding: 12px;
+    gap: 8px;
+    font-size: 11px;
+  }
+  
+  .DateSelectionModal .HelpIcon img {
+    width: 16px;
+    height: 16px;
   }
 }

@@ -2743,7 +2743,6 @@
   color: #aa1295;
   font-size: 1rem;
   font-weight: 600;
-  padding: 12px 28px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -3607,7 +3606,6 @@
   color: #aa1295;
   font-size: 1rem;
   font-weight: 600;
-  padding: 12px 28px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -3807,7 +3805,7 @@
 
 
 .PrivateDiningBox h6 {
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .content-wrap {

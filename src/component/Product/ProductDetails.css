@@ -965,6 +965,7 @@
   padding: 1.5rem 2rem;
   margin-bottom: 2rem;
   position: relative;
+  z-index: 1; /* Lower z-index so buttons can appear over it */
 }
 
 .recommended-tabs {
@@ -1026,60 +1027,87 @@
   border-color: #e5097f;
 }
 
-/* Products Grid */
-.recommended-products-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-  margin-bottom: 1rem;
+/* Products Grid - Now Horizontal Carousel */
+.recommended-products-container {
+  position: relative;
+  /* Ensure buttons can extend outside */
+  overflow: visible;
+  /* Add padding to provide space for buttons */
+}
+
+/* Carousel Viewport */
+.carousel-viewport {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+/* Card Container - Horizontal Flex Layout */
+.recommended-products-grid.card-container {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 16px;
+  transition: transform 0.5s ease-in-out;
+  padding: 0;
+  margin: 0;
+  /* Hide scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.recommended-products-grid.card-container::-webkit-scrollbar {
+  display: none;
 }
 
 .recommended-product-card {
   background: white;
   border: 1px solid #e9ecef;
-  border-radius: 10px;
+  border-radius: 15px;
   overflow: hidden;
   transition: all 0.3s ease;
   position: relative;
+  /* Prevent cards from shrinking */
+  flex-shrink: 0;
+  /* Fixed width for consistency */
+  width: 200px;
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .recommended-product-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  transform: translateY(-3px);
+  border-color: #e5097f;
 }
 
 .recommended-product-image {
   width: 100%;
-  height: 120px;
+  aspect-ratio: 1; /* Makes it a perfect square */
   overflow: hidden;
-}
-
-@media (max-width: 600px) {
-  .recommended-product-image {
-    height: 264px;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1024px) {
-  .recommended-product-image {
-    height: 264px;
-  }
+  border-radius: 12px; /* Rounded square */
+  margin-bottom: 0.75rem;
+  background: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Removed padding to eliminate space */
 }
 
 .recommended-product-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* Changed back to cover to fill container completely */
   cursor: pointer;
   transition: transform 0.3s ease;
+  border-radius: 12px; /* Match container radius */
 }
 
 .recommended-product-card:hover .recommended-product-image img {
-  transform: scale(1.05);
+  transform: scale(1.02); /* Subtle scale instead of too much zoom */
 }
 
 .recommended-product-info {
-  padding: 1rem;
+  padding: 0; /* Remove padding since card now has padding */
 }
 
 .recommended-product-title {
@@ -1184,6 +1212,51 @@
   transform: translateX(20px);
 }
 
+/* Carousel Navigation Buttons */
+.carousel-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 45px;
+  height: 45px;
+  background: white;
+  border: 2px solid #e9ecef;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 100; /* Increased z-index to appear over recommended-section */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* Ensure buttons are clickable */
+  pointer-events: auto;
+}
+
+.carousel-nav-btn:hover {
+  border-color: #e5097f;
+  color: #e5097f;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 101; /* Even higher on hover */
+  transform: translateY(-50%) scale(1.1); /* Slight scale on hover for better feedback */
+}
+
+.carousel-nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: #e9ecef;
+  color: #6c757d;
+}
+
+/* Simple positioning that works across all screen sizes */
+.carousel-nav-left {
+  left: -65px; /* Position just outside the container padding */
+}
+
+.carousel-nav-right {
+  right: -65px; /* Position just outside the container padding */
+}
+
 /* Navigation Arrows */
 .recommended-nav-arrow {
   position: absolute;
@@ -1217,35 +1290,111 @@
 }
 
 /* Responsive Design for Recommended Section */
-@media (max-width: 1200px) {
-  .recommended-products-grid {
-    grid-template-columns: repeat(3, 1fr);
+
+/* Desktop View - Show 4 full cards + 50% of 5th card */
+@media (min-width: 1025px) {
+  .carousel-viewport {
+    /* 4 cards * 220px + 3 gaps * 16px + 50% of 5th card (110px) = 1038px */
+    width: 1038px;
+    margin: 0 auto;
+  }
+  
+  .recommended-product-card {
+    width: 220px;
   }
 }
 
-@media (max-width: 992px) {
-  .recommended-products-grid {
-    grid-template-columns: repeat(2, 1fr);
+/* Tablet View - Show 3 full cards + 50% of 4th card */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .carousel-viewport {
+    /* 3 cards * 200px + 2 gaps * 16px + 50% of 4th card (100px) = 732px */
+    width: 732px;
+    margin: 0 auto;
   }
-
-  .recommended-filter-tags {
-    gap: 0.5rem;
+  
+  .recommended-product-card {
+    width: 200px;
   }
+}
 
-  .filter-tag {
-    padding: 0.4rem 0.8rem;
+/* Mobile View - Show 1 full card + 50% of 2nd card */
+@media (max-width: 768px) {
+
+
+  .carousel-viewport {
+    /* 1 card * 160px + 50% of 2nd card (80px) + 1 gap * 16px = 256px */
+    width: 256px;
+    margin: 0 auto;
+  }
+  
+  .recommended-product-card {
+    width: 160px; /* Reduced card width to fit 1.5 cards */
+    padding: 8px; /* Reduced padding */
+  }
+  
+  .recommended-product-image {
+    border-radius: 10px;
+    margin-bottom: 0.4rem; /* Reduced margin */
+  }
+  
+  .carousel-nav-btn {
+    width: 35px;
+    height: 35px;
+    z-index: 100;
+  }
+  
+  .carousel-nav-left {
+    left: -45px;
+  }
+  
+  .carousel-nav-right {
+    right: -45px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+
+  .carousel-viewport {
+    /* 1 card * 140px + 50% of 2nd card (70px) + 1 gap * 12px = 222px */
+    width: 222px;
+    margin: 0 auto;
+  }
+  
+  .recommended-products-grid.card-container {
+    gap: 12px;
+  }
+  
+  .recommended-product-card {
+    width: 140px; /* Further reduced for extra small screens */
+    padding: 6px; /* Minimal padding */
+  }
+  
+  .recommended-product-image {
+    border-radius: 8px;
+    margin-bottom: 0.3rem; /* Minimal margin */
+  }
+  
+  .carousel-nav-btn {
+    width: 30px;
+    height: 30px;
     font-size: 0.8rem;
+    z-index: 100;
+  }
+  
+  .carousel-nav-left {
+    left: -35px;
+  }
+  
+  .carousel-nav-right {
+    right: -35px;
   }
 }
 
+/* Additional responsive adjustments for carousel */
 @media (max-width: 768px) {
   .recommended-section {
     padding: 1rem;
-  }
-
-  .recommended-products-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
   }
 
   .recommended-product-info {
@@ -1270,20 +1419,35 @@
     font-size: 0.9rem;
   }
 
-  .recommended-nav-arrow {
-    display: none;
-  }
-}
-
-@media (max-width: 576px) {
-  .recommended-products-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  .recommended-filter-tags {
+    gap: 0.5rem;
   }
 
   .filter-tag {
     padding: 0.3rem 0.6rem;
     font-size: 0.75rem;
+  }
+
+  /* Fix booking-summary-input mobile spacing */
+  .booking-summary-input {
+    margin-right: 1rem; /* Add consistent right spacing */
+    box-sizing: border-box; /* Ensure padding is included in width */
+  }
+}
+
+@media (max-width: 992px) {
+  .recommended-filter-tags {
+    gap: 0.5rem;
+  }
+
+  .filter-tag {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  /* Additional booking-summary-input responsive fixes */
+  .booking-summary-input {
+    padding: 0.7rem 0.9rem; /* Slightly reduce padding for medium screens */
   }
 }
 
@@ -2247,6 +2411,7 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
   padding: 1.5rem 2rem;
   margin-bottom: 2rem;
+  margin-top: 2rem;
 }
 
 .location-content::before {
@@ -2346,7 +2511,6 @@
 .similar-products-section {
   width: 95%;
   margin: 0 auto;
-  padding: 0 15px;
 }
 .container-fluid {
    margin: 0 auto;
@@ -2404,10 +2568,6 @@
   position: relative;
   width: 100%;
   /* Remove fixed aspect-ratio to prevent content cutting */
-}
-
-.product-card:hover {
-  /* Remove hover effects to match new design */
 }
 
 .product-image-wrapper {
@@ -2692,7 +2852,6 @@
 .recently-viewed-section {
   width: 95%;
   margin: 0 auto;
-  padding: 0 15px;
 }
 
 .container-fluid {

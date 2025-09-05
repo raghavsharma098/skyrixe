@@ -193,18 +193,32 @@ const CustomizationsModal = ({
                     const selectedItem = isSelected || {};
                     return (
                       <div key={customization._id} className="CustomizationCard">
-                        <div className="CardImage">
-                          <img
-                            src={customization.customimages || 'https://via.placeholder.com/200x150?text=No+Image'}
-                            alt={customization.name}
-                            onError={(e) => {
-                              e.target.src = 'https://via.placeholder.com/200x150?text=No+Image';
-                            }}
-                          />
+                        <div className="CardImageContainer">
+                          <div className="CardImage">
+                            <img
+                              src={customization.customimages || 'https://via.placeholder.com/200x150?text=No+Image'}
+                              alt={customization.name}
+                              onError={(e) => {
+                                e.target.src = 'https://via.placeholder.com/200x150?text=No+Image';
+                              }}
+                            />
+                          </div>
+                          <div className="CardActions">
+                            <div className="ToggleSwitch">
+                              <input
+                                type="checkbox"
+                                id={`toggle-${customization._id}`}
+                                checked={!!isSelected}
+                                onChange={() => handleCustomizationToggle(customization)}
+                              />
+                              <label htmlFor={`toggle-${customization._id}`} className="ToggleLabel">
+                                <span className="ToggleSlider"></span>
+                              </label>
+                            </div>
+                          </div>
                         </div>
                         <div className="CardContent">
                           <h5 className="CardTitle">{customization.name}</h5>
-                          <p className="CardDescription">{customization.description}</p>
                           <div className="CardPrice">₹{customization.price}</div>
                           {/* Show quantity controls if selected */}
                           {isSelected && (
@@ -225,19 +239,6 @@ const CustomizationsModal = ({
                               </button>
                             </div>
                           )}
-                        </div>
-                        <div className="CardActions">
-                          <div className="ToggleSwitch">
-                            <input
-                              type="checkbox"
-                              id={`toggle-${customization._id}`}
-                              checked={!!isSelected}
-                              onChange={() => handleCustomizationToggle(customization)}
-                            />
-                            <label htmlFor={`toggle-${customization._id}`} className="ToggleLabel">
-                              <span className="ToggleSlider"></span>
-                            </label>
-                          </div>
                         </div>
                       </div>
                     );
@@ -259,18 +260,32 @@ const CustomizationsModal = ({
                     const selectedItem = isSelected || {};
                     return (
                       <div key={customization._id} className="CustomizationCard">
-                        <div className="CardImage">
-                          <img
-                            src={customization.customimages || 'https://via.placeholder.com/200x150?text=No+Image'}
-                            alt={customization.name}
-                            onError={(e) => {
-                              e.target.src = 'https://via.placeholder.com/200x150?text=No+Image';
-                            }}
-                          />
+                        <div className="CardImageContainer">
+                          <div className="CardImage">
+                            <img
+                              src={customization.customimages || 'https://via.placeholder.com/200x150?text=No+Image'}
+                              alt={customization.name}
+                              onError={(e) => {
+                                e.target.src = 'https://via.placeholder.com/200x150?text=No+Image';
+                              }}
+                            />
+                          </div>
+                          <div className="CardActions">
+                            <div className="ToggleSwitch">
+                              <input
+                                type="checkbox"
+                                id={`toggle-${customization._id}`}
+                                checked={!!isSelected}
+                                onChange={() => handleCustomizationToggle(customization)}
+                              />
+                              <label htmlFor={`toggle-${customization._id}`} className="ToggleLabel">
+                                <span className="ToggleSlider"></span>
+                              </label>
+                            </div>
+                          </div>
                         </div>
                         <div className="CardContent">
                           <h5 className="CardTitle">{customization.name}</h5>
-                          <p className="CardDescription">{customization.description}</p>
                           <div className="CardPrice">₹{customization.price}</div>
                           {/* Show quantity controls if selected */}
                           {isSelected && (
@@ -291,19 +306,6 @@ const CustomizationsModal = ({
                               </button>
                             </div>
                           )}
-                        </div>
-                        <div className="CardActions">
-                          <div className="ToggleSwitch">
-                            <input
-                              type="checkbox"
-                              id={`toggle-${customization._id}`}
-                              checked={!!isSelected}
-                              onChange={() => handleCustomizationToggle(customization)}
-                            />
-                            <label htmlFor={`toggle-${customization._id}`} className="ToggleLabel">
-                              <span className="ToggleSlider"></span>
-                            </label>
-                          </div>
                         </div>
                       </div>
                     );
