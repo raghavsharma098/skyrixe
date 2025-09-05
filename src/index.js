@@ -1,9 +1,6 @@
 
 import ReactDOM from 'react-dom/client';
 import './index.css';
-// Global app styles
-import './assets/css/style.css';
-import './assets/css/responsive.css';
 import reportWebVitals from './reportWebVitals';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
