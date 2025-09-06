@@ -69,8 +69,8 @@
 
 @media (max-width: 320px) {
   .product-details-section {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 0px;
+    padding-right: 0px;
   }
 }
 
@@ -392,13 +392,13 @@
 .carousel-inner.enhanced .carousel-item {
   position: relative;
   overflow: hidden;
-  border-radius: 15px;
+  border-radius: 0px;
 }
 
 .image-zoom-wrapper {
   position: relative;
   overflow: hidden;
-  border-radius: 15px;
+  border-radius: 0px;
   background: #f8f9fa;
   height: 100%;
   display: flex;
