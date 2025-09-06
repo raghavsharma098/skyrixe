@@ -1572,11 +1572,11 @@
   margin: 0 !important;
   left: 0;
   transform: none;
-  text-align: left !important;
+  text-align: justify;
   display: flex;
   flex-direction: column;
-  align-items: flex-start !important;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: center;
   min-height: 100vh;
   box-sizing: border-box;
 }
@@ -1685,24 +1685,30 @@
 /* ===== OUR SERVICES HEADING STYLING ===== */
 .about-section h1 {
   font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 400;
+  font-weight: 800;
   color: #e62753 !important;
   margin: 30px 0 20px 0;
   line-height: 1.3;
+  text-align: center;
 }
 
 .about-section h2 {
   font-size: clamp(1.8rem, 3vw, 2.5rem);
-  font-weight: 500;
+  font-weight: 800;
   color: #e62753;
   margin: 40px 0 20px 0;
   line-height: 1.3;
+  text-align: center;
 }
 
 .about-section p {
+  text-align: justify;
+  text-justify: inter-word;
   margin-bottom: 20px;
   line-height: 1.6;
   max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .services-highlight {
@@ -1784,15 +1790,12 @@
 .city-links {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start !important;
-  align-items: flex-start !important;
+  justify-content: center;
+  align-items: center;
   gap: 12px;
-  margin: 0 !important;
-  padding: 0 !important;
-  max-width: none !important;
-  width: 100% !important;
-  text-align: left !important;
-  box-sizing: border-box;
+  margin: 0 auto;
+  max-width: 900px;
+  text-align: center;
 }
 
 .city-links a {
@@ -2275,11 +2278,10 @@
     padding: 30px 15px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start !important;
-    justify-content: flex-start;
+    align-items: center;
+    justify-content: center;
     min-height: 100vh;
     box-sizing: border-box;
-    text-align: left !important;
   }
   
   .about-content {
@@ -3005,18 +3007,18 @@
 }
 
 /* Buttons */
-.city-links {
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  color: #1a4bb8;
-  line-height: 1.6;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start !important;
-  align-items: flex-start !important;
-  gap: 8px;
-  margin: 25px 0 0 1px;
-  text-align: left !important;
+.btn-link {
+  align-self: flex-start;
+  font-weight: 600;
+  color: #f04e31;
+  text-decoration: none;
+  border: 1.5px solid #f04e31;
+  padding: 6px 14px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+.btn-link:hover {
+  background-color: #f04e31;
   color: white;
   border-color: #f04e31;
 }

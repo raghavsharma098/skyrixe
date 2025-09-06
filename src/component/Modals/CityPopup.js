@@ -386,41 +386,33 @@ const CityPopup = ({ cities, onSelect, onClose }) => {
   };
 
   // Merge available cities with all cities data
-  // Provided city list for both default and available cities
-  const providedCities = [
-    { cityName: 'Mumbai', state: 'Maharashtra', pincode: ['400001'] },
-    { cityName: 'Delhi - NCR', state: 'Delhi', pincode: ['110001'] },
-    { cityName: 'Lucknow', state: 'Uttar Pradesh', pincode: ['226001'] },
-    { cityName: 'Prayagraj', state: 'Uttar Pradesh', pincode: ['211001'] },
-    { cityName: 'Hyderabad', state: 'Telangana', pincode: ['500001'] },
-    { cityName: 'Nashik', state: 'Maharashtra', pincode: ['422001'] },
-    { cityName: 'Pune', state: 'Maharashtra', pincode: ['411001'] },
-    { cityName: 'Kanpur', state: 'Uttar Pradesh', pincode: ['208001'] },
-    { cityName: 'Bangalore', state: 'Karnataka', pincode: ['560001'] },
-    { cityName: 'Goa', state: 'Goa', pincode: ['403001'] },
-    { cityName: 'Jaipur', state: 'Rajasthan', pincode: ['302001'] },
-    { cityName: 'Kolkata', state: 'West Bengal', pincode: ['700001'] },
-    { cityName: 'Indore', state: 'Madhya Pradesh', pincode: ['452001'] },
-    { cityName: 'Ahmedabad', state: 'Gujarat', pincode: ['380001'] },
-    { cityName: 'Gandhinagar', state: 'Gujarat', pincode: ['382010'] },
-    { cityName: 'Chennai', state: 'Tamil Nadu', pincode: ['600001'] },
-    { cityName: 'Chandigarh', state: 'Chandigarh', pincode: ['160001'] },
-    { cityName: 'Patna', state: 'Bihar', pincode: ['800001'] },
-    { cityName: 'Jammu', state: 'Jammu and Kashmir', pincode: ['180001'] },
-    { cityName: 'Siliguri', state: 'West Bengal', pincode: ['734001'] }
-  ];
-
   const availableCities = useMemo(() => {
-    return providedCities;
-  }, []);
+    if (cities && cities.length > 0) {
+      return cities;
+    }
+    // If no cities from API, use the predefined list
+    return [
+      { cityName: 'Lucknow', state: 'Uttar Pradesh', pincode: ['226001'] },
+      { cityName: 'Prayagraj', state: 'Uttar Pradesh', pincode: ['211001'] },
+      { cityName: 'Hyderabad', state: 'Telangana', pincode: ['500001'] },
+      { cityName: 'Ambedkar Nagar', state: 'Uttar Pradesh', pincode: ['224122'] },
+      { cityName: 'Mau', state: 'Uttar Pradesh', pincode: ['275101'] },
+      { cityName: 'Nashik', state: 'Maharashtra', pincode: ['422001'] },
+      { cityName: 'Pune', state: 'Maharashtra', pincode: ['411001'] },
+      { cityName: 'Jaunpur', state: 'Uttar Pradesh', pincode: ['222001'] },
+      { cityName: 'Kanpur', state: 'Uttar Pradesh', pincode: ['208001'] },
+      { cityName: 'Mumbai', state: 'Maharashtra', pincode: ['400001'] },
+      { cityName: 'Delhi', state: 'Delhi', pincode: ['110001'] },
+      { cityName: 'Azamgarh', state: 'Uttar Pradesh', pincode: ['276001'] }
+    ];
+  }, [cities]);
 
   // Filter cities based on search term
   useEffect(() => {
     if (searchTerm.trim() === '') {
       setFilteredCities([]);
     } else {
-      // Only allow searching within the provided city list
-      const filtered = providedCities.filter(city =>
+      const filtered = ALL_CITIES.filter(city =>
         city.cityName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         city.state.toLowerCase().includes(searchTerm.toLowerCase())
       ).slice(0, 20); // Limit to 20 results for performance
