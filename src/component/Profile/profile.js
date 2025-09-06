@@ -433,7 +433,11 @@ const Profile = () => {
                         My Orders
                       </Nav.Link>
                     </Nav.Item>
-
+                    <Nav.Item>
+                      <Nav.Link eventKey="wishlist" as={Link} to="/wishlist">
+                        My Wishlist
+                      </Nav.Link>
+                    </Nav.Item>
                     <Nav.Item>
                       <Nav.Link
                         eventKey="past-bookings"
@@ -686,7 +690,69 @@ const Profile = () => {
                     )}
                   </Tab.Pane>
 
-
+                  <Tab.Pane className="tab-pane" eventKey="wishlist">
+                    <div className="WishlistArea">
+                      <h4 style={{ marginBottom: "20px" }}>My Wishlist</h4>
+                      {wishlistItems.length > 0 ? (
+                        <div className="wishlist-grid">
+                          {wishlistItems.map((item, i) => (
+                            <div className="wishlist-item" key={item.id || i}>
+                              <div className="wishlist-image-container">
+                                <img
+                                  src={item.image || item.productimages?.[0]}
+                                  alt={item.name}
+                                  className="wishlist-image"
+                                  onClick={() => handleWishlistProductClick(item.productData || item)}
+                                />
+                                <button
+                                  className="wishlist-remove-btn"
+                                  onClick={() => handleRemoveFromWishlist(item.id)}
+                                  title="Remove from wishlist"
+                                >
+                                  <i className="fa-solid fa-times"></i>
+                                </button>
+                              </div>
+                              <div className="wishlist-content">
+                                <h5 className="wishlist-title" onClick={() => handleWishlistProductClick(item.productData || item)}>
+                                  {item.name || item.productDetails?.productname}
+                                </h5>
+                                <div className="wishlist-price">
+                                  {item.discountedPrice ? (
+                                    <>
+                                      <span className="wishlist-current-price">₹{item.discountedPrice}</span>
+                                      <span className="wishlist-original-price">₹{item.originalPrice}</span>
+                                    </>
+                                  ) : (
+                                    <span className="wishlist-current-price">₹{item.originalPrice || item.price}</span>
+                                  )}
+                                </div>
+                                <button
+                                  className="wishlist-view-btn"
+                                  onClick={() => handleWishlistProductClick(item.productData || item)}
+                                >
+                                  View Product
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="EmptyWishlistArea">
+                          <span>
+                            <i className="fa-solid fa-heart" style={{ fontSize: "4rem", color: "#e5e5e5" }}></i>
+                          </span>
+                          <h3>Your Wishlist is Empty</h3>
+                          <p>Add items you love to your wishlist and find them here.</p>
+                          <button
+                            className="ContinueBtn"
+                            onClick={() => navigate("/")}
+                          >
+                            Start Shopping
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </Tab.Pane>
 
                   {/* Past Bookings Tab - Order History */}
                   <Tab.Pane className="tab-pane" eventKey="past-bookings">
