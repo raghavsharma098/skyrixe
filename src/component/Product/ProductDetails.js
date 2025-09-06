@@ -224,6 +224,105 @@ const ProductDetails = () => {
     }
   };
 
+  // FAQ accordion with delegated handler; initialize when loader finishes
+  useEffect(() => {
+    const root = document.querySelector('.product-details-section');
+    if (!root) return;
+    const container = root.querySelector('.faq-section .faq-list');
+    if (!container) return;
+
+    const collapse = (answerEl) => {
+      if (!answerEl) return;
+      // If previously set to 'none', set to current height first so we can animate to 0
+      if (answerEl.style.maxHeight === 'none') {
+        answerEl.style.maxHeight = answerEl.scrollHeight + 'px';
+        // Force reflow before changing to 0 to enable transition
+        // eslint-disable-next-line no-unused-expressions
+        answerEl.offsetHeight;
+      }
+      answerEl.style.maxHeight = '0px';
+      answerEl.style.opacity = '0';
+      answerEl.style.paddingTop = '0';
+      answerEl.style.paddingBottom = '0';
+    };
+
+    const expand = (answerEl) => {
+      if (!answerEl) return;
+      // Apply vertical padding first so scrollHeight includes it
+      answerEl.style.paddingTop = '8px';
+      answerEl.style.paddingBottom = '16px';
+      // Force reflow to ensure padding is applied before measuring
+      // eslint-disable-next-line no-unused-expressions
+      answerEl.offsetHeight;
+      const fullHeight = answerEl.scrollHeight;
+      answerEl.style.maxHeight = fullHeight + 'px';
+      answerEl.style.opacity = '1';
+      // After the height transition finishes, set to 'none' so it can grow with responsive wraps
+      const onEnd = (ev) => {
+        if (ev.propertyName !== 'max-height') return;
+        answerEl.removeEventListener('transitionend', onEnd);
+        // Only keep open state if still active
+        const parent = answerEl.closest('.faq-item');
+        if (parent && parent.classList.contains('active')) {
+          answerEl.style.maxHeight = 'none';
+        }
+      };
+      answerEl.addEventListener('transitionend', onEnd);
+    };
+
+    // Initialize all answers collapsed and set a11y
+    container.querySelectorAll('.faq-answer').forEach((ans) => collapse(ans));
+    container.querySelectorAll('.faq-question').forEach((q) => {
+      q.setAttribute('role', 'button');
+      if (!q.hasAttribute('tabindex')) q.setAttribute('tabindex', '0');
+      q.setAttribute('aria-expanded', 'false');
+    });
+
+    const onClick = (e) => {
+      const question = e.target.closest('.faq-question');
+      if (!question || !container.contains(question)) return;
+      const item = question.closest('.faq-item');
+      const answer = item && item.querySelector('.faq-answer');
+      if (!item || !answer) return;
+      const opening = !item.classList.contains('active');
+      item.classList.toggle('active', opening);
+      if (opening) expand(answer); else collapse(answer);
+      question.setAttribute('aria-expanded', opening ? 'true' : 'false');
+    };
+
+    // Use root to avoid listener loss if list node is re-rendered
+    root.addEventListener('click', onClick);
+
+    const onKeyDown = (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const question = e.target.closest('.faq-question');
+      if (!question || !root.contains(question)) return;
+      e.preventDefault();
+      question.click();
+    };
+    root.addEventListener('keydown', onKeyDown);
+
+    const onResize = () => {
+      container.querySelectorAll('.faq-item.active .faq-answer').forEach((ans) => {
+        // Ensure open-state padding, then measure
+        ans.style.paddingTop = '8px';
+        ans.style.paddingBottom = '16px';
+        // eslint-disable-next-line no-unused-expressions
+        ans.offsetHeight;
+        ans.style.maxHeight = 'none';
+        const newH = ans.scrollHeight;
+        ans.style.maxHeight = newH + 'px';
+      });
+    };
+    window.addEventListener('resize', onResize);
+
+    return () => {
+  root.removeEventListener('click', onClick);
+  root.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('resize', onResize);
+    };
+  }, [loader]);
+
   // Handle recommended tab clicks
   const handleRecommendedTabClick = (tabName) => {
     updateState({
@@ -2166,12 +2265,18 @@ const ProductDetails = () => {
                       </div>
                       <div className="faq-list">
                         <div className="faq-item">
-                          <div className="faq-question">How will you take my address and other details ?</div>
-                          <div className="faq-answer">After the payment is completed a form will open on the website or the app which will ask you for your address, balloon color choices, cake flavor etc. Which you can fill online. If we have any doubts someone from CherishX team will call you and take additional details. You will always have our post-sales number in-case you want to discuss something.</div>
+                          <div className="faq-question">
+                            <h3>How will you take my address and other details ?</h3>
+                            <span className="faq-toggle">+</span>
+                          </div>
+                          <div className="faq-answer">After payment, a form will open asking for your address, balloon colors, cake flavor, etc. If needed, our team will call for more details. You’ll also have our post-sales number for any queries</div>
                         </div>
                         <div className="faq-item">
-                          <div className="faq-question">What balloon colors do you have & how can I select the balloon colors?</div>
-                          <div className="faq-answer">Decoration will be done as in the pictures. In case you require different color balloons combination, please inform us over email or call us at 8081833833</div>
+                          <div className="faq-question">
+                            <h3>What balloon colors do you have & how can I select the balloon colors?</h3>
+                            <span className="faq-toggle">+</span>
+                          </div>
+                          <div className="faq-answer">Decoration will match the pictures. For different balloon colors, contact us via email.</div>
                         </div>
                         <div className="faq-readmore">+ Read More FAQ's</div>
                       </div>
