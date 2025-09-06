@@ -22,7 +22,7 @@ import kid1 from "../../assets/images/TopSellers/kd1.jpg";
 import kid2 from "../../assets/images/TopSellers/kd2.jpg";
 import kid3 from "../../assets/images/TopSellers/kd3.jpg";
 import kid4 from "../../assets/images/TopSellers/kd4.jpg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 
 const NavigationDropdown = () => {
@@ -46,10 +46,10 @@ const NavigationDropdown = () => {
                 "Naming Ceremony Decoration"
             ],
             "TOP SELLERS": [
-                { title: "White & Gold Floral Birthday Decoration", image: birth1 },
-                { title: "Live Guitarist Performance", image: birth2 },
-                { title: "Balloon Box Surprise", image: birth3 },
-                { title: "Romantic Candlelight Dinner", image: birth4 },
+                { title: "White & Gold Floral Birthday Decoration", image: birth1, url: "/products/product-details" },
+                { title: "Live Guitarist Performance", image: birth2, url: "/products/product-details" },
+                { title: "Balloon Box Surprise", image: birth3, url: "/products/product-details" },
+                { title: "Romantic Candlelight Dinner", image: birth4, url: "/products/product-details" },
             ],
         },
         "ANNIVERSARY": {
@@ -65,10 +65,10 @@ const NavigationDropdown = () => {
                 "Canopy Decor"
             ],
             "TOP SELLERS": [
-                { title: "I Love You Balloon Bouquet", image: aniv1 },
-                { title: "Elegant Harmony Anniversary Decoration", image: aniv2 },
-                { title: "Boho Canopy Decoration", image: aniv3 },
-                { title: "Personalised Photoframe", image: aniv4 },
+                { title: "I Love You Balloon Bouquet", image: aniv1, url: "/products/product-details" },
+                { title: "Elegant Harmony Anniversary Decoration", image: aniv2, url: "/products/product-details" },
+                { title: "Boho Canopy Decoration", image: aniv3, url: "/products/product-details" },
+                { title: "Personalised Photoframe", image: aniv4, url: "/products/product-details" },
             ],
         },
         "BABY SHOWER": {
@@ -85,10 +85,10 @@ const NavigationDropdown = () => {
                 "Premium Decor's"
             ],
             "TOP SELLERS": [
-                { title: "Baby Shower Decoration", image: de1 },
-                { title: "Oh Baby Theme", image: de2 },
-                { title: "Welcome Baby", image: de3 },
-                { title: "Premium Decor", image: de4 },
+                { title: "Baby Shower Decoration", image: de1, url: "/products/product-details" },
+                { title: "Oh Baby Theme", image: de2, url: "/products/product-details" },
+                { title: "Welcome Baby", image: de3, url: "/products/product-details" },
+                { title: "Premium Decor", image: de4, url: "/products/product-details" },
             ],
         },
         "THEME DECOR'S FOR BOYS": {
@@ -118,10 +118,10 @@ const NavigationDropdown = () => {
                 "Minecraft Theme"
             ],
             "TOP SELLERS": [
-                { title: "Boss Baby Theme Decoration", image: kid1 },
-                { title: "Superhero Theme Decoration", image: kid2 },
-                { title: "Cars Theme Decoration", image: kid3 },
-                { title: "Spiderman Theme Decoration", image: kid4 },
+                { title: "Boss Baby Theme Decoration", image: kid1, url: "/products/product-details" },
+                { title: "Superhero Theme Decoration", image: kid2, url: "/products/product-details" },
+                { title: "Cars Theme Decoration", image: kid3, url: "/products/product-details" },
+                { title: "Spiderman Theme Decoration", image: kid4, url: "/products/product-details" },
             ],
         },
         "THEME DECOR'S FOR GIRLS": {
@@ -139,10 +139,10 @@ const NavigationDropdown = () => {
                 "Masha and the Bear"
             ],
             "TOP SELLERS": [
-                { title: "Minnie Mouse Theme Decoration", image: fes1 },
-                { title: "Princess Theme Decoration", image: fes2 },
-                { title: "Frozen Theme Decoration", image: fes3 },
-                { title: "Barbie Theme Decoration", image: fes4 },
+                { title: "Minnie Mouse Theme Decoration", image: fes1, url: "/products/product-details" },
+                { title: "Princess Theme Decoration", image: fes2, url: "/products/product-details" },
+                { title: "Frozen Theme Decoration", image: fes3, url: "/products/product-details" },
+                { title: "Barbie Theme Decoration", image: fes4, url: "/products/product-details" },
             ],
         }
     };
@@ -254,19 +254,24 @@ const NavigationDropdown = () => {
                                                         </li>
                                                     ) : (
                                                         // case: object with image & title
-                                                        <li key={i} className="dropdown-nav-item-with-image"
-                                                            onClick={() => handleCategory({
-                                                                categoryName: menu.toUpperCase().replace("'S", "S"),
-                                                                subcategory: item.title
-                                                            })}
-                                                            style={{ cursor: "pointer" }}
-                                                        >
-                                                            <img
-                                                                src={item.image}
-                                                                alt={item.title}
-                                                                className="dropdown-nav-item-image"
-                                                            />
-                                                            <span>{item.title}</span>
+                            <li key={i} className="dropdown-nav-item-with-image">
+                                                            <Link
+                                                                to={item.url}
+                                state={{ fromTopSeller: true, title: item.title, category: menu, pickIndex: i }}
+                                                                style={{ 
+                                                                    cursor: "pointer",
+                                                                    textDecoration: "none",
+                                                                    color: "inherit"
+                                                                }}
+                                                                className="dropdown-nav-item-image-container"
+                                                            >
+                                                                <img
+                                                                    src={item.image}
+                                                                    alt={item.title}
+                                                                    className="dropdown-nav-item-image"
+                                                                />
+                                                                <span className="dropdown-nav-item-image-text">{item.title}</span>
+                                                            </Link>
                                                         </li>
                                                     )
                                                 )}

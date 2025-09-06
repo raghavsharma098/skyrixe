@@ -6,6 +6,8 @@ import {
   signUpState,
   slotListApi,
   staticSlotListApi,
+  searchProduct,
+  categoryProductList,
 } from "../../reduxToolkit/Slices/ProductList/listApis";
 import { toast, useToast } from "react-toastify";
 import { Modal } from "react-bootstrap";
@@ -97,6 +99,7 @@ const ProductDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const item = location?.state;
+  const selectCity = window.localStorage.getItem("LennyCity");
   const [qty, setQty] = useState(1);
   const [isGalleryFixed, setIsGalleryFixed] = useState(false);
   const userDetail = JSON.parse(window.localStorage.getItem("LennyUserDetail"));
@@ -141,6 +144,74 @@ const ProductDetails = () => {
     (state) => state.reviewRating
   );
   const { getAddressList } = useSelector((state) => state.auth);
+
+  // Derive a compact keyword from a card title for better search matching
+  const deriveKeyword = (title) => {
+    if (!title) return '';
+    const stop = new Set(['decoration', 'theme', 'performance', 'surprise', 'box', 'romantic', 'personalised', 'personalized', 'photoframe', 'photo', 'frame', 'candlelight', 'dinner']);
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .split(/\s+/)
+      .filter(w => w && !stop.has(w))
+      .slice(0, 3)
+      .join(' ')
+      .trim();
+  };
+
+  const normalizeCategory = (label) => {
+    if (!label) return '';
+    const upper = String(label).toUpperCase();
+    if (upper.includes("THEME DECOR'S")) return "THEME DECOR'S";
+    return upper.replace("'S", 'S');
+  };
+
+  // Fallback: If navigated from Top Sellers without a product id, resolve by search
+  useEffect(() => {
+    (async () => {
+      try {
+        if (!item?._id && location?.state?.fromTopSeller && location?.state?.title) {
+          const rawTitle = location.state.title;
+          const primaryTerm = rawTitle;
+          let res = await dispatch(searchProduct({ search: primaryTerm, city: selectCity }));
+          let products = res?.payload?.data?.product || [];
+
+          if (!products.length) {
+            const keyword = deriveKeyword(rawTitle);
+            if (keyword) {
+              res = await dispatch(searchProduct({ search: keyword, city: selectCity }));
+              products = res?.payload?.data?.product || [];
+            }
+          }
+
+          if (!products.length && location?.state?.category) {
+            const categoryName = normalizeCategory(location.state.category || '');
+            const catRes = await dispatch(categoryProductList({ category: categoryName, city: selectCity }));
+            const catProducts = catRes?.payload?.data || [];
+            if (catProducts.length) {
+              products = catProducts;
+            }
+          }
+
+          if (products.length > 0) {
+            // Choose Nth product using pickIndex to ensure distinct items per card
+            const pickIndex = Math.min(Math.max(Number(location.state?.pickIndex) || 0, 0), 3); // 0..3
+            const lower = rawTitle.toLowerCase();
+            const matched = products.filter(p => (p?.productDetails?.productname || '').toLowerCase().includes(lower));
+            const chosen = matched[pickIndex] || products[pickIndex] || matched[0] || products[0];
+            navigate('/products/product-details', { state: chosen, replace: true });
+          } else {
+            // Last resort: go to category listing
+            navigate('/products', { state: { item: { categoryName: location?.state?.category }, selectCity }, replace: true });
+          }
+        }
+      } catch (e) {
+        console.error('Top-seller resolution failed:', e);
+      }
+    })();
+    // Only run on initial mount for top-seller navigation
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleCategoryClick = (categoryName) => {
     try {
@@ -1115,20 +1186,20 @@ const ProductDetails = () => {
   };
 
   useEffect(() => {
-    if (item) {
-      dispatch(productDetails({ id: item?._id }));
+    if (item?._id) {
+      dispatch(productDetails({ id: item._id }));
       dispatch(
-        ratingReviewList({ customerId: userDetail?._id, productId: item?._id })
+        ratingReviewList({ customerId: userDetail?._id, productId: item._id })
       );
       dispatch(
         slotListApi({
           date: new Date().toISOString().split("T")[0],
-          productId: item?._id,
+          productId: item._id,
         })
       );
       dispatch(addressListing({ userId: userDetail?._id }));
     }
-  }, [item]);
+  }, [item?._id]);
 
   useEffect(() => {
     if (getSlotList) {
