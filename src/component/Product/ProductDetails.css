@@ -2386,6 +2386,13 @@
   margin-bottom: 0;
 }
 
+/* Stronger override so opened answers actually show even if a global rule keeps max-height:0 */
+.product-details-section .faq-item.active .faq-answer {
+  max-height: none !important;
+  opacity: 1 !important;
+  padding: 10px 50px 20px 65px !important;
+}
+
 .faq-readmore {
   color: #e5097f;
   font-weight: 600;

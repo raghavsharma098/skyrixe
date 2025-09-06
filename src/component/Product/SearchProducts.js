@@ -34,6 +34,22 @@ const SearchProducts = () => {
 
   console.log({ getSearchProductList });
 
+  // Match Product.js behavior: sanitize URL (spaces/backslashes) and support object-based image entries
+  const sanitizeUrl = (u) => {
+    if (!u || typeof u !== 'string') return '';
+    const fixed = u.trim().replace(/\\/g, '/');
+    return fixed.includes(' ') ? fixed.replace(/\s/g, '%20') : fixed;
+  };
+  const getUrlFromMaybeObject = (val) => {
+    if (!val) return '';
+    if (typeof val === 'string') return sanitizeUrl(val);
+    if (typeof val === 'object') {
+      const cand = val.url || val.secure_url || val.image || val.src || val.link || val.Location || val.path || val.location;
+      return sanitizeUrl(typeof cand === 'string' ? cand : '');
+    }
+    return '';
+  };
+
   return (
     <>
       <div className="BirthdayDecorationArea BirthDecImage">
@@ -48,12 +64,27 @@ const SearchProducts = () => {
                   <div className="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12" key={i}>
                     <div className="PrivateDiningBox">
                       <figure>
-                        <img
-                          src={item?.productimages?.at(0)}
-                          onClick={() => handleProduct(item)}
-                          style={{ cursor: 'pointer' }}
-                          alt={item?.productDetails?.productname}
-                        />
+                        {(() => {
+                          const imgs = Array.isArray(item?.productimages) ? item.productimages : [];
+              const primary = imgs && imgs.length ? imgs[0] : undefined; // avoid .at(0)
+              const fallback = 'https://via.placeholder.com/400x400?text=Image';
+              const src = getUrlFromMaybeObject(primary) || fallback;
+                          return (
+                            <img
+                              src={src}
+                              onClick={() => handleProduct(item)}
+                              style={{ cursor: 'pointer' }}
+                              alt={item?.productDetails?.productname || 'Product'}
+                loading={i < 4 ? 'eager' : 'lazy'}
+                decoding="async"
+                fetchPriority={i < 4 ? 'high' : 'auto'}
+                sizes="(max-width: 576px) 50vw, (max-width: 992px) 33vw, 25vw"
+                              onError={(e) => {
+                                if (e.currentTarget.src !== fallback) e.currentTarget.src = fallback;
+                              }}
+                            />
+                          );
+                        })()}
                       </figure>
                       
                       <h6>{item?.productDetails?.productname}</h6>

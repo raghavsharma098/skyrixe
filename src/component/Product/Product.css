@@ -63,10 +63,13 @@
   border-radius: 8px;
   position: relative;
   background: #f8f9fa;
+  /* Neutralize global aspect-ratio applied elsewhere */
+  aspect-ratio: auto !important;
 }
 
 .products-page-container .PrivateDiningBox figure img {
-  position: absolute;
+  /* Force absolute positioning to counter global mobile overrides */
+  position: absolute !important;
   top: 0;
   left: 0;
   width: 100%;
@@ -148,6 +151,15 @@
     padding-left: 16px;
     padding-right: 16px;
   }
+  /* Undo global mobile rule that sets position: relative !important on all elements */
+  .products-page-container .PrivateDiningBox figure {
+    position: relative !important;
+    aspect-ratio: auto !important; /* keep padding-bottom square */
+  }
+  .products-page-container .PrivateDiningBox figure img {
+    position: absolute !important;
+    inset: 0;
+  }
   
   .products-page-container .col-xl-3,
   .products-page-container .col-lg-3,
@@ -180,6 +192,20 @@
   .products-page-container .FeatureBox1 {
     padding: 6px;
   }
+
+  /* Fix for global mobile override that applies position: relative !important universally */
+  .products-page-container .PrivateDiningBox,
+  .products-page-container .PrivateDiningBox *,
+  .products-page-container .FeatureArea .FeatureBox,
+  .products-page-container .FeatureArea .FeatureBoxMain,
+  .products-page-container .FeatureArea .FeatureBox aside,
+  .products-page-container .FeatureArea .FeatureBox figure,
+  .products-page-container .FeatureArea .FeatureBox h4 {
+    position: initial; /* allow local positioning rules to apply */
+  }
+
+  .products-page-container .PrivateDiningBox figure { position: relative !important; }
+  .products-page-container .PrivateDiningBox figure img { position: absolute !important; }
 }
 
 /* Small mobile screens */
@@ -197,6 +223,15 @@
   
   .products-page-container .FeatureBox1 {
     padding: 4px;
+  }
+  /* Ensure image remains visible within square container on very small screens */
+  .products-page-container .PrivateDiningBox figure {
+    position: relative !important;
+    aspect-ratio: auto !important;
+  }
+  .products-page-container .PrivateDiningBox figure img {
+    position: absolute !important;
+    inset: 0;
   }
 }
 

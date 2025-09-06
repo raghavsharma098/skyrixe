@@ -185,9 +185,10 @@ const Main = () => {
     setActiveFaq(activeFaq === idx ? -1 : idx);
   };
 
-  const { latestReviews = [], loading, error } = useSelector(
+  const { latestReviews: latestReviewsRaw = [], loading, error } = useSelector(
     (state) => state.reviews
   );
+  const latestReviews = Array.isArray(latestReviewsRaw) ? latestReviewsRaw : [];
 
   //Fetching the Latest Reviews
   useEffect(() => {

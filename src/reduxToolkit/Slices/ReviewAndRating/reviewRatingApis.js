@@ -43,8 +43,19 @@ export const fetchLatestReviews = createAsyncThunk(
   async () => {
     try {
       const response = await axios.get(`${credAndUrl?.BASE_URL}customer/getallReviews`);
-      console.log("Fetched Latest Reviews:", response?.data);
-      return response?.data;
+      const raw = response?.data;
+      // Normalize to an array regardless of backend shape
+      const arr = Array.isArray(raw)
+        ? raw
+        : Array.isArray(raw?.data)
+          ? raw.data
+          : Array.isArray(raw?.reviews)
+            ? raw.reviews
+            : Array.isArray(raw?.data?.reviews)
+              ? raw.data.reviews
+              : [];
+      console.log("Fetched Latest Reviews (normalized):", arr);
+      return arr;
     } catch (error) {
       console.error("Error fetching latest reviews:", error);
       return [];
@@ -86,7 +97,7 @@ const ratingListSlice = createSlice({
     });
     builder.addCase(fetchLatestReviews.fulfilled, (state, action) => {
       state.loading = false;
-      state.latestReviews = action.payload;
+  state.latestReviews = Array.isArray(action.payload) ? action.payload : [];
     });
     builder.addCase(fetchLatestReviews.rejected, (state, action) => {
       state.loading = false;

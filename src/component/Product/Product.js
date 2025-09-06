@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -10,6 +10,7 @@ import { Modal } from "react-bootstrap";
 import { BeatLoader } from "react-spinners";
 import "react-range-slider-input/dist/style.css";
 import "./Product.css"; // Product page specific styles
+import { credAndUrl } from "../../config/config";
 
 
 const CustomPrevArrow = ({ onClick }) => (
@@ -75,6 +76,24 @@ const Product = () => {
   );
   const state = location?.state;
   const navigate = useNavigate();
+  const initializedRef = useRef(false);
+  const refetchedRef = useRef(false);
+
+  // Resolve image URLs robustly (arrays of strings or objects) and sanitize spaces/backslashes
+  const sanitizeUrl = (u) => {
+    if (!u || typeof u !== 'string') return '';
+    const fixed = u.trim().replace(/\\/g, '/');
+    return fixed.includes(' ') ? fixed.replace(/\s/g, '%20') : fixed;
+  };
+  const getUrlFromMaybeObject = (val) => {
+    if (!val) return '';
+    if (typeof val === 'string') return sanitizeUrl(val);
+    if (typeof val === 'object') {
+      const cand = val.url || val.secure_url || val.image || val.src || val.link || val.Location || val.path || val.location;
+      return sanitizeUrl(typeof cand === 'string' ? cand : '');
+    }
+    return '';
+  };
 
   const handleProduct = (item) => {
     navigate("product-details", { state: item });
@@ -250,42 +269,61 @@ const Product = () => {
   useEffect(() => {
     if (state || selectCity) {
       updateState({ ...iState, city: selectCity, filter_city: selectCity });
-      const data = {
+      const payload = {
         category: state?.item?.categoryName,
-        subcategory: state?.subCat,
         city: selectCity,
       };
-      dispatch(categoryProductList(data));
+      if (state?.subCat) payload.subcategory = state.subCat;
+    dispatch(categoryProductList(payload));
+    initializedRef.current = true;
     }
-  }, [state, selectCity, window.localStorage]);
+  }, [state, selectCity]);
 
   useEffect(() => {
-    const data = {
+  if (!initializedRef.current) return;
+    const payload = {
       category: state?.item?.categoryName,
-      subcategory: state?.subCat,
       city: selectCity,
       sameDay,
       discount,
     };
-    dispatch(categoryProductList(data));
+    if (state?.subCat) payload.subcategory = state.subCat;
+    if (payload.category && payload.city) {
+      dispatch(categoryProductList(payload));
+    }
   }, [sameDay, discount]);
 
   useEffect(() => {
-    const data = {
+  if (!initializedRef.current) return;
+    const payload = {
       category: state?.item?.categoryName,
-      subcategory: state?.subCat,
       city: selectCity,
       minPrice: minPrice,
       maxPrice: maxPrice,
       sameDay,
       discount,
     };
+    if (state?.subCat) payload.subcategory = state.subCat;
+    if (!(payload.category && payload.city)) return;
     const timeoutId = setTimeout(() => {
-      dispatch(categoryProductList(data));
+      dispatch(categoryProductList(payload));
     }, 300);
 
     return () => clearTimeout(timeoutId);
   }, [minPrice, maxPrice]);
+
+  // If no subcategory was provided, and API returned subcategories, refetch using the first one to populate products
+  useEffect(() => {
+    if (refetchedRef.current) return;
+    if (!getCategoryProductList || !getCategoryProductList?.subcategory) return;
+    if (Array.isArray(sortedProducts) && sortedProducts.length > 0) return; // already have data
+    const firstSub = getCategoryProductList.subcategory[0]?.subcategoryName;
+    const category = state?.item?.categoryName;
+    if (category && firstSub && selectCity && !state?.subCat) {
+      refetchedRef.current = true;
+      dispatch(categoryProductList({ category, subcategory: firstSub, city: selectCity }));
+    }
+  }, [getCategoryProductList?.subcategory, sortedProducts?.length]);
 
   useEffect(() => {
     if (!getCategoryProductList) return;
@@ -340,27 +378,19 @@ const Product = () => {
     <>
       <div className="Main products-page-container">
         <div className="BirthdayDecorationArea p-0">
-          <img
-            src={
-              state?.item?.categoryName == "BIRTHDAY"
-                ? require("../../assets/images/Birthday inner banner.png")
-                : state?.item?.categoryName == "ROOM & HALL DECOR'S"
-                  ? require("../../assets/images/room decor inner banner.png")
-                  : state?.item?.categoryName == "KID'S PARTY"
-                    ? require("../../assets/images/Party Magic.png")
-                    : state?.item?.categoryName == "PREMIUM DECOR'S"
-                      ? require("../../assets/images/PREMIUM DECOR'S inner banner.png")
-                      : state?.item?.categoryName == "THEME DECOR'S"
-                        ? require("../../assets/images/THEME DECOR'S inner banner.png")
-                        : state?.item?.categoryName == "ANNIVERSARY"
-                          ? require("../../assets/images/Anniversary inner banner png.png")
-                          : state?.item?.categoryName == "BABY SHOWER"
-                            ? require("../../assets/images/baby shower inner banner.png")
-                            : state?.item?.categoryName == "BALLOON BOUQUET"
-                              ? require("../../assets/images/ballon banguetes inner banner.png")
-                              : ""
-            }
-          />
+          {(() => {
+            const cat = state?.item?.categoryName;
+            let src = null;
+            if (cat === "BIRTHDAY") src = require("../../assets/images/Birthday inner banner.png");
+            else if (cat === "ROOM & HALL DECOR'S") src = require("../../assets/images/room decor inner banner.png");
+            else if (cat === "KID'S PARTY") src = require("../../assets/images/Party Magic.png");
+            else if (cat === "PREMIUM DECOR'S") src = require("../../assets/images/PREMIUM DECOR'S inner banner.png");
+            else if (cat === "THEME DECOR'S") src = require("../../assets/images/THEME DECOR'S inner banner.png");
+            else if (cat === "ANNIVERSARY") src = require("../../assets/images/Anniversary inner banner png.png");
+            else if (cat === "BABY SHOWER") src = require("../../assets/images/baby shower inner banner.png");
+            else if (cat === "BALLOON BOUQUET") src = require("../../assets/images/ballon banguetes inner banner.png");
+            return src ? <img src={src} alt={cat || "Category banner"} /> : null;
+          })()}
         </div>
         <div className="FeatureArea carouselPadding">
           <div className="modern-carousel-section">
@@ -400,7 +430,22 @@ const Product = () => {
                           }
                         >
                           <div className="modern-item-image">
-                            <img src={item?.subcategoryImage} alt={item?.subcategoryName} />
+                            {(() => {
+                              const fallback = 'https://via.placeholder.com/200x120?text=Image';
+                              const src = getUrlFromMaybeObject(item?.subcategoryImage) || fallback;
+                              return (
+                                <img
+                                  src={src}
+                                  alt={item?.subcategoryName || 'Subcategory'}
+                                  loading={isActive ? 'eager' : 'lazy'}
+                                  decoding="async"
+                                  fetchPriority={isActive ? 'high' : 'low'}
+                                  width={140}
+                                  height={140}
+                                  onError={(e)=>{ if(e.currentTarget.src!==fallback){ e.currentTarget.src=fallback; } }}
+                                />
+                              );
+                            })()}
                           </div>
                           <div className="modern-item-text">
                             <h4>{item?.subcategoryName}</h4>
@@ -453,12 +498,27 @@ const Product = () => {
                         >
                           <div className="PrivateDiningBox">
                             <figure>
-                              <img
-                                onClick={() => handleProduct(item)}
-                                src={item?.productimages?.at(0)}
-                                style={{ cursor: 'pointer' }}
-                                alt={item?.productDetails?.productname}
-                              />
+                              {(() => {
+                                const imgs = Array.isArray(item?.productimages) ? item.productimages : [];
+                                const primary = imgs && imgs.length ? imgs[0] : undefined; // avoid .at(0) for mobile compatibility
+                                const fallback = 'https://via.placeholder.com/400x400?text=Image';
+                                const src = getUrlFromMaybeObject(primary) || fallback;
+                return (
+                                  <img
+                                    onClick={() => handleProduct(item)}
+                                    src={src}
+                                    style={{ cursor: 'pointer' }}
+                                    alt={item?.productDetails?.productname || 'Product'}
+                                    loading={i < 4 ? 'eager' : 'lazy'}
+                                    decoding="async"
+                                    fetchPriority={i < 4 ? 'high' : 'auto'}
+                                    sizes="(max-width: 576px) 50vw, (max-width: 992px) 33vw, 25vw"
+                                    onError={(e) => {
+                                      if (e.currentTarget.src !== fallback) e.currentTarget.src = fallback;
+                                    }}
+                                  />
+                                );
+                              })()}
                             </figure>
                             
                             {/* Location first - single row */}

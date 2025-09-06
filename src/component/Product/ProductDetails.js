@@ -1461,6 +1461,81 @@ const ProductDetails = () => {
     }
   }, [selectedRecommendedItems]);
 
+  // Direct FAQ toggle handler to ensure reliability in all render paths
+  const handleFaqToggle = (e) => {
+    const root = document.querySelector('.product-details-section');
+    if (!root) return;
+    const list = root.querySelector('.faq-list');
+    if (!list) return;
+
+    const btn = e.currentTarget || e.target.closest('.faq-question');
+    if (!btn || !list.contains(btn)) return;
+    const item = btn.closest('.faq-item');
+    const answer = item?.querySelector('.faq-answer');
+    if (!answer) return;
+
+    const isOpen = item.classList.contains('active');
+
+    // Collapse
+    if (isOpen) {
+      // Set current height to enable transition to 0
+      answer.style.maxHeight = `${answer.scrollHeight}px`;
+      void answer.offsetHeight; // force reflow
+      answer.style.maxHeight = '0px';
+      answer.style.paddingTop = '0px';
+      answer.style.paddingBottom = '0px';
+      answer.style.opacity = '0';
+      item.classList.remove('active');
+      btn.setAttribute('aria-expanded', 'false');
+      answer.setAttribute('aria-hidden', 'true');
+      return;
+    }
+
+    // Expand
+    item.classList.add('active');
+    answer.style.paddingTop = '10px';
+    answer.style.paddingBottom = '20px';
+    void answer.offsetHeight; // reflow before measuring
+    answer.style.maxHeight = `${answer.scrollHeight}px`;
+    answer.style.opacity = '1';
+    btn.setAttribute('aria-expanded', 'true');
+    answer.setAttribute('aria-hidden', 'false');
+
+    const onEnd = (evt) => {
+      if (evt.target !== answer) return;
+      if (item.classList.contains('active')) {
+        answer.style.maxHeight = 'none';
+      }
+      answer.removeEventListener('transitionend', onEnd);
+    };
+    answer.addEventListener('transitionend', onEnd);
+  };
+
+  // FAQ: Expand/Collapse logic with smooth height transition and padding sync
+  useEffect(() => {
+    const root = document.querySelector('.product-details-section');
+    if (!root) return;
+    const list = root.querySelector('.faq-list');
+    if (!list) return;
+
+    const onClick = (e) => handleFaqToggle(e);
+
+    const onResize = () => {
+      root.querySelectorAll('.faq-item.active .faq-answer').forEach((ans) => {
+        ans.style.maxHeight = 'none';
+        ans.style.paddingTop = '10px';
+        ans.style.paddingBottom = '20px';
+      });
+    };
+
+    list.addEventListener('click', onClick);
+    window.addEventListener('resize', onResize);
+    return () => {
+      list.removeEventListener('click', onClick);
+      window.removeEventListener('resize', onResize);
+    };
+  }, []);
+
 
   const FixedBottomBookingBar = ({
     productPrice,
@@ -2159,19 +2234,33 @@ const ProductDetails = () => {
                     </div>
 
                     {/* FAQ SECTION */}
-                    <div className="faq-section">
+                    <div className="faq-section faq-section-enhanced" role="region" aria-label="Frequently Asked Questions">
                       <div className="section-title">
                         <i className="fas fa-question-circle faq-icon" />
                         Frequently Asked Questions
                       </div>
-                      <div className="faq-list">
+                      <div className="faq-list faq-grid">
                         <div className="faq-item">
-                          <div className="faq-question">How will you take my address and other details ?</div>
-                          <div className="faq-answer">After the payment is completed a form will open on the website or the app which will ask you for your address, balloon color choices, cake flavor etc. Which you can fill online. If we have any doubts someone from CherishX team will call you and take additional details. You will always have our post-sales number in-case you want to discuss something.</div>
+                          <button type="button" className="faq-question" aria-expanded="false" onClick={handleFaqToggle}>
+                            <h3>How will you take my address and other details?</h3>
+                            <span className="faq-toggle" aria-hidden="true">+</span>
+                          </button>
+                          <div className="faq-answer" role="region" aria-hidden="true">
+                            <p>
+                              After the payment is completed a form will open on the website or the app which will ask you for your address, balloon color choices, cake flavor etc. Which you can fill online. If we have any doubts someone from CherishX team will call you and take additional details. You will always have our post-sales number in-case you want to discuss something.
+                            </p>
+                          </div>
                         </div>
                         <div className="faq-item">
-                          <div className="faq-question">What balloon colors do you have & how can I select the balloon colors?</div>
-                          <div className="faq-answer">Decoration will be done as in the pictures. In case you require different color balloons combination, please inform us over email or call us at 8081833833</div>
+                          <button type="button" className="faq-question" aria-expanded="false" onClick={handleFaqToggle}>
+                            <h3>What balloon colors do you have & how can I select the balloon colors?</h3>
+                            <span className="faq-toggle" aria-hidden="true">+</span>
+                          </button>
+                          <div className="faq-answer" role="region" aria-hidden="true">
+                            <p>
+                              Decoration will be done as in the pictures. In case you require different color balloons combination, please inform us over email or call us at 8081833833
+                            </p>
+                          </div>
                         </div>
                         <div className="faq-readmore">+ Read More FAQ's</div>
                       </div>
