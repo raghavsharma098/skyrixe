@@ -1,3 +1,15 @@
+/* Remove padding from the product gallery wrapper in product details page only */
+.ProductDetailsArea .product-gallery-wrapper {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+/* Remove padding from the right column in product details page only */
+.ProductDetailsArea .col-lg-6.col-12 {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
 @media (max-width: 992px) {
   .mobile-subcategories {
     overflow-x: auto;
