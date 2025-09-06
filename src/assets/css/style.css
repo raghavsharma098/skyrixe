@@ -694,7 +694,7 @@ header .HeaderArea .HeaderRight ul.Icons li a:hover {
   background: white;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   transition: left 0.3s ease;
-  z-index: 9999;
+  z-index: 2147483647;
   overflow-y: auto;
 }
 
@@ -813,6 +813,34 @@ header .HeaderArea .HeaderRight ul.Icons li a:hover {
   .mobile-categories {
     padding-top: 0 !important;
   }
+  
+  /* MOBILE Z-INDEX FIXES FOR HAMBURGER MENU OVERLAP */
+  /* Force all card sections below hamburger menu on mobile */
+  .FeatureArea,
+  .BirthdayDecorationArea,
+  .PrivateDining,
+  .FeatureArea *,
+  .BirthdayDecorationArea *,
+  .PrivateDining *,
+  .FeatureArea .FeatureBox,
+  .FeatureArea .FeatureBoxMain,
+  .FeatureArea .FeatureBox aside,
+  .FeatureArea .FeatureBox figure,
+  .FeatureArea .FeatureBox h4,
+  .PrivateDiningBox,
+  .PrivateDiningBox *,
+  .owl-carousel,
+  .owl-carousel *,
+  .carousel-control-prev,
+  .carousel-control-next,
+  .carousel-indicators,
+  .slick-slider,
+  .slick-slide,
+  .slick-track,
+  .slick-list {
+    z-index: 1 !important;
+    position: relative !important;
+  }
 }
 
 .mobile-overlay {
@@ -822,7 +850,7 @@ header .HeaderArea .HeaderRight ul.Icons li a:hover {
   width: 100%;
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 9998;
+  z-index: 2147483646;
 }
 
 /* Show hamburger button only on mobile and tablet screens */
@@ -3828,7 +3856,7 @@ i.fa-star {
   background: transparent !important;
   padding: 8px 4px !important;
   border-radius: 0 !important;
-  z-index: 100 !important;
+  z-index: 1 !important;
   display: block !important;
   width: 100% !important;
   max-width: 100% !important;
