@@ -61,20 +61,15 @@ const Footer = () => {
                     <div className="FooterLinks">
                       <h3>City</h3>
                       <ul>
-                        {getCityList?.data?.length > 0
-                          ? getCityList?.data?.map((city, i) => {
-                              if (i <= 4) {
-                                return (
-                                  <li>
-                                    <a>
-                                      {city?.cityName.charAt(0).toUpperCase() +
-                                        city?.cityName.slice(1)}
-                                    </a>
-                                  </li>
-                                );
-                              }
-                            })
-                          : ""}
+                        <li><a>Mumbai</a></li>
+                        <li><a>Delhi - NCR</a></li>
+                        <li><a>Lucknow</a></li>
+                        <li><a>Prayagraj</a></li>
+                        <li><a>Hyderabad</a></li>
+                        <li><a>Nashik</a></li>
+                        <li><a>Pune</a></li>
+                        <li><a>Kanpur</a></li>
+                        <li><a>Bangalore</a></li>
                       </ul>
                     </div>
                   </div>
