@@ -40,7 +40,6 @@ const Main = () => {
 
   const [scrollPosition, setScrollPosition] = useState(0);
   const scrollContainerRef = useRef(null);
-  const [reviews, setReviews] = useState([]);
 
   // Enhanced Review Carousel Functionality
   const [showPrevBtn, setShowPrevBtn] = useState(false);
@@ -185,14 +184,17 @@ const Main = () => {
     setActiveFaq(activeFaq === idx ? -1 : idx);
   };
 
-  const { latestReviews = [], loading, error } = useSelector(
-    (state) => state.reviews
+  const { latestReviews, loading, error } = useSelector(
+    (state) => state.reviewRating || {}
   );
 
   //Fetching the Latest Reviews
   useEffect(() => {
     dispatch(fetchLatestReviews());
   }, [dispatch]);
+
+  // Guard against undefined latestReviews
+  const reviews = latestReviews?.data || [];
 
   console.log("Latest Reviews:", latestReviews);
   const handleScrollLeft = () => {
@@ -1461,7 +1463,7 @@ const Main = () => {
                   </button>
                 )}
                 <div className="testimonials-slider" ref={reviewsScrollRef}>
-                  {latestReviews.map((review, index) => (
+                  {reviews && reviews.length > 0 ? reviews.map((review, index) => (
                     <div key={index} className="testimonial-card">
                       <div className="testimonial-header">
                         <div className="customer-info">
@@ -1495,7 +1497,11 @@ const Main = () => {
                         </div>
                       </div>
                     </div>
-                  ))}
+                  )) : (
+                    <div className="no-reviews">
+                      <p>No reviews available yet</p>
+                    </div>
+                  )}
                 </div>
                 {showReviewsNextBtn && (
                   <button className="testimonial-nav-btn next" onClick={handleReviewsScrollRight}>
