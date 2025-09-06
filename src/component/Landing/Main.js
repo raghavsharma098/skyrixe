@@ -596,134 +596,61 @@ const Main = () => {
     <>
       <div className="Hero-Section">
         <div className="cards">
-          <div
-            className="card1"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}
-          >
-            {/* <img src="https://cheetah.cherishx.com/website_layout/ganpati_menu_icon_desk.jpg?format=avif" alt="" /> */}
-             <img src={require("../../assets/images/on.png")} />
-            <p>Birthday</p>
-          </div> 
-          <div
-            className="card1"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "BALLOON BOUQUET" })}
-          >
-            {/* <img
-              src="https://cheetah.cherishx.com/website_layout/1755324921__original_layout_55.jpg?format=avif"
-              alt="Kids Birthday"
-            /> */}
+          {/* 1. Same day decoration */}
+          <div className="card1" style={{ cursor: "pointer" }} onClick={() => handleCategory({ categoryName: "SAME DAY DECORATION" })}>
             <img src={require("../../assets/images/td.png")} />
-            <p>
-              Balloon <br />  bouquet
-            </p>
+            <p>Same day <br /> decoration</p>
           </div>
-          {/* <div className="card1">
-            <img src="https://cheetah.cherishx.com/website_layout/1737544205__original_layout_55.jpg?format=avif" alt="" />
-                
-            <p> Same day <br /> Decoration</p>
-          </div> */}
-          <div
-            className="card1"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "PREMIUM DECOR'S" })}
-          >
-            {/* <img
-              src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_03_20241018_123157.jpg?format=avif"
-              alt="Birthday Decoration"
-            /> */}
-               <img src={require("../../assets/images/thd.png")} />
-            <p>
-              Premium <br /> Decoration
-            </p>
+          {/* 2. Birthday */}
+          <div className="card1" style={{ cursor: "pointer" }} onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}>
+            <img src={require("../../assets/images/on.png")} />
+            <p>Birthday</p>
           </div>
-          <div
-            className="card1"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "THEME DECOR'S" })}
-          >
-            {/* <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_03_20240930_132612.jpg?format=avif" alt="" /> */}
-             <img src={require("../../assets/images/forthcard.png")} />
-            <p> Theme <br /> decoration</p>
+          {/* 3. Ballon bouquet */}
+          <div className="card1" style={{ cursor: "pointer" }} onClick={() => handleCategory({ categoryName: "BALLOON BOUQUET" })}>
+            <img src={require("../../assets/images/td.png")} />
+            <p>Balloon <br /> bouquet</p>
           </div>
-          <div
-            className="card1"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "KID'S PARTY" })}
-          >
-            {/* <img
-              src="https://cheetah.cherishx.com/website_layout/1755170285__original_layout_55.jpg?format=avif"
-              alt="Candlelight Dinner"
-            /> */}
-             <img src={require("../../assets/images/fifthcard.png")} />
-            <p>
-              Kids <br /> Party
-            </p>
+          {/* 4. Premium decoration */}
+          <div className="card1" style={{ cursor: "pointer" }} onClick={() => handleCategory({ categoryName: "PREMIUM DECOR'S" })}>
+            <img src={require("../../assets/images/thd.png")} />
+            <p>Premium <br /> decoration</p>
           </div>
-
-          <div
-            className="card1"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "ROOM & HALL DECOR'S" })}
-          >
-            {/* <img
-              src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_01_20241018_123157.jpg?format=avif"
-              alt="Baby Shower"
-            /> */}
-             <img src={require("../../assets/images/sixthcard.png")} />
-            <p>
-              Room <br /> & Hall
-            </p>
+          {/* 5. Theme decoration */}
+          <div className="card1" style={{ cursor: "pointer" }} onClick={() => handleCategory({ categoryName: "THEME DECOR'S" })}>
+            <img src={require("../../assets/images/forthcard.png")} />
+            <p>Theme <br /> decoration</p>
           </div>
-
-          <div
-            className="card1"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "ANNIVERSARY" })}
-          >
-            {/* <img
-              src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_01_20241018_123157.jpg?format=avif"
-              alt="Baby Shower"
-            /> */}
-             <img className="imgmat"src={require("../../assets/images/seventhcard.png")} />
-            <p>
-              Anniversary
-            </p>
+          {/* 6. Kids party */}
+          <div className="card1" style={{ cursor: "pointer" }} onClick={() => handleCategory({ categoryName: "KID'S PARTY" })}>
+            <img src={require("../../assets/images/fifthcard.png")} />
+            <p>Kids <br /> party</p>
           </div>
-          <div
-            className="card1"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "BIRTHDAY" })}
-          >
-            {/* <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_02_20241018_123157.jpg?format=avif" alt="" /> */}
-             <img src={require("../../assets/images/td.png")} />
-            
-            <p> Same Day <br /> Decorations</p>
+          {/* 7. Room and hall */}
+          <div className="card1" style={{ cursor: "pointer" }} onClick={() => handleCategory({ categoryName: "ROOM & HALL DECOR'S" })}>
+            <img src={require("../../assets/images/sixthcard.png")} />
+            <p>Room <br /> and hall</p>
           </div>
-          <div
-            className="card1"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "BALLOON BOUQUET" })}
-          >
-            {/* <img src="https://cheetah.cherishx.com/website_layout/120x86_Icons_Desktop_08_20240930_132612.jpg?format=avif" alt="" /> */}
-             <img className="imgmat"src={require("../../assets/images/ninthcard.png")} />
-            <p> Balloon <br /> bouquet</p>
+          {/* 8. Anniversary */}
+          <div className="card1" style={{ cursor: "pointer" }} onClick={() => handleCategory({ categoryName: "ANNIVERSARY" })}>
+            <img className="imgmat" src={require("../../assets/images/seventhcard.png")} />
+            <p>Anniversary</p>
           </div>
-
-          {/* NEW 10th CARD - Premium decoration */}
-          <div
-            className="card1"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleCategory({ categoryName: "PREMIUM DECOR'S" })}
-          >
+          {/* 9. Welcome */}
+          <div className="card1" style={{ cursor: "pointer" }} onClick={() => handleCategory({ categoryName: "WELCOME" })}>
             <img src={require("../../assets/images/eightcard.png")} />
-            <p>
-              Premium <br /> decoration
-            </p>
+            <p>Welcome</p>
           </div>
-
-
+          {/* 10. Room decoration */}
+          <div className="card1" style={{ cursor: "pointer" }} onClick={() => handleCategory({ categoryName: "ROOM DECORATION" })}>
+            <img src={require("../../assets/images/ninthcard.png")} />
+            <p>Room <br /> decoration</p>
+          </div>
+          {/* 11. Baby shower */}
+          <div className="card1" style={{ cursor: "pointer" }} onClick={() => handleCategory({ categoryName: "BABY SHOWER" })}>
+            <img src={require("../../assets/images/sixthcard.png")} />
+            <p>Baby <br /> shower</p>
+          </div>
         </div>
         <div id="carouselExampleIndicators" className="carousel slide">
           <div className="carousel-inner">
